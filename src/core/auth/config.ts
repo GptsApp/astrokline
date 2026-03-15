@@ -73,7 +73,8 @@ const authOptions = {
 // get auth options with configs
 export async function getAuthOptions(configs: Record<string, string>) {
   const emailVerificationEnabled =
-    configs.email_verification_enabled === 'true' && !!configs.resend_api_key;
+    configs.email_verification_enabled === 'true' &&
+    !!(configs.sendflare_api_key || configs.resend_api_key);
 
   return {
     ...authOptions,

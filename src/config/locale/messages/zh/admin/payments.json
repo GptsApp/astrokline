@@ -1,41 +1,41 @@
 {
   "fields": {
-    "order_no": "订单号",
-    "user": "用户",
-    "amount": "金额",
-    "product": "产品",
-    "description": "描述",
-    "type": "类型",
-    "provider": "提供商",
-    "created_at": "创建时间",
-    "status": "状态",
-    "action": "操作"
+    "order_no": "Order No",
+    "user": "User",
+    "amount": "Amount",
+    "product": "Product",
+    "description": "Description",
+    "type": "Type",
+    "provider": "Provider",
+    "created_at": "Created At",
+    "status": "Status",
+    "action": "Action"
   },
   "list": {
-    "title": "支付",
+    "title": "Payments",
     "crumbs": {
-      "admin": "管理后台",
-      "payments": "支付"
+      "admin": "Admin",
+      "payments": "Payments"
     },
     "tabs": {
-      "all": "全部",
-      "subscription": "订阅",
-      "one-time": "一次性"
+      "all": "All",
+      "subscription": "Subscription",
+      "one-time": "One-Time"
     },
     "filters": {
       "status": {
-        "title": "状态",
+        "title": "Status",
         "options": {
-          "all": "全部",
-          "paid": "已支付",
-          "created": "已创建",
-          "failed": "支付失败"
+          "all": "All",
+          "paid": "Paid",
+          "created": "Created",
+          "failed": "Failed"
         }
       },
       "provider": {
-        "title": "提供商",
+        "title": "Provider",
         "options": {
-          "all": "全部",
+          "all": "All",
           "stripe": "Stripe",
           "creem": "Creem",
           "lemonsqueezy": "Lemonsqueezy",
@@ -45,8 +45,8 @@
     },
     "search": {
       "order_no": {
-        "title": "订单号",
-        "placeholder": "订单号"
+        "title": "Order No",
+        "placeholder": "Order No"
       }
     }
   }

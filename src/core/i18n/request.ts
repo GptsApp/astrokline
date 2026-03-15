@@ -70,11 +70,22 @@ export default getRequestConfig(async ({ requestLocale }) => {
     return {
       locale,
       messages,
+      onError(error: any) {
+        if (error.code === 'MISSING_MESSAGE') {
+          // Ignore missing message console errors for dynamic page lookups
+          return;
+        }
+        console.error(error);
+      },
     };
   } catch (e) {
     return {
       locale: defaultLocale,
       messages: await loadMessages(localeMessagesRootPath, defaultLocale),
+      onError(error: any) {
+        if (error.code === 'MISSING_MESSAGE') return;
+        console.error(error);
+      },
     };
   }
 });

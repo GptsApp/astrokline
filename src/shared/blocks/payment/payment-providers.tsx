@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { RiGithubFill, RiGoogleFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 
 import { signIn } from '@/core/auth/client';
@@ -104,6 +103,15 @@ export function PaymentProviders({
       title: 'Paypal',
       icon_url: '/imgs/icons/paypal.svg',
       onClick: () => handlePayment({ provider: 'paypal' }),
+    });
+  }
+
+  if (configs.infini_enabled === 'true' && isProviderAllowed('infini')) {
+    providers.push({
+      name: 'infini',
+      title: 'Infini (Crypto)',
+      icon_url: '/imgs/icons/infini.png',
+      onClick: () => handlePayment({ provider: 'infini' }),
     });
   }
 

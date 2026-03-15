@@ -2,10 +2,10 @@
   "sidebar": {
     "header": {
       "brand": {
-        "title": "ShipAny Chat",
+        "title": "AstroKline Chat",
         "logo": {
-          "src": "/logo.png",
-          "alt": "ShipAny Chat"
+          "src": "/images/astrokline-logo.webp",
+          "alt": "AstroKline Chat"
         },
         "url": "/chat"
       },

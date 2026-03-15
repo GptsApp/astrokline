@@ -3,8 +3,6 @@ import {
   BrandLogo,
   BuiltWith,
   Copyright,
-  LocaleSelector,
-  ThemeToggler,
 } from '@/shared/blocks/common';
 import { SmartIcon } from '@/shared/blocks/common/smart-icon';
 import { NavItem } from '@/shared/types/blocks/common';
@@ -31,7 +29,7 @@ export function Footer({ footer }: { footer: FooterType }) {
           </div>
 
           <div className="col-span-3 grid min-w-0 gap-6 sm:grid-cols-3">
-            {footer.nav?.items.map((item, idx) => (
+            {footer.nav?.items?.map((item, idx) => (
               <div key={idx} className="min-w-0 space-y-4 text-sm break-words">
                 <span className="block font-medium break-words">
                   {item.title}
@@ -57,10 +55,6 @@ export function Footer({ footer }: { footer: FooterType }) {
         <div className="flex min-w-0 flex-wrap items-center gap-4 sm:gap-8">
           {footer.show_built_with !== false ? <BuiltWith /> : null}
           <div className="min-w-0 flex-1" />
-          {footer.show_theme !== false ? <ThemeToggler type="toggle" /> : null}
-          {footer.show_locale !== false ? (
-            <LocaleSelector type="button" />
-          ) : null}
         </div>
 
         <div
@@ -81,7 +75,7 @@ export function Footer({ footer }: { footer: FooterType }) {
 
           {footer.agreement ? (
             <div className="flex min-w-0 flex-wrap items-center gap-4">
-              {footer.agreement?.items.map((item: NavItem, index: number) => (
+              {footer.agreement?.items?.map((item: NavItem, index: number) => (
                 <Link
                   key={index}
                   href={item.url || ''}
@@ -96,7 +90,7 @@ export function Footer({ footer }: { footer: FooterType }) {
 
           {footer.social ? (
             <div className="flex min-w-0 flex-wrap items-center gap-2">
-              {footer.social?.items.map((item: NavItem, index) => (
+              {footer.social?.items?.map((item: NavItem, index) => (
                 <Link
                   key={index}
                   href={item.url || ''}

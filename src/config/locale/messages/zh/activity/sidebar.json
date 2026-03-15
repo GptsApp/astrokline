@@ -1,14 +1,14 @@
 {
-  "title": "活动",
+  "title": "Activity",
   "nav": {
     "items": [
       {
-        "title": "AI 任务",
+        "title": "AI Tasks",
         "url": "/activity/ai-tasks",
         "icon": "RiTaskLine"
       },
       {
-        "title": "AI 对话",
+        "title": "AI Chats",
         "url": "/activity/chats",
         "icon": "RiChat2Line"
       }
@@ -17,12 +17,12 @@
   "top_nav": {
     "items": [
       {
-        "title": "活动",
-        "url": "/activity",
-        "icon": "Activity"
+        "title": "Dashboard",
+        "url": "/dashboard",
+        "icon": "LayoutDashboard"
       },
       {
-        "title": "设置",
+        "title": "Settings",
         "url": "/settings",
         "icon": "Settings"
       }

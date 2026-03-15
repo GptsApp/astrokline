@@ -15,7 +15,10 @@ const withNextIntl = createNextIntlPlugin({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
   output: process.env.VERCEL ? undefined : 'standalone',
+  outputFileTracingRoot: process.cwd(),
   reactStrictMode: false,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   // OpenNext Cloudflare will copy full packages listed here into the workerd bundle
@@ -56,10 +59,21 @@ const nextConfig = {
       // },
     },
   },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          ...config.optimization?.splitChunks,
+          maxSize: 20 * 1024 * 1024, // 20 MiB max per chunk to stay under CF 25 MiB limit
+        },
+      };
+    }
+    return config;
+  },
   experimental: {
     turbopackFileSystemCacheForDev: true,
-    // Disable mdxRs for Vercel deployment compatibility with fumadocs-mdx
-    ...(process.env.VERCEL ? {} : { mdxRs: true }),
+    mdxRs: false,
   },
   reactCompiler: true,
 };

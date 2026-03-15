@@ -1,9 +1,14 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-
 import { getThemePage } from '@/core/theme';
 import { DynamicPage } from '@/shared/types/blocks/landing';
+import { getMetadata } from '@/shared/lib/seo';
 
 export const revalidate = 3600;
+
+export const generateMetadata = getMetadata({
+  metadataKey: 'common.metadata', // use the common metadata which is robust for index
+  canonicalUrl: '/',
+});
 
 export default async function LandingPage({
   params,

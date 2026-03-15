@@ -37,6 +37,7 @@ export function SignUp({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const isGoogleAuthEnabled = configs.google_auth_enabled === 'true';
@@ -98,6 +99,11 @@ export function SignUp({
       return;
     }
 
+    if (password.length < 8) {
+      toast.error('Password must be at least 8 characters');
+      return;
+    }
+
     // Set loading immediately to avoid duplicate submits before request hooks fire.
     setLoading(true);
 
@@ -153,6 +159,10 @@ export function SignUp({
       setLoading(false);
     }
   };
+
+  // Password validation state
+  const passwordValid = password.length >= 8;
+  const showPasswordHint = passwordTouched && password.length > 0;
 
   return (
     <Card className="mx-auto w-full md:max-w-md">
@@ -215,8 +225,13 @@ export function SignUp({
                   placeholder={t('password_placeholder')}
                   autoComplete="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => { setPassword(e.target.value); setPasswordTouched(true); }}
                 />
+                {showPasswordHint && (
+                  <p className={`text-xs transition-colors ${passwordValid ? 'text-emerald-500' : 'text-amber-500'}`}>
+                    {passwordValid ? '✓ Password strength OK' : `Password must be at least 8 characters (${password.length}/8)`}
+                  </p>
+                )}
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>

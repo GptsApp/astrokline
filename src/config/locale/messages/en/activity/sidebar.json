@@ -17,9 +17,9 @@
   "top_nav": {
     "items": [
       {
-        "title": "Activity",
-        "url": "/activity",
-        "icon": "Activity"
+        "title": "Dashboard",
+        "url": "/dashboard",
+        "icon": "LayoutDashboard"
       },
       {
         "title": "Settings",

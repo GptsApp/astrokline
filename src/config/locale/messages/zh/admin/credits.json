@@ -1,27 +1,27 @@
 {
   "fields": {
-    "transaction_no": "交易单号",
-    "user": "用户",
-    "amount": "金额",
-    "remaining": "剩余",
-    "type": "类型",
-    "scene": "场景",
-    "description": "描述",
-    "created_at": "创建时间",
-    "expires_at": "过期时间",
-    "metadata": "元数据",
-    "action": "操作"
+    "transaction_no": "Transaction No",
+    "user": "User",
+    "amount": "Amount",
+    "remaining": "Remaining",
+    "type": "Type",
+    "scene": "Scene",
+    "description": "Description",
+    "created_at": "Created At",
+    "expires_at": "Expires At",
+    "metadata": "Metadata",
+    "action": "Action"
   },
   "list": {
-    "title": "积分",
+    "title": "Credits",
     "crumbs": {
-      "admin": "管理后台",
-      "credits": "积分"
+      "admin": "Admin",
+      "credits": "Credits"
     },
     "tabs": {
-      "all": "全部",
-      "grant": "授予",
-      "consume": "消费"
+      "all": "All",
+      "grant": "Grant",
+      "consume": "Consume"
     }
   }
 }

@@ -2,13 +2,23 @@ import { ComponentType, lazy, Suspense } from 'react';
 
 const iconCache: { [key: string]: ComponentType<any> } = {};
 
-// Function to automatically detect icon library
-function detectIconLibrary(name: string): 'ri' | 'lucide' {
-  if (name && name.startsWith('Ri')) {
-    return 'ri';
-  }
+// Map Ri* icon names to lucide-react equivalents (eliminates react-icons 1.9 MB bundle)
+const RI_TO_LUCIDE_MAP: Record<string, string> = {
+  RiFlashlightFill: 'Zap',
+  RiTwitterXFill: 'Twitter',
+  RiDiscordFill: 'MessageCircle',
+  RiTaskLine: 'CheckSquare',
+  RiChat2Line: 'MessageSquare',
+  RiKeyLine: 'Key',
+  RiQuestionLine: 'HelpCircle',
+};
 
-  return 'lucide';
+function resolveLucideName(name: string): string {
+  // If it's a Ri* name, map to lucide equivalent
+  if (name.startsWith('Ri')) {
+    return RI_TO_LUCIDE_MAP[name] || 'HelpCircle';
+  }
+  return name;
 }
 
 export function SmartIcon({
@@ -22,53 +32,28 @@ export function SmartIcon({
   className?: string;
   [key: string]: any;
 }) {
-  const library = detectIconLibrary(name);
-  const cacheKey = `${library}-${name}`;
+  const lucideName = resolveLucideName(name);
+  const cacheKey = `lucide-${lucideName}`;
 
   if (!iconCache[cacheKey]) {
-    if (library === 'ri') {
-      // React Icons (Remix Icons)
-      iconCache[cacheKey] = lazy(async () => {
-        try {
-          const module = await import('react-icons/ri');
-          const IconComponent = module[name as keyof typeof module];
-          if (IconComponent) {
-            return { default: IconComponent as ComponentType<any> };
-          } else {
-            console.warn(
-              `Icon "${name}" not found in react-icons/ri, using fallback`
-            );
-            return { default: module.RiQuestionLine as ComponentType<any> };
-          }
-        } catch (error) {
-          console.error(`Failed to load react-icons/ri:`, error);
-          const fallbackModule = await import('react-icons/ri');
-          return {
-            default: fallbackModule.RiQuestionLine as ComponentType<any>,
-          };
+    iconCache[cacheKey] = lazy(async () => {
+      try {
+        const module = await import('lucide-react');
+        const IconComponent = module[lucideName as keyof typeof module];
+        if (IconComponent) {
+          return { default: IconComponent as ComponentType<any> };
+        } else {
+          console.warn(
+            `Icon "${lucideName}" (from "${name}") not found in lucide-react, using fallback`
+          );
+          return { default: module.HelpCircle as ComponentType<any> };
         }
-      });
-    } else {
-      // Lucide React (default)
-      iconCache[cacheKey] = lazy(async () => {
-        try {
-          const module = await import('lucide-react');
-          const IconComponent = module[name as keyof typeof module];
-          if (IconComponent) {
-            return { default: IconComponent as ComponentType<any> };
-          } else {
-            console.warn(
-              `Icon "${name}" not found in lucide-react, using fallback`
-            );
-            return { default: module.HelpCircle as ComponentType<any> };
-          }
-        } catch (error) {
-          console.error(`Failed to load lucide-react:`, error);
-          const fallbackModule = await import('lucide-react');
-          return { default: fallbackModule.HelpCircle as ComponentType<any> };
-        }
-      });
-    }
+      } catch (error) {
+        console.error(`Failed to load lucide-react:`, error);
+        const fallbackModule = await import('lucide-react');
+        return { default: fallbackModule.HelpCircle as ComponentType<any> };
+      }
+    });
   }
 
   const IconComponent = iconCache[cacheKey];
@@ -79,3 +64,4 @@ export function SmartIcon({
     </Suspense>
   );
 }
+

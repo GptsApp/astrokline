@@ -1,365 +1,345 @@
 {
   "metadata": {
-    "title": "价格",
-    "description": "选择方案，立即开始"
+    "title": "AstroKline Pricing — Unlock Your Cosmic Blueprint",
+    "description": "Choose your astrology chart reading depth. From a free birth chart preview to a comprehensive destiny K-Line blueprint with planetary transit forecasts."
   },
   "page": {
-    "title": "ShipAny 价格表",
+    "title": "AstroKline Pricing",
     "sections": {
       "pricing": {
         "id": "pricing",
-        "title": "价格",
-        "description": "获取 ShipAny 的全部功能，极速交付你的 AI SaaS 创业项目。",
+        "block": "astro-pricing",
+        "title": "Invest in Cosmic Clarity.",
+        "description": "Choose the depth of your astrology chart reading. From a quick glance at your birth chart, to a comprehensive K-Line blueprint of your entire cosmic destiny.",
         "groups": [
           {
             "name": "one-time",
-            "title": "按次付费"
+            "title": "Pay as you go"
           },
           {
             "name": "monthly",
-            "title": "包月",
+            "title": "Monthly",
             "is_featured": true,
-            "label": "立省15%"
+            "label": "save 15%"
           },
           {
             "name": "yearly",
-            "title": "包年"
+            "title": "Annually"
           }
         ],
         "items": [
           {
-            "title": "入门版",
-            "description": "开启你的第一个 SaaS 创业项目。",
-            "features_title": "包含",
+            "title": "Starter",
+            "description": "See how accurate your past K-Line is. Future stays blurred until you upgrade.",
+            "features_title": "Includes",
             "features": [
-              "100 积分，有效期 1 个月",
-              "NextJS 项目模板",
-              "SEO 友好结构",
-              "支持 Stripe 支付",
-              "Supabase 数据存储",
-              "Google Oauth & 一键登录",
-              "多语言（i18n）支持"
+              "100 credits, valid for 1 month",
+              "Past K-Line only (future blurred)",
+              "1-2 basic natal chart reads",
+              "Overall destiny score only",
+              "Basic daily horoscope",
+              "Sun, Moon & Rising analysis",
+              "Email support"
             ],
             "interval": "one-time",
             "amount": 9900,
             "currency": "USD",
             "price": "$99",
             "original_price": "$199",
-            "currencies": [
-              {
-                "currency": "CNY",
-                "amount": 69900,
-                "price": "¥699",
-                "original_price": "¥1399",
-                "payment_providers": ["stripe"]
-              }
-            ],
             "unit": "",
             "is_featured": false,
-            "tip": "一次付费，畅享无限项目部署！",
+            "tip": "Pay once. Validate your birth chart accuracy!",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "starter",
-            "product_name": "ShipAny 模板入门版",
+            "product_name": "AstroKline Starter Plan",
             "credits": 100,
             "valid_days": 30,
             "group": "one-time"
           },
           {
-            "title": "标准版",
-            "description": "快速交付你的 SaaS 创业项目。",
-            "label": "热门",
-            "features_title": "包含入门版功能，此外",
+            "title": "Standard",
+            "description": "Unlock 1-2 years of your future K-Line. See Career & Love trajectories separately.",
+            "label": "Popular",
+            "features_title": "Everything in Starter, plus",
             "features": [
-              "200 积分，有效期 3 个月",
-              "支持 Vercel 或 Cloudflare 部署",
-              "自动生成隐私政策&服务条款",
-              "集成 Google Analytics",
-              "集成 Google Search Console",
-              "Discord 技术社区",
-              "首个上线项目技术支持",
-              "终身免费更新"
+              "200 credits, valid for 3 months",
+              "Past + 1-2 Year Future K-Line unlocked",
+              "Career & Love dual-track K-Lines",
+              "Unlimited natal chart calculations",
+              "Monthly planetary transit alerts",
+              "AI-powered chart interpretation",
+              "Personalized daily horoscope",
+              "Community access"
             ],
             "interval": "one-time",
             "amount": 19900,
             "currency": "USD",
             "price": "$199",
             "original_price": "$299",
-            "currencies": [
-              {
-                "currency": "CNY",
-                "amount": 139900,
-                "price": "¥1399",
-                "original_price": "¥1999",
-                "payment_providers": ["stripe"]
-              }
-            ],
             "unit": "",
             "is_featured": true,
-            "tip": "一次付费，畅享无限项目部署！",
+            "tip": "Pay once. Unlock your cosmic compass!",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "standard",
-            "product_name": "ShipAny 模板标准版",
+            "product_name": "AstroKline Standard Plan",
             "credits": 200,
             "valid_days": 90,
             "group": "one-time"
           },
           {
-            "title": "高级版",
-            "description": "交付任意 AI SaaS 创业项目。",
-            "features_title": "包含标准版功能，此外",
+            "title": "Premium",
+            "description": "Full 10+ year K-Line unlocked. Career, Love, Wealth & Health — all dimensions.",
+            "features_title": "Everything in Standard, plus",
             "features": [
-              "300 积分，有效期 1 年",
-              "内置 AI 业务功能",
-              "用户中心",
-              "积分系统",
-              "为你的 SaaS 售卖 API",
-              "后台管理系统",
-              "优先技术支持"
+              "300 credits, valid for 1 year",
+              "Full 10+ Year K-Line unlocked",
+              "Career / Love / Wealth / Health tracks",
+              "Real-time planetary transit alerts",
+              "Priority AI + deep analysis reports",
+              "HD PDF 'Life Book' export (50+ pages)",
+              "Unlimited AI Astrologer deep chat",
+              "Exclusive transit survival guides",
+              "VIP priority support"
             ],
             "interval": "one-time",
             "amount": 29900,
             "currency": "USD",
             "price": "$299",
             "original_price": "$399",
-            "currencies": [
-              {
-                "currency": "CNY",
-                "amount": 199900,
-                "price": "¥1999",
-                "original_price": "¥2799",
-                "payment_providers": ["stripe", "creem"]
-              }
-            ],
             "unit": "",
             "is_featured": false,
-            "tip": "一次付费，畅享无限项目部署！",
+            "tip": "Pay once. Unlock your full destiny blueprint!",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "premium",
-            "product_name": "ShipAny 模板高级版",
+            "product_name": "AstroKline Premium Plan",
             "credits": 300,
             "valid_days": 365,
             "group": "one-time"
           },
           {
-            "title": "入门版",
-            "description": "开启你的第一个 SaaS 创业项目。",
-            "features_title": "包含",
+            "title": "Starter",
+            "description": "See how accurate your past K-Line is. Future stays blurred until you upgrade.",
+            "features_title": "Includes",
             "features": [
-              "100 积分，有效期 1 个月",
-              "NextJS 项目模板",
-              "SEO 友好结构",
-              "支持 Stripe 支付",
-              "Supabase 数据存储",
-              "Google Oauth & 一键登录",
-              "多语言（i18n）支持"
+              "100 credits, valid for 1 month",
+              "Past K-Line only (future blurred)",
+              "1-2 basic natal chart reads",
+              "Overall destiny score only",
+              "Basic daily horoscope",
+              "Sun, Moon & Rising analysis",
+              "Email support"
             ],
             "interval": "month",
             "amount": 8900,
             "currency": "USD",
             "price": "$89",
             "original_price": "$99",
-            "unit": "/ 月",
+            "unit": "/ month",
             "is_featured": false,
-            "tip": "按月付费，畅享无限项目部署！",
+            "tip": "Monthly access to validate your birth chart!",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "starter-monthly",
-            "product_name": "ShipAny 模板入门版包月",
+            "product_name": "AstroKline Starter Monthly",
             "credits": 100,
             "valid_days": 30,
             "group": "monthly",
-            "plan_name": "入门版"
+            "plan_name": "Starter"
           },
           {
-            "title": "标准版",
-            "description": "快速交付你的 SaaS 创业项目。",
-            "label": "热门",
-            "features_title": "包含入门版功能，此外",
+            "title": "Standard",
+            "description": "Unlock 1-2 years of your future K-Line. See Career & Love trajectories separately.",
+            "label": "Popular",
+            "features_title": "Everything in Starter, plus",
             "features": [
-              "200 积分，有效期 1 个月",
-              "支持 Vercel 或 Cloudflare 部署",
-              "自动生成隐私政策&服务条款",
-              "集成 Google Analytics",
-              "集成 Google Search Console",
-              "Discord 技术社区",
-              "首个上线项目技术支持",
-              "终身免费更新"
+              "200 credits, valid for 1 month",
+              "Past + 1-2 Year Future K-Line unlocked",
+              "Career & Love dual-track K-Lines",
+              "Unlimited natal chart calculations",
+              "Monthly planetary transit alerts",
+              "AI-powered chart interpretation",
+              "Personalized daily horoscope",
+              "Community access"
             ],
             "interval": "month",
             "amount": 16900,
             "currency": "USD",
             "price": "$169",
             "original_price": "$199",
-            "unit": "/ 月",
+            "unit": "/ month",
             "is_featured": true,
-            "tip": "按月付费，极速上线你的 SaaS 项目。",
+            "tip": "Monthly cosmic intelligence at your fingertips.",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "standard-monthly",
-            "product_name": "ShipAny 模板标准版包月",
+            "product_name": "AstroKline Standard Monthly",
             "credits": 200,
             "valid_days": 30,
             "group": "monthly",
-            "plan_name": "标准版"
+            "plan_name": "Standard"
           },
           {
-            "title": "高级版",
-            "description": "交付任意 AI SaaS 创业项目。",
-            "features_title": "包含标准版功能，此外",
+            "title": "Premium",
+            "description": "Full 10+ year K-Line unlocked. Career, Love, Wealth & Health — all dimensions.",
+            "features_title": "Everything in Standard, plus",
             "features": [
-              "300 积分，有效期 1 个月",
-              "内置 AI 业务功能",
-              "用户中心",
-              "积分系统",
-              "为你的 SaaS 售卖 API",
-              "后台管理系统",
-              "优先技术支持"
+              "300 credits, valid for 1 month",
+              "Full 10+ Year K-Line unlocked",
+              "Career / Love / Wealth / Health tracks",
+              "Real-time planetary transit alerts",
+              "Priority AI + deep analysis reports",
+              "HD PDF 'Life Book' export (50+ pages)",
+              "Unlimited AI Astrologer deep chat",
+              "Exclusive transit survival guides",
+              "VIP priority support"
             ],
             "interval": "month",
             "amount": 24900,
             "currency": "USD",
             "price": "$249",
             "original_price": "$299",
-            "unit": "/ 月",
+            "unit": "/ month",
             "is_featured": false,
-            "tip": "按月付费，助你交付任何 AI SaaS 项目。",
+            "tip": "Monthly god-mode access to your full destiny.",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "premium-monthly",
-            "product_name": "ShipAny 模板高级版包月",
+            "product_name": "AstroKline Premium Monthly",
             "credits": 300,
             "valid_days": 30,
             "group": "monthly",
-            "plan_name": "高级版"
+            "plan_name": "Premium"
           },
           {
-            "title": "入门版",
-            "description": "开启你的第一个 SaaS 创业项目。",
-            "features_title": "包含",
+            "title": "Starter",
+            "description": "See how accurate your past K-Line is. Future stays blurred until you upgrade.",
+            "features_title": "Includes",
             "features": [
-              "100 积分，有效期 1 年",
-              "NextJS 项目模板",
-              "SEO 友好结构",
-              "支持 Stripe 支付",
-              "Supabase 数据存储",
-              "Google Oauth & 一键登录",
-              "多语言（i18n）支持"
+              "100 credits, valid for 1 year",
+              "Past K-Line only (future blurred)",
+              "1-2 basic natal chart reads",
+              "Overall destiny score only",
+              "Basic daily horoscope",
+              "Sun, Moon & Rising analysis",
+              "Email support"
             ],
             "interval": "year",
             "amount": 82800,
             "currency": "USD",
             "price": "$69",
             "original_price": "$89",
-            "unit": "/ 月",
+            "unit": "/ month",
             "is_featured": false,
-            "tip": "按年付费，畅享无限项目部署！",
+            "tip": "Best value. Annual birth chart validation!",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "starter-yearly",
-            "product_name": "ShipAny 模板入门版包年",
+            "product_name": "AstroKline Starter Annual",
             "credits": 1200,
             "valid_days": 365,
             "group": "yearly",
-            "plan_name": "入门版"
+            "plan_name": "Starter"
           },
           {
-            "title": "标准版",
-            "description": "快速交付你的 SaaS 创业项目。",
-            "label": "热门",
-            "features_title": "包含入门版功能，此外",
+            "title": "Standard",
+            "description": "Unlock 1-2 years of your future K-Line. See Career & Love trajectories separately.",
+            "label": "Popular",
+            "features_title": "Everything in Starter, plus",
             "features": [
-              "200 积分，有效期 1 年",
-              "支持 Vercel 或 Cloudflare 部署",
-              "自动生成隐私政策&服务条款",
-              "集成 Google Analytics",
-              "集成 Google Search Console",
-              "Discord 技术社区",
-              "首个上线项目技术支持",
-              "终身免费更新"
+              "200 credits, valid for 1 year",
+              "Past + 1-2 Year Future K-Line unlocked",
+              "Career & Love dual-track K-Lines",
+              "Unlimited natal chart calculations",
+              "Monthly planetary transit alerts",
+              "AI-powered chart interpretation",
+              "Personalized daily horoscope",
+              "Community access"
             ],
             "interval": "year",
             "amount": 154800,
             "currency": "USD",
             "price": "$129",
             "original_price": "$169",
-            "unit": "/ 月",
+            "unit": "/ month",
             "is_featured": true,
-            "tip": "按年付费，极速上线你的 SaaS 项目。",
+            "tip": "Annual plan. Maximum astrological insight!",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "standard-yearly",
-            "product_name": "ShipAny 模板标准版包年",
+            "product_name": "AstroKline Standard Annual",
             "credits": 2400,
             "valid_days": 365,
             "group": "yearly",
-            "plan_name": "标准版"
+            "plan_name": "Standard"
           },
           {
-            "title": "高级版",
-            "description": "交付任意 AI SaaS 创业项目。",
-            "features_title": "包含标准版功能，此外",
+            "title": "Premium",
+            "description": "Full 10+ year K-Line unlocked. Career, Love, Wealth & Health — all dimensions.",
+            "features_title": "Everything in Standard, plus",
             "features": [
-              "300 积分，有效期 1 年",
-              "内置 AI 业务功能",
-              "用户中心",
-              "积分系统",
-              "为你的 SaaS 售卖 API",
-              "后台管理系统",
-              "优先技术支持"
+              "300 credits, valid for 1 year",
+              "Full 10+ Year K-Line unlocked",
+              "Career / Love / Wealth / Health tracks",
+              "Real-time planetary transit alerts",
+              "Priority AI + deep analysis reports",
+              "HD PDF 'Life Book' export (50+ pages)",
+              "Unlimited AI Astrologer deep chat",
+              "Exclusive transit survival guides",
+              "VIP priority support"
             ],
             "interval": "year",
             "amount": 226800,
             "currency": "USD",
             "price": "$189",
             "original_price": "$249",
-            "unit": "/ 月",
+            "unit": "/ month",
             "is_featured": false,
-            "tip": "按年付费，助你交付任何 AI SaaS 项目。",
+            "tip": "Annual god-mode. Your complete cosmic destiny.",
             "button": {
-              "title": "获取 ShipAny",
+              "title": "Get AstroKline",
               "url": "/#pricing",
               "icon": "RiFlashlightFill"
             },
             "product_id": "premium-yearly",
-            "product_name": "ShipAny 模板高级版包年",
+            "product_name": "AstroKline Premium Annual",
             "credits": 3600,
             "valid_days": 365,
             "group": "yearly",
-            "plan_name": "高级版"
+            "plan_name": "Premium"
           }
         ]
       }
     }
   },
   "messages": {
-    "current_plan": "当前方案",
-    "processing": "处理中"
+    "current_plan": "Current Plan",
+    "processing": "Processing"
   }
 }

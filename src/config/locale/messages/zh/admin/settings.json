@@ -1,19 +1,20 @@
 {
   "groups": {
-    "email_auth": "邮箱认证",
-    "google_auth": "Google认证",
-    "github_auth": "Github认证",
-    "basic_payment": "基础支付",
+    "email_auth": "Email Auth",
+    "google_auth": "Google Auth",
+    "github_auth": "Github Auth",
+    "basic_payment": "Basic Payment",
     "stripe": "Stripe",
     "creem": "Creem",
     "paypal": "Paypal",
     "resend": "Resend",
+    "sendflare": "Sendflare",
     "r2": "Cloudflare R2",
     "s3": "AWS S3",
     "openrouter": "OpenRouter",
     "replicate": "Replicate",
     "fal": "Fal",
-    "google_analytics": "谷歌分析",
+    "google_analytics": "Google Analytics",
     "clarity": "Clarity",
     "plausible": "Plausible",
     "openpanel": "OpenPanel",
@@ -23,31 +24,31 @@
     "promotekit": "PromoteKit",
     "tawk": "Tawk",
     "crisp": "Crisp",
-    "credit": "积分",
-    "appinfo": "应用信息",
-    "user_role": "用户角色"
+    "credit": "Credit",
+    "appinfo": "App Info",
+    "user_role": "User Role"
   },
   "edit": {
-    "title": "设置",
+    "title": "Settings",
     "crumbs": {
-      "admin": "管理后台",
-      "settings": "设置"
+      "admin": "Admin",
+      "settings": "Settings"
     },
     "tabs": {
-      "general": "通用",
-      "auth": "认证",
-      "payment": "支付",
-      "credit": "积分",
-      "email": "邮箱",
-      "storage": "存储",
+      "general": "General",
+      "auth": "Auth",
+      "payment": "Payment",
+      "credit": "Credit",
+      "email": "Email",
+      "storage": "Storage",
       "ai": "AI",
-      "analytics": "分析",
-      "ads": "广告",
-      "affiliate": "联盟营销",
-      "customer_service": "客服"
+      "analytics": "Analytics",
+      "ads": "Ads",
+      "affiliate": "Affiliate",
+      "customer_service": "Customer Service"
     },
     "buttons": {
-      "submit": "保存"
+      "submit": "Save"
     }
   }
 }

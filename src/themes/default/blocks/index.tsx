@@ -21,7 +21,14 @@ export * from './faq';
 export * from './cta';
 export * from './subscribe';
 export * from './pricing';
+export * from './astro-faq';
+export * from './astro-methodology';
 
+export * from './tool-showcase';
+export * from './tool-features';
+export * from './tool-how-it-works';
+export * from './tool-audience';
+export * from './tool-cross-links';
 export * from './blog';
 export * from './blog-detail';
 export * from './page-detail';

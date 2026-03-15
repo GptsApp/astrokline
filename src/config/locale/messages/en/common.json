@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "ShipAny Template Two",
-    "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups. Ship Fast with a variety of templates and components.",
-    "keywords": "shipany, shipany-boilerplate, shipany-template-two-demo"
+    "title": "AstroKline — AI Astrology Chart & Destiny K-Line Tracker",
+    "description": "AstroKline transforms your birth chart into a stunning K-Line destiny map. AI-powered natal chart reading, planetary transit forecasts, and personalized astrology insights — see your life's peaks and turning points at a glance.",
+    "keywords": "astrokline, astrology chart, birth chart, natal chart, horoscope, destiny chart, K-line, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast, personalized astrology, star chart analysis"
   },
   "sign": {
     "sign_in_title": "Sign In",
@@ -37,7 +37,7 @@
     "verify_email_page_title": "Check your email",
     "verify_email_page_description": "To continue, click the link sent to",
     "verify_email_continue": "Continue",
-    "verify_email_tip": "After verifying, click “Continue”.",
+    "verify_email_tip": "After verifying, click \u201cContinue\u201d.",
     "verify_email_not_verified_yet": "Not verified yet. Please click the link in your email first.",
     "verify_email_account_mismatch": "Signed in as {current}. This page is waiting for {expected}.",
     "resend_verification_countdown": "Resend verification email ({seconds}s)",

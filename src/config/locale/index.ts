@@ -2,10 +2,9 @@ import { envConfigs } from '..';
 
 export const localeNames: any = {
   en: 'English',
-  zh: '中文',
 };
 
-export const locales = ['en', 'zh'];
+export const locales = ['en'];
 
 export const defaultLocale = envConfigs.locale;
 
@@ -22,6 +21,7 @@ export const localeMessagesPaths = [
   'blog',
   'updates',
   'pricing',
+  'dashboard/sidebar',
   'settings/sidebar',
   'settings/profile',
   'settings/security',
@@ -45,6 +45,7 @@ export const localeMessagesPaths = [
   'ai/music',
   'ai/chat',
   'ai/image',
+  'ai/ideal-partner',
   'ai/video',
   'activity/sidebar',
   'activity/ai-tasks',

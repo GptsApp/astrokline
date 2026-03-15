@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
 import { Link, usePathname } from '@/core/i18n/navigation';
+import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
+import { MoonPhaseIndicator } from '@/components/astrokline/ui/moon-phase-indicator';
 import {
   BrandLogo,
   LocaleSelector,
@@ -50,6 +52,7 @@ export function Header({ header }: { header: HeaderType }) {
   const scrollRafRef = useRef<number | null>(null);
   const isLarge = useMedia('(min-width: 64rem)');
   const pathname = usePathname();
+  const { open } = useBirthInfoModal();
 
   useEffect(() => {
     // Listen to scroll event to enable header styles on scroll
@@ -265,6 +268,9 @@ export function Header({ header }: { header: HeaderType }) {
                 {/* Brand Logo */}
                 {header.brand && <BrandLogo brand={header.brand} />}
 
+                {/* Real-time Moon Phase */}
+                <MoonPhaseIndicator />
+
                 {/* Desktop Navigation Menu */}
                 {isLarge && <NavMenu />}
                 {/* Hamburger menu button for mobile navigation */}
@@ -312,8 +318,17 @@ export function Header({ header }: { header: HeaderType }) {
                       </Link>
                     ))}
 
-                  {header.show_theme ? <ThemeToggler /> : null}
-                  {header.show_locale ? <LocaleSelector /> : null}
+                  <button 
+                    onClick={() => {
+                      open(() => {
+                        window.location.href = '/kline';
+                      });
+                    }}
+                    aria-label="Open Birth Info Form"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:bg-primary/90 transition-all hover:scale-105"
+                  >
+                    Get Your Blueprint
+                  </button>
                   <div className="flex-1 md:hidden"></div>
                   {header.show_sign ? (
                     <SignUser userNav={header.user_nav} />

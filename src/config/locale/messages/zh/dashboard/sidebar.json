@@ -1,0 +1,31 @@
+{
+  "title": "控制台",
+  "nav": {
+    "items": [
+      {
+        "title": "概览",
+        "url": "/dashboard",
+        "icon": "Home"
+      },
+      {
+        "title": "命运 K 线",
+        "url": "/dashboard/kline",
+        "icon": "Activity"
+      },
+      {
+        "title": "每日运势",
+        "url": "/dashboard/daily",
+        "icon": "Sun"
+      }
+    ]
+  },
+  "bottom_nav": {
+    "items": [
+      {
+        "title": "设置",
+        "url": "/settings/profile",
+        "icon": "Settings"
+      }
+    ]
+  }
+}

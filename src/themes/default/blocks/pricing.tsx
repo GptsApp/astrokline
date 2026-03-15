@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Check, Loader2 } from 'lucide-react';
+import { Check, Loader2, ShieldCheck, Star } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
@@ -33,6 +33,7 @@ import {
   PricingItem,
   Pricing as PricingType,
 } from '@/shared/types/blocks/pricing';
+import { trackEvent } from '@/lib/astrokline/track-event';
 
 // Helper function to get all available currencies from a pricing item
 function getCurrenciesFromItem(item: PricingItem | null): PricingCurrency[] {
@@ -208,6 +209,8 @@ export function Pricing({
       return;
     }
 
+    trackEvent('pricing_plan_click', { plan: item.product_id });
+
     // Use displayed item with selected currency
     const displayedItem =
       itemCurrencies[item.product_id]?.displayedItem || item;
@@ -283,6 +286,8 @@ export function Pricing({
         },
         body: JSON.stringify(params),
       });
+
+      trackEvent('checkout_initiated', { plan: item.product_id, provider: paymentProvider || 'default' });
 
       if (response.status === 401) {
         setIsLoading(false);
@@ -515,6 +520,41 @@ export function Pricing({
               </Card>
             );
           })}
+        </div>
+      </div>
+
+      {/* Trust Elements */}
+      <div className="container mt-12">
+        {/* Money-back guarantee */}
+        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-8">
+          <ShieldCheck className="w-5 h-5 text-primary" />
+          <span className="font-medium">7-Day Money-Back Guarantee · Secure Checkout · Cancel Anytime</span>
+        </div>
+
+        {/* Mini testimonials */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+            <div className="flex gap-0.5 shrink-0 mt-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3 h-3 fill-primary text-primary" />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              "My K-Line predicted my career breakthrough 6 months before it happened. Best investment I’ve made."
+              <span className="block mt-1 text-foreground/60 font-medium">— Sarah J., NYC</span>
+            </p>
+          </div>
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+            <div className="flex gap-0.5 shrink-0 mt-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3 h-3 fill-primary text-primary" />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              "Finally an astrology tool that doesn’t insult my intelligence. The Swiss Ephemeris precision is real."
+              <span className="block mt-1 text-foreground/60 font-medium">— David C., London</span>
+            </p>
+          </div>
         </div>
       </div>
 

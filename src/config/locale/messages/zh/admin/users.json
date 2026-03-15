@@ -1,77 +1,77 @@
 {
   "fields": {
     "id": "ID",
-    "name": "名称",
-    "avatar": "头像",
-    "email": "邮箱",
-    "email_verified": "邮箱已验证",
-    "remaining_credits": "剩余积分",
-    "created_at": "创建时间",
-    "actions": "操作",
-    "roles": "角色",
+    "name": "Name",
+    "avatar": "Avatar",
+    "email": "Email",
+    "email_verified": "Email Verified",
+    "remaining_credits": "Remaining Credits",
+    "created_at": "Created At",
+    "actions": "Actions",
+    "roles": "Roles",
     "ip": "IP",
-    "locale": "语言",
+    "locale": "Locale",
     "utm_source": "UTM Source"
   },
   "list": {
-    "title": "用户",
+    "title": "Users",
     "crumbs": {
-      "admin": "管理后台",
-      "users": "用户"
+      "admin": "Admin",
+      "users": "Users"
     },
     "buttons": {
-      "add": "添加用户",
-      "edit": "编辑用户",
-      "view": "查看用户",
-      "delete": "删除用户",
-      "edit_roles": "编辑角色",
-      "grant_credits": "授予积分"
+      "add": "Add User",
+      "edit": "Edit User",
+      "view": "View User",
+      "delete": "Delete User",
+      "edit_roles": "Edit Roles",
+      "grant_credits": "Grant Credits"
     },
     "search": {
       "email": {
-        "title": "邮箱",
-        "placeholder": "邮箱"
+        "title": "Email",
+        "placeholder": "Email"
       }
     }
   },
   "edit": {
-    "title": "编辑用户",
+    "title": "Edit User",
     "crumbs": {
-      "admin": "管理后台",
-      "users": "用户",
-      "edit": "编辑用户"
+      "admin": "Admin",
+      "users": "Users",
+      "edit": "Edit"
     },
     "buttons": {
-      "submit": "更新"
+      "submit": "Update"
     }
   },
   "edit_roles": {
-    "title": "编辑角色",
+    "title": "Edit Roles",
     "crumbs": {
-      "admin": "管理后台",
-      "users": "用户",
-      "edit_roles": "编辑角色"
+      "admin": "Admin",
+      "users": "Users",
+      "edit_roles": "Edit Roles"
     },
     "buttons": {
-      "submit": "更新"
+      "submit": "Update"
     }
   },
   "grant_credits": {
-    "title": "授予积分",
+    "title": "Grant Credits",
     "crumbs": {
-      "admin": "管理后台",
-      "users": "用户",
-      "grant_credits": "授予积分"
+      "admin": "Admin",
+      "users": "Users",
+      "grant_credits": "Grant Credits"
     },
     "buttons": {
-      "submit": "授予"
+      "submit": "Grant"
     },
     "fields": {
-      "credits": "积分数量",
-      "valid_days": "积分有效天数",
-      "valid_days_tip": "0 表示永久有效",
-      "description": "积分授予描述",
-      "description_placeholder": "管理员授予积分"
+      "credits": "Credits Amount",
+      "valid_days": "Credits Valid Days",
+      "valid_days_tip": "0 means no expiration",
+      "description": "Credits Grant Description",
+      "description_placeholder": "Admin grant credits"
     }
   }
 }

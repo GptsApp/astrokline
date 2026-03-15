@@ -3,6 +3,25 @@
   "nav": {
     "items": [
       {
+        "title": "Overview",
+        "url": "/dashboard",
+        "icon": "Home"
+      },
+      {
+        "title": "Destiny K-Line",
+        "url": "/dashboard/kline",
+        "icon": "Activity"
+      },
+      {
+        "title": "Daily Forecast",
+        "url": "/dashboard/daily",
+        "icon": "Sun"
+      }
+    ]
+  },
+  "bottom_nav": {
+    "items": [
+      {
         "title": "Profile",
         "url": "/settings/profile",
         "icon": "User"
@@ -26,20 +45,6 @@
         "title": "API Keys",
         "url": "/settings/apikeys",
         "icon": "RiKeyLine"
-      }
-    ]
-  },
-  "top_nav": {
-    "items": [
-      {
-        "title": "Activity",
-        "url": "/activity",
-        "icon": "Activity"
-      },
-      {
-        "title": "Settings",
-        "url": "/settings",
-        "icon": "Settings"
       }
     ]
   }

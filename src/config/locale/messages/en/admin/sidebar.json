@@ -1,10 +1,10 @@
 {
   "header": {
     "brand": {
-      "title": "ShipAny Two",
+      "title": "AstroKline Two",
       "logo": {
-        "src": "/logo.png",
-        "alt": "ShipAny Two"
+        "src": "/images/astrokline-logo.webp",
+        "alt": "AstroKline Two"
       },
       "url": "/admin"
     },

@@ -1,5 +1,6 @@
 import {
   CreemProvider,
+  InfiniProvider,
   PaymentManager,
   PayPalProvider,
   StripeProvider,
@@ -94,6 +95,22 @@ export function getPaymentServiceWithConfigs(configs: Configs) {
             : 'sandbox',
       }),
       defaultProvider === 'paypal'
+    );
+  }
+
+  // add infini provider
+  if (configs.infini_enabled === 'true') {
+    paymentManager.addProvider(
+      new InfiniProvider({
+        keyId: configs.infini_key_id,
+        secretKey: configs.infini_secret_key,
+        webhookSecret: configs.infini_webhook_secret,
+        environment:
+          configs.infini_environment === 'production'
+            ? 'production'
+            : 'sandbox',
+      }),
+      defaultProvider === 'infini'
     );
   }
 

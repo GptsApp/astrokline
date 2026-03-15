@@ -1,10 +1,10 @@
 {
   "header": {
     "brand": {
-      "title": "ShipAny Two",
+      "title": "AstroKline Two",
       "logo": {
-        "src": "/logo.png",
-        "alt": "ShipAny Two"
+        "src": "/images/astrokline-logo.webp",
+        "alt": "AstroKline Two"
       },
       "url": "/admin"
     },
@@ -12,62 +12,62 @@
   },
   "main_navs": [
     {
-      "title": "系统",
+      "title": "System",
       "items": [
         {
-          "title": "用户与权限",
+          "title": "Users & Permissions",
           "icon": "User",
           "is_expand": true,
           "children": [
             {
-              "title": "用户",
+              "title": "Users",
               "url": "/admin/users",
               "icon": "User"
             },
             {
-              "title": "角色",
+              "title": "Roles",
               "url": "/admin/roles",
               "icon": "Users"
             },
             {
-              "title": "权限",
+              "title": "Permissions",
               "url": "/admin/permissions",
               "icon": "ShieldCheck"
             }
           ]
         },
         {
-          "title": "页面与内容",
+          "title": "Pages & Content",
           "icon": "FileText",
           "children": [
             {
-              "title": "分类",
+              "title": "Categories",
               "icon": "Folder",
               "url": "/admin/categories"
             },
             {
-              "title": "文章",
+              "title": "Posts",
               "icon": "FileText",
               "url": "/admin/posts"
             }
           ]
         },
         {
-          "title": "支付与积分",
+          "title": "Payments & Credits",
           "icon": "DollarSign",
           "children": [
             {
-              "title": "支付",
+              "title": "Payments",
               "url": "/admin/payments",
               "icon": "DollarSign"
             },
             {
-              "title": "订阅",
+              "title": "Subscriptions",
               "url": "/admin/subscriptions",
               "icon": "CreditCard"
             },
             {
-              "title": "积分",
+              "title": "Credits",
               "url": "/admin/credits",
               "icon": "Coins"
             }
@@ -76,15 +76,15 @@
       ]
     },
     {
-      "title": "业务",
+      "title": "Business",
       "items": [
         {
-          "title": "AI任务",
+          "title": "AI Tasks",
           "url": "/admin/ai-tasks",
           "icon": "Brain"
         },
         {
-          "title": "AI 对话",
+          "title": "AI Chats",
           "url": "/admin/chats",
           "icon": "MessageCircle"
         }
@@ -94,12 +94,12 @@
   "bottom_nav": {
     "items": [
       {
-        "title": "设置",
+        "title": "Settings",
         "url": "/admin/settings/general",
         "icon": "Settings"
       },
       {
-        "title": "API密钥",
+        "title": "API Keys",
         "url": "/admin/apikeys",
         "icon": "Key"
       }
@@ -109,7 +109,7 @@
     "nav": {
       "items": [
         {
-          "title": "个人资料",
+          "title": "Profile",
           "url": "/settings/profile",
           "icon": "User",
           "target": "_blank"
@@ -124,7 +124,7 @@
     "nav": {
       "items": [
         {
-          "title": "首页",
+          "title": "Home",
           "url": "/",
           "icon": "Home",
           "target": "_blank"
@@ -136,7 +136,7 @@
           "target": "_blank"
         },
         {
-          "title": "推特",
+          "title": "Twitter",
           "url": "https://twitter.com/your-app-name",
           "icon": "RiTwitterXFill",
           "target": "_blank"
@@ -148,7 +148,7 @@
           "target": "_blank"
         },
         {
-          "title": "邮箱",
+          "title": "Email",
           "url": "mailto:support@your-domain.com",
           "icon": "Mail",
           "target": "_blank"

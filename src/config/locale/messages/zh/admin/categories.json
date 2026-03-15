@@ -1,52 +1,52 @@
 {
   "fields": {
-    "slug": "路由",
-    "title": "标题",
-    "description": "描述",
-    "status": "状态",
-    "created_at": "创建时间",
-    "updated_at": "更新时间"
+    "slug": "Slug",
+    "title": "Title",
+    "description": "Description",
+    "status": "Status",
+    "created_at": "Created At",
+    "updated_at": "Updated At"
   },
   "list": {
-    "title": "分类",
+    "title": "Categories",
     "crumbs": {
-      "admin": "管理后台",
-      "categories": "分类"
+      "admin": "Admin",
+      "categories": "Categories"
     },
     "buttons": {
-      "add": "添加分类",
-      "edit": "编辑分类",
-      "view": "查看分类",
-      "delete": "删除分类"
+      "add": "Add Category",
+      "edit": "Edit Category",
+      "view": "View Category",
+      "delete": "Delete Category"
     },
     "tabs": {
-      "all": "全部",
-      "published": "已发布",
-      "pending": "待审核",
-      "draft": "草稿",
-      "archived": "已归档"
+      "all": "All",
+      "published": "Published",
+      "pending": "Pending",
+      "draft": "Draft",
+      "archived": "Archived"
     }
   },
   "add": {
-    "title": "添加分类",
+    "title": "Add Category",
     "crumbs": {
-      "admin": "管理后台",
-      "categories": "分类",
-      "add": "添加分类"
+      "admin": "Admin",
+      "categories": "Categories",
+      "add": "Add Category"
     },
     "buttons": {
-      "submit": "添加分类"
+      "submit": "Add Category"
     }
   },
   "edit": {
-    "title": "编辑分类",
+    "title": "Edit Category",
     "crumbs": {
-      "admin": "管理后台",
-      "categories": "分类",
-      "edit": "编辑分类"
+      "admin": "Admin",
+      "categories": "Categories",
+      "edit": "Edit Category"
     },
     "buttons": {
-      "submit": "编辑分类"
+      "submit": "Edit Category"
     }
   }
 }

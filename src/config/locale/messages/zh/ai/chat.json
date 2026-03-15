@@ -2,10 +2,10 @@
   "sidebar": {
     "header": {
       "brand": {
-        "title": "ShipAny Chat",
+        "title": "AstroKline Chat",
         "logo": {
-          "src": "/logo.png",
-          "alt": "ShipAny Chat"
+          "src": "/images/astrokline-logo.webp",
+          "alt": "AstroKline Chat"
         },
         "url": "/chat"
       },
@@ -13,7 +13,7 @@
     },
     "buttons": [
       {
-        "title": "新建对话",
+        "title": "New Chat",
         "icon": "Plus",
         "url": "/chat",
         "variant": "outline"
@@ -23,7 +23,7 @@
       {
         "items": [
           {
-            "title": "历史对话",
+            "title": "History",
             "icon": "History",
             "url": "/chat/history"
           }
@@ -37,7 +37,7 @@
       "nav": {
         "items": [
           {
-            "title": "个人资料",
+            "title": "Profile",
             "url": "/settings/profile",
             "icon": "User",
             "target": "_blank"
@@ -53,7 +53,7 @@
       "nav": {
         "items": [
           {
-            "title": "首页",
+            "title": "Home",
             "url": "/",
             "icon": "Home",
             "target": "_blank"
@@ -65,7 +65,7 @@
             "target": "_blank"
           },
           {
-            "title": "推特",
+            "title": "Twitter",
             "url": "https://twitter.com/your-app-name",
             "icon": "RiTwitterXFill",
             "target": "_blank"
@@ -77,7 +77,7 @@
             "target": "_blank"
           },
           {
-            "title": "邮箱",
+            "title": "Email",
             "url": "mailto:support@your-domain.com",
             "icon": "Mail",
             "target": "_blank"
@@ -90,32 +90,32 @@
     "variant": "sidebar"
   },
   "library": {
-    "title": "历史对话",
+    "title": "Library",
     "icon": "History",
     "url": "/chat/history",
-    "more": "更多",
+    "more": "More",
     "actions": {
-      "edit_title": "编辑标题",
-      "share": "分享",
-      "delete": "删除"
+      "edit_title": "Edit Title",
+      "share": "Share",
+      "delete": "Delete"
     }
   },
   "generator": {
-    "title": "今天有什么可以帮到你？",
-    "input_placeholder": "你可以问我任何问题"
+    "title": "What can I help you today?",
+    "input_placeholder": "You can ask me anything"
   },
   "history": {
-    "title": "历史对话",
-    "description": "查看你之前的对话。",
-    "empty": "暂无对话记录。",
-    "error": "加载对话列表失败。",
-    "retry": "重试",
-    "signin": "登录后可查看历史对话。",
-    "summary": "正在显示第 {from}-{to} 条，共 {total} 条",
-    "perPage": "每页",
-    "prev": "上一页",
-    "next": "下一页",
-    "open": "进入对话",
-    "untitled": "未命名对话"
+    "title": "Chat history",
+    "description": "Review and revisit your previous conversations.",
+    "empty": "No conversations yet.",
+    "error": "Failed to load conversations.",
+    "retry": "Try again",
+    "signin": "Sign in to view your chat history.",
+    "summary": "Showing {from}-{to} of {total}",
+    "perPage": "Per page",
+    "prev": "Previous",
+    "next": "Next",
+    "open": "Open chat",
+    "untitled": "Untitled conversation"
   }
 }
