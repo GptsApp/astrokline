@@ -42,49 +42,50 @@ Analyze this chart from these frameworks (based on professional astrology method
 8. **Timing**: Based on current outer planet transits to natal positions, when is the next major opportunity window? When to be cautious?
 
 ## Output Format
-Return ONLY valid JSON matching this structure. All values must contain REAL personalized analysis based on this specific chart. Each text field should be 2-4 sentences minimum. Do NOT use filler text or "...".
+Return ONLY valid JSON matching this structure. All values must contain REAL personalized analysis based on this specific chart.
+CRITICAL: Each text description/advice field MUST be a deep, detailed analysis of 200-300 words. Provide rich, immersive reading. Do NOT use filler text or "...".
 
 {
   "radarData": [
-    {"dimension": "Personality", "score": <0-100>, "fullMark": 100, "house": "<relevant house & planet>", "description": "<2-3 sentence analysis>"},
-    {"dimension": "Career", "score": <0-100>, "fullMark": 100, "house": "<10th house info>", "description": "<2-3 sentence analysis>"},
-    {"dimension": "Wealth", "score": <0-100>, "fullMark": 100, "house": "<2nd/8th house info>", "description": "<2-3 sentence analysis>"},
-    {"dimension": "Relationships", "score": <0-100>, "fullMark": 100, "house": "<7th house info>", "description": "<2-3 sentence analysis>"},
-    {"dimension": "Family", "score": <0-100>, "fullMark": 100, "house": "<4th house info>", "description": "<2-3 sentence analysis>"},
-    {"dimension": "Health", "score": <0-100>, "fullMark": 100, "house": "<6th house info>", "description": "<2-3 sentence analysis>"},
-    {"dimension": "Lucky Elements", "score": <0-100>, "fullMark": 100, "house": "<Jupiter/Node info>", "description": "<2-3 sentence analysis>"}
+    {"dimension": "Personality", "score": <0-100>, "fullMark": 100, "house": "<relevant house & planet>", "description": "<deep 200-300 words analysis>"},
+    {"dimension": "Career", "score": <0-100>, "fullMark": 100, "house": "<10th house info>", "description": "<deep 200-300 words analysis>"},
+    {"dimension": "Wealth", "score": <0-100>, "fullMark": 100, "house": "<2nd/8th house info>", "description": "<deep 200-300 words analysis>"},
+    {"dimension": "Relationships", "score": <0-100>, "fullMark": 100, "house": "<7th house info>", "description": "<deep 200-300 words analysis>"},
+    {"dimension": "Family", "score": <0-100>, "fullMark": 100, "house": "<4th house info>", "description": "<deep 200-300 words analysis>"},
+    {"dimension": "Health", "score": <0-100>, "fullMark": 100, "house": "<6th house info>", "description": "<deep 200-300 words analysis>"},
+    {"dimension": "Lucky Elements", "score": <0-100>, "fullMark": 100, "house": "<Jupiter/Node info>", "description": "<deep 200-300 words analysis>"}
   ],
   "destinyReading": {
     "structure": {
       "title": "<chart pattern name, e.g. 'Deep Earth Pattern with Hidden Fire'>",
       "element": "<dominant element analysis>",
-      "description": "<3-4 paragraph deep analysis of the chart's fundamental architecture, referencing specific planet placements>",
-      "coreChallenge": "<the user's core life challenge, traced to specific astrological configurations>"
+      "description": "<deep 200-300 words analysis of the chart's fundamental architecture, referencing specific planet placements>",
+      "coreChallenge": "<the user's core life challenge, traced to specific astrological configurations, 100-150 words>"
     },
     "phase": {
       "title": "<current life phase name>",
-      "whyStuck": "<why the user may feel stuck right now, referencing current transits to their natal chart>",
-      "turningPoint": "<specific date or period when energy shifts, with astrological justification>",
+      "whyStuck": "<why the user may feel stuck right now, referencing current transits, 150-200 words>",
+      "turningPoint": "<specific date or period when energy shifts, with astrological justification, 100 words>",
       "momentum": <1-100>
     },
     "advice": {
-      "career": "<3-4 sentences with specific actionable advice based on 10th house, Sun, MC>",
-      "wealth": "<3-4 sentences including investment timing and strategy based on 2nd/8th house, Jupiter>",
-      "relationships": "<3-4 sentences on relationship dynamics based on 7th house, Venus, Moon>",
-      "health": "<3-4 sentences on health patterns based on 6th house, Mars, stress aspects>",
-      "timing": "<3-4 sentences on the next 90-day critical window with specific dates and actions>"
+      "career": "<200-300 words with specific actionable advice based on 10th house, Sun, MC>",
+      "wealth": "<200-300 words including investment timing and strategy based on 2nd/8th house, Jupiter>",
+      "relationships": "<200-300 words on relationship dynamics based on 7th house, Venus, Moon>",
+      "health": "<200-300 words on health patterns based on 6th house, Mars, stress aspects>",
+      "timing": "<200-300 words on the next 90-day critical window with specific dates and actions>"
     },
     "hiddenTalent": {
       "title": "<name of the hidden talent/gift>",
-      "description": "<3-4 sentences explaining the untapped potential based on North Node, 12th house, retrograde planets>",
-      "activationAdvice": "<specific steps to unlock this talent>"
+      "description": "<200-300 words explaining the untapped potential based on North Node, 12th house, retrograde planets>",
+      "activationAdvice": "<specific steps to unlock this talent, 100-150 words>"
     },
     "coreInsights": [
-      {"tag": "Core Pattern", "text": "<a deeply personal insight that makes the user feel truly understood, 2-3 sentences>", "match": <85-98>},
-      {"tag": "Hidden Gift", "text": "<insight about an ability they have but rarely acknowledge, 2-3 sentences>", "match": <85-98>},
-      {"tag": "Shadow Pattern", "text": "<a difficult truth about a self-sabotaging pattern, 2-3 sentences>", "match": <85-98>},
-      {"tag": "Strategic Edge", "text": "<their unique competitive advantage, 2-3 sentences>", "match": <85-98>},
-      {"tag": "Body Wisdom", "text": "<physical/health pattern insight, 2-3 sentences>", "match": <85-98>}
+      {"tag": "Core Pattern", "text": "<a deeply personal insight that makes the user feel truly understood, ~100 words>", "match": <85-98>},
+      {"tag": "Hidden Gift", "text": "<insight about an ability they have but rarely acknowledge, ~100 words>", "match": <85-98>},
+      {"tag": "Shadow Pattern", "text": "<a difficult truth about a self-sabotaging pattern, ~100 words>", "match": <85-98>},
+      {"tag": "Strategic Edge", "text": "<their unique competitive advantage, ~100 words>", "match": <85-98>},
+      {"tag": "Body Wisdom", "text": "<physical/health pattern insight, ~100 words>", "match": <85-98>}
     ],
     "cosmicQuote": "<a single powerful sentence that captures the user's cosmic essence — should feel like a revelation>"
   },

@@ -65,7 +65,7 @@ export function FAQ() {
           transition={{ delay: 0.1 }}
           className="bg-[#15131A] border border-white/5 rounded-3xl p-6 md:p-10 shadow-2xl"
         >
-          <Accordion className="w-full">
+          <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="border-b border-white/10 last:border-0">
                 <AccordionTrigger className="text-left text-base md:text-lg font-semibold hover:text-primary transition-colors py-6">

@@ -1,6 +1,6 @@
 import { getAuth } from '../src/core/auth';
 import { db } from '../src/core/db';
-import { users } from '../src/config/db/schema'; // adjust if needed
+import { user } from '../src/config/db/schema'; // adjust if needed
 import { Headers } from 'node-fetch'; // or use native Headers
 
 async function main() {

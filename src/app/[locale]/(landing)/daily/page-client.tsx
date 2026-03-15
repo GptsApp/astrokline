@@ -20,7 +20,7 @@ import { TrustBadge } from '@/components/astrokline/ui/trust-badge';
 
 export function DailyClient({ userTier }: { userTier: string }) {
   const currentYearTransits = MOCK_TRANSIT_DETAILS[2024] || [];
-  const { onOpen } = useBirthInfoModal();
+  const { open } = useBirthInfoModal();
   return (
     <div className="min-h-screen bg-background astro-starfield">
       {/* Sample Data Banner */}
@@ -36,7 +36,7 @@ export function DailyClient({ userTier }: { userTier: string }) {
             </p>
           </div>
           <button
-            onClick={() => onOpen('daily')}
+            onClick={() => open()}
             className="shrink-0 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
@@ -110,7 +110,7 @@ export function DailyClient({ userTier }: { userTier: string }) {
                <p className="text-white/70 max-w-md mx-auto mb-8 text-sm md:text-base leading-relaxed">
                  Unlock real-time planetary transits and lunar cycle tracking. See exactly how today's sky activates your unique birth chart.
                </p>
-               <button onClick={() => onOpen('daily')} className="px-8 py-4 rounded-full bg-primary text-black font-bold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center gap-2 hover:scale-105 duration-300">
+               <button onClick={() => open()} className="px-8 py-4 rounded-full bg-primary text-black font-bold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center gap-2 hover:scale-105 duration-300">
                  <Sparkles className="w-5 h-5" />
                  Reveal My Transits Now
                </button>

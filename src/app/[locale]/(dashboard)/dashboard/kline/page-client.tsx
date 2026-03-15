@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { LifeRadar } from '@/components/astrokline/kline/life-radar';
@@ -206,6 +206,8 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
   const [radarData, setRadarData] = useState(MOCK_RADAR_DATA);
   const [next30Days, setNext30Days] = useState(MOCK_NEXT_30_DAYS);
   const [transitDetails, setTransitDetails] = useState(MOCK_TRANSIT_DETAILS);
+  const [dataReady, setDataReady] = useState(false);
+  const animationDoneRef = useRef(false);
 
   // Quota modal
   const [showQuotaModal, setShowQuotaModal] = useState(false);
@@ -287,6 +289,8 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
 
     openBirthModal(async (birthData: BirthData) => {
       setIsCalculating(true);
+      setDataReady(false);
+      animationDoneRef.current = false;
       try {
         const [year, month, day] = birthData.date.split('-').map(Number);
         const timezone = -(new Date().getTimezoneOffset() / 60);
@@ -321,12 +325,23 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       } catch (err) {
         console.error('Query error:', err);
       } finally {
-        setIsCalculating(false);
+        setDataReady(true);
       }
     });
   }, [openBirthModal, fetchKlines]);
 
-  const handleLoaderComplete = useCallback(() => setIsCalculating(false), []);
+  const handleLoaderComplete = useCallback(() => {
+    animationDoneRef.current = true;
+    if (dataReady) {
+      setIsCalculating(false);
+    }
+  }, [dataReady]);
+
+  useEffect(() => {
+    if (dataReady && animationDoneRef.current && isCalculating) {
+      setIsCalculating(false);
+    }
+  }, [dataReady, isCalculating]);
 
   // ── LIST VIEW ──
   if (view === 'list') {
@@ -429,6 +444,8 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
           transitDetails={transitDetails}
           onNodeClick={(year) => setSelectedYear(year)}
           selectedYear={selectedYear}
+          visibleYears={Math.min(isPremium ? 100 : userTier === 'STANDARD' ? 20 : 10, MOCK_KLINE_DATA.length)}
+          totalYears={isPremium ? 100 : userTier === 'STANDARD' ? 20 : 10}
         />
       </section>
 

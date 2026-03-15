@@ -22,7 +22,6 @@ export default async function ActivityLayout({
     <ConsoleLayout
       title={title}
       nav={nav}
-      topNav={topNav}
       className="py-16 md:py-20 bg-background astro-starfield min-h-screen"
     >
       <LocaleDetector />

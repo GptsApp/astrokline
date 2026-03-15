@@ -58,7 +58,7 @@ export function AstroWheel({ data = DUMMY_DATA, width = 600, height = 600, class
         // Mutate global setting object (astrochart requirement)
         Object.assign(astrology, settings);
 
-        const chart = new astrology.Chart(containerId.current, width, height);
+        const chart = new (astrology as any).Chart(containerId.current, width, height);
         
         // This will inject raw SVG into the container
         chart.radix(data); 

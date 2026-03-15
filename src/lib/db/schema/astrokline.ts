@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp, boolean, uuid, integer, jsonb } from "drizzle-orm/pg-core";
-import { users } from "./auth"; // Assuming ShipAny has an existing users table
+import { user as users } from "@/config/db/schema"; // Assuming ShipAny has an existing users table
 
 export const astrologyProfiles = pgTable("astrology_profile", {
   id: uuid("id").primaryKey().defaultRandom(),

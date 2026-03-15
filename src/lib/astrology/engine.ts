@@ -12,7 +12,7 @@
  * Cloudflare Workers, Vercel Edge, Node.js, and browsers.
  */
 
-// @ts-expect-error — vendored JS file without type declarations
+// @ts-ignore
 import * as Astronomy from './astronomy-engine.js';
 
 export interface BirthInput {
