@@ -13,8 +13,6 @@ type Props = {
   transitDetails?: Record<number, TransitEvent[]>;
   onNodeClick?: (year: number) => void;
   selectedYear?: number;
-  visibleYears?: number;
-  totalYears?: number;
 };
 
 // Generate candle data with dramatic high/low swings
@@ -109,13 +107,8 @@ const CandlestickShape = (props: any) => {
   );
 };
 
-export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYear, visibleYears, totalYears }: Props) {
-  const chartData1 = useMemo(() => {
-    if (visibleYears && visibleYears < data.length) {
-      return data.slice(0, visibleYears);
-    }
-    return data;
-  }, [data, visibleYears]);
+export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYear }: Props) {
+  const chartData1 = useMemo(() => data, [data]);
   const candleData = useMemo(() => generateCandleData(chartData1), [chartData1]);
   const avgScore = useMemo(() => Math.round(chartData1.reduce((a, b) => a + b.score, 0) / chartData1.length), [chartData1]);
 
@@ -137,7 +130,7 @@ export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYe
         <div className="mb-3 md:mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-lg md:text-xl font-serif tracking-tight text-white/90">{visibleYears ? `${visibleYears}-Year` : totalYears ? `${totalYears}-Year` : '10-Year'} Destiny Trajectory</h3>
+              <h3 className="text-lg md:text-xl font-serif tracking-tight text-white/90">100-Year Destiny Trajectory</h3>
               <span className="text-[10px] font-mono text-emerald-400/50 flex items-center gap-0.5 border border-emerald-500/20 px-1.5 py-0.5 rounded">
                 <ShieldCheck className="w-3 h-3" /> Swiss Ephemeris
               </span>

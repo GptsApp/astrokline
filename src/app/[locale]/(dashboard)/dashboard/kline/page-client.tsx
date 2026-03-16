@@ -444,8 +444,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
           transitDetails={transitDetails}
           onNodeClick={(year) => setSelectedYear(year)}
           selectedYear={selectedYear}
-          visibleYears={Math.min(isPremium ? 100 : userTier === 'STANDARD' ? 20 : 10, MOCK_KLINE_DATA.length)}
-          totalYears={isPremium ? 100 : userTier === 'STANDARD' ? 20 : 10}
+
         />
       </section>
 

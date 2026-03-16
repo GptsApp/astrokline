@@ -30,11 +30,11 @@
         "items": [
           {
             "title": "Starter",
-            "description": "See how accurate your past K-Line is. Future stays blurred until you upgrade.",
+            "description": "Full 100-Year K-Line chart with 1 free AI personality reading.",
             "features_title": "Includes",
             "features": [
               "100 credits, valid for 1 month",
-              "Past K-Line only (future blurred)",
+              "Full 100-Year K-Line chart",
               "1-2 basic natal chart reads",
               "Overall destiny score only",
               "Basic daily horoscope",
@@ -62,12 +62,12 @@
           },
           {
             "title": "Standard",
-            "description": "Unlock 1-2 years of your future K-Line. See Career & Love trajectories separately.",
+            "description": "Unlimited AI deep readings with Career & Love dimensional analysis.",
             "label": "Popular",
             "features_title": "Everything in Starter, plus",
             "features": [
               "200 credits, valid for 3 months",
-              "Past + 1-2 Year Future K-Line unlocked",
+              "Unlimited AI personality & destiny readings",
               "Career & Love dual-track K-Lines",
               "Unlimited natal chart calculations",
               "Monthly planetary transit alerts",
@@ -96,11 +96,11 @@
           },
           {
             "title": "Premium",
-            "description": "Full 10+ year K-Line unlocked. Career, Love, Wealth & Health — all dimensions.",
+            "description": "Full AI Chat + 30-day forecasts. Career, Love, Wealth & Health — all dimensions.",
             "features_title": "Everything in Standard, plus",
             "features": [
               "300 credits, valid for 1 year",
-              "Full 10+ Year K-Line unlocked",
+              "AI Chat + unlimited deep analysis reports",
               "Career / Love / Wealth / Health tracks",
               "Real-time planetary transit alerts",
               "Priority AI + deep analysis reports",
