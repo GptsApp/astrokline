@@ -13,6 +13,7 @@ type Props = {
   transitDetails?: Record<number, TransitEvent[]>;
   onNodeClick?: (year: number) => void;
   selectedYear?: number;
+  birthYear?: number;
 };
 
 // Generate candle data with dramatic high/low swings
@@ -107,7 +108,7 @@ const CandlestickShape = (props: any) => {
   );
 };
 
-export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYear }: Props) {
+export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYear, birthYear = 1990 }: Props) {
   const chartData1 = useMemo(() => data, [data]);
   const candleData = useMemo(() => generateCandleData(chartData1), [chartData1]);
   const avgScore = useMemo(() => Math.round(chartData1.reduce((a, b) => a + b.score, 0) / chartData1.length), [chartData1]);
@@ -115,9 +116,10 @@ export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYe
   // For the bar chart we need the body as a stacked bar: base + height
   const chartData = useMemo(() => candleData.map(d => ({
     ...d,
+    age: d.year - birthYear,
     bodyBase: Math.min(d.open, d.close),
     bodyHeight: Math.abs(d.close - d.open) || 2,
-  })), [candleData]);
+  })), [candleData, birthYear]);
 
   return (
     <div className="w-full relative">
@@ -154,8 +156,8 @@ export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYe
         </div>
 
         {/* Main Candlestick Chart */}
-        <div className="overflow-x-auto -mx-3 md:mx-0 px-3 md:px-0">
-          <div className="min-w-[600px] h-[300px] md:h-[420px]" style={{ overflow: 'visible' }}>
+        <div className="overflow-hidden -mx-3 md:mx-0 px-3 md:px-0">
+          <div className="h-[300px] md:h-[420px]" style={{ overflow: 'visible' }}>
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
               data={chartData}
@@ -174,10 +176,13 @@ export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYe
               </defs>
 
               <XAxis 
-                dataKey="year" 
+                dataKey="age" 
                 axisLine={{ stroke: 'rgba(255,255,255,0.05)' }}
                 tickLine={false}
-                tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 11, dy: 8, fontFamily: 'monospace' }}
+                tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10, dy: 8, fontFamily: 'monospace' }}
+                interval={'preserveStartEnd'}
+                tickCount={11}
+                tickFormatter={(age: number) => `${age}岁`}
               />
               <YAxis 
                 axisLine={false}
@@ -246,7 +251,7 @@ export function InteractiveChart({ data, transitDetails, onNodeClick, selectedYe
                 content={<CandleTooltip transitDetails={transitDetails} />}
                 cursor={{ stroke: 'rgba(212,175,55,0.2)', strokeWidth: 1, strokeDasharray: '4 4' }}
                 allowEscapeViewBox={{ x: true, y: true }}
-                wrapperStyle={{ zIndex: 1000, pointerEvents: 'none' }}
+                wrapperStyle={{ zIndex: 99999, pointerEvents: 'none' }}
               />
             </ComposedChart>
           </ResponsiveContainer>
@@ -312,7 +317,7 @@ const CandleTooltip = ({ active, payload, transitDetails }: any) => {
   const fortune = getFortuneLevel(d.score, change);
   const ruler = getYearRuler(d.year);
   const currentYear = new Date().getFullYear();
-  const age = d.year - currentYear + 30; // approximate age
+  const age = d.year - (d.year - (d.age ?? 0));
   const reading = getComprehensiveReading(d.score, d.stage, change);
 
   const dims = {

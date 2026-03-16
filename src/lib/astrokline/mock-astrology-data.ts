@@ -84,18 +84,60 @@ export interface DestinyScorePoint {
   explanation?: string; // Rich astrological analysis for hover
 }
 
-export const MOCK_KLINE_DATA: DestinyScorePoint[] = [
-  { year: 2021, score: 65, stage: "Grounding", energyLevel: "Low", isCrossroads: false, isPeak: false, explanation: "Saturn transits the 4th house. A time of inner restructuring and building foundational security. External progress feels slow." },
-  { year: 2022, score: 72, stage: "Emergence", energyLevel: "Medium", isCrossroads: false, isPeak: false, explanation: "Jupiter enters the 5th house. Creative energies awaken. A steady period of self-expression and new romantic potentials." },
-  { year: 2023, score: 61, stage: "Friction", energyLevel: "Low", isCrossroads: true, isPeak: false, explanation: "Uranus squares the Midheaven. Sudden disruptions in career path forcing a necessary pivot. Highly unstable but necessary." },
-  { year: 2024, score: 85, stage: "Expansion", energyLevel: "High", isCrossroads: false, isPeak: false, explanation: "Pluto trine Sun. Deep personal empowerment. Strategic moves made now will have long-lasting, profound returns." },
-  { year: 2025, score: 94, stage: "The Zenith", energyLevel: "Very High", isCrossroads: false, isPeak: true, explanation: "Jupiter conjunct Midheaven. The Golden Era. Unprecedented public visibility, career triumphs, and material manifestation." },
-  { year: 2026, score: 88, stage: "Harvest", energyLevel: "High", isCrossroads: false, isPeak: false, explanation: "Maintaining altitude. Focusing on consolidating wealth and stabilizing the rapid growth from the previous year." },
-  { year: 2027, score: 75, stage: "Restructuring", energyLevel: "Medium", isCrossroads: true, isPeak: false, explanation: "Nodes axis shifts to 1st/7th house. A critical juncture for partnerships and relationship dynamics. Ending outgrown contracts." },
-  { year: 2028, score: 79, stage: "Steady Growth", energyLevel: "Medium", isCrossroads: false, isPeak: false, explanation: "Saturn in harmonious aspect. Slow, disciplined, and highly rewarding progress. Building lasting structures." },
-  { year: 2029, score: 91, stage: "Second Peak", energyLevel: "High", isCrossroads: false, isPeak: true, explanation: "Return of Jupiter. A second wave of massive expansion, particularly in foreign affairs, higher learning, or publishing." },
-  { year: 2030, score: 84, stage: "Integration", energyLevel: "High", isCrossroads: false, isPeak: false, explanation: "Integrating the lessons of the decade. A philosophical and deeply spiritually rewarding period." },
-];
+// Generate 100-year K-Line data with clear bull/bear cycles
+export function generateKlineData(birthYear: number): DestinyScorePoint[] {
+  const data: DestinyScorePoint[] = [];
+  const stages = [
+    "Foundation", "Awakening", "Emergence", "Expansion", "Zenith",
+    "Harvest", "Descent", "Valley", "Friction", "Grounding",
+    "Recalibration", "Ascent", "Growth", "Plateau", "Breakthrough",
+    "Consolidation", "Decline", "Restructuring", "Recovery", "Rebirth"
+  ];
+
+  // Base wave: 4-5 major bull/bear cycles across 100 years using sine compositions
+  for (let age = 0; age <= 100; age++) {
+    const year = birthYear + age;
+    // Primary cycle ~25 years (Saturn return)
+    const wave1 = Math.sin((age / 25) * Math.PI * 2) * 18;
+    // Secondary cycle ~12 years (Jupiter return)
+    const wave2 = Math.sin((age / 12) * Math.PI * 2 + 1.2) * 10;
+    // Third cycle ~7 years (life stages)
+    const wave3 = Math.sin((age / 7) * Math.PI * 2 + 0.5) * 6;
+    // Subtle noise
+    const noise = Math.sin(age * 3.7 + 2.1) * 4 + Math.cos(age * 2.3) * 3;
+
+    // Age-based envelope: childhood uncertainty, prime peak, elder decline
+    let envelope = 0;
+    if (age < 5) envelope = -10 + age * 2;           // shaky start
+    else if (age < 20) envelope = age * 0.3;          // youth rising
+    else if (age < 45) envelope = 6 + (age - 20) * 0.15; // prime boost
+    else if (age < 65) envelope = 6 - (age - 45) * 0.2;  // middle descent
+    else envelope = 2 - (age - 65) * 0.25;                // elder decline
+
+    const raw = 55 + wave1 + wave2 + wave3 + noise + envelope;
+    const score = Math.max(25, Math.min(98, Math.round(raw)));
+
+    const energyLevel: DestinyScorePoint['energyLevel'] =
+      score >= 80 ? "Very High" : score >= 65 ? "High" : score >= 50 ? "Medium" : "Low";
+
+    const stageIdx = age % stages.length;
+    const isPeak = score >= 85 && (age === 0 || (data[age - 1]?.score || 0) < score);
+    const isCrossroads = Math.abs(score - 55) < 5 && age > 5 && age % 7 < 2;
+
+    data.push({
+      year,
+      score,
+      stage: stages[stageIdx],
+      energyLevel,
+      isCrossroads,
+      isPeak,
+      explanation: `Age ${age}: Cosmic forces shape a ${energyLevel.toLowerCase()} energy period. ${isPeak ? 'A major peak in your destiny trajectory.' : isCrossroads ? 'A critical crossroads demanding pivotal decisions.' : 'Navigating the currents of planetary influence.'}`,
+    });
+  }
+  return data;
+}
+
+export const MOCK_KLINE_DATA: DestinyScorePoint[] = generateKlineData(1990);
 
 export interface TransitEvent {
   id: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { BarChart3, Star, Brain, Clock } from 'lucide-react';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
@@ -17,7 +17,6 @@ import { ChartSettingsPanel } from '@/components/astrokline/kline/chart-settings
 import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
 import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
-import { AstrologyChartWheel } from '@/components/astrokline/kline/astrology-chart-wheel';
 import { CrossLinkCard } from '@/components/astrokline/shared/cross-link-card';
 import { Lock, Sparkles, Eye, ChevronDown, ChevronUp, Sun, Moon, ArrowUp } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
@@ -38,7 +37,7 @@ import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import {
   MOCK_USER_PROFILE,
-  MOCK_KLINE_DATA,
+  generateKlineData,
   MOCK_TRANSIT_DETAILS,
   MOCK_DESTINY_READING,
   MOCK_NEXT_30_DAYS,
@@ -212,6 +211,10 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
   const [showChartDetails, setShowChartDetails] = useState(true);
   const { open: openBirthModal } = useBirthInfoModal();
+
+  // Dynamically generate 100-year Kline data based on actual birth year (fallback to 1990)
+  const birthYear = parseInt(profile.birthDate?.split('-')[0] || '1990', 10);
+  const klineData = useMemo(() => generateKlineData(birthYear), [birthYear]);
 
   // Content States for AI Generator
   const [destinyReading, setDestinyReading] = useState(MOCK_DESTINY_READING);
@@ -424,36 +427,32 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
           <ReportSection id="destiny-summary" divider={false} className="pt-6 pb-4">
             <DestinySummaryCard
               profile={profile}
-              klineData={MOCK_KLINE_DATA}
+              klineData={klineData}
             />
+          </ReportSection>
+
+          {/* ── 1.5 NATAL CHART (星盘 + 个人信息 + Natal Coordinates) ── */}
+          <ReportSection id="natal-chart" divider={false} className="pb-2">
+            <ChartHero profile={profile} />
           </ReportSection>
 
           {/* ── 2. K-LINE CHART ── */}
           <ReportSection id="kline-hero" divider={false} className="pt-2 pb-4">
             <InteractiveChart
-              data={MOCK_KLINE_DATA}
+              data={klineData}
               transitDetails={transitDetails}
               onNodeClick={(year) => setSelectedYear(year)}
               selectedYear={selectedYear}
+              birthYear={birthYear}
             />
           </ReportSection>
 
           {/* ── 3. LIFE STAGE SCORES ── */}
           <ReportSection id="life-stages" divider={false} className="pb-4">
             <LifeStageScores
-              data={MOCK_KLINE_DATA}
-              birthYear={parseInt(profile.birthDate?.split('-')[0] || '1990')}
+              data={klineData}
+              birthYear={birthYear}
             />
-          </ReportSection>
-
-          {/* ── 4. NATAL CHART (星盘 + 行星表格) ── */}
-          <ReportSection id="natal-chart">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="rounded-2xl border border-white/5 bg-[#15131A]/30 p-4 flex items-center justify-center">
-                <AstrologyChartWheel planets={profile.planets} rising={profile.rising} size={320} />
-              </div>
-              <ChartHero profile={profile} />
-            </div>
           </ReportSection>
 
           {/* ── 5. AI DEEP READING CTA ── */}
