@@ -1,23 +1,39 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { LifeRadar } from '@/components/astrokline/kline/life-radar';
+import { ReadingSummary } from '@/components/astrokline/kline/reading-summary';
+import { CurrentEnergy } from '@/components/astrokline/kline/current-energy';
+import { Next30Days } from '@/components/astrokline/kline/next-30-days';
 import { ReportFooter } from '@/components/astrokline/kline/report-footer';
+import { UpgradeBanner } from '@/components/astrokline/shared/upgrade-banner';
+import { CosmicPersonalityProfile } from '@/components/astrokline/kline/cosmic-personality-profile';
 import { useBirthInfoModal, getSavedBirthData, saveKlineResult } from '@/components/astrokline/ui/birth-info-context';
+// AstrologyLoader removed — using lightweight spinner instead
+import { ChartSettingsPanel } from '@/components/astrokline/kline/chart-settings-panel';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
-import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
+import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
+// ProgressiveReveal removed — all content directly visible
 import { CrossLinkCard } from '@/components/astrokline/shared/cross-link-card';
+import { Lock, Sparkles, Eye, ChevronDown, ChevronUp, Sun, Moon, ArrowUp } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
+import { trackEvent } from '@/lib/astrokline/track-event';
+import {
+  ToolFeatures,
+  ToolHowItWorks,
+  ToolAudience,
+  ToolCrossLinks
+} from '@/themes/default/blocks';
+import { AstroFaq } from '@/themes/default/blocks/astro-faq';
+import { KLINE_SEO_CONTENT } from '@/lib/astrokline/kline-seo-data';
+import { TrustBadge } from '@/components/astrokline/ui/trust-badge';
+import { TrustEvidenceBar } from '@/components/astrokline/kline/trust-evidence-bar';
 import { AiPersonalityInsight } from '@/components/astrokline/kline/ai-personality-insight';
 import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
 import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
-import { AstrologyChartWheel } from '@/components/astrokline/kline/astrology-chart-wheel';
-import { Sparkles, Sun, Moon, ArrowUp, BarChart3, Star, Brain, Clock } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
-import { trackEvent } from '@/lib/astrokline/track-event';
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
-import type { BirthData } from '@/components/astrokline/ui/birth-info-context';
 import {
   MOCK_USER_PROFILE,
   MOCK_KLINE_DATA,
@@ -26,8 +42,11 @@ import {
   MOCK_NEXT_30_DAYS,
   MOCK_RADAR_DATA,
 } from '@/lib/astrokline/mock-astrology-data';
+import type { BirthData } from '@/components/astrokline/ui/birth-info-context';
 
-// ─── API to Profile mapper ───
+/**
+ * Convert natal chart API response to UserProfile for ChartHero
+ */
 function apiToProfile(apiData: any, birthData: BirthData): UserProfile {
   const planets = apiData.planets || [];
   const findPlanet = (name: string) => {
@@ -37,9 +56,12 @@ function apiToProfile(apiData: any, birthData: BirthData): UserProfile {
     const min = Math.round((p.signDegree - deg) * 60);
     return { sign: p.sign, degree: deg, minute: min, house: p.house || 1 };
   };
+
   const asc = apiData.ascendant || { sign: "Unknown", degree: 0 };
   const ascDeg = Math.floor(asc.degree);
   const ascMin = Math.round((asc.degree - ascDeg) * 60);
+
+  // Calculate element percentages from planet signs
   const elementMap: Record<string, string> = {
     Aries: "fire", Taurus: "earth", Gemini: "air", Cancer: "water",
     Leo: "fire", Virgo: "earth", Libra: "air", Scorpio: "water",
@@ -50,141 +72,160 @@ function apiToProfile(apiData: any, birthData: BirthData): UserProfile {
     Leo: "fixed", Virgo: "mutable", Libra: "cardinal", Scorpio: "fixed",
     Sagittarius: "mutable", Capricorn: "cardinal", Aquarius: "fixed", Pisces: "mutable",
   };
+
   const elCounts = { fire: 0, earth: 0, air: 0, water: 0 };
   const modCounts = { cardinal: 0, fixed: 0, mutable: 0 };
   const total = planets.length || 1;
+
   planets.forEach((p: any) => {
-    const el = elementMap[p.sign]; const mod = modalityMap[p.sign];
-    if (el) (elCounts as any)[el]++; if (mod) (modCounts as any)[mod]++;
+    const el = elementMap[p.sign];
+    const mod = modalityMap[p.sign];
+    if (el) (elCounts as any)[el]++;
+    if (mod) (modCounts as any)[mod]++;
   });
+
+  // Convert to percentages
   const elements = {
-    fire: Math.round((elCounts.fire / total) * 100), earth: Math.round((elCounts.earth / total) * 100),
-    air: Math.round((elCounts.air / total) * 100), water: Math.round((elCounts.water / total) * 100),
+    fire: Math.round((elCounts.fire / total) * 100),
+    earth: Math.round((elCounts.earth / total) * 100),
+    air: Math.round((elCounts.air / total) * 100),
+    water: Math.round((elCounts.water / total) * 100),
   };
   const modalities = {
-    cardinal: Math.round((modCounts.cardinal / total) * 100), fixed: Math.round((modCounts.fixed / total) * 100),
+    cardinal: Math.round((modCounts.cardinal / total) * 100),
+    fixed: Math.round((modCounts.fixed / total) * 100),
     mutable: Math.round((modCounts.mutable / total) * 100),
   };
+
+  // Simple life path number from birthdate
   const dateDigits = birthData.date.replace(/-/g, "").split("").map(Number);
   let lpn = dateDigits.reduce((a, b) => a + b, 0);
-  while (lpn > 9 && lpn !== 11 && lpn !== 22) lpn = String(lpn).split("").map(Number).reduce((a, b) => a + b, 0);
+  while (lpn > 9 && lpn !== 11 && lpn !== 22) {
+    lpn = String(lpn).split("").map(Number).reduce((a, b) => a + b, 0);
+  }
+
   return {
-    name: birthData.name, birthDate: birthData.date,
+    name: birthData.name,
+    birthDate: birthData.date,
     birthTime: birthData.timeSlot === "unknown" ? "12:00" : birthData.timeSlot.split("-")[0],
     birthLocation: birthData.location,
-    sun: findPlanet("Sun"), moon: findPlanet("Moon"),
+    sun: findPlanet("Sun"),
+    moon: findPlanet("Moon"),
     rising: { sign: asc.sign, degree: ascDeg, minute: ascMin, house: 1, name: "Ascendant" },
-    planets: planets.map((p: any) => ({ sign: p.sign, degree: Math.floor(p.signDegree), minute: Math.round((p.signDegree - Math.floor(p.signDegree)) * 60), house: p.house || 1, name: p.name })),
-    elements, modalities, lifePathNumber: lpn, overallAverageScore: 82,
+    planets: planets.map((p: any) => ({
+      sign: p.sign,
+      degree: Math.floor(p.signDegree),
+      minute: Math.round((p.signDegree - Math.floor(p.signDegree)) * 60),
+      house: p.house || 1,
+      name: p.name
+    })),
+    elements,
+    modalities,
+    lifePathNumber: lpn,
+    overallAverageScore: 82,
   };
 }
 
-// ─── Floating Mini Nav ───
-function FloatingNav() {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const items = [
-    { id: 'kline-chart', icon: BarChart3, label: 'K-Line' },
-    { id: 'natal-chart', icon: Star, label: 'Natal' },
-    { id: 'ai-reading', icon: Brain, label: 'AI' },
-    { id: 'daily-link', icon: Clock, label: 'Daily' },
-  ];
-
+// ─── Compact Premium CTA (replaces huge blurred gates) ───
+function CompactPremiumCTA({ label, description, onUnlock }: { label: string; description: string; onUnlock?: () => void }) {
   return (
-    <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-2">
-      {items.map((item) => (
-        <button
-          key={item.id}
-          onClick={() => scrollTo(item.id)}
-          className="group flex items-center gap-2 p-2 rounded-xl bg-[#0A0A0F]/80 border border-white/10 hover:border-primary/30 backdrop-blur-md transition-all hover:scale-105"
-          title={item.label}
-        >
-          <item.icon className="w-4 h-4 text-white/40 group-hover:text-primary transition-colors" />
-          <span className="text-[10px] text-white/0 group-hover:text-white/60 transition-all w-0 group-hover:w-10 overflow-hidden whitespace-nowrap">
-            {item.label}
-          </span>
-        </button>
-      ))}
+    <div className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-all group">
+      <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
+        <Lock className="w-4 h-4 text-primary" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <h4 className="text-sm font-bold text-white/80">{label}</h4>
+        <p className="text-xs text-white/40 mt-0.5">{description}</p>
+      </div>
+      <button
+        onClick={onUnlock}
+        className="shrink-0 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold hover:bg-primary/20 transition-all"
+      >
+        Unlock
+      </button>
     </div>
   );
 }
 
-// ─── Hero Score Card ───
-function HeroScoreCard({ profile, klineData }: { profile: UserProfile; klineData: typeof MOCK_KLINE_DATA }) {
-  const currentYear = new Date().getFullYear();
-  const birthYear = parseInt(profile.birthDate?.split('-')[0] || '1990');
-  const currentAge = currentYear - birthYear;
-  const currentData = klineData[Math.min(currentAge, klineData.length - 1)];
-  const prevData = klineData[Math.max(0, Math.min(currentAge - 1, klineData.length - 1))];
-  const score = currentData?.score || 50;
-  const trend = score - (prevData?.score || 50);
-
-  // Dominant element
-  const el = profile.elements;
-  const dominant = Object.entries(el).sort(([,a], [,b]) => b - a)[0];
-  const elementEmoji: Record<string, string> = { fire: '🔥', earth: '🌍', air: '💨', water: '💧' };
-  const elementName: Record<string, string> = { fire: 'Fire', earth: 'Earth', air: 'Air', water: 'Water' };
+// ─── Expandable Full Premium Lock (used only for landing page) ───
+function PremiumGate({ label, isPremium, isUserData, onEnterBirthInfo, children }: { label: string; isPremium: boolean; isUserData?: boolean; onEnterBirthInfo?: () => void; children: React.ReactNode }) {
+  if (isPremium) {
+    return <>{children}</>;
+  }
 
   return (
-    <div className="relative w-full max-w-sm mx-auto text-center py-6">
-      {/* Glow */}
-      <div className="absolute inset-0 bg-[#D4AF37]/5 rounded-full blur-[60px] pointer-events-none" />
-
-      <div className="relative space-y-3">
-        {/* Score Circle */}
-        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full border-2 border-primary/40 bg-primary/5 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.2)]">
-          <span className="text-2xl sm:text-3xl font-bold text-primary leading-none">{score}</span>
-          <span className="text-[8px] font-mono text-white/40 mt-0.5">{currentYear} Score</span>
-        </div>
-
-        {/* Trend */}
-        <div className={cn(
-          "inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold",
-          trend > 0 ? "bg-emerald-500/10 text-emerald-400" : trend < 0 ? "bg-rose-500/10 text-rose-400" : "bg-white/5 text-white/40"
-        )}>
-          {trend > 0 ? '↗' : trend < 0 ? '↘' : '→'} {trend > 0 ? 'Rising' : trend < 0 ? 'Declining' : 'Stable'}
-        </div>
-
-        {/* Name & Birth Year */}
-        <p className="text-sm text-white/60">{profile.name} · Born {birthYear}</p>
-
-        {/* Dominant Element */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">
-          {elementEmoji[dominant[0]] || '✦'} {elementName[dominant[0]] || 'Unknown'} Dominant
+    <div className="relative overflow-hidden group">
+      <div className="blur-[10px] pointer-events-none select-none opacity-40 transition-all duration-500 group-hover:blur-[12px] group-hover:opacity-30">
+        {children}
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-background/20 backdrop-blur-[1px]">
+        <div className="flex flex-col items-center gap-4 px-8 py-6 rounded-3xl bg-background/90 border border-primary/20 shadow-[0_0_40px_rgba(212,175,55,0.15)] max-w-sm text-center">
+          <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+            <Lock className="w-5 h-5 text-primary" />
+          </div>
+          <h4 className="text-lg font-bold text-foreground">{label}</h4>
+          
+          {!isUserData ? (
+            <>
+              <p className="text-sm text-muted-foreground mb-2">Enter your birth details to unlock your personalized analysis.</p>
+              <button
+                onClick={onEnterBirthInfo}
+                className="w-full py-3 rounded-full bg-primary/10 border border-primary/40 text-primary text-sm font-bold hover:bg-primary/20 hover:scale-105 transition-all shadow-[0_0_20px_rgba(212,175,55,0.1)] flex items-center justify-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" /> Enter Birth Info
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-muted-foreground mb-2">Upgrade to Premium to unlock your full cosmic blueprint.</p>
+              <a
+                href="/#pricing"
+                className="w-full py-3 rounded-full bg-primary/10 border border-primary/40 text-primary text-sm font-bold hover:bg-primary/20 hover:scale-105 transition-all shadow-[0_0_20px_rgba(212,175,55,0.1)] flex items-center justify-center gap-2"
+              >
+                Unlock Analysis
+              </a>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-// ═══════════════════════════════════════════════════════
-//  MAIN COMPONENT
-// ═══════════════════════════════════════════════════════
-
 export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string; isLoggedIn?: boolean }) {
+  // All users get 100-year K-Line free
+  const isPremium = true; // always treat as premium for content visibility
   const [profile, setProfile] = useState<UserProfile>(MOCK_USER_PROFILE);
   const [isUserData, setIsUserData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
+  const [showChartDetails, setShowChartDetails] = useState(true);
   const { open: openBirthModal } = useBirthInfoModal();
 
-  // Content States
-  const [transitDetails, setTransitDetails] = useState(MOCK_TRANSIT_DETAILS);
+  // Content States for AI Generator
+  const [destinyReading, setDestinyReading] = useState(MOCK_DESTINY_READING);
   const [radarData, setRadarData] = useState(MOCK_RADAR_DATA);
+  const [next30Days, setNext30Days] = useState(MOCK_NEXT_30_DAYS);
+  const [transitDetails, setTransitDetails] = useState(MOCK_TRANSIT_DETAILS);
 
   // Registration nudge & quota modal state
   const [showNudge, setShowNudge] = useState(false);
   const [showQuotaModal, setShowQuotaModal] = useState(false);
   const [quotaInfo, setQuotaInfo] = useState({ used: 0, total: 2, isLifetime: true, userTier: 'FREE' });
   const [currentBirthData, setCurrentBirthData] = useState<BirthData | null>(null);
+  const [showPricingInline, setShowPricingInline] = useState(false);
 
-  // ─── Data Calculation ───
+  // Open inline pricing modal
+  const openPricing = () => {
+    trackEvent('pricing_modal_open', { source: 'kline_result' });
+    setShowPricingInline(true);
+  };
+
   const handleCalculateBirthData = useCallback(async (birthData: BirthData) => {
     setIsLoading(true);
 
     try {
+      // Parse date
       const [year, month, day] = birthData.date.split('-').map(Number);
       const timezone = -(new Date().getTimezoneOffset() / 60);
 
@@ -226,25 +267,36 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
             }),
           }).catch(err => console.error('Auto-save error:', err));
         } else {
-          // Cache result + show registration nudge
+          // Cache result to localStorage for later migration after signup
           saveKlineResult({ profile: newProfile, rawApiData: result.data, birthData });
+          // Show registration nudge after 3 seconds for non-logged-in users
           setTimeout(() => setShowNudge(true), 3000);
         }
 
-        // Fetch transit data in background
-        fetch('/api/astrology/daily-transit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ profile: newProfile })
-        }).then(res => res.json()).then(transitRes => {
-          if (transitRes.success && transitRes.data) {
-            const yr = new Date().getFullYear();
-            setTransitDetails({ [yr]: transitRes.data.transits });
-          }
-        }).catch(err => console.error("Transit fetch error:", err));
+        // Fetch AI readings in background
+        Promise.all([
+          fetch('/api/astrology/destiny-reading', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ profile: newProfile })
+          }).then(res => res.json()),
+          fetch('/api/astrology/daily-transit', {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ profile: newProfile })
+          }).then(res => res.json())
+        ]).then(([destinyRes, transitRes]) => {
+           if (destinyRes.success && destinyRes.data) {
+             setRadarData(destinyRes.data.radarData);
+             setDestinyReading(destinyRes.data.destinyReading);
+             setNext30Days(destinyRes.data.next30Days);
+           }
+           if (transitRes.success && transitRes.data) {
+             const year = new Date().getFullYear();
+             setTransitDetails({ [year]: transitRes.data.transits });
+           }
+        }).catch(err => console.error("AI Generation Error: ", err));
 
-        // Scroll to results
-        setTimeout(() => document.getElementById('kline-chart')?.scrollIntoView({ behavior: 'smooth' }), 200);
       } else {
         console.error("API Error:", result.error);
       }
@@ -252,10 +304,11 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
       console.error("Failed to fetch natal chart:", err);
     } finally {
       setIsLoading(false);
+      setTimeout(() => document.getElementById('kline-hero')?.scrollIntoView({ behavior: 'smooth' }), 200);
     }
-  }, [isLoggedIn]);
+  }, []);
 
-  // ─── Load from cache or auto-open modal ───
+  // Load from cache on mount, or auto-open birth modal if no data
   useEffect(() => {
     const saved = getSavedBirthData();
     if (saved) {
@@ -287,25 +340,20 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
       };
       loadCached();
     } else {
+      // No saved data — auto-open birth info modal after brief delay
       const t = setTimeout(() => openBirthModal(handleCalculateBirthData), 500);
       return () => clearTimeout(t);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleGetMyKline = () => {
     openBirthModal(handleCalculateBirthData);
   };
 
-  const birthYear = parseInt(profile.birthDate?.split('-')[0] || '1990');
-
-  // ═══════════════════════════════════════════════════════
-  //  RENDER
-  // ═══════════════════════════════════════════════════════
-
   return (
     <div className="min-h-screen bg-background astro-starfield">
 
-      {/* ── Loading Spinner (lightweight, no theatrical animation) ── */}
+      {/* ===== LIGHTWEIGHT LOADING SPINNER ===== */}
       {isLoading && (
         <div className="fixed inset-0 z-[200] bg-background/90 backdrop-blur-xl flex flex-col items-center justify-center gap-4">
           <div className="w-12 h-12 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
@@ -318,20 +366,17 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
       {/* ============================================================ */}
       {isUserData ? (
         <>
-          {/* ── Floating Mini Nav (desktop only) ── */}
-          <FloatingNav />
-
-          {/* ── Identity Bar (merged into page, below global header) ── */}
+          {/* ── Identity Bar ── */}
           <div className="mt-16 bg-[#0A0A0F]/90 border-b border-white/5">
             <div className="max-w-5xl mx-auto px-4 md:px-6 py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[9px] font-bold uppercase tracking-widest">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Live
                 </span>
                 <span className="text-sm font-medium text-white/80">{profile.name}</span>
-                <span className="text-white/15 hidden sm:inline">|</span>
-                <div className="flex items-center gap-2 text-[11px] font-mono text-white/40">
+                <span className="text-white/15">|</span>
+                <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-white/40">
                   <Sun className="w-3 h-3 text-yellow-500/60" />
                   <span>{profile.sun.sign}</span>
                   <Moon className="w-3 h-3 text-blue-400/60" />
@@ -340,22 +385,47 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
                   <span>{profile.rising.sign}</span>
                 </div>
               </div>
-              <button
-                onClick={handleGetMyKline}
-                className="shrink-0 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-[11px] font-bold hover:bg-primary/20 transition-all"
-              >
-                Recalculate
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowChartDetails(!showChartDetails)}
+                  className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-[11px] font-medium hover:bg-white/10 transition-all flex items-center gap-1"
+                >
+                  Chart Details
+                  {showChartDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                </button>
+                <button
+                  onClick={handleGetMyKline}
+                  className="px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-[11px] font-bold hover:bg-primary/20 transition-all"
+                >
+                  Recalculate
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* ── 1. Hero Score Card ── */}
-          <ReportSection id="hero-score" divider={false} className="pt-6 pb-2">
-            <HeroScoreCard profile={profile} klineData={MOCK_KLINE_DATA} />
+          {/* ── Professional settings ── */}
+          <ChartSettingsPanel />
+
+          {/* ── Expandable Chart Details Panel ── */}
+          <div className={cn(
+            "overflow-hidden transition-all duration-500 bg-[#0A0A0F]/50 border-b border-white/5",
+            showChartDetails ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
+          )}>
+            <div className="max-w-5xl mx-auto">
+              <ChartHero profile={profile} />
+            </div>
+          </div>
+
+          {/* ── DESTINY SUMMARY CARD (首屏核心 WOW 时刻) ── */}
+          <ReportSection id="destiny-summary" divider={false} className="pt-6 pb-4">
+            <DestinySummaryCard
+              profile={profile}
+              klineData={MOCK_KLINE_DATA}
+            />
           </ReportSection>
 
-          {/* ── 2. K-Line Chart (100 years, all free) ── */}
-          <ReportSection id="kline-chart" divider={false} className="pt-2 pb-4">
+          {/* ── K-Line Chart ── */}
+          <ReportSection id="kline-hero" divider={false} className="pt-2 pb-4">
             <InteractiveChart
               data={MOCK_KLINE_DATA}
               transitDetails={transitDetails}
@@ -364,49 +434,26 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
             />
           </ReportSection>
 
-          {/* ── 3. Life Stage Scores + Summary Stats ── */}
-          <ReportSection id="life-stages" divider={false} className="pb-4">
-            <LifeStageScores data={MOCK_KLINE_DATA} birthYear={birthYear} />
+          {/* ── AI Personality Insight ── */}
+          <ReportSection id="ai-insight" divider={false} className="pb-4">
+            <AiPersonalityInsight profile={profile} isPremium={isPremium} />
           </ReportSection>
 
-          {/* ── 4. Natal Chart — Chart Wheel + Planet Table ── */}
-          <ReportSection id="natal-chart" className="pb-4">
-            <div className="space-y-6">
-              {/* Section Header */}
-              <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-primary/60" />
-                <h3 className="text-lg font-serif text-white/90">Natal Chart</h3>
-                <span className="text-[10px] font-mono text-white/30 ml-auto">Swiss Ephemeris DE431 · Tropical · Placidus</span>
-              </div>
-
-              {/* Two column on desktop, stacked on mobile */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Chart Wheel */}
-                <div className="rounded-2xl border border-white/5 bg-[#15131A]/30 p-4 flex items-center justify-center">
-                  <AstrologyChartWheel planets={profile.planets} rising={profile.rising} size={320} />
-                </div>
-                {/* Planet Table */}
-                <ChartHero profile={profile} />
-              </div>
-            </div>
+          {/* ── Deep Analysis (all content visible) ── */}
+          <ReportSection id="personality">
+            <CosmicPersonalityProfile profile={profile} />
           </ReportSection>
+          <ReportSection id="reading"><ReadingSummary reading={destinyReading} /></ReportSection>
+          <ReportSection id="radar"><LifeRadar data={radarData} /></ReportSection>
+          <ReportSection id="energy"><CurrentEnergy /></ReportSection>
+          <ReportSection id="next30"><Next30Days data={next30Days} /></ReportSection>
 
-          {/* ── 5. Life Radar ── */}
-          <ReportSection id="life-radar" className="pb-4">
-            <LifeRadar data={radarData} />
-          </ReportSection>
-
-          {/* ── 6. AI Deep Reading CTA (button-triggered) ── */}
-          <ReportSection id="ai-reading" className="pb-4">
-            <AiPersonalityInsight profile={profile} />
-          </ReportSection>
-
-          {/* ── 7. Daily Cross-Link ── */}
-          <ReportSection id="daily-link" className="pb-4">
+          {/* ── Daily Cross-Link ── */}
+          <ReportSection id="daily-link">
             <CrossLinkCard target="daily" />
           </ReportSection>
 
-          {/* ── 8. Footer ── */}
+          {/* ── Footer ── */}
           <ReportSection id="report-footer" className="pb-12">
             <ReportFooter profile={profile} />
           </ReportSection>
@@ -450,7 +497,60 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
         total={quotaInfo.total}
         isLifetime={quotaInfo.isLifetime}
         userTier={quotaInfo.userTier}
+        onUpgradeClick={openPricing}
       />
+
+      {/* ─── Inline Pricing Modal ─── */}
+      {showPricingInline && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={() => setShowPricingInline(false)}>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          <div
+            className="relative max-w-lg w-full mx-4 rounded-2xl border border-primary/20 bg-background/95 backdrop-blur-xl shadow-[0_0_60px_rgba(212,175,55,0.15)] p-8 max-h-[80vh] overflow-y-auto"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowPricingInline(false)}
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors text-lg"
+            >
+              ✕
+            </button>
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-4">
+                <Sparkles className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold">Unlock Your Full Blueprint</h3>
+              <p className="text-sm text-muted-foreground mt-2">Choose a plan to unlock your complete 10-year destiny K-Line and deep analysis.</p>
+            </div>
+            <div className="space-y-4">
+              {[
+                { name: 'Standard', price: '$199', desc: '1-2 Year Future K-Line + Career & Love tracks', id: 'standard' },
+                { name: 'Premium', price: '$299', desc: 'Full 10+ Year K-Line + All 4 dimensions + AI Deep Chat', id: 'premium', featured: true },
+              ].map(plan => (
+                <a
+                  key={plan.id}
+                  href={`/pricing`}
+                  onClick={() => trackEvent('pricing_plan_click', { plan: plan.id, source: 'inline_modal' })}
+                  className={cn(
+                    "block p-5 rounded-xl border transition-all hover:scale-[1.02]",
+                    plan.featured
+                      ? "border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]"
+                      : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                  )}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-bold text-foreground">{plan.name}</h4>
+                    <span className="text-primary font-bold text-lg">{plan.price}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{plan.desc}</p>
+                </a>
+              ))}
+            </div>
+            <p className="text-center text-xs text-muted-foreground/50 font-mono mt-6">
+              7-day money-back guarantee · Secure checkout
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
