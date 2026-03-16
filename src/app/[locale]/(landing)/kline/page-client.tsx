@@ -334,11 +334,10 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
     }
   }, [dataReady, isLoading, isUserData]);
 
-  // Load from cache on mount (silent — no loading overlay for cache restore)
+  // Load from cache on mount, or auto-open birth modal if no data
   useEffect(() => {
     const saved = getSavedBirthData();
     if (saved) {
-      // Silently load from cache without showing loading overlay
       const loadCached = async () => {
         try {
           const [year, month, day] = saved.date.split('-').map(Number);
@@ -366,6 +365,10 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
         }
       };
       loadCached();
+    } else {
+      // No saved data — auto-open birth info modal after brief delay
+      const t = setTimeout(() => openBirthModal(handleCalculateBirthData), 500);
+      return () => clearTimeout(t);
     }
   }, []);
 
@@ -510,74 +513,25 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
         </>
       ) : (
         /* ============================================================ */
-        /* =================== LANDING PAGE (无数据) =================== */
+        /* ======= EMPTY STATE — Auto-opens BirthInfoModal =========== */
         /* ============================================================ */
-        <>
-          {/* Sample Data Banner */}
-          <div className="sticky top-16 z-50 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20 backdrop-blur-xl">
-            <div className="max-w-5xl mx-auto px-6 py-1.5 flex items-center justify-center gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider">
-                  <Eye className="w-3 h-3" />
-                  Sample Preview
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  This is a demo chart for <span className="text-foreground font-medium">Alexander</span>. Enter your birthday to see <strong className="text-primary">your own</strong> K-Line.
-                </p>
-              </div>
-            </div>
+        <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
+          <div className="w-14 h-14 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
+            <Sparkles className="w-6 h-6 text-primary" />
           </div>
-
-          {/* Landing Hero */}
-          <section id="profile" className="pt-8 max-w-5xl mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center mb-8 text-center pt-8">
-              <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 font-serif">
-                Deep Space <span className="text-[#D4AF37]">Natal Matrix</span>
-              </h1>
-              <p className="max-w-xl text-muted-foreground mb-8 text-base md:text-lg">
-                Decode your precise cosmic geometry. Enter your birth coordinates to let the Swiss Ephemeris engine calculate your archetypal blueprint and 10-year trajectory.
-              </p>
-              <TrustBadge className="justify-center" />
-            </div>
-            <ChartHero profile={profile} />
-            <div className="mt-6">
-              <TrustEvidenceBar birthLocation={profile.birthLocation} calculatedAt={new Date().toISOString()} />
-            </div>
-          </section>
-
-          <section id="kline" className="relative pb-16 max-w-5xl mx-auto px-4 md:px-6">
-            <InteractiveChart
-              data={MOCK_KLINE_DATA}
-              transitDetails={transitDetails}
-              onNodeClick={(year) => setSelectedYear(year)}
-              selectedYear={selectedYear}
-            />
-          </section>
-
-          {/* Deep Analysis Preview for landing — shown freely (demo data, no locks) */}
-          <div className="py-16 space-y-16 bg-background/50 backdrop-blur-sm border-y border-white/5">
-            <section id="radar"><LifeRadar data={radarData} /></section>
-            <section id="reading"><ReadingSummary reading={destinyReading} /></section>
-          </div>
-
-          {/* SEO Landing Page Blocks */}
-          <div className="max-w-5xl mx-auto px-4 md:px-6">
-            <ToolHowItWorks section={KLINE_SEO_CONTENT.howItWorks} className="pt-32" />
-            <ToolFeatures section={KLINE_SEO_CONTENT.features} />
-            <ToolAudience section={KLINE_SEO_CONTENT.audience} />
-          </div>
-
-          <div className="py-24">
-            <UpgradeBanner context="kline" onUpgradeClick={openPricing} />
-          </div>
-
-          <ToolCrossLinks />
-          <AstroFaq section={{ id: "faq" }} className="!pt-0" />
-
-          <section id="report-footer" className="mt-20">
-            <ReportFooter profile={profile} />
-          </section>
-        </>
+          <h1 className="text-2xl md:text-3xl font-serif font-bold text-white/90 mb-3">
+            Your Destiny K-Line
+          </h1>
+          <p className="text-sm text-white/50 mb-8 leading-relaxed max-w-md">
+            Enter your birth details to calculate your personalized cosmic trajectory — peaks, valleys, and turning points mapped across your lifetime.
+          </p>
+          <button
+            onClick={handleGetMyKline}
+            className="px-6 py-3 rounded-xl bg-primary/10 border border-primary/30 text-primary text-sm font-bold hover:bg-primary/20 hover:scale-105 transition-all"
+          >
+            Enter Birth Info
+          </button>
+        </div>
       )}
 
       {/* Registration Nudge for non-logged-in users */}
