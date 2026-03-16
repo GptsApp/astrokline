@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { BarChart3, Star, Brain, Clock } from 'lucide-react';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { LifeRadar } from '@/components/astrokline/kline/life-radar';
@@ -15,7 +16,8 @@ import { useBirthInfoModal, getSavedBirthData, saveKlineResult } from '@/compone
 import { ChartSettingsPanel } from '@/components/astrokline/kline/chart-settings-panel';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
-// ProgressiveReveal removed — all content directly visible
+import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
+import { AstrologyChartWheel } from '@/components/astrokline/kline/astrology-chart-wheel';
 import { CrossLinkCard } from '@/components/astrokline/shared/cross-link-card';
 import { Lock, Sparkles, Eye, ChevronDown, ChevronUp, Sun, Moon, ArrowUp } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
@@ -126,23 +128,32 @@ function apiToProfile(apiData: any, birthData: BirthData): UserProfile {
   };
 }
 
-// ─── Compact Premium CTA (replaces huge blurred gates) ───
-function CompactPremiumCTA({ label, description, onUnlock }: { label: string; description: string; onUnlock?: () => void }) {
+// ─── Floating Mini Nav ───
+function FloatingNav() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  const items = [
+    { id: 'kline-hero', icon: BarChart3, label: 'Chart' },
+    { id: 'natal-chart', icon: Star, label: 'Natal Chart' },
+    { id: 'ai-insight', icon: Brain, label: 'AI Reading' },
+    { id: 'daily-link', icon: Clock, label: 'Transits' },
+  ];
   return (
-    <div className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-all group">
-      <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
-        <Lock className="w-4 h-4 text-primary" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-bold text-white/80">{label}</h4>
-        <p className="text-xs text-white/40 mt-0.5">{description}</p>
-      </div>
-      <button
-        onClick={onUnlock}
-        className="shrink-0 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold hover:bg-primary/20 transition-all"
-      >
-        Unlock
-      </button>
+    <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-2">
+      {items.map((item) => (
+        <button
+          key={item.id}
+          onClick={() => scrollTo(item.id)}
+          className="group flex items-center gap-2 p-2 rounded-xl bg-[#0A0A0F]/80 border border-white/10 hover:border-primary/30 backdrop-blur-md transition-all hover:scale-105"
+          title={item.label}
+        >
+          <item.icon className="w-4 h-4 text-white/40 group-hover:text-primary transition-colors" />
+          <span className="text-[10px] text-white/0 group-hover:text-white/60 transition-all w-0 group-hover:w-14 overflow-hidden whitespace-nowrap">
+            {item.label}
+          </span>
+        </button>
+      ))}
     </div>
   );
 }
@@ -406,17 +417,10 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
           {/* ── Professional settings ── */}
           <ChartSettingsPanel />
 
-          {/* ── Expandable Chart Details Panel ── */}
-          <div className={cn(
-            "overflow-hidden transition-all duration-500 bg-[#0A0A0F]/50 border-b border-white/5",
-            showChartDetails ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
-          )}>
-            <div className="max-w-5xl mx-auto">
-              <ChartHero profile={profile} />
-            </div>
-          </div>
+          {/* ─── FloatingNav (右侧浮动导航) ─── */}
+          <FloatingNav />
 
-          {/* ── DESTINY SUMMARY CARD (首屏核心 WOW 时刻) ── */}
+          {/* ── 1. HERO IDENTITY CARD (全宽分数卡) ── */}
           <ReportSection id="destiny-summary" divider={false} className="pt-6 pb-4">
             <DestinySummaryCard
               profile={profile}
@@ -424,7 +428,7 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
             />
           </ReportSection>
 
-          {/* ── K-Line Chart ── */}
+          {/* ── 2. K-LINE CHART ── */}
           <ReportSection id="kline-hero" divider={false} className="pt-2 pb-4">
             <InteractiveChart
               data={MOCK_KLINE_DATA}
@@ -434,26 +438,44 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
             />
           </ReportSection>
 
-          {/* ── AI Personality Insight ── */}
+          {/* ── 3. LIFE STAGE SCORES ── */}
+          <ReportSection id="life-stages" divider={false} className="pb-4">
+            <LifeStageScores
+              data={MOCK_KLINE_DATA}
+              birthYear={parseInt(profile.birthDate?.split('-')[0] || '1990')}
+            />
+          </ReportSection>
+
+          {/* ── 4. NATAL CHART (星盘 + 行星表格) ── */}
+          <ReportSection id="natal-chart">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="rounded-2xl border border-white/5 bg-[#15131A]/30 p-4 flex items-center justify-center">
+                <AstrologyChartWheel planets={profile.planets} rising={profile.rising} size={320} />
+              </div>
+              <ChartHero profile={profile} />
+            </div>
+          </ReportSection>
+
+          {/* ── 5. AI DEEP READING CTA ── */}
           <ReportSection id="ai-insight" divider={false} className="pb-4">
             <AiPersonalityInsight profile={profile} isPremium={isPremium} />
           </ReportSection>
 
-          {/* ── Deep Analysis (all content visible) ── */}
+          {/* ── 6. COSMIC PERSONALITY + DEEP ANALYSIS ── */}
           <ReportSection id="personality">
             <CosmicPersonalityProfile profile={profile} />
           </ReportSection>
-          <ReportSection id="reading"><ReadingSummary reading={destinyReading} /></ReportSection>
           <ReportSection id="radar"><LifeRadar data={radarData} /></ReportSection>
           <ReportSection id="energy"><CurrentEnergy /></ReportSection>
+          <ReportSection id="reading"><ReadingSummary reading={destinyReading} /></ReportSection>
           <ReportSection id="next30"><Next30Days data={next30Days} /></ReportSection>
 
-          {/* ── Daily Cross-Link ── */}
+          {/* ── 7. Daily Cross-Link ── */}
           <ReportSection id="daily-link">
             <CrossLinkCard target="daily" />
           </ReportSection>
 
-          {/* ── Footer ── */}
+          {/* ── 8. Footer ── */}
           <ReportSection id="report-footer" className="pb-12">
             <ReportFooter profile={profile} />
           </ReportSection>
