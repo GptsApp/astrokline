@@ -31,7 +31,7 @@ export function SharedKlineClient({ kline }: SharedKlineClientProps) {
     <div className="min-h-screen bg-background astro-starfield">
       {/* Shared badge */}
       <div className="sticky top-16 z-50 bg-gradient-to-r from-purple-500/10 via-primary/5 to-purple-500/10 border-b border-purple-500/20 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-5xl mx-auto px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-400 text-[11px] font-bold uppercase tracking-wider">
               <Share2 className="w-3 h-3" /> Shared Chart
@@ -49,7 +49,7 @@ export function SharedKlineClient({ kline }: SharedKlineClientProps) {
         </div>
       </div>
 
-      <section className="pt-8 max-w-7xl mx-auto px-6">
+      <section className="pt-8 max-w-5xl mx-auto px-6">
         <ChartHero profile={profile} />
 
         <div className="mt-6">
@@ -59,7 +59,7 @@ export function SharedKlineClient({ kline }: SharedKlineClientProps) {
 
       {/* Radar preview (blurred for non-premium) */}
       {radarData && (
-        <section className="max-w-7xl mx-auto px-6 pt-12">
+        <section className="max-w-5xl mx-auto px-6 pt-12">
           <LifeRadar data={radarData} />
         </section>
       )}

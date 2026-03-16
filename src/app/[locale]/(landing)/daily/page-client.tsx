@@ -2,6 +2,7 @@
 
 import { DailyTarotCards } from '@/components/astrokline/daily/daily-tarot-cards';
 import { UpgradeBanner } from '@/components/astrokline/shared/upgrade-banner';
+import { CrossLinkCard } from '@/components/astrokline/shared/cross-link-card';
 import { Eye, Sparkles } from 'lucide-react';
 import {
   ToolFeatures,
@@ -25,7 +26,7 @@ export function DailyClient({ userTier }: { userTier: string }) {
     <div className="min-h-screen bg-background astro-starfield">
       {/* Sample Data Banner */}
       <div className="sticky top-16 z-50 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-5xl mx-auto px-4 md:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/20 text-primary text-[11px] font-bold uppercase tracking-wider">
               <Eye className="w-3 h-3" />
@@ -49,7 +50,7 @@ export function DailyClient({ userTier }: { userTier: string }) {
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[70vw] h-[70vw] bg-primary/10 rounded-full blur-[120px] pointer-events-none opacity-40 max-w-[800px] max-h-[800px]" />
 
         {/* HERO SECTION */}
-        <div className="max-w-7xl mx-auto px-6 text-center mb-12 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 md:px-6 text-center mb-12 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
             <Sparkles className="w-4 h-4" />
             <span>Daily Cosmic Forecast</span>
@@ -69,7 +70,7 @@ export function DailyClient({ userTier }: { userTier: string }) {
         </div>
 
         {/* INTERACTIVE TOOL */}
-        <section id="tool" className="relative z-20 max-w-7xl mx-auto px-6 flex flex-col gap-12">
+        <section id="tool" className="relative z-20 max-w-5xl mx-auto px-4 md:px-6 flex flex-col gap-12">
           <DailyTarotCards userTier={userTier as any} />
 
           {/* Locked Advanced Astrological Transits Dashboard for Landing Page */}
@@ -78,7 +79,7 @@ export function DailyClient({ userTier }: { userTier: string }) {
             {/* The blurred content underneath */}
             <div className="opacity-40 blur-[8px] pointer-events-none select-none transition-all duration-1000 p-6 md:p-8">
                <div className="flex items-center gap-3 mb-6">
-                  <h2 className="text-2xl md:text-3xl font-serif text-white/90">Deep Karma & Lunar Cycle</h2>
+                  <h2 className="text-2xl md:text-3xl font-serif text-white/90">Deep Karma &amp; Lunar Cycle</h2>
                   <div className="h-px bg-white/10 flex-1 ml-4 hidden md:block" />
                </div>
                
@@ -108,7 +109,7 @@ export function DailyClient({ userTier }: { userTier: string }) {
                  Master Your Cosmic Timing
                </h3>
                <p className="text-white/70 max-w-md mx-auto mb-8 text-sm md:text-base leading-relaxed">
-                 Unlock real-time planetary transits and lunar cycle tracking. See exactly how today's sky activates your unique birth chart.
+                 Unlock real-time planetary transits and lunar cycle tracking. See exactly how today&apos;s sky activates your unique birth chart.
                </p>
                <button onClick={() => open()} className="px-8 py-4 rounded-full bg-primary text-black font-bold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center gap-2 hover:scale-105 duration-300">
                  <Sparkles className="w-5 h-5" />
@@ -135,14 +136,17 @@ export function DailyClient({ userTier }: { userTier: string }) {
         <UpgradeBanner context="daily" />
       </div>
 
-      {/* 5. Cross-Links to other tools */}
+      {/* 5. KLine Cross-Link */}
+      <div className="max-w-5xl mx-auto px-4 md:px-6 pb-12">
+        <CrossLinkCard target="kline" />
+      </div>
+
+      {/* 6. Cross-Links to other tools */}
       <ToolCrossLinks />
 
-      {/* 6. Tool-Specific FAQ */}
+      {/* 7. Tool-Specific FAQ */}
       <AstroFaq section={{ id: "faq" }} className="!pt-0 pb-24" />
       
     </div>
   );
 }
-
-

@@ -191,19 +191,19 @@ export function AstroHero({
           {/* Glassmorphism Birth Info CTA */}
           <div className="w-full max-w-xl relative mt-4 group">
             {/* Base Glass Backdrop */}
-            <div className="absolute inset-0 bg-background/40 backdrop-blur-2xl rounded-2xl md:rounded-full shadow-2xl z-0" />
+            <div className="absolute inset-0 bg-background/40 backdrop-blur-2xl rounded-xl shadow-2xl z-0" />
 
             {/* Inner Glow */}
-            <div className="absolute inset-0 rounded-2xl md:rounded-full overflow-hidden z-0 pointer-events-none">
+            <div className="absolute inset-0 rounded-xl overflow-hidden z-0 pointer-events-none">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10 opacity-30" />
             </div>
 
             {/* Static Border */}
-            <div className="absolute inset-0 border border-foreground/5 rounded-2xl md:rounded-full pointer-events-none z-10" />
+            <div className="absolute inset-0 border border-foreground/5 rounded-xl pointer-events-none z-10" />
 
             {/* Animated Conic Gradient Border Light */}
             <div
-              className="absolute inset-[-1px] rounded-[17px] md:rounded-[999px] pointer-events-none z-20 overflow-hidden"
+              className="absolute inset-[-1px] rounded-[11px] pointer-events-none z-20 overflow-hidden"
               style={{
                 padding: '1.5px',
                 WebkitMask:
@@ -233,7 +233,7 @@ export function AstroHero({
                     setIsGenerating(true);
                   });
                 }}
-                className="w-full md:w-auto h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-2xl md:rounded-full shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)] hover:scale-105"
+                className="w-full md:w-auto h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-xl shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)] hover:scale-105"
               >
                 Reveal My K-Line
                 <ArrowRight className="ml-2 w-5 h-5 shrink-0" />

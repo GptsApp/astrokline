@@ -13,6 +13,10 @@ import { CosmicPersonalityProfile } from '@/components/astrokline/kline/cosmic-p
 import { useBirthInfoModal, getSavedBirthData, saveKlineResult } from '@/components/astrokline/ui/birth-info-context';
 import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
 import { ChartSettingsPanel } from '@/components/astrokline/kline/chart-settings-panel';
+import { ReportSection } from '@/components/astrokline/kline/report-section';
+import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
+import { ProgressiveReveal } from '@/components/astrokline/kline/progressive-reveal';
+import { CrossLinkCard } from '@/components/astrokline/shared/cross-link-card';
 import { Lock, Sparkles, Eye, ChevronDown, ChevronUp, Sun, Moon, ArrowUp } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { trackEvent } from '@/lib/astrokline/track-event';
@@ -390,7 +394,7 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
         <>
           {/* ── Identity Bar ── */}
           <div className="mt-16 bg-[#0A0A0F]/90 border-b border-white/5">
-            <div className="max-w-7xl mx-auto px-3 md:px-6 py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+            <div className="max-w-5xl mx-auto px-4 md:px-6 py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[9px] font-bold uppercase tracking-widest">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -433,67 +437,76 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
             "overflow-hidden transition-all duration-500 bg-[#0A0A0F]/50 border-b border-white/5",
             showChartDetails ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
           )}>
-            <ChartHero profile={profile} />
+            <div className="max-w-5xl mx-auto">
+              <ChartHero profile={profile} />
+            </div>
           </div>
 
-          {/* ── HERO: K-Line Chart (首屏核心 ≈ 100% viewport) ── */}
-          <section id="kline-hero" className="pt-4 pb-4 md:pb-6 max-w-7xl mx-auto px-2 md:px-6">
-            <div className="relative">
-              <InteractiveChart
-                data={MOCK_KLINE_DATA}
-                transitDetails={transitDetails}
-                onNodeClick={(year) => setSelectedYear(year)}
-                selectedYear={selectedYear}
-                visibleYears={Math.min(klineYears, MOCK_KLINE_DATA.length)}
-                totalYears={klineYears}
-              />
-            </div>
-          </section>
+          {/* ── DESTINY SUMMARY CARD (首屏核心 WOW 时刻) ── */}
+          <ReportSection id="destiny-summary" divider={false} className="pt-6 pb-4">
+            <DestinySummaryCard
+              profile={profile}
+              klineData={MOCK_KLINE_DATA}
+            />
+          </ReportSection>
 
-          {/* ── AI Personality Insight (直接展示) ── */}
-          <section className="max-w-7xl mx-auto px-3 md:px-6 pb-4 md:pb-6">
+          {/* ── K-Line Chart ── */}
+          <ReportSection id="kline-hero" divider={false} className="pt-2 pb-4">
+            <InteractiveChart
+              data={MOCK_KLINE_DATA}
+              transitDetails={transitDetails}
+              onNodeClick={(year) => setSelectedYear(year)}
+              selectedYear={selectedYear}
+              visibleYears={Math.min(klineYears, MOCK_KLINE_DATA.length)}
+              totalYears={klineYears}
+            />
+          </ReportSection>
+
+          {/* ── AI Personality Insight ── */}
+          <ReportSection id="ai-insight" divider={false} className="pb-4">
             <AiPersonalityInsight profile={profile} isPremium={isPremium} />
-          </section>
+          </ReportSection>
 
-                   {/* ── Deep Analysis: ReadingSummary (直接展示) ── */}
-           {isPremium ? (
-             <div className="space-y-10 py-10 border-t border-white/5">
-               <section id="reading" className="max-w-7xl mx-auto"><ReadingSummary reading={destinyReading} /></section>
-               <section id="radar" className="max-w-7xl mx-auto px-4 md:px-6"><LifeRadar data={radarData} /></section>
-               <section id="energy" className="max-w-7xl mx-auto px-4 md:px-6"><CurrentEnergy /></section>
-               <section id="next30" className="max-w-7xl mx-auto px-4 md:px-6"><Next30Days data={next30Days} /></section>
-             </div>
-           ) : (
-             <>
-               {/* ── FREE: Cosmic Personality Profile (5 dimensions) ── */}
-               <section className="max-w-7xl mx-auto px-3 md:px-6 py-8 border-t border-white/5">
-                 <CosmicPersonalityProfile profile={profile} />
-               </section>
+          {/* ── Deep Analysis ── */}
+          {isPremium ? (
+            <>
+              <ReportSection id="reading"><ReadingSummary reading={destinyReading} /></ReportSection>
+              <ReportSection id="radar"><LifeRadar data={radarData} /></ReportSection>
+              <ReportSection id="energy"><CurrentEnergy /></ReportSection>
+              <ReportSection id="next30"><Next30Days data={next30Days} /></ReportSection>
+            </>
+          ) : (
+            <>
+              {/* ── FREE: Cosmic Personality Profile ── */}
+              <ReportSection id="personality">
+                <CosmicPersonalityProfile profile={profile} />
+              </ReportSection>
 
-               {/* ── FREE: Life Radar (visible but simplified) ── */}
-               <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 border-t border-white/5">
-                 <LifeRadar data={radarData} />
-               </section>
+              {/* ── FREE: Life Radar ── */}
+              <ReportSection id="radar">
+                <LifeRadar data={radarData} />
+              </ReportSection>
 
-               {/* ── Premium-only: Deep Analysis locked ── */}
-               <section className="max-w-7xl mx-auto px-3 md:px-6 pb-8 md:pb-10 border-t border-white/5 pt-8">
-                 <div className="space-y-3">
-                   <div className="flex items-center gap-2 mb-4">
-                     <Sparkles className="w-4 h-4 text-primary" />
-                     <h3 className="text-lg font-serif text-white/80">Go Deeper — Premium Only</h3>
-                     <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
-                   </div>
-                   <CompactPremiumCTA label="10-Year Cosmic Diagnosis" description="Deep AI analysis of your chart structure, life phases, turning points, and strategic directives across career, wealth, relationships, health, and timing." onUnlock={openPricing} />
-                   <CompactPremiumCTA label="Current Cosmic Energy" description="Real-time planetary transits affecting your chart right now, with daily impact scores and personalized advice." onUnlock={openPricing} />
-                   <CompactPremiumCTA label="Next 30 Days Forecast" description="Moon-phase aligned dos and don'ts for the coming month based on your natal chart." onUnlock={openPricing} />
-                 </div>
-               </section>
-             </>
-           )}
-          {/* ── Minimal Footer ── */}
-          <section className="mt-4 pb-8">
+              {/* ── PROGRESSIVE REVEAL: Deep Analysis (replaces hard lock) ── */}
+              <ReportSection id="deep-analysis">
+                <ProgressiveReveal revealPercent={50} onUpgrade={openPricing}>
+                  <ReadingSummary reading={destinyReading} />
+                  <div className="mt-8"><CurrentEnergy /></div>
+                  <div className="mt-8"><Next30Days data={next30Days} /></div>
+                </ProgressiveReveal>
+              </ReportSection>
+            </>
+          )}
+
+          {/* ── Daily Cross-Link ── */}
+          <ReportSection id="daily-link">
+            <CrossLinkCard target="daily" />
+          </ReportSection>
+
+          {/* ── Footer ── */}
+          <ReportSection id="report-footer" className="pb-12">
             <ReportFooter profile={profile} />
-          </section>
+          </ReportSection>
         </>
       ) : (
         /* ============================================================ */
@@ -502,28 +515,21 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
         <>
           {/* Sample Data Banner */}
           <div className="sticky top-16 z-50 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20 backdrop-blur-xl">
-            <div className="max-w-7xl mx-auto px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="max-w-5xl mx-auto px-6 py-1.5 flex items-center justify-center gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/20 text-primary text-[11px] font-bold uppercase tracking-wider">
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider">
                   <Eye className="w-3 h-3" />
                   Sample Preview
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   This is a demo chart for <span className="text-foreground font-medium">Alexander</span>. Enter your birthday to see <strong className="text-primary">your own</strong> K-Line.
                 </p>
               </div>
-              <button
-                onClick={handleGetMyKline}
-                className="shrink-0 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] flex items-center gap-2"
-              >
-                <Sparkles className="w-4 h-4" />
-                Get My Own K-Line
-              </button>
             </div>
           </div>
 
           {/* Landing Hero */}
-          <section id="profile" className="pt-8 max-w-7xl mx-auto px-6">
+          <section id="profile" className="pt-8 max-w-5xl mx-auto px-4 md:px-6">
             <div className="flex flex-col items-center justify-center mb-8 text-center pt-8">
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 font-serif">
                 Deep Space <span className="text-[#D4AF37]">Natal Matrix</span>
@@ -539,7 +545,7 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
             </div>
           </section>
 
-          <section id="kline" className="relative pb-16 max-w-7xl mx-auto px-6">
+          <section id="kline" className="relative pb-16 max-w-5xl mx-auto px-4 md:px-6">
             <InteractiveChart
               data={MOCK_KLINE_DATA}
               transitDetails={transitDetails}
@@ -555,7 +561,7 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
           </div>
 
           {/* SEO Landing Page Blocks */}
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-5xl mx-auto px-4 md:px-6">
             <ToolHowItWorks section={KLINE_SEO_CONTENT.howItWorks} className="pt-32" />
             <ToolFeatures section={KLINE_SEO_CONTENT.features} />
             <ToolAudience section={KLINE_SEO_CONTENT.audience} />

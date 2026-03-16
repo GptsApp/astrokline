@@ -15,22 +15,12 @@
           "url": "/#features"
         },
         {
-          "title": "Tools",
-          "url": "#",
-          "children": [
-            {
-              "title": "Destiny K-Line",
-              "url": "/kline",
-              "icon": "LineChart",
-              "description": "Your natal chart visualized as a real-time K-Line destiny map"
-            },
-            {
-              "title": "Daily Horoscope",
-              "url": "/daily",
-              "icon": "Sparkles",
-              "description": "AI-powered daily cosmic guidance based on your birth chart"
-            }
-          ]
+          "title": "Destiny K-Line",
+          "url": "/kline"
+        },
+        {
+          "title": "Daily Horoscope",
+          "url": "/daily"
         },
         {
           "title": "Pricing",
