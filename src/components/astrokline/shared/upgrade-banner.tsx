@@ -1,9 +1,10 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Lock, Sparkles, TrendingUp, Shield } from 'lucide-react';
-import { Button } from '@/shared/components/ui/button';
 import { trackEvent } from '@/lib/astrokline/track-event';
+import { motion } from 'framer-motion';
+import { Lock, Shield, Sparkles, TrendingUp } from 'lucide-react';
+
+import { Button } from '@/shared/components/ui/button';
 
 interface UpgradeBannerProps {
   context?: 'kline' | 'daily' | 'ideal-partner' | 'general';
@@ -13,20 +14,24 @@ interface UpgradeBannerProps {
 
 const contextMessages: Record<string, { headline: string; subtext: string }> = {
   kline: {
-    headline: 'Unlock Your Full 10+ Year Destiny K-Line',
-    subtext: 'See Career, Love, Wealth & Health trajectories — and know exactly when your next cosmic peak arrives.',
+    headline: 'Unlock Your Full 10+ Year K-Line',
+    subtext:
+      'See longer-range timing across career, love, money, and health.',
   },
   daily: {
     headline: 'Unlock All 4 Life Dimensions',
-    subtext: 'Upgrade to see Wealth & Health forecasts alongside Love & Career — powered by real-time planetary transits.',
+    subtext:
+      'Upgrade to see Wealth & Health forecasts alongside Love & Career — powered by real-time planetary transits.',
   },
   'ideal-partner': {
     headline: 'Generate Unlimited Partner Readings',
-    subtext: 'Upgrade for more credits and deeper AI-powered compatibility analysis based on your natal chart.',
+    subtext:
+      'Upgrade for more credits and deeper AI-powered compatibility analysis based on your natal chart.',
   },
   general: {
-    headline: 'Unlock Your Complete Cosmic Blueprint',
-    subtext: 'Upgrade to access the full power of AstroKline — from K-Line projections to AI astrologer deep chat.',
+    headline: 'Unlock the full report',
+    subtext:
+      'Upgrade for deeper K-Line projections and the full set of AI reading modules.',
   },
 };
 
@@ -51,7 +56,11 @@ const tiers = [
   },
 ];
 
-export function UpgradeBanner({ context = 'general', className, onUpgradeClick }: UpgradeBannerProps) {
+export function UpgradeBanner({
+  context = 'general',
+  className,
+  onUpgradeClick,
+}: UpgradeBannerProps) {
   const msg = contextMessages[context] || contextMessages.general;
 
   return (
@@ -60,31 +69,40 @@ export function UpgradeBanner({ context = 'general', className, onUpgradeClick }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className={`py-16 px-6 ${className || ''}`}
+      className={`px-6 py-16 ${className || ''}`}
     >
-      <div className="max-w-4xl mx-auto">
-        <div className="relative rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-primary/5 p-8 md:p-12 overflow-hidden">
+      <div className="mx-auto max-w-4xl">
+        <div className="border-primary/20 from-primary/5 via-background to-primary/5 relative overflow-hidden rounded-2xl border bg-gradient-to-br p-8 md:p-12">
           {/* Glow effect */}
-          <div className="absolute -top-20 -right-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="bg-primary/10 pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full blur-3xl" />
+          <div className="bg-primary/5 pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full blur-3xl" />
 
           <div className="relative z-10 text-center">
             {/* Lock icon */}
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <Lock className="w-5 h-5 text-primary" />
+            <div className="bg-primary/10 border-primary/20 mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full border">
+              <Lock className="text-primary h-5 w-5" />
             </div>
 
             {/* Headline */}
-            <h3 className="text-2xl md:text-3xl font-bold mb-3">{msg.headline}</h3>
-            <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto mb-8">{msg.subtext}</p>
+            <h3 className="mb-3 text-2xl font-bold md:text-3xl">
+              {msg.headline}
+            </h3>
+            <p className="text-muted-foreground mx-auto mb-8 max-w-xl text-sm md:text-base">
+              {msg.subtext}
+            </p>
 
             {/* Tier comparison row */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-8">
+            <div className="mb-8 flex flex-wrap justify-center gap-4 md:gap-8">
               {tiers.map((tier) => (
-                <div key={tier.name} className="flex items-center gap-2 text-sm">
-                  <tier.icon className={`w-4 h-4 ${tier.color}`} />
+                <div
+                  key={tier.name}
+                  className="flex items-center gap-2 text-sm"
+                >
+                  <tier.icon className={`h-4 w-4 ${tier.color}`} />
                   <span className="font-medium">{tier.name}</span>
-                  <span className={`text-xs ${tier.color} font-mono`}>{tier.highlight}</span>
+                  <span className={`text-xs ${tier.color} font-mono`}>
+                    {tier.highlight}
+                  </span>
                 </div>
               ))}
             </div>
@@ -92,27 +110,32 @@ export function UpgradeBanner({ context = 'general', className, onUpgradeClick }
             {/* CTA */}
             {onUpgradeClick ? (
               <Button
+                type="button"
                 size="lg"
                 onClick={() => {
-                  trackEvent('premium_cta_click', { source: 'upgrade_banner', context });
+                  trackEvent('premium_cta_click', {
+                    source: 'upgrade_banner',
+                    context,
+                  });
                   onUpgradeClick();
                 }}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-xl shadow-[0_0_20px_-5px_var(--primary)] hover:shadow-[0_0_30px_-5px_var(--primary)] transition-all"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
               >
                 Compare Plans →
               </Button>
             ) : (
-              <a href="/#pricing">
+              <a href="/pricing">
                 <Button
+                  type="button"
                   size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-xl shadow-[0_0_20px_-5px_var(--primary)] hover:shadow-[0_0_30px_-5px_var(--primary)] transition-all"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
                 >
                   Compare Plans →
                 </Button>
               </a>
             )}
 
-            <p className="text-xs text-muted-foreground/50 font-mono mt-4">
+            <p className="text-muted-foreground/50 mt-4 font-mono text-xs">
               Free tier included · No credit card required · Upgrade anytime
             </p>
           </div>

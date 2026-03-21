@@ -15,6 +15,37 @@ import { cn } from '@/shared/lib/utils';
 import { Button as ButtonType } from '@/shared/types/blocks/common';
 import { PricingItem } from '@/shared/types/blocks/pricing';
 
+export function getAvailablePaymentProviders(
+  configs: Record<string, string>,
+  pricingItem: PricingItem | null
+) {
+  const allowedProviders = pricingItem?.payment_providers;
+
+  const isProviderAllowed = (providerName: string): boolean => {
+    if (!allowedProviders || allowedProviders.length === 0) {
+      return true;
+    }
+
+    return allowedProviders.includes(providerName);
+  };
+
+  const providers: string[] = [];
+
+  if (configs.stripe_enabled === 'true' && isProviderAllowed('stripe')) {
+    providers.push('stripe');
+  }
+
+  if (configs.creem_enabled === 'true' && isProviderAllowed('creem')) {
+    providers.push('creem');
+  }
+
+  if (configs.paypal_enabled === 'true' && isProviderAllowed('paypal')) {
+    providers.push('paypal');
+  }
+
+  return providers;
+}
+
 export function PaymentProviders({
   configs,
   callbackUrl,
@@ -33,6 +64,7 @@ export function PaymentProviders({
   className?: string;
 }) {
   const t = useTranslations('common.payment');
+  const locale = useLocale();
   const router = useRouter();
 
   const { setIsShowPaymentModal } = useAppContext();
@@ -40,7 +72,6 @@ export function PaymentProviders({
   const [paymentProvider, setPaymentProvider] = useState<string | null>(null);
 
   if (callbackUrl) {
-    const locale = useLocale();
     if (
       locale !== defaultLocale &&
       callbackUrl.startsWith('/') &&
@@ -63,23 +94,10 @@ export function PaymentProviders({
     onCheckout(pricingItem, provider);
   };
 
-  // Get allowed payment providers from pricing item
-  // If payment_providers is set, use it; otherwise show all enabled providers
-  const allowedProviders = pricingItem?.payment_providers;
-  
-  // Helper function to check if a provider is allowed
-  const isProviderAllowed = (providerName: string): boolean => {
-    // If no payment_providers specified, allow all
-    if (!allowedProviders || allowedProviders.length === 0) {
-      return true;
-    }
-    // Check if provider is in the allowed list
-    return allowedProviders.includes(providerName);
-  };
-
   const providers: ButtonType[] = [];
+  const availableProviders = getAvailablePaymentProviders(configs, pricingItem);
 
-  if (configs.stripe_enabled === 'true' && isProviderAllowed('stripe')) {
+  if (availableProviders.includes('stripe')) {
     providers.push({
       name: 'stripe',
       title: 'Stripe',
@@ -88,7 +106,7 @@ export function PaymentProviders({
     });
   }
 
-  if (configs.creem_enabled === 'true' && isProviderAllowed('creem')) {
+  if (availableProviders.includes('creem')) {
     providers.push({
       name: 'creem',
       title: 'Creem',
@@ -97,21 +115,12 @@ export function PaymentProviders({
     });
   }
 
-  if (configs.paypal_enabled === 'true' && isProviderAllowed('paypal')) {
+  if (availableProviders.includes('paypal')) {
     providers.push({
       name: 'paypal',
       title: 'Paypal',
       icon_url: '/imgs/icons/paypal.svg',
       onClick: () => handlePayment({ provider: 'paypal' }),
-    });
-  }
-
-  if (configs.infini_enabled === 'true' && isProviderAllowed('infini')) {
-    providers.push({
-      name: 'infini',
-      title: 'Infini (Crypto)',
-      icon_url: '/imgs/icons/infini.png',
-      onClick: () => handlePayment({ provider: 'infini' }),
     });
   }
 

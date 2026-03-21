@@ -1,17 +1,35 @@
 import { NextResponse } from 'next/server';
 import { callGeminiJson } from '@/lib/astrokline/gemini';
 
+import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
+
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
+  const limited = enforceMinIntervalRateLimit(req, {
+    intervalMs: 10000,
+    keyPrefix: 'destiny-reading',
+  });
+  if (limited) {
+    return limited;
+  }
+
   try {
     const { profile } = await req.json();
 
     if (!profile || !profile.name || !profile.planets) {
-      return NextResponse.json({ error: "Missing user profile data" }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing user profile data' },
+        { status: 400 }
+      );
     }
 
-    const planetList = profile.planets?.map((p: any) => `- ${p.name}: ${p.sign} ${p.degree}° (House ${p.house})`).join('\n') || '';
+    const planetList =
+      profile.planets
+        ?.map(
+          (p: any) => `- ${p.name}: ${p.sign} ${p.degree}° (House ${p.house})`
+        )
+        .join('\n') || '';
 
     const prompt = `You are an elite professional astrologer with 20 years of experience, analyzing a real natal chart computed by Swiss Ephemeris DE431.
 Your analysis must be shockingly accurate — the user should feel "this really understands me."
@@ -103,7 +121,10 @@ Output the JSON only, no explanation, no markdown code block.`;
 
     return NextResponse.json({ success: true, data: parsed });
   } catch (error: any) {
-    console.error("Destiny Reading Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to generate destiny reading" }, { status: 500 });
+    console.error('Destiny Reading Error:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to generate destiny reading' },
+      { status: 500 }
+    );
   }
 }

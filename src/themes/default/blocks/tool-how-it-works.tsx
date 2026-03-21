@@ -1,9 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Section } from '@/shared/types/blocks/landing';
-import { cn } from '@/shared/lib/utils';
+
 import { SmartIcon } from '@/shared/blocks/common';
+import { cn } from '@/shared/lib/utils';
+import { Section } from '@/shared/types/blocks/landing';
 
 export function ToolHowItWorks({
   section,
@@ -13,35 +14,44 @@ export function ToolHowItWorks({
   className?: string;
 }) {
   const steps = section.steps || [
-    { title: "Step 1", description: "Default description", icon: "Settings" },
-    { title: "Step 2", description: "Default description", icon: "Sparkles" },
-    { title: "Step 3", description: "Default description", icon: "CheckCircle" },
+    { title: 'Step 1', description: 'Default description', icon: 'Settings' },
+    { title: 'Step 2', description: 'Default description', icon: 'Sparkles' },
+    {
+      title: 'Step 3',
+      description: 'Default description',
+      icon: 'CheckCircle',
+    },
   ];
 
   return (
     <section
       id={section.id || 'how-it-works'}
-      className={cn('py-24 bg-background relative overflow-hidden', section.className, className)}
+      className={cn(
+        'bg-background relative overflow-hidden py-24',
+        section.className,
+        className
+      )}
     >
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-20">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="mb-20 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              {section.title || "How to use"} <span className="text-primary">{section.highlight_text}</span>
+            <h2 className="mb-6 text-3xl font-bold md:text-5xl">
+              {section.title || 'How to use'}{' '}
+              <span className="text-primary">{section.highlight_text}</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
               {section.description}
             </p>
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative">
+        <div className="relative grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-12">
           {/* Connector Line (Desktop only) */}
-          <div className="hidden md:block absolute top-[60px] left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent z-0" />
+          <div className="via-primary/30 absolute top-[60px] right-[15%] left-[15%] z-0 hidden h-[1px] bg-gradient-to-r from-transparent to-transparent md:block" />
 
           {steps.map((step: any, index: number) => (
             <motion.div
@@ -52,22 +62,31 @@ export function ToolHowItWorks({
               transition={{ delay: index * 0.2 }}
               className="relative z-10 flex flex-col items-center text-center"
             >
-              <div className="w-[120px] h-[120px] rounded-full bg-[#15131A] border border-white/10 shadow-xl flex items-center justify-center mb-8 relative group">
-                <div className="absolute inset-[-4px] rounded-full bg-gradient-to-br from-primary/40 to-transparent opacity-0 group-hover:opacity-100 blur-[10px] transition-opacity duration-500" />
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+              <div className="group relative mb-8 flex h-[120px] w-[120px] items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-xl">
+                <div className="from-primary/40 absolute inset-[-4px] rounded-full bg-gradient-to-br to-transparent opacity-0 blur-[10px] transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="bg-primary/10 border-primary/20 flex h-16 w-16 items-center justify-center rounded-full border">
                   {step.icon ? (
-                    <SmartIcon name={step.icon} className="w-8 h-8 text-primary" />
+                    <SmartIcon
+                      name={step.icon}
+                      className="text-primary h-8 w-8"
+                    />
                   ) : (
-                    <span className="text-2xl font-black text-primary">{index + 1}</span>
+                    <span className="text-primary text-2xl font-black">
+                      {index + 1}
+                    </span>
                   )}
                 </div>
                 {/* Step number badge */}
-                <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold flex items-center justify-center text-sm shadow-[0_4px_10px_rgba(212,175,55,0.4)]">
+                <div className="bg-primary text-primary-foreground absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-[0_4px_10px_rgba(212,175,55,0.4)]">
                   {index + 1}
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">{step.title}</h3>
-              <p className="text-muted-foreground leading-relaxed break-words">{step.description}</p>
+              <h3 className="text-foreground mb-4 text-2xl font-bold">
+                {step.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed break-words">
+                {step.description}
+              </p>
             </motion.div>
           ))}
         </div>

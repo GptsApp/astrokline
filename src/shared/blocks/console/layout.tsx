@@ -31,13 +31,15 @@ export function ConsoleLayout({
 }) {
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   const filteredItems = nav?.items.filter((item) =>
     item.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const renderNavItems = (navItems: typeof filteredItems, isBottom = false) => (
-    <nav className={`space-y-1 ${isBottom ? 'mt-auto pt-4 border-t border-border mt-8' : ''}`}>
+    <nav
+      className={`space-y-1 ${isBottom ? 'border-border mt-8 mt-auto border-t pt-4' : ''}`}
+    >
       {navItems?.map((item, idx) => (
         <Link
           key={idx}
@@ -70,8 +72,11 @@ export function ConsoleLayout({
                   <SmartIcon name="Menu" size={20} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-64 px-4 flex flex-col h-full">
-                <SheetHeader className="mb-4 px-0 flex-shrink-0">
+              <SheetContent
+                side="left"
+                className="flex h-full w-64 flex-col px-4"
+              >
+                <SheetHeader className="mb-4 flex-shrink-0 px-0">
                   <SheetTitle>{title || 'Menu'}</SheetTitle>
                 </SheetHeader>
                 <div className="flex-1 overflow-y-auto">
@@ -92,9 +97,9 @@ export function ConsoleLayout({
       <div className="container">
         <div className="flex flex-wrap gap-8 py-8">
           {/* Left Sidebar (Desktop) */}
-          <div className="hidden w-48 flex-shrink-0 md:flex flex-col min-h-[calc(100vh-10rem)] sticky top-24">
+          <div className="sticky top-24 hidden min-h-[calc(100vh-10rem)] w-48 flex-shrink-0 flex-col md:flex">
             {/* Search Box (Commented out) */}
-            
+
             <div className="flex-1">
               {/* Navigation Menu */}
               {renderNavItems(filteredItems)}

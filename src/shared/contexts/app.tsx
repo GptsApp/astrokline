@@ -2,7 +2,9 @@
 
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -17,7 +19,7 @@ import { User } from '@/shared/models/user';
 
 export interface ContextValue {
   user: User | null;
-  setUser: (user: User | null) => void;
+  setUser: Dispatch<SetStateAction<User | null>>;
   isCheckSign: boolean;
   setIsCheckSign: (isCheckSign: boolean) => void;
   isShowSignModal: boolean;
@@ -89,7 +91,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         throw new Error(message);
       }
 
-      setUser((prev) => (prev ? { ...prev, credits: data } : prev));
+      setUser((prev: User | null) => (prev ? { ...prev, credits: data } : prev));
     } catch (e) {
       if (process.env.NODE_ENV !== 'production') {
         console.log('fetch user credits failed:', e);

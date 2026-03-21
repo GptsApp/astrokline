@@ -1,14 +1,16 @@
 import { ReactNode } from 'react';
+import { BirthInfoWrapper } from '@/components/astrokline/ui/birth-info-wrapper';
+import { MobileStickyCta } from '@/components/astrokline/ui/mobile-sticky-cta';
 import { getTranslations } from 'next-intl/server';
 
+import { envConfigs } from '@/config';
+import { locales } from '@/config/locale';
 import { getThemeLayout } from '@/core/theme';
 import { LocaleDetector, TopBanner } from '@/shared/blocks/common';
 import {
   Footer as FooterType,
   Header as HeaderType,
 } from '@/shared/types/blocks/landing';
-import { MobileStickyCta } from '@/components/astrokline/ui/mobile-sticky-cta';
-import { BirthInfoWrapper } from '@/components/astrokline/ui/birth-info-wrapper';
 
 export default async function LandingLayout({
   children,
@@ -24,11 +26,13 @@ export default async function LandingLayout({
   // header and footer to display
   const header: HeaderType = t.raw('header');
   const footer: FooterType = t.raw('footer');
+  const showLocaleDetector =
+    envConfigs.locale_detect_enabled === 'true' && locales.length > 1;
 
   return (
     <BirthInfoWrapper>
       <Layout header={header} footer={footer}>
-        <LocaleDetector />
+        {showLocaleDetector ? <LocaleDetector /> : null}
         {header.topbanner && header.topbanner.text && (
           <TopBanner
             id="topbanner"

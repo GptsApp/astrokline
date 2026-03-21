@@ -1,8 +1,12 @@
 import '@/config/style/global.css';
 
-import { JetBrains_Mono, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
+import { ReactNode } from 'react';
+import {
+  JetBrains_Mono,
+  Playfair_Display,
+  Plus_Jakarta_Sans,
+} from 'next/font/google';
 import { getLocale, setRequestLocale } from 'next-intl/server';
-import NextTopLoader from 'nextjs-toploader';
 
 import { envConfigs } from '@/config';
 import { locales } from '@/config/locale';
@@ -35,10 +39,99 @@ const jetbrainsMono = JetBrains_Mono({
   preload: true,
 });
 
+type IntegrationAssets = {
+  adsMetaTags: ReactNode;
+  adsHeadScripts: ReactNode;
+  adsBodyScripts: ReactNode;
+  analyticsMetaTags: ReactNode;
+  analyticsHeadScripts: ReactNode;
+  analyticsBodyScripts: ReactNode;
+  affiliateMetaTags: ReactNode;
+  affiliateHeadScripts: ReactNode;
+  affiliateBodyScripts: ReactNode;
+  customerServiceMetaTags: ReactNode;
+  customerServiceHeadScripts: ReactNode;
+  customerServiceBodyScripts: ReactNode;
+};
+
+const emptyIntegrationAssets: IntegrationAssets = {
+  adsMetaTags: null,
+  adsHeadScripts: null,
+  adsBodyScripts: null,
+  analyticsMetaTags: null,
+  analyticsHeadScripts: null,
+  analyticsBodyScripts: null,
+  affiliateMetaTags: null,
+  affiliateHeadScripts: null,
+  affiliateBodyScripts: null,
+  customerServiceMetaTags: null,
+  customerServiceHeadScripts: null,
+  customerServiceBodyScripts: null,
+};
+
+function hasThirdPartyIntegrations(configs: Record<string, string>) {
+  return Boolean(
+    configs.adsense_code ||
+      configs.google_analytics_id ||
+      configs.clarity_id ||
+      (configs.plausible_domain && configs.plausible_src) ||
+      configs.openpanel_client_id ||
+      configs.vercel_analytics_enabled === 'true' ||
+      (configs.affonso_enabled === 'true' && configs.affonso_id) ||
+      (configs.promotekit_enabled === 'true' && configs.promotekit_id) ||
+      (configs.crisp_enabled === 'true' && configs.crisp_website_id) ||
+      (configs.tawk_enabled === 'true' &&
+        configs.tawk_property_id &&
+        configs.tawk_widget_id)
+  );
+}
+
+let integrationAssetsPromise: Promise<IntegrationAssets> | null = null;
+
+async function getIntegrationAssets(): Promise<IntegrationAssets> {
+  if (!integrationAssetsPromise) {
+    integrationAssetsPromise = (async () => {
+      const configs = await getAllConfigs();
+      if (!hasThirdPartyIntegrations(configs)) {
+        return emptyIntegrationAssets;
+      }
+
+      const [adsService, analyticsService, affiliateService, customerService] =
+        await Promise.all([
+          getAdsService(configs),
+          getAnalyticsService(configs),
+          getAffiliateService(configs),
+          getCustomerService(configs),
+        ]);
+
+      return {
+        adsMetaTags: adsService.getMetaTags(),
+        adsHeadScripts: adsService.getHeadScripts(),
+        adsBodyScripts: adsService.getBodyScripts(),
+        analyticsMetaTags: analyticsService.getMetaTags(),
+        analyticsHeadScripts: analyticsService.getHeadScripts(),
+        analyticsBodyScripts: analyticsService.getBodyScripts(),
+        affiliateMetaTags: affiliateService.getMetaTags(),
+        affiliateHeadScripts: affiliateService.getHeadScripts(),
+        affiliateBodyScripts: affiliateService.getBodyScripts(),
+        customerServiceMetaTags: customerService.getMetaTags(),
+        customerServiceHeadScripts: customerService.getHeadScripts(),
+        customerServiceBodyScripts: customerService.getBodyScripts(),
+      };
+    })().catch((error) => {
+      console.log('loading integration assets failed:', error);
+      integrationAssetsPromise = null;
+      return emptyIntegrationAssets;
+    });
+  }
+
+  return integrationAssetsPromise;
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   const locale = await getLocale();
   setRequestLocale(locale);
@@ -49,56 +142,10 @@ export default async function RootLayout({
   // app url
   const appUrl = envConfigs.app_url || '';
 
-  // ads components
-  let adsMetaTags = null;
-  let adsHeadScripts = null;
-  let adsBodyScripts = null;
-
-  // analytics components
-  let analyticsMetaTags = null;
-  let analyticsHeadScripts = null;
-  let analyticsBodyScripts = null;
-
-  // affiliate components
-  let affiliateMetaTags = null;
-  let affiliateHeadScripts = null;
-  let affiliateBodyScripts = null;
-
-  // customer service components
-  let customerServiceMetaTags = null;
-  let customerServiceHeadScripts = null;
-  let customerServiceBodyScripts = null;
+  let integrationAssets = emptyIntegrationAssets;
 
   if (isProduction || isDebug) {
-    const configs = await getAllConfigs();
-
-    const [adsService, analyticsService, affiliateService, customerService] =
-      await Promise.all([
-        getAdsService(configs),
-        getAnalyticsService(configs),
-        getAffiliateService(configs),
-        getCustomerService(configs),
-      ]);
-
-    // get ads components
-    adsMetaTags = adsService.getMetaTags();
-    adsHeadScripts = adsService.getHeadScripts();
-    adsBodyScripts = adsService.getBodyScripts();
-
-    // get analytics components
-    analyticsMetaTags = analyticsService.getMetaTags();
-    analyticsHeadScripts = analyticsService.getHeadScripts();
-    analyticsBodyScripts = analyticsService.getBodyScripts();
-
-    // get affiliate components
-    affiliateMetaTags = affiliateService.getMetaTags();
-    affiliateHeadScripts = affiliateService.getHeadScripts();
-    affiliateBodyScripts = affiliateService.getBodyScripts();
-
-    // get customer service components
-    customerServiceMetaTags = customerService.getMetaTags();
-    customerServiceHeadScripts = customerService.getHeadScripts();
-    customerServiceBodyScripts = customerService.getBodyScripts();
+    integrationAssets = await getIntegrationAssets();
   }
 
   return (
@@ -128,52 +175,45 @@ export default async function RootLayout({
         ) : null}
 
         {/* inject ads meta tags */}
-        {adsMetaTags}
+        {integrationAssets.adsMetaTags}
         {/* inject ads head scripts */}
-        {adsHeadScripts}
+        {integrationAssets.adsHeadScripts}
 
         {/* inject analytics meta tags */}
-        {analyticsMetaTags}
+        {integrationAssets.analyticsMetaTags}
         {/* inject analytics head scripts */}
-        {analyticsHeadScripts}
+        {integrationAssets.analyticsHeadScripts}
 
         {/* inject affiliate meta tags */}
-        {affiliateMetaTags}
+        {integrationAssets.affiliateMetaTags}
         {/* inject affiliate head scripts */}
-        {affiliateHeadScripts}
+        {integrationAssets.affiliateHeadScripts}
 
         {/* inject customer service meta tags */}
-        {customerServiceMetaTags}
+        {integrationAssets.customerServiceMetaTags}
         {/* inject customer service head scripts */}
-        {customerServiceHeadScripts}
+        {integrationAssets.customerServiceHeadScripts}
       </head>
-      <body suppressHydrationWarning className="overflow-x-hidden" style={{ backgroundColor: '#0A0A0A', color: '#FFFFFF' }}>
-        <NextTopLoader
-          color="#6466F1"
-          initialPosition={0.08}
-          crawlSpeed={200}
-          height={3}
-          crawl={true}
-          showSpinner={true}
-          easing="ease"
-          speed={200}
-        />
-
+      <body
+        suppressHydrationWarning
+        className="overflow-x-hidden"
+        style={{ backgroundColor: '#0A0A0A', color: '#FFFFFF' }}
+      >
         <UtmCapture />
 
         {children}
 
         {/* inject ads body scripts */}
-        {adsBodyScripts}
+        {integrationAssets.adsBodyScripts}
 
         {/* inject analytics body scripts */}
-        {analyticsBodyScripts}
+        {integrationAssets.analyticsBodyScripts}
 
         {/* inject affiliate body scripts */}
-        {affiliateBodyScripts}
+        {integrationAssets.affiliateBodyScripts}
 
         {/* inject customer service body scripts */}
-        {customerServiceBodyScripts}
+        {integrationAssets.customerServiceBodyScripts}
       </body>
     </html>
   );

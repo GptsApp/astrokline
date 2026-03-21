@@ -1,7 +1,8 @@
-import { eq, and, desc } from 'drizzle-orm';
+import { createHash } from 'crypto';
+import { and, desc, eq } from 'drizzle-orm';
+
 import { db } from '@/core/db';
 import { userKlines } from '@/config/db/schema';
-import { createHash } from 'crypto';
 
 export type UserKline = typeof userKlines.$inferSelect;
 export type NewUserKline = typeof userKlines.$inferInsert;
@@ -9,8 +10,14 @@ export type NewUserKline = typeof userKlines.$inferInsert;
 /**
  * Generate birth hash for deduplication
  */
-function generateBirthHash(birthDate: string, birthTime: string | null, birthPlace: string): string {
-  const raw = `${birthDate}|${birthTime || ''}|${birthPlace}`.toLowerCase().trim();
+function generateBirthHash(
+  birthDate: string,
+  birthTime: string | null,
+  birthPlace: string
+): string {
+  const raw = `${birthDate}|${birthTime || ''}|${birthPlace}`
+    .toLowerCase()
+    .trim();
   return createHash('sha256').update(raw).digest('hex');
 }
 
@@ -30,13 +37,19 @@ export async function saveKline(
     klineResult?: any;
   }
 ): Promise<UserKline> {
-  const birthHash = generateBirthHash(data.birthDate, data.birthTime || null, data.birthPlace);
+  const birthHash = generateBirthHash(
+    data.birthDate,
+    data.birthTime || null,
+    data.birthPlace
+  );
 
   // Check if exists
   const [existing] = await db()
     .select()
     .from(userKlines)
-    .where(and(eq(userKlines.userId, userId), eq(userKlines.birthHash, birthHash)))
+    .where(
+      and(eq(userKlines.userId, userId), eq(userKlines.birthHash, birthHash))
+    )
     .limit(1);
 
   if (existing) {
@@ -107,7 +120,10 @@ export async function getMyKline(userId: string): Promise<UserKline | null> {
 /**
  * Delete a KLine (cannot delete isSelf)
  */
-export async function deleteKline(userId: string, klineId: string): Promise<boolean> {
+export async function deleteKline(
+  userId: string,
+  klineId: string
+): Promise<boolean> {
   const [kline] = await db()
     .select()
     .from(userKlines)
@@ -117,9 +133,7 @@ export async function deleteKline(userId: string, klineId: string): Promise<bool
   if (!kline) return false;
   if (kline.isSelf) return false; // Cannot delete own KLine
 
-  await db()
-    .delete(userKlines)
-    .where(eq(userKlines.id, klineId));
+  await db().delete(userKlines).where(eq(userKlines.id, klineId));
 
   return true;
 }
@@ -154,12 +168,19 @@ export async function countUserKlines(userId: string): Promise<number> {
 /**
  * Check if a birthHash already exists for a user
  */
-export async function klineExists(userId: string, birthDate: string, birthTime: string | null, birthPlace: string): Promise<boolean> {
+export async function klineExists(
+  userId: string,
+  birthDate: string,
+  birthTime: string | null,
+  birthPlace: string
+): Promise<boolean> {
   const birthHash = generateBirthHash(birthDate, birthTime, birthPlace);
   const [existing] = await db()
     .select()
     .from(userKlines)
-    .where(and(eq(userKlines.userId, userId), eq(userKlines.birthHash, birthHash)))
+    .where(
+      and(eq(userKlines.userId, userId), eq(userKlines.birthHash, birthHash))
+    )
     .limit(1);
   return !!existing;
 }
@@ -169,7 +190,10 @@ export async function klineExists(userId: string, birthDate: string, birthTime: 
 /**
  * Generate share token and set public
  */
-export async function generateShareToken(userId: string, klineId: string): Promise<string | null> {
+export async function generateShareToken(
+  userId: string,
+  klineId: string
+): Promise<string | null> {
   const [kline] = await db()
     .select()
     .from(userKlines)
@@ -181,7 +205,10 @@ export async function generateShareToken(userId: string, klineId: string): Promi
   // If already has a token, return it
   if (kline.shareToken) {
     if (!kline.isPublic) {
-      await db().update(userKlines).set({ isPublic: true }).where(eq(userKlines.id, klineId));
+      await db()
+        .update(userKlines)
+        .set({ isPublic: true })
+        .where(eq(userKlines.id, klineId));
     }
     return kline.shareToken;
   }
@@ -203,7 +230,9 @@ export async function generateShareToken(userId: string, klineId: string): Promi
 /**
  * Get KLine by share token (public access, no auth required)
  */
-export async function getKlineByShareToken(token: string): Promise<UserKline | null> {
+export async function getKlineByShareToken(
+  token: string
+): Promise<UserKline | null> {
   const [result] = await db()
     .select()
     .from(userKlines)
@@ -215,7 +244,11 @@ export async function getKlineByShareToken(token: string): Promise<UserKline | n
 /**
  * Toggle public visibility
  */
-export async function toggleKlinePublic(userId: string, klineId: string, isPublic: boolean): Promise<boolean> {
+export async function toggleKlinePublic(
+  userId: string,
+  klineId: string,
+  isPublic: boolean
+): Promise<boolean> {
   const [result] = await db()
     .update(userKlines)
     .set({ isPublic })
@@ -223,4 +256,3 @@ export async function toggleKlinePublic(userId: string, klineId: string, isPubli
     .returning();
   return !!result;
 }
-

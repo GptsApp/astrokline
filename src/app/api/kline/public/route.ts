@@ -21,8 +21,6 @@ export async function GET(req: Request) {
       success: true,
       data: {
         label: kline.label,
-        birthDate: kline.birthDate,
-        birthPlace: kline.birthPlace,
         profile: result?.profile || null,
         radarData: result?.radarData || null,
         createdAt: kline.createdAt,

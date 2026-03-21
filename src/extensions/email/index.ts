@@ -117,4 +117,3 @@ export const emailManager = new EmailManager();
 
 // Export all providers
 export * from './resend';
-export * from './sendflare';

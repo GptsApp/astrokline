@@ -1,6 +1,7 @@
 'use client';
 
 import { MethodologyBadge } from '@/components/astrokline/sections/methodology-badge';
+
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 

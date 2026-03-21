@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import { PaymentStatusSync } from '@/shared/blocks/payment/payment-status-sync';
 import { PaymentType } from '@/extensions/payment/types';
 import { Empty } from '@/shared/blocks/common';
 import { TableCard } from '@/shared/blocks/table';
@@ -16,9 +17,17 @@ import { type Table } from '@/shared/types/blocks/table';
 export default async function PaymentsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: number; pageSize?: number; type?: string }>;
+  searchParams: Promise<{
+    page?: number;
+    pageSize?: number;
+    type?: string;
+    payment?: string;
+    order_no?: string;
+    provider?: string;
+  }>;
 }) {
-  const { page: pageNum, pageSize, type } = await searchParams;
+  const { page: pageNum, pageSize, type, payment, order_no, provider } =
+    await searchParams;
   const page = pageNum || 1;
   const limit = pageSize || 20;
 
@@ -190,6 +199,29 @@ export default async function PaymentsPage({
 
   return (
     <div className="space-y-8">
+      <PaymentStatusSync
+        status={
+          payment === 'success'
+            ? 'success'
+            : payment === 'failed'
+              ? 'failed'
+              : payment === 'cancelled'
+                ? 'cancelled'
+                : null
+        }
+      />
+      {payment === 'success' ? (
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-5">
+          <div className="text-sm font-semibold text-emerald-200">
+            Payment received.
+          </div>
+          <p className="mt-1 text-sm leading-6 text-white/70">
+            Your payment has been recorded successfully.
+            {provider ? ` Provider: ${provider}.` : ''}
+            {order_no ? ` Order: ${order_no}.` : ''}
+          </p>
+        </div>
+      ) : null}
       <TableCard
         title={t('list.title')}
         description={t('list.description')}

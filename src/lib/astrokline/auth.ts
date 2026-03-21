@@ -1,12 +1,12 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
+import { betterAuth } from 'better-auth';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
 
 const prisma = new PrismaClient();
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "sqlite",
+    provider: 'sqlite',
   }),
   emailAndPassword: {
     enabled: true,
@@ -14,14 +14,14 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       plan: {
-        type: "string",
-        defaultValue: "FREE",
-      }
-    }
-  }
+        type: 'string',
+        defaultValue: 'FREE',
+      },
+    },
+  },
 });
-  // If you want Google OAuth later:
-  /*
+// If you want Google OAuth later:
+/*
   socialProviders: {
      google: {
         clientId: process.env.GOOGLE_CLIENT_ID as string,

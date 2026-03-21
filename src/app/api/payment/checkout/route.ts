@@ -19,6 +19,40 @@ import { getUserInfo } from '@/shared/models/user';
 import { getPaymentService } from '@/shared/services/payment';
 import { PricingCurrency } from '@/shared/types/blocks/pricing';
 
+function getOrigin(value?: string | null) {
+  if (!value) {
+    return '';
+  }
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    return '';
+  }
+}
+
+function isLocalOrigin(origin: string) {
+  if (!origin) {
+    return false;
+  }
+
+  try {
+    const { hostname } = new URL(origin);
+    return hostname === 'localhost' || hostname === '127.0.0.1';
+  } catch {
+    return false;
+  }
+}
+
+function getRuntimeAppBaseUrl(req: Request, configuredUrl: string) {
+  const requestOrigin = getOrigin(req.url);
+  if (isLocalOrigin(requestOrigin)) {
+    return requestOrigin;
+  }
+
+  return getOrigin(configuredUrl) || requestOrigin || 'http://localhost:3000';
+}
+
 export async function POST(req: Request) {
   try {
     const { product_id, currency, locale, payment_provider, metadata } =
@@ -46,22 +80,16 @@ export async function POST(req: Request) {
     }
 
     // get sign user
-    const user = await getUserInfo();
+    const user = await getUserInfo(req);
     if (!user || !user.email) {
       return respErr('no auth, please sign in');
     }
 
     // get configs
-    const configs = await getAllConfigs();
+    const configs = await getAllConfigs({ fresh: true });
 
     // choose payment provider
     let paymentProviderName = payment_provider || '';
-    if (!paymentProviderName) {
-      paymentProviderName = configs.default_payment_provider;
-    }
-    if (!paymentProviderName) {
-      return respErr('no payment provider configured');
-    }
 
     // Validate payment provider against allowed providers
     // First check currency-specific payment_providers if currency is provided
@@ -83,6 +111,15 @@ export async function POST(req: Request) {
       allowedProviders = pricingItem.payment_providers;
     }
 
+    const paymentService = await getPaymentService(configs);
+    const paymentProvider = paymentProviderName
+      ? paymentService.getProvider(paymentProviderName)
+      : paymentService.getDefaultProvider();
+    if (!paymentProvider || !paymentProvider.name) {
+      return respErr('no payment provider configured');
+    }
+    paymentProviderName = paymentProvider.name;
+
     // If payment_providers is configured, validate the selected provider
     if (allowedProviders && allowedProviders.length > 0) {
       if (!allowedProviders.includes(paymentProviderName)) {
@@ -90,14 +127,6 @@ export async function POST(req: Request) {
           `payment provider ${paymentProviderName} is not supported for this currency`
         );
       }
-    }
-
-    // get default payment provider
-    const paymentService = await getPaymentService();
-
-    const paymentProvider = paymentService.getProvider(paymentProviderName);
-    if (!paymentProvider || !paymentProvider.name) {
-      return respErr('no payment provider configured');
     }
 
     // checkout currency and amount - calculate from server-side data only (never trust client input)
@@ -166,7 +195,8 @@ export async function POST(req: Request) {
       paymentProductId = await getPaymentProductId(
         pricingItem.product_id,
         paymentProviderName,
-        checkoutCurrency
+        checkoutCurrency,
+        configs
       );
     }
 
@@ -174,7 +204,8 @@ export async function POST(req: Request) {
     const promotionCode = await getPromotionCode(
       product_id,
       paymentProviderName,
-      checkoutCurrency
+      checkoutCurrency,
+      configs
     );
 
     // build checkout price with correct amount for selected currency
@@ -192,7 +223,8 @@ export async function POST(req: Request) {
       paymentProductId = paymentProductId.trim();
     }
 
-    let callbackBaseUrl = `${configs.app_url}`;
+    const appBaseUrl = getRuntimeAppBaseUrl(req, configs.app_url);
+    let callbackBaseUrl = appBaseUrl;
     if (locale && locale !== configs.default_locale) {
       callbackBaseUrl += `/${locale}`;
     }
@@ -204,7 +236,7 @@ export async function POST(req: Request) {
 
     // build checkout order
     const checkoutOrder: PaymentOrder = {
-      description: pricingItem.product_name,
+      description: pricingItem.product_name || pricingItem.title,
       customer: {
         name: user.name,
         email: user.email,
@@ -216,8 +248,8 @@ export async function POST(req: Request) {
         user_id: user.id,
         ...(metadata || {}),
       },
-      successUrl: `${configs.app_url}/api/payment/callback?order_no=${orderNo}`,
-      cancelUrl: `${callbackBaseUrl}/pricing`,
+      successUrl: `${appBaseUrl}/api/payment/callback?order_no=${orderNo}`,
+      cancelUrl: `${callbackBaseUrl}/pricing?payment=cancelled&order_no=${orderNo}&plan=${pricingItem.product_id}&provider=${paymentProvider.name}`,
     };
 
     // checkout with predefined product
@@ -231,7 +263,7 @@ export async function POST(req: Request) {
       // subscription mode
       checkoutOrder.plan = {
         interval: paymentInterval,
-        name: pricingItem.product_name,
+        name: pricingItem.product_name || pricingItem.title,
       };
     } else {
       // one-time mode
@@ -260,12 +292,12 @@ export async function POST(req: Request) {
       paymentProvider: paymentProvider.name,
       checkoutInfo: JSON.stringify(checkoutOrder),
       createdAt: currentTime,
-      productName: pricingItem.product_name,
+      productName: pricingItem.product_name || pricingItem.title,
       description: pricingItem.description,
       callbackUrl: callbackUrl,
       creditsAmount: pricingItem.credits,
       creditsValidDays: pricingItem.valid_days,
-      planName: pricingItem.plan_name || '',
+      planName: pricingItem.plan_name || pricingItem.title || '',
       paymentProductId: paymentProductId,
       discountCode: promotionCode,
     };
@@ -289,7 +321,14 @@ export async function POST(req: Request) {
         paymentProvider: result.provider,
       });
 
-      return respData(result.checkoutInfo);
+      return respData({
+        ...result.checkoutInfo,
+        orderNo,
+        provider: result.provider,
+        productId: pricingItem.product_id,
+        productName: pricingItem.product_name || pricingItem.title,
+        currency: checkoutCurrency,
+      });
     } catch (e: any) {
       // update order status to completed, means checkout failed
       await updateOrderByOrderNo(orderNo, {
@@ -309,7 +348,8 @@ export async function POST(req: Request) {
 async function getPaymentProductId(
   productId: string,
   provider: string,
-  checkoutCurrency: string
+  checkoutCurrency: string,
+  configs?: Record<string, string>
 ) {
   if (provider !== 'creem') {
     // currently only creem supports payment product id mapping
@@ -317,8 +357,8 @@ async function getPaymentProductId(
   }
 
   try {
-    const configs = await getAllConfigs();
-    const creemProductIds = configs.creem_product_ids;
+    const resolvedConfigs = configs ?? (await getAllConfigs({ fresh: true }));
+    const creemProductIds = resolvedConfigs.creem_product_ids;
     if (creemProductIds) {
       const productIds = JSON.parse(creemProductIds);
       return (
@@ -335,7 +375,8 @@ async function getPaymentProductId(
 async function getPromotionCode(
   productId: string,
   provider: string,
-  checkoutCurrency: string
+  checkoutCurrency: string,
+  configs?: Record<string, string>
 ) {
   if (provider !== 'stripe') {
     // currently only stripe supports promotion code mapping
@@ -343,8 +384,8 @@ async function getPromotionCode(
   }
 
   try {
-    const configs = await getAllConfigs();
-    const stripePromotionCodes = configs.stripe_promotion_codes;
+    const resolvedConfigs = configs ?? (await getAllConfigs({ fresh: true }));
+    const stripePromotionCodes = resolvedConfigs.stripe_promotion_codes;
     if (stripePromotionCodes) {
       const promotionCodes = JSON.parse(stripePromotionCodes);
       return (

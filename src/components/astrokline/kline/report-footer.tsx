@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Share2, Download, Sparkles } from "lucide-react";
-import { UserProfile } from "@/lib/astrokline/mock-astrology-data";
+import { useEffect, useState } from 'react';
+import { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { trackEvent } from '@/lib/astrokline/track-event';
+import { Download, Share2, Sparkles } from 'lucide-react';
 
 export function ReportFooter({ profile }: { profile: UserProfile }) {
   const [showSharePrompt, setShowSharePrompt] = useState(false);
@@ -18,58 +18,74 @@ export function ReportFooter({ profile }: { profile: UserProfile }) {
   }, []);
 
   return (
-    <div className="w-full mt-24 pb-32 border-t border-white/5 pt-16 relative flex flex-col items-center text-center">
+    <div className="relative mt-24 flex w-full flex-col items-center border-t border-white/5 pt-16 pb-32 text-center">
       {/* Mystical Source Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#D4AF37]/5 rounded-full blur-[100px] pointer-events-none" />
-      
-      <Sparkles className="w-6 h-6 text-[#D4AF37] mb-6 opacity-50" />
-      
-      <h2 className="text-2xl md:text-3xl font-serif tracking-tight text-white/90 mb-4 max-w-2xl leading-relaxed">
-        &quot;Your chart is not a life sentence, it is an architectural blueprint. The stars incline, they do not bind.&quot;
+      <div className="pointer-events-none absolute top-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4AF37]/5 blur-[100px]" />
+
+      <Sparkles className="mb-6 h-6 w-6 text-[#D4AF37] opacity-50" />
+
+      <h2 className="mb-4 max-w-2xl font-serif text-2xl leading-relaxed tracking-tight text-white/90 md:text-3xl">
+        &quot;Your chart is not a life sentence, it is an architectural
+        blueprint. The stars incline, they do not bind.&quot;
       </h2>
-      <p className="text-white/40 font-mono text-xs uppercase tracking-[0.2em] mb-12">
+      <p className="mb-12 font-mono text-xs tracking-[0.2em] text-white/40 uppercase">
         — AstroKline Core Ephemeris
       </p>
 
       {/* Share / CTA Section */}
-      <div className="bg-[#15131A]/80 backdrop-blur-md border border-white/10 rounded-3xl p-8 max-w-md w-full relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        
+      <div className="group relative w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-[#15131A]/80 p-8 backdrop-blur-md">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
         <div className="relative z-10">
           <div className="mb-6">
-             <h3 className="text-white font-medium mb-1">Your Cosmic Blueprint is ready</h3>
-             <p className="text-sm text-white/50">Save {profile.name}&apos;s detailed energetic profile to your device or share it with trusted confidants.</p>
+            <h3 className="mb-1 font-medium text-white">
+              Your Cosmic Blueprint is ready
+            </h3>
+            <p className="text-sm text-white/50">
+              Save {profile.name}&apos;s detailed energetic profile to your
+              device or share it with trusted confidants.
+            </p>
           </div>
 
           <div className="flex flex-col gap-3">
-             <button
-               onClick={() => trackEvent('share_button_click', { action: 'download' })}
-               className="w-full flex items-center justify-center gap-2 bg-[#D4AF37] text-black hover:bg-[#FCDD73] transition-colors py-3.5 rounded-xl font-medium text-sm"
-             >
-                <Download className="w-4 h-4" />
-                <span>Save High-Res Blueprint</span>
-             </button>
-             <button
-               onClick={() => trackEvent('share_button_click', { action: 'share' })}
-               className={`w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white transition-colors py-3.5 rounded-xl font-medium text-sm border border-white/10 hover:border-white/20 ${
-                 showSharePrompt ? 'animate-pulse ring-2 ring-primary/40' : ''
-               }`}
-             >
-                <Share2 className="w-4 h-4" />
-                <span>Share My Destiny Pattern</span>
-             </button>
-             {showSharePrompt && (
-               <p className="text-xs text-primary/80 animate-in fade-in duration-500">
-                 Your K-Line is exceptional — share it with friends!
-               </p>
-             )}
+            <button
+              type="button"
+              onClick={() =>
+                trackEvent('share_button_click', { action: 'download' })
+              }
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#D4AF37] py-3.5 text-sm font-medium text-black transition-colors hover:bg-[#FCDD73]"
+            >
+              <Download className="h-4 w-4" />
+              <span>Save High-Res Blueprint</span>
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                trackEvent('share_button_click', { action: 'share' })
+              }
+              className={`flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 py-3.5 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/10 ${
+                showSharePrompt ? 'ring-primary/40 animate-pulse ring-2' : ''
+              }`}
+            >
+              <Share2 className="h-4 w-4" />
+              <span>Share My Destiny Pattern</span>
+            </button>
+            {showSharePrompt && (
+              <p className="text-primary/80 animate-in fade-in text-xs duration-500">
+                Your K-Line is exceptional — share it with friends!
+              </p>
+            )}
           </div>
         </div>
       </div>
 
       {/* Legal Disclaimer */}
-      <p className="mt-16 max-w-2xl text-[10px] leading-relaxed text-white/20 font-mono tracking-wide text-center">
-        Disclaimer: AstroKline provides astrological insights for entertainment and self-reflection purposes only. Our readings do not constitute professional medical, legal, financial, or psychological advice. Astrology reveals tendencies and potentials — not fixed outcomes. You always retain free will.
+      <p className="mt-16 max-w-2xl text-center font-mono text-[10px] leading-relaxed tracking-wide text-white/20">
+        Disclaimer: AstroKline provides astrological insights for entertainment
+        and self-reflection purposes only. Our readings do not constitute
+        professional medical, legal, financial, or psychological advice.
+        Astrology reveals tendencies and potentials — not fixed outcomes. You
+        always retain free will.
       </p>
     </div>
   );

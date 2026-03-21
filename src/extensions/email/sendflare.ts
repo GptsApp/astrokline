@@ -63,13 +63,13 @@ export class SendflareProvider implements EmailProvider {
       const response = await fetch('https://api.sendflare.com/v1/send', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.configs.apiKey}`,
+          Authorization: `Bearer ${this.configs.apiKey}`,
           'Content-Type': 'application/json; charset=utf-8',
         },
         body: JSON.stringify(body),
       });
 
-      const result = await response.json() as {
+      const result = (await response.json()) as {
         success?: boolean;
         code?: number;
         message?: string;
@@ -105,6 +105,8 @@ export class SendflareProvider implements EmailProvider {
 /**
  * Create Sendflare provider with configs
  */
-export function createSendflareProvider(configs: SendflareConfigs): SendflareProvider {
+export function createSendflareProvider(
+  configs: SendflareConfigs
+): SendflareProvider {
   return new SendflareProvider(configs);
 }

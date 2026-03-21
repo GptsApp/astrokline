@@ -1,14 +1,27 @@
 import { NextResponse } from 'next/server';
 import { callGeminiJson } from '@/lib/astrokline/gemini';
 
+import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
+
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
+  const limited = enforceMinIntervalRateLimit(req, {
+    intervalMs: 10000,
+    keyPrefix: 'daily-transit',
+  });
+  if (limited) {
+    return limited;
+  }
+
   try {
     const { profile } = await req.json();
 
     if (!profile || !profile.name || !profile.planets) {
-      return NextResponse.json({ error: "Missing user profile data" }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing user profile data' },
+        { status: 400 }
+      );
     }
 
     const currentYear = new Date().getFullYear();
@@ -48,7 +61,10 @@ Output the JSON only, no explanation, no markdown code block.`;
 
     return NextResponse.json({ success: true, data: parsed });
   } catch (error: any) {
-    console.error("Daily Transit Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to generate daily transit" }, { status: 500 });
+    console.error('Daily Transit Error:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to generate daily transit' },
+      { status: 500 }
+    );
   }
 }

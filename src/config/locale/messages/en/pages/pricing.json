@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "AstroKline Pricing — Unlock Your Cosmic Blueprint",
-    "description": "Choose your astrology chart reading depth. From a free birth chart preview to a comprehensive destiny K-Line blueprint with planetary transit forecasts."
+    "title": "AstroKline Pricing",
+    "description": "Pick the plan that matches the depth and volume you need."
   },
   "page": {
     "title": "AstroKline Pricing",
@@ -9,330 +9,177 @@
       "pricing": {
         "id": "pricing",
         "block": "astro-pricing",
-        "title": "Invest in Cosmic Clarity.",
-        "description": "Choose the depth of your astrology chart reading. From a quick glance at your birth chart, to a comprehensive K-Line blueprint of your entire cosmic destiny.",
+        "title": "Choose Your Plan",
+        "description": "Pick the depth, save limit, and tools you need.",
         "groups": [
           {
-            "name": "one-time",
-            "title": "Pay as you go"
-          },
-          {
             "name": "monthly",
-            "title": "Monthly",
-            "is_featured": true,
-            "label": "save 15%"
+            "title": "Monthly"
           },
           {
             "name": "yearly",
-            "title": "Annually"
+            "title": "Yearly",
+            "label": "Save 50%"
           }
         ],
         "items": [
           {
-            "title": "Starter",
-            "description": "Full 100-Year K-Line chart with 1 free AI personality reading.",
+            "title": "Free",
+            "description": "Start free and see how your timing map works.",
             "features_title": "Includes",
             "features": [
-              "100 credits, valid for 1 month",
-              "Full 100-Year K-Line chart",
-              "1-2 basic natal chart reads",
-              "Overall destiny score only",
-              "Basic daily horoscope",
-              "Sun, Moon & Rising analysis",
-              "Email support"
-            ],
-            "interval": "one-time",
-            "amount": 9900,
-            "currency": "USD",
-            "price": "$99",
-            "original_price": "$199",
-            "unit": "",
-            "is_featured": false,
-            "tip": "Pay once. Validate your birth chart accuracy!",
-            "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
-            },
-            "product_id": "starter",
-            "product_name": "AstroKline Starter Plan",
-            "credits": 100,
-            "valid_days": 30,
-            "group": "one-time"
-          },
-          {
-            "title": "Standard",
-            "description": "Unlimited AI deep readings with Career & Love dimensional analysis.",
-            "label": "Popular",
-            "features_title": "Everything in Starter, plus",
-            "features": [
-              "200 credits, valid for 3 months",
-              "Unlimited AI personality & destiny readings",
-              "Career & Love dual-track K-Lines",
-              "Unlimited natal chart calculations",
-              "Monthly planetary transit alerts",
-              "AI-powered chart interpretation",
-              "Personalized daily horoscope",
-              "Community access"
-            ],
-            "interval": "one-time",
-            "amount": 19900,
-            "currency": "USD",
-            "price": "$199",
-            "original_price": "$299",
-            "unit": "",
-            "is_featured": true,
-            "tip": "Pay once. Unlock your cosmic compass!",
-            "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
-            },
-            "product_id": "standard",
-            "product_name": "AstroKline Standard Plan",
-            "credits": 200,
-            "valid_days": 90,
-            "group": "one-time"
-          },
-          {
-            "title": "Premium",
-            "description": "Full AI Chat + 30-day forecasts. Career, Love, Wealth & Health — all dimensions.",
-            "features_title": "Everything in Standard, plus",
-            "features": [
-              "300 credits, valid for 1 year",
-              "AI Chat + unlimited deep analysis reports",
-              "Career / Love / Wealth / Health tracks",
-              "Real-time planetary transit alerts",
-              "Priority AI + deep analysis reports",
-              "HD PDF 'Life Book' export (50+ pages)",
-              "Unlimited AI Astrologer deep chat",
-              "Exclusive transit survival guides",
-              "VIP priority support"
-            ],
-            "interval": "one-time",
-            "amount": 29900,
-            "currency": "USD",
-            "price": "$299",
-            "original_price": "$399",
-            "unit": "",
-            "is_featured": false,
-            "tip": "Pay once. Unlock your full destiny blueprint!",
-            "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
-            },
-            "product_id": "premium",
-            "product_name": "AstroKline Premium Plan",
-            "credits": 300,
-            "valid_days": 365,
-            "group": "one-time"
-          },
-          {
-            "title": "Starter",
-            "description": "See how accurate your past K-Line is. Future stays blurred until you upgrade.",
-            "features_title": "Includes",
-            "features": [
-              "100 credits, valid for 1 month",
-              "Past K-Line only (future blurred)",
-              "1-2 basic natal chart reads",
-              "Overall destiny score only",
-              "Basic daily horoscope",
-              "Sun, Moon & Rising analysis",
-              "Email support"
+              "Full 100-year K-Line",
+              "Core AI reading",
+              "Basic yearly tooltip insights",
+              "Raw chart data",
+              "2 saved K-Lines for life"
             ],
             "interval": "month",
-            "amount": 8900,
+            "amount": 0,
             "currency": "USD",
-            "price": "$89",
-            "original_price": "$99",
-            "unit": "/ month",
+            "price": "$0",
+            "unit": "",
             "is_featured": false,
-            "tip": "Monthly access to validate your birth chart!",
+            "tip": "Free",
             "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "Start Free",
+              "url": "/pricing"
             },
-            "product_id": "starter-monthly",
-            "product_name": "AstroKline Starter Monthly",
-            "credits": 100,
-            "valid_days": 30,
-            "group": "monthly",
-            "plan_name": "Starter"
+            "product_id": "free-monthly",
+            "group": "monthly"
           },
           {
-            "title": "Standard",
-            "description": "Unlock 1-2 years of your future K-Line. See Career & Love trajectories separately.",
-            "label": "Popular",
-            "features_title": "Everything in Starter, plus",
+            "title": "Lite",
+            "description": "Unlock practical guidance and save the charts you want to revisit.",
+            "features_title": "Everything in Free, plus",
             "features": [
-              "200 credits, valid for 1 month",
-              "Past + 1-2 Year Future K-Line unlocked",
-              "Career & Love dual-track K-Lines",
-              "Unlimited natal chart calculations",
-              "Monthly planetary transit alerts",
-              "AI-powered chart interpretation",
-              "Personalized daily horoscope",
-              "Community access"
+              "10 saved K-Lines each month",
+              "Career, Wealth, Love, and Health modules",
+              "Annual transit summaries in chart tooltips",
+              "Saved reports in your dashboard",
+              "Upgrade to Pro anytime"
             ],
             "interval": "month",
-            "amount": 16900,
+            "amount": 3990,
             "currency": "USD",
-            "price": "$169",
-            "original_price": "$199",
+            "price": "$39.9",
             "unit": "/ month",
-            "is_featured": true,
-            "tip": "Monthly cosmic intelligence at your fingertips.",
+            "is_featured": false,
+            "tip": "Billed Monthly",
             "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "Choose Lite",
+              "url": "/pricing"
             },
             "product_id": "standard-monthly",
-            "product_name": "AstroKline Standard Monthly",
-            "credits": 200,
-            "valid_days": 30,
-            "group": "monthly",
-            "plan_name": "Standard"
+            "group": "monthly"
           },
           {
-            "title": "Premium",
-            "description": "Full 10+ year K-Line unlocked. Career, Love, Wealth & Health — all dimensions.",
-            "features_title": "Everything in Standard, plus",
+            "title": "Pro",
+            "description": "Full detail, priority access, and the strongest decision tools.",
+            "label": "Most Complete",
+            "features_title": "Everything in Lite, plus",
             "features": [
-              "300 credits, valid for 1 month",
-              "Full 10+ Year K-Line unlocked",
-              "Career / Love / Wealth / Health tracks",
-              "Real-time planetary transit alerts",
-              "Priority AI + deep analysis reports",
-              "HD PDF 'Life Book' export (50+ pages)",
-              "Unlimited AI Astrologer deep chat",
-              "Exclusive transit survival guides",
-              "VIP priority support"
+              "30 saved K-Lines / month",
+              "Exact transit detail for every turning year",
+              "Strengths and Blindspots modules",
+              "Click any year for an instant deep reading",
+              "Priority Access to Every New Release",
+              "Export polished PDF reports",
+              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
             ],
             "interval": "month",
-            "amount": 24900,
+            "amount": 7990,
             "currency": "USD",
-            "price": "$249",
-            "original_price": "$299",
-            "unit": "/ month",
-            "is_featured": false,
-            "tip": "Monthly god-mode access to your full destiny.",
-            "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
-            },
-            "product_id": "premium-monthly",
-            "product_name": "AstroKline Premium Monthly",
-            "credits": 300,
-            "valid_days": 30,
-            "group": "monthly",
-            "plan_name": "Premium"
-          },
-          {
-            "title": "Starter",
-            "description": "See how accurate your past K-Line is. Future stays blurred until you upgrade.",
-            "features_title": "Includes",
-            "features": [
-              "100 credits, valid for 1 year",
-              "Past K-Line only (future blurred)",
-              "1-2 basic natal chart reads",
-              "Overall destiny score only",
-              "Basic daily horoscope",
-              "Sun, Moon & Rising analysis",
-              "Email support"
-            ],
-            "interval": "year",
-            "amount": 82800,
-            "currency": "USD",
-            "price": "$69",
-            "original_price": "$89",
-            "unit": "/ month",
-            "is_featured": false,
-            "tip": "Best value. Annual birth chart validation!",
-            "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
-            },
-            "product_id": "starter-yearly",
-            "product_name": "AstroKline Starter Annual",
-            "credits": 1200,
-            "valid_days": 365,
-            "group": "yearly",
-            "plan_name": "Starter"
-          },
-          {
-            "title": "Standard",
-            "description": "Unlock 1-2 years of your future K-Line. See Career & Love trajectories separately.",
-            "label": "Popular",
-            "features_title": "Everything in Starter, plus",
-            "features": [
-              "200 credits, valid for 1 year",
-              "Past + 1-2 Year Future K-Line unlocked",
-              "Career & Love dual-track K-Lines",
-              "Unlimited natal chart calculations",
-              "Monthly planetary transit alerts",
-              "AI-powered chart interpretation",
-              "Personalized daily horoscope",
-              "Community access"
-            ],
-            "interval": "year",
-            "amount": 154800,
-            "currency": "USD",
-            "price": "$129",
-            "original_price": "$169",
+            "price": "$79.9",
             "unit": "/ month",
             "is_featured": true,
-            "tip": "Annual plan. Maximum astrological insight!",
+            "tip": "Billed Monthly",
             "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "Choose Pro",
+              "url": "/pricing"
             },
-            "product_id": "standard-yearly",
-            "product_name": "AstroKline Standard Annual",
-            "credits": 2400,
-            "valid_days": 365,
-            "group": "yearly",
-            "plan_name": "Standard"
+            "product_id": "premium-monthly",
+            "group": "monthly"
           },
           {
-            "title": "Premium",
-            "description": "Full 10+ year K-Line unlocked. Career, Love, Wealth & Health — all dimensions.",
-            "features_title": "Everything in Standard, plus",
+            "title": "Free",
+            "description": "Start free and see how your timing map works.",
+            "features_title": "Includes",
             "features": [
-              "300 credits, valid for 1 year",
-              "Full 10+ Year K-Line unlocked",
-              "Career / Love / Wealth / Health tracks",
-              "Real-time planetary transit alerts",
-              "Priority AI + deep analysis reports",
-              "HD PDF 'Life Book' export (50+ pages)",
-              "Unlimited AI Astrologer deep chat",
-              "Exclusive transit survival guides",
-              "VIP priority support"
+              "Full 100-year K-Line",
+              "Core AI reading",
+              "Basic yearly tooltip insights",
+              "Raw chart data",
+              "2 saved K-Lines for life"
             ],
             "interval": "year",
-            "amount": 226800,
+            "amount": 0,
             "currency": "USD",
-            "price": "$189",
-            "original_price": "$249",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "Free",
+            "button": {
+              "title": "Start Free",
+              "url": "/pricing"
+            },
+            "product_id": "free-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Lite",
+            "description": "Unlock practical guidance and save the charts you want to revisit.",
+            "features_title": "Everything in Free, plus",
+            "features": [
+              "10 saved K-Lines each month",
+              "Career, Wealth, Love, and Health modules",
+              "Annual transit summaries in chart tooltips",
+              "Saved reports in your dashboard",
+              "Upgrade to Pro anytime"
+            ],
+            "interval": "year",
+            "amount": 23880,
+            "currency": "USD",
+            "price": "$19.9",
+            "original_price": "$39.9",
             "unit": "/ month",
             "is_featured": false,
-            "tip": "Annual god-mode. Your complete cosmic destiny.",
+            "tip": "Billed yearly at $238.8",
             "button": {
-              "title": "Get AstroKline",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "Choose Lite",
+              "url": "/pricing"
+            },
+            "product_id": "standard-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Pro",
+            "description": "Full detail, priority access, and the strongest decision tools.",
+            "label": "Most Complete",
+            "features_title": "Everything in Lite, plus",
+            "features": [
+              "30 saved K-Lines / month",
+              "Exact transit detail for every turning year",
+              "Strengths and Blindspots modules",
+              "Click any year for an instant deep reading",
+              "Priority Access to Every New Release",
+              "Export polished PDF reports",
+              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+            ],
+            "interval": "year",
+            "amount": 47880,
+            "currency": "USD",
+            "price": "$39.9",
+            "original_price": "$79.9",
+            "unit": "/ month",
+            "is_featured": true,
+            "tip": "Billed yearly at $478.8",
+            "button": {
+              "title": "Choose Pro",
+              "url": "/pricing"
             },
             "product_id": "premium-yearly",
-            "product_name": "AstroKline Premium Annual",
-            "credits": 3600,
-            "valid_days": 365,
-            "group": "yearly",
-            "plan_name": "Premium"
+            "group": "yearly"
           }
         ]
       }

@@ -14,13 +14,14 @@ if (envConfigs.database_auth_token) {
 export default defineConfig({
   out: envConfigs.db_migrations_out,
   schema: envConfigs.db_schema_file,
-  dialect: envConfigs.database_provider as
-    | 'sqlite'
-    | 'postgresql'
-    | 'mysql'
-    | 'turso'
-    | 'singlestore'
-    | 'gel',
+  dialect: ['d1', 'turso'].includes(envConfigs.database_provider)
+    ? 'sqlite'
+    : (envConfigs.database_provider as
+        | 'sqlite'
+        | 'postgresql'
+        | 'mysql'
+        | 'singlestore'
+        | 'gel'),
   dbCredentials,
   // Migration journal location (used by drizzle-kit migrate)
   migrations:

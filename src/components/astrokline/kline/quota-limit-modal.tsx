@@ -1,7 +1,7 @@
 'use client';
 
-import { Lock, Zap } from 'lucide-react';
 import { trackEvent } from '@/lib/astrokline/track-event';
+import { Lock, Zap } from 'lucide-react';
 
 interface QuotaLimitModalProps {
   isOpen: boolean;
@@ -13,57 +13,102 @@ interface QuotaLimitModalProps {
   onUpgradeClick?: () => void;
 }
 
-export function QuotaLimitModal({ isOpen, onClose, used, total, isLifetime, userTier, onUpgradeClick }: QuotaLimitModalProps) {
+export function QuotaLimitModal({
+  isOpen,
+  onClose,
+  used,
+  total,
+  isLifetime,
+  userTier,
+  onUpgradeClick,
+}: QuotaLimitModalProps) {
   if (!isOpen) return null;
 
+  const normalizedTier = userTier.toUpperCase();
+  const upgradePlan =
+    normalizedTier === 'STANDARD'
+      ? {
+          name: 'Pro',
+          detail:
+            '30 saved K-Lines / month + exact transit detail + premium dashboard tools',
+        }
+      : normalizedTier === 'PREMIUM'
+        ? {
+            name: 'Pro',
+            detail:
+              'You are already on the highest plan. Reach out if you need a higher quota.',
+          }
+        : {
+            name: 'Lite',
+            detail:
+              '10 saved K-Lines / month + career, wealth, love, health AI modules',
+          };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      onClick={onClose}
+    >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
       {/* Modal */}
       <div
-        className="relative max-w-md w-full mx-4 rounded-2xl border border-primary/20 bg-background/95 backdrop-blur-xl shadow-[0_0_60px_rgba(212,175,55,0.1)] p-6"
-        onClick={e => e.stopPropagation()}
+        className="border-primary/20 bg-background/95 relative mx-4 w-full max-w-md rounded-2xl border p-6 shadow-[0_0_60px_rgba(212,175,55,0.1)] backdrop-blur-xl"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Icon */}
-        <div className="flex justify-center mb-4">
-          <div className="w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
-            <Lock className="w-6 h-6 text-primary" />
+        <div className="mb-4 flex justify-center">
+          <div className="bg-primary/10 border-primary/30 flex h-14 w-14 items-center justify-center rounded-full border">
+            <Lock className="text-primary h-6 w-6" />
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-center text-foreground mb-2">
+        <h3 className="text-foreground mb-2 text-center text-xl font-bold">
           Query Limit Reached
         </h3>
 
         {/* Status */}
-        <p className="text-center text-sm text-muted-foreground mb-6">
-          {userTier} plan · {used}/{total} used{isLifetime ? ' (lifetime)' : ' (this month)'}
+        <p className="text-muted-foreground mb-6 text-center text-sm">
+          {userTier} plan · {used}/{total} used
+          {isLifetime ? ' (lifetime)' : ' (this month)'}
         </p>
 
         {/* Upgrade card */}
-        <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Zap className="w-4 h-4 text-primary" />
-            <span className="font-bold text-sm text-foreground">Standard Plan</span>
+        <div className="border-primary/20 bg-primary/5 mb-4 rounded-xl border p-4">
+          <div className="mb-2 flex items-center gap-2">
+            <Zap className="text-primary h-4 w-4" />
+            <span className="text-foreground text-sm font-bold">
+              {upgradePlan.name} Plan
+            </span>
           </div>
-          <p className="text-xs text-muted-foreground mb-3">10 queries/month + full analysis modules</p>
-          {onUpgradeClick ? (
+          <p className="text-muted-foreground mb-3 text-xs">
+            {upgradePlan.detail}
+          </p>
+          {normalizedTier === 'PREMIUM' ? (
             <button
+              type="button"
+              onClick={onClose}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-full py-2.5 text-center text-sm font-bold transition-all"
+            >
+              Got It
+            </button>
+          ) : onUpgradeClick ? (
+            <button
+              type="button"
               onClick={() => {
                 trackEvent('premium_cta_click', { source: 'quota_modal' });
                 onUpgradeClick();
               }}
-              className="block w-full py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-bold text-center hover:bg-primary/90 transition-all"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-full py-2.5 text-center text-sm font-bold transition-all"
             >
               Upgrade Now
             </button>
           ) : (
             <a
-              href="/#pricing"
-              className="block w-full py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-bold text-center hover:bg-primary/90 transition-all"
+              href="/pricing"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-full py-2.5 text-center text-sm font-bold transition-all"
             >
               Upgrade Now
             </a>
@@ -72,8 +117,9 @@ export function QuotaLimitModal({ isOpen, onClose, used, total, isLifetime, user
 
         {/* Close */}
         <button
+          type="button"
           onClick={onClose}
-          className="w-full py-2 text-sm text-muted-foreground hover:text-foreground transition-colors text-center"
+          className="text-muted-foreground hover:text-foreground w-full py-2 text-center text-sm transition-colors"
         >
           Maybe Later
         </button>

@@ -1,17 +1,24 @@
 import { NextResponse } from 'next/server';
-import { getSignUser } from '@/shared/models/user';
+
 import { generateShareToken, toggleKlinePublic } from '@/shared/models/kline';
+import { getSignUser } from '@/shared/models/user';
 
 export async function POST(req: Request) {
   try {
     const user = await getSignUser();
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
     }
 
     const { klineId, action } = await req.json();
     if (!klineId) {
-      return NextResponse.json({ error: 'klineId is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'klineId is required' },
+        { status: 400 }
+      );
     }
 
     if (action === 'disable') {
@@ -29,6 +36,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, data: { token, shareUrl } });
   } catch (error: any) {
     console.error('Share error:', error);
-    return NextResponse.json({ error: error.message || 'Share failed' }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || 'Share failed' },
+      { status: 500 }
+    );
   }
 }

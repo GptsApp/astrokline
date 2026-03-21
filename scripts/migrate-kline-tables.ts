@@ -55,7 +55,7 @@ async function main() {
   await sql.end();
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error('Migration failed:', err);
   process.exit(1);
 });

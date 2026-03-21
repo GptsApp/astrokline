@@ -600,3 +600,93 @@ export const chatMessage = table(
     index('idx_chat_message_user_id').on(table.userId, table.status),
   ]
 );
+// --- KLine Management Tables ---
+
+export const userKlines = table(
+  'user_kline',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    isSelf: integer('is_self', { mode: 'boolean' }).default(false).notNull(),
+    label: text('label').notNull().default(''),
+    birthDate: text('birth_date').notNull(),
+    birthTime: text('birth_time'),
+    birthPlace: text('birth_place').notNull(),
+    birthLat: text('birth_lat'),
+    birthLng: text('birth_lng'),
+    birthHash: text('birth_hash').notNull(),
+    klineResult: text('kline_result', { mode: 'json' }),
+    shareToken: text('share_token'),
+    isPublic: integer('is_public', { mode: 'boolean' })
+      .default(false)
+      .notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (t) => [
+    index('idx_user_kline_user_self').on(t.userId, t.isSelf),
+    index('idx_user_kline_user_hash').on(t.userId, t.birthHash),
+  ]
+);
+
+export const userKlineQuota = table('user_kline_quota', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' })
+    .unique(),
+  usedCount: integer('used_count').default(0).notNull(),
+  totalLimit: integer('total_limit').default(2).notNull(),
+  periodStart: integer('period_start', { mode: 'timestamp_ms' })
+    .default(sqliteNowMs)
+    .notNull(),
+  periodEnd: integer('period_end', { mode: 'timestamp_ms' }),
+  lifetimeUsed: integer('lifetime_used').default(0).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' })
+    .default(sqliteNowMs)
+    .notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+    .default(sqliteNowMs)
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+// --- Referral System ---
+
+export const userReferrals = table(
+  'user_referral',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    referrerId: text('referrer_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    referredId: text('referred_id').references(() => user.id, {
+      onDelete: 'set null',
+    }),
+    referralCode: text('referral_code').notNull(),
+    status: text('status').notNull().default('pending'), // pending | completed
+    rewardGranted: integer('reward_granted', { mode: 'boolean' })
+      .default(false)
+      .notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .notNull(),
+  },
+  (t) => [
+    index('idx_referral_code').on(t.referralCode),
+    index('idx_referrer_id').on(t.referrerId),
+  ]
+);

@@ -1,10 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, LineChart, Heart, ArrowRight } from 'lucide-react';
-import { Section } from '@/shared/types/blocks/landing';
-import { cn } from '@/shared/lib/utils';
+import { ArrowRight, Heart, LineChart, Sparkles } from 'lucide-react';
+
 import { Link } from '@/core/i18n/navigation';
+import { cn } from '@/shared/lib/utils';
+import { Section } from '@/shared/types/blocks/landing';
 
 export function ToolCrossLinks({
   section,
@@ -16,8 +17,9 @@ export function ToolCrossLinks({
   const tools = [
     {
       id: 'kline',
-      title: 'Destiny K-Line',
-      description: 'Transform your natal chart into a real-time destiny K-Line map.',
+      title: 'K-Line',
+      description:
+        'Turn your birth-chart data into a personal timing map.',
       icon: LineChart,
       href: '/kline',
       color: 'from-blue-500/20 to-cyan-500/20',
@@ -26,14 +28,15 @@ export function ToolCrossLinks({
     {
       id: 'daily',
       title: 'Daily Horoscope',
-      description: 'AI-powered daily cosmic guidance based on exact planetary transits.',
+      description:
+        'AI-powered daily cosmic guidance based on exact planetary transits.',
       icon: Sparkles,
       href: '/daily',
       color: 'from-amber-500/20 to-orange-500/20',
       iconColor: 'text-amber-400',
     },
     // Ideal Partner hidden until Phase 2 launch
-     // {
+    // {
     //   id: 'ideal-partner',
     //   title: 'Cosmic Soulmate',
     //   description: 'Generate your astrologically ideal partner profile.',
@@ -47,25 +50,31 @@ export function ToolCrossLinks({
   return (
     <section
       id={section?.id || 'cross-links'}
-      className={cn('py-24 bg-background relative overflow-hidden', section?.className, className)}
+      className={cn(
+        'bg-background relative overflow-hidden py-24',
+        section?.className,
+        className
+      )}
     >
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
+        <div className="mb-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Explore Our <span className="text-primary">Advanced AI Tools</span>
+            <h2 className="mb-4 text-3xl font-bold md:text-5xl">
+              Explore our{' '}
+              <span className="text-primary">Advanced AI Tools</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {section?.description || 'Unlock the full potential of your cosmic blueprint with our suite of precision astrology tools.'}
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+              {section?.description ||
+                'Use focused tools for timing, daily guidance, and deeper personal insight.'}
             </p>
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {tools.map((tool, index) => {
             const Icon = tool.icon;
             return (
@@ -78,22 +87,27 @@ export function ToolCrossLinks({
               >
                 <Link
                   href={tool.href}
-                  className="group block relative h-full bg-[#15131A] border border-white/5 hover:border-white/20 rounded-3xl p-8 transition-all hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] overflow-hidden"
+                  className="group relative block h-full overflow-hidden rounded-3xl border border-white/5 bg-[#15131A] p-8 transition-all hover:border-white/20 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
                 >
                   <div
                     className={cn(
-                      "absolute top-0 right-0 w-32 h-32 bg-gradient-to-br rounded-full blur-[50px] opacity-40 group-hover:opacity-80 transition-opacity",
+                      'absolute top-0 right-0 h-32 w-32 rounded-full bg-gradient-to-br opacity-40 blur-[50px] transition-opacity group-hover:opacity-80',
                       tool.color
                     )}
                   />
-                  <div className="relative z-10 flex flex-col h-full">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6">
-                      <Icon className={cn("w-6 h-6", tool.iconColor)} />
+                  <div className="relative z-10 flex h-full flex-col">
+                    <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                      <Icon className={cn('h-6 w-6', tool.iconColor)} />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground mb-3">{tool.title}</h3>
-                    <p className="text-muted-foreground mb-8 flex-grow">{tool.description}</p>
-                    <div className="flex items-center text-sm font-bold text-foreground/80 group-hover:text-foreground transition-colors mt-auto">
-                      Try Now <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <h3 className="text-foreground mb-3 text-xl font-bold">
+                      {tool.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-8 flex-grow">
+                      {tool.description}
+                    </p>
+                    <div className="text-foreground/80 group-hover:text-foreground mt-auto flex items-center text-sm font-bold transition-colors">
+                      Try Now{' '}
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
                 </Link>

@@ -16,7 +16,7 @@ export function getAffiliateManagerWithConfigs(configs: Configs) {
     affiliateManager.addProvider(
       new AffonsoAffiliateProvider({
         affonsoId: configs.affonso_id,
-        cookieDuration: Number(configs.affonso_cookie_duration) ?? 30,
+        cookieDuration: Number(configs.affonso_cookie_duration || 30),
       })
     );
   }

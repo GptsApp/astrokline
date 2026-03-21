@@ -38,15 +38,16 @@ export function SmartIcon({
   if (!iconCache[cacheKey]) {
     iconCache[cacheKey] = lazy(async () => {
       try {
-        const module = await import('lucide-react');
-        const IconComponent = module[lucideName as keyof typeof module];
+        const lucideModule = await import('lucide-react');
+        const IconComponent =
+          lucideModule[lucideName as keyof typeof lucideModule];
         if (IconComponent) {
           return { default: IconComponent as ComponentType<any> };
         } else {
           console.warn(
             `Icon "${lucideName}" (from "${name}") not found in lucide-react, using fallback`
           );
-          return { default: module.HelpCircle as ComponentType<any> };
+          return { default: lucideModule.HelpCircle as ComponentType<any> };
         }
       } catch (error) {
         console.error(`Failed to load lucide-react:`, error);
@@ -64,4 +65,3 @@ export function SmartIcon({
     </Suspense>
   );
 }
-

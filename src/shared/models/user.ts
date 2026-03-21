@@ -75,8 +75,8 @@ export async function getUserByUserIds(userIds: string[]) {
   return result;
 }
 
-export async function getUserInfo() {
-  const signUser = await getSignUser();
+export async function getUserInfo(request?: Request) {
+  const signUser = await getSignUser(request);
 
   return signUser;
 }
@@ -87,17 +87,19 @@ export async function getUserCredits(userId: string) {
   return { remainingCredits };
 }
 
-export async function getSignUser() {
-  const auth = await getAuth();
+export async function getSignUser(request?: Request) {
+  const auth = await getAuth(request);
   const session = await auth.api.getSession({
-    headers: await headers(),
+    headers: request ? new Headers(request.headers) : await headers(),
   });
 
   return session?.user;
 }
 
 export async function isEmailVerified(email: string): Promise<boolean> {
-  const normalized = String(email || '').trim().toLowerCase();
+  const normalized = String(email || '')
+    .trim()
+    .toLowerCase();
   if (!normalized) return false;
 
   const [row] = await db()

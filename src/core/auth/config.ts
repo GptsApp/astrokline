@@ -1,5 +1,6 @@
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { oneTap } from 'better-auth/plugins';
+import { headers } from 'next/headers';
 import { getLocale } from 'next-intl/server';
 
 import { db } from '@/core/db';
@@ -23,13 +24,108 @@ import { grantRoleForNewUser } from '@/shared/services/rbac';
 const recentVerificationEmailSentAt = new Map<string, number>();
 const VERIFICATION_EMAIL_MIN_INTERVAL_MS = 60_000;
 
+function getTrustedOrigins() {
+  const origins = new Set<string>();
+
+  [envConfigs.app_url, envConfigs.auth_url].forEach((origin) => {
+    if (!origin) {
+      return;
+    }
+
+    try {
+      origins.add(new URL(origin).origin);
+    } catch {
+      // ignore malformed env values
+    }
+  });
+
+  [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3001',
+  ].forEach((origin) => origins.add(origin));
+
+  return Array.from(origins);
+}
+
+function getOrigin(value?: string | null) {
+  if (!value) {
+    return '';
+  }
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    return '';
+  }
+}
+
+function isLocalOrigin(origin: string) {
+  if (!origin) {
+    return false;
+  }
+
+  try {
+    const { hostname } = new URL(origin);
+    return hostname === 'localhost' || hostname === '127.0.0.1';
+  } catch {
+    return false;
+  }
+}
+
+async function getServerOriginFromHeaders() {
+  try {
+    const headerStore = await headers();
+    const explicitOrigin = getOrigin(headerStore.get('origin'));
+    if (explicitOrigin) {
+      return explicitOrigin;
+    }
+
+    const forwardedHost =
+      headerStore.get('x-forwarded-host') || headerStore.get('host');
+    if (!forwardedHost) {
+      return '';
+    }
+
+    const forwardedProto =
+      headerStore.get('x-forwarded-proto') ||
+      (forwardedHost.includes('localhost') ||
+      forwardedHost.startsWith('127.0.0.1')
+        ? 'http'
+        : 'https');
+
+    return getOrigin(`${forwardedProto}://${forwardedHost}`);
+  } catch {
+    return '';
+  }
+}
+
+async function resolveAuthBaseUrl(request?: Request) {
+  const requestOrigin = getOrigin(request?.url);
+  if (requestOrigin) {
+    return requestOrigin;
+  }
+
+  const headerOrigin = await getServerOriginFromHeaders();
+  if (headerOrigin) {
+    return headerOrigin;
+  }
+
+  return (
+    getOrigin(envConfigs.auth_url) ||
+    getOrigin(envConfigs.app_url) ||
+    requestOrigin ||
+    'http://localhost:3000'
+  );
+}
+
 // Static auth options - NO database connection
 // This ensures zero database calls during build time
 const authOptions = {
   appName: envConfigs.app_name,
-  baseURL: envConfigs.auth_url,
   secret: envConfigs.auth_secret,
-  trustedOrigins: envConfigs.app_url ? [envConfigs.app_url] : [],
+  trustedOrigins: getTrustedOrigins(),
   user: {
     // Allow persisting custom columns on user table.
     // Without this, better-auth may ignore extra properties during create/update.
@@ -71,14 +167,18 @@ const authOptions = {
 };
 
 // get auth options with configs
-export async function getAuthOptions(configs: Record<string, string>) {
+export async function getAuthOptions(
+  configs: Record<string, string>,
+  request?: Request
+) {
   const emailVerificationEnabled =
     configs.email_verification_enabled === 'true' &&
-    !!(configs.sendflare_api_key || configs.resend_api_key) &&
+    !!configs.resend_api_key &&
     process.env.NODE_ENV !== 'development';
 
   return {
     ...authOptions,
+    baseURL: await resolveAuthBaseUrl(request),
     // Add database connection only when actually needed (runtime)
     database: envConfigs.database_url
       ? drizzleAdapter(db(), {
@@ -241,6 +341,8 @@ export function getDatabaseProvider(
     case 'sqlite':
       return 'sqlite';
     case 'turso':
+      return 'sqlite';
+    case 'd1':
       return 'sqlite';
     case 'postgresql':
       return 'pg';

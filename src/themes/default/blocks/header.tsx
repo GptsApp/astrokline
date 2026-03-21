@@ -8,10 +8,8 @@ import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context
 import { MoonPhaseIndicator } from '@/components/astrokline/ui/moon-phase-indicator';
 import {
   BrandLogo,
-  LocaleSelector,
   SignUser,
   SmartIcon,
-  ThemeToggler,
 } from '@/shared/blocks/common';
 import {
   Accordion,
@@ -291,43 +289,18 @@ export function Header({ header }: { header: HeaderType }) {
                 <MobileMenu closeMenu={() => setIsMobileMenuOpen(false)} />
               )}
 
-              {/* Header right section: theme toggler, locale selector, sign, buttons */}
+              {/* Header right section: sign + primary CTA only */}
               <div className="mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 in-data-[state=active]:flex max-lg:in-data-[state=active]:mt-6 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
                 <div className="flex w-full flex-row items-center gap-4 sm:flex-row sm:gap-6 sm:space-y-0 md:w-fit">
-                  {header.buttons &&
-                    header.buttons.map((button, idx) => (
-                      <Link
-                        key={idx}
-                        href={button.url || ''}
-                        target={button.target || '_self'}
-                        className={cn(
-                          'focus-visible:ring-ring inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
-                          'h-7 px-3 ring-0',
-                          button.variant === 'outline'
-                            ? 'bg-background border-primary ring-foreground/10 hover:bg-muted/50 dark:ring-foreground/15 dark:hover:bg-muted/50 border border-transparent shadow-sm ring-1 shadow-black/15 duration-200'
-                            : 'bg-primary text-primary-foreground hover:bg-primary/90 border-[0.5px] border-white/25 shadow-md ring-1 shadow-black/20 ring-(--ring-color) [--ring-color:color-mix(in_oklab,var(--color-foreground)15%,var(--color-primary))]'
-                        )}
-                      >
-                        {button.icon && (
-                          <SmartIcon
-                            name={button.icon as string}
-                            className="size-4"
-                          />
-                        )}
-                        <span>{button.title}</span>
-                      </Link>
-                    ))}
-
-                  <button 
+                  <button
                     onClick={() => {
-                      open(() => {
-                        window.location.href = '/kline';
-                      });
+                      open();
                     }}
+                    type="button"
                     aria-label="Open Birth Info Form"
                     className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:bg-primary/90 transition-all hover:scale-105"
                   >
-                    Get Your Blueprint
+                    Generate My K-Line
                   </button>
                   <div className="flex-1 md:hidden"></div>
                   {header.show_sign ? (

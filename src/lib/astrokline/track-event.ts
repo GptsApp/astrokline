@@ -24,6 +24,7 @@ export type FunnelEvent =
   | 'pricing_modal_open'
   // Layer 5 – Pricing / Checkout
   | 'pricing_plan_click'
+  | 'pricing_checkout_resume'
   | 'checkout_initiated'
   // Layer 6 – Viral / Share
   | 'share_modal_open'
@@ -36,7 +37,10 @@ export type FunnelEvent =
 
 declare global {
   interface Window {
-    plausible?: (event: string, options?: { props?: Record<string, string | number | boolean> }) => void;
+    plausible?: (
+      event: string,
+      options?: { props?: Record<string, string | number | boolean> }
+    ) => void;
     gtag?: (...args: any[]) => void;
   }
 }

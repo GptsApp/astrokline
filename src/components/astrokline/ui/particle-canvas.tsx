@@ -24,14 +24,14 @@ export function ParticleCanvas({
   particleCount = 60,
   colors = ['#FFF', '#F5EBBA', '#D4AF37'],
   className = '',
-  baseSpeed = 0.2
+  baseSpeed = 0.2,
 }: ParticleCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -41,8 +41,8 @@ export function ParticleCanvas({
     const resizeCanvas = () => {
       const parent = canvas.parentElement;
       if (parent) {
-         canvas.width = parent.clientWidth;
-         canvas.height = parent.clientHeight;
+        canvas.width = parent.clientWidth;
+        canvas.height = parent.clientHeight;
       }
     };
 
@@ -57,14 +57,14 @@ export function ParticleCanvas({
           vx: (Math.random() - 0.5) * baseSpeed,
           vy: (Math.random() - 0.5) * baseSpeed,
           alpha: Math.random() * 0.5 + 0.1,
-          glow: Math.random() * 5 + 2
+          glow: Math.random() * 5 + 2,
         });
       }
     };
 
     const drawParticles = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       particles.forEach((p) => {
         // move
         p.x += p.vx;
@@ -81,10 +81,10 @@ export function ParticleCanvas({
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.globalAlpha = p.alpha;
-        
+
         ctx.shadowBlur = p.glow;
         ctx.shadowColor = p.color;
-        
+
         ctx.fill();
         ctx.closePath();
       });
@@ -109,9 +109,9 @@ export function ParticleCanvas({
   }, [particleCount, colors, baseSpeed]);
 
   return (
-    <canvas 
-      ref={canvasRef} 
-      className={`absolute inset-0 pointer-events-none ${className}`} 
+    <canvas
+      ref={canvasRef}
+      className={`pointer-events-none absolute inset-0 ${className}`}
     />
   );
 }

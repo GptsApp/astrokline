@@ -5,7 +5,7 @@
       "title": "AstroKline",
       "logo": {
         "src": "/images/astrokline-logo.webp",
-        "alt": "AstroKline — AI Astrology Chart & Destiny K-Line Tracker"
+        "alt": "AstroKline logo"
       }
     },
     "nav": {
@@ -15,12 +15,8 @@
           "url": "/#features"
         },
         {
-          "title": "Destiny K-Line",
+          "title": "K-Line",
           "url": "/kline"
-        },
-        {
-          "title": "Daily Horoscope",
-          "url": "/daily"
         },
         {
           "title": "Pricing",
@@ -45,7 +41,7 @@
           "icon": "Sun"
         },
         {
-          "title": "Destiny K-Line",
+          "title": "K-Line",
           "url": "/dashboard/kline",
           "icon": "Activity"
         },
@@ -60,10 +56,10 @@
   "footer": {
     "brand": {
       "title": "AstroKline",
-      "description": "AstroKline is the world's first AI-powered astrology platform that transforms your natal chart into a real-time K-Line destiny map. Decode planetary transits, visualize life trajectories, and navigate your cosmic turning points with Swiss Ephemeris precision.",
+      "description": "AstroKline turns birth-chart data into a simple timing map so you can spot strong periods, weak periods, and turning points.",
       "logo": {
         "src": "/images/astrokline-logo.webp",
-        "alt": "AstroKline — AI Astrology Chart & Destiny K-Line Tracker"
+        "alt": "AstroKline logo"
       }
     },
     "nav": {
@@ -76,12 +72,8 @@
               "url": "/#features"
             },
             {
-              "title": "Destiny K-Line",
+              "title": "K-Line",
               "url": "/kline"
-            },
-            {
-              "title": "Daily Horoscope",
-              "url": "/daily"
             },
             {
               "title": "Pricing",

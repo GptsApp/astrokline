@@ -6,9 +6,9 @@ async function main() {
 
   try {
     await sql`UPDATE "user" SET "email_verified" = true WHERE email = 'support@astrokline.com'`;
-    console.log("Email verified!");
+    console.log('Email verified!');
   } catch (error) {
-    console.error("DB error:", error);
+    console.error('DB error:', error);
   } finally {
     await sql.end();
   }

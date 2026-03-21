@@ -1,12 +1,14 @@
 import { ReactNode } from 'react';
-import { getTranslations } from 'next-intl/server';
-import { redirect } from '@/core/i18n/navigation';
-import { getUserInfo } from '@/shared/models/user';
-import { ConsoleLayout } from '@/shared/blocks/console/layout';
-import { LocaleDetector, TopBanner } from '@/shared/blocks/common';
-import { Header, Footer } from '@/shared/types/blocks/landing';
-import { getThemeLayout } from '@/core/theme';
+import { ReferralClaim } from '@/components/astrokline/shared/referral-claim';
 import { BirthInfoWrapper } from '@/components/astrokline/ui/birth-info-wrapper';
+import { getTranslations } from 'next-intl/server';
+
+import { redirect } from '@/core/i18n/navigation';
+import { getThemeLayout } from '@/core/theme';
+import { LocaleDetector, TopBanner } from '@/shared/blocks/common';
+import { ConsoleLayout } from '@/shared/blocks/console/layout';
+import { getUserInfo } from '@/shared/models/user';
+import { Footer, Header } from '@/shared/types/blocks/landing';
 
 export default async function DashboardLayout({
   children,
@@ -36,8 +38,9 @@ export default async function DashboardLayout({
           title={tDashboard('title')}
           nav={nav}
           bottomNav={bottomNav}
-          className="py-16 md:py-20 bg-background astro-starfield min-h-screen"
+          className="bg-background astro-starfield min-h-screen py-16 md:py-20"
         >
+          <ReferralClaim />
           <LocaleDetector />
           {header.topbanner && header.topbanner.text && (
             <TopBanner

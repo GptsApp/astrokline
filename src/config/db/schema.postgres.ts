@@ -2,12 +2,12 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   pgSchema,
   pgTable,
   text,
   timestamp,
-  jsonb,
-  uuid
+  uuid,
 } from 'drizzle-orm/pg-core';
 
 import { envConfigs } from '@/config';
@@ -562,51 +562,51 @@ export const chatMessage = table(
 
 // --- Astrokline Core Tables ---
 
-export const astrologyProfiles = table(
-  'astrology_profile',
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    userId: text("user_id").notNull().references(() => user.id, { onDelete: 'cascade' }),
-    birthDate: timestamp("birth_date").notNull(),
-    birthTime: text("birth_time"),
-    birthLocation: text("birth_location").notNull(),
-    latitude: text("latitude"),
-    longitude: text("longitude"),
-    sunSign: text("sun_sign"),
-    moonSign: text("moon_sign"),
-    risingSign: text("rising_sign"),
-    lifeStage: text("life_stage"),
-    traits: text("traits").array(),
-    klineData: jsonb("kline_data"),
-    dominantElement: text("dominant_element"),
-    destinyNumber: integer("destiny_number"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
-      .defaultNow()
-      .$onUpdate(() => new Date())
-      .notNull(),
-  }
-);
+export const astrologyProfiles = table('astrology_profile', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  birthDate: timestamp('birth_date').notNull(),
+  birthTime: text('birth_time'),
+  birthLocation: text('birth_location').notNull(),
+  latitude: text('latitude'),
+  longitude: text('longitude'),
+  sunSign: text('sun_sign'),
+  moonSign: text('moon_sign'),
+  risingSign: text('rising_sign'),
+  lifeStage: text('life_stage'),
+  traits: text('traits').array(),
+  klineData: jsonb('kline_data'),
+  dominantElement: text('dominant_element'),
+  destinyNumber: integer('destiny_number'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
 
-export const rawUserPrompts = table(
-  'raw_user_prompt',
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    userId: text("user_id").notNull().references(() => user.id, { onDelete: 'cascade' }),
-    astrologyProfileId: uuid("astrology_profile_id").notNull().references(() => astrologyProfiles.id, { onDelete: 'cascade' }),
-    rawPrompt: text("raw_prompt").notNull(),
-    processedText: text("processed_text"),
-    extractedEntities: jsonb("extracted_entities"),
-    source: text("source").notNull().default('web_form'),
-    status: text("status").notNull().default('pending'),
-    errorMessage: text("error_message"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
-      .defaultNow()
-      .$onUpdate(() => new Date())
-      .notNull(),
-  }
-);
+export const rawUserPrompts = table('raw_user_prompt', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  astrologyProfileId: uuid('astrology_profile_id')
+    .notNull()
+    .references(() => astrologyProfiles.id, { onDelete: 'cascade' }),
+  rawPrompt: text('raw_prompt').notNull(),
+  processedText: text('processed_text'),
+  extractedEntities: jsonb('extracted_entities'),
+  source: text('source').notNull().default('web_form'),
+  status: text('status').notNull().default('pending'),
+  errorMessage: text('error_message'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
 
 // --- KLine Management Tables ---
 
@@ -640,26 +640,23 @@ export const userKlines = table(
   ]
 );
 
-export const userKlineQuota = table(
-  'user_kline_quota',
-  {
-    id: uuid('id').primaryKey().defaultRandom(),
-    userId: text('user_id')
-      .notNull()
-      .references(() => user.id, { onDelete: 'cascade' })
-      .unique(),
-    usedCount: integer('used_count').default(0).notNull(),
-    totalLimit: integer('total_limit').default(2).notNull(),
-    periodStart: timestamp('period_start').defaultNow().notNull(),
-    periodEnd: timestamp('period_end'),
-    lifetimeUsed: integer('lifetime_used').default(0).notNull(),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at')
-      .defaultNow()
-      .$onUpdate(() => new Date())
-      .notNull(),
-  }
-);
+export const userKlineQuota = table('user_kline_quota', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' })
+    .unique(),
+  usedCount: integer('used_count').default(0).notNull(),
+  totalLimit: integer('total_limit').default(2).notNull(),
+  periodStart: timestamp('period_start').defaultNow().notNull(),
+  periodEnd: timestamp('period_end'),
+  lifetimeUsed: integer('lifetime_used').default(0).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
 
 // --- Referral System ---
 
@@ -670,8 +667,9 @@ export const userReferrals = table(
     referrerId: text('referrer_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
-    referredId: text('referred_id')
-      .references(() => user.id, { onDelete: 'set null' }),
+    referredId: text('referred_id').references(() => user.id, {
+      onDelete: 'set null',
+    }),
     referralCode: text('referral_code').notNull(),
     status: text('status').notNull().default('pending'), // pending | completed
     rewardGranted: boolean('reward_granted').default(false).notNull(),
@@ -682,4 +680,3 @@ export const userReferrals = table(
     index('idx_referrer_id').on(t.referrerId),
   ]
 );
-

@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,38 +47,39 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root, .dark {
-  --background: #0A0A0A;
-  --foreground: #FFFFFF;
-  --card: #15131A;
-  --card-foreground: #FFFFFF;
-  --popover: #0A0A0A;
-  --popover-foreground: #FFFFFF;
-  --primary: #D4AF37;
-  --primary-foreground: #0A0A0A;
-  --secondary: #1F1F22;
-  --secondary-foreground: #FFFFFF;
-  --muted: #1F1F22;
-  --muted-foreground: #A1A1AA;
-  --accent: #1F1F22;
-  --accent-foreground: #FFFFFF;
+:root,
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --card: #15131a;
+  --card-foreground: #ffffff;
+  --popover: #0a0a0a;
+  --popover-foreground: #ffffff;
+  --primary: #d4af37;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1f1f22;
+  --secondary-foreground: #ffffff;
+  --muted: #1f1f22;
+  --muted-foreground: #a1a1aa;
+  --accent: #1f1f22;
+  --accent-foreground: #ffffff;
   --destructive: #7f1d1d;
-  --border: #27272A;
-  --input: #27272A;
-  --ring: #D4AF37;
-  --chart-1: #D4AF37;
-  --chart-2: #2DD4BF;
-  --chart-3: #0369A1;
-  --chart-4: #8B7321;
-  --chart-5: #F5EBBA;
-  --sidebar: #0A0A0A;
-  --sidebar-foreground: #FFFFFF;
-  --sidebar-primary: #D4AF37;
-  --sidebar-primary-foreground: #0A0A0A;
-  --sidebar-accent: #1F1F22;
-  --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #27272A;
-  --sidebar-ring: #D4AF37;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #d4af37;
+  --chart-1: #d4af37;
+  --chart-2: #2dd4bf;
+  --chart-3: #0369a1;
+  --chart-4: #8b7321;
+  --chart-5: #f5ebba;
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #d4af37;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1f1f22;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #d4af37;
   --radius: 0.5rem;
 }
 
@@ -86,7 +87,10 @@
   * {
     @apply border-border;
   }
-  *:focus, *:focus-visible, *.focus, .recharts-wrapper *:focus {
+  *:focus,
+  *:focus-visible,
+  *.focus,
+  .recharts-wrapper *:focus {
     outline: none !important;
     box-shadow: none !important;
   }
@@ -110,9 +114,18 @@
   visibility: hidden !important;
 }
 
-div[class*="cl-internal-"][class*="badge"],
-div[class*="cl-internal-"][class*="developmentBox"] {
+div[class*='cl-internal-'][class*='badge'],
+div[class*='cl-internal-'][class*='developmentBox'] {
   display: none !important;
+}
+
+/* Scrollbar-none utility for drum pickers */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 /* Hero fade-in-up animation (CSS-only, no JS dependency for LCP) */

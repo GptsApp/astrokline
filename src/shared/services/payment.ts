@@ -1,6 +1,5 @@
 import {
   CreemProvider,
-  InfiniProvider,
   PaymentManager,
   PayPalProvider,
   StripeProvider,
@@ -44,7 +43,8 @@ import {
 export function getPaymentServiceWithConfigs(configs: Configs) {
   const paymentManager = new PaymentManager();
 
-  const defaultProvider = configs.default_payment_provider;
+  const configuredDefaultProvider = configs.default_payment_provider;
+  let hasExplicitDefaultProvider = false;
 
   // add stripe provider
   if (configs.stripe_enabled === 'true') {
@@ -65,8 +65,9 @@ export function getPaymentServiceWithConfigs(configs: Configs) {
         allowedPaymentMethods: allowedPaymentMethods as string[],
         allowPromotionCodes: configs.stripe_allow_promotion_codes === 'true',
       }),
-      defaultProvider === 'stripe'
+      configuredDefaultProvider === 'stripe'
     );
+    hasExplicitDefaultProvider ||= configuredDefaultProvider === 'stripe';
   }
 
   // add creem provider
@@ -78,8 +79,9 @@ export function getPaymentServiceWithConfigs(configs: Configs) {
           configs.creem_environment === 'production' ? 'production' : 'sandbox',
         signingSecret: configs.creem_signing_secret,
       }),
-      defaultProvider === 'creem'
+      configuredDefaultProvider === 'creem'
     );
+    hasExplicitDefaultProvider ||= configuredDefaultProvider === 'creem';
   }
 
   // add paypal provider
@@ -94,24 +96,12 @@ export function getPaymentServiceWithConfigs(configs: Configs) {
             ? 'production'
             : 'sandbox',
       }),
-      defaultProvider === 'paypal'
+      configuredDefaultProvider === 'paypal'
     );
+    hasExplicitDefaultProvider ||= configuredDefaultProvider === 'paypal';
   }
-
-  // add infini provider
-  if (configs.infini_enabled === 'true') {
-    paymentManager.addProvider(
-      new InfiniProvider({
-        keyId: configs.infini_key_id,
-        secretKey: configs.infini_secret_key,
-        webhookSecret: configs.infini_webhook_secret,
-        environment:
-          configs.infini_environment === 'production'
-            ? 'production'
-            : 'sandbox',
-      }),
-      defaultProvider === 'infini'
-    );
+  if (!hasExplicitDefaultProvider) {
+    paymentManager.getDefaultProvider();
   }
 
   return paymentManager;
@@ -129,7 +119,7 @@ export async function getPaymentService(
   configs?: Configs
 ): Promise<PaymentManager> {
   if (!configs) {
-    configs = await getAllConfigs();
+    configs = await getAllConfigs({ fresh: true });
   }
   paymentService = getPaymentServiceWithConfigs(configs);
 
@@ -158,7 +148,10 @@ export async function handleCheckoutSuccess({
   }
 
   // Only process orders in CREATED or PENDING status
-  if (order.status !== OrderStatus.CREATED && order.status !== OrderStatus.PENDING) {
+  if (
+    order.status !== OrderStatus.CREATED &&
+    order.status !== OrderStatus.PENDING
+  ) {
     console.log(`Order ${orderNo} status is ${order.status}, not processing`);
     return;
   }

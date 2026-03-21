@@ -33,5 +33,14 @@
     "next.config.mjs",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", "out", "dist"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "dist",
+    "scripts/**",
+    "test*.ts",
+    "test*.js",
+    "refactor_kline.js"
+  ]
 }

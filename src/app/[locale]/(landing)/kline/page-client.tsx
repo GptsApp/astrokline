@@ -1,232 +1,187 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { BarChart3, Star, Brain, Clock } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
-import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
-import { LifeRadar } from '@/components/astrokline/kline/life-radar';
-import { ReadingSummary } from '@/components/astrokline/kline/reading-summary';
-import { CurrentEnergy } from '@/components/astrokline/kline/current-energy';
-import { Next30Days } from '@/components/astrokline/kline/next-30-days';
-import { ReportFooter } from '@/components/astrokline/kline/report-footer';
-import { UpgradeBanner } from '@/components/astrokline/shared/upgrade-banner';
-import { CosmicPersonalityProfile } from '@/components/astrokline/kline/cosmic-personality-profile';
-import { useBirthInfoModal, getSavedBirthData, saveKlineResult } from '@/components/astrokline/ui/birth-info-context';
-// AstrologyLoader removed — using lightweight spinner instead
-import { ChartSettingsPanel } from '@/components/astrokline/kline/chart-settings-panel';
-import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
+import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
-import { CrossLinkCard } from '@/components/astrokline/shared/cross-link-card';
-import { Lock, Sparkles, Eye, ChevronDown, ChevronUp, Sun, Moon, ArrowUp } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
-import { trackEvent } from '@/lib/astrokline/track-event';
-import {
-  ToolFeatures,
-  ToolHowItWorks,
-  ToolAudience,
-  ToolCrossLinks
-} from '@/themes/default/blocks';
-import { AstroFaq } from '@/themes/default/blocks/astro-faq';
-import { KLINE_SEO_CONTENT } from '@/lib/astrokline/kline-seo-data';
-import { TrustBadge } from '@/components/astrokline/ui/trust-badge';
-import { TrustEvidenceBar } from '@/components/astrokline/kline/trust-evidence-bar';
-import { AiPersonalityInsight } from '@/components/astrokline/kline/ai-personality-insight';
-import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
 import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
-import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
+// Removed unused lock / Star import
+import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
+import { ReportFooter } from '@/components/astrokline/kline/report-footer';
+import { ReportSection } from '@/components/astrokline/kline/report-section';
 import {
-  MOCK_USER_PROFILE,
+  getSavedBirthData,
+  getSavedKlineResult,
+  saveKlineResult,
+  useBirthInfoModal,
+  type BirthData,
+} from '@/components/astrokline/ui/birth-info-context';
+import { PageBreadcrumb } from '@/components/astrokline/ui/page-breadcrumb';
+import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
+import {
   generateKlineData,
   MOCK_TRANSIT_DETAILS,
-  MOCK_DESTINY_READING,
-  MOCK_NEXT_30_DAYS,
-  MOCK_RADAR_DATA,
+  MOCK_USER_PROFILE,
+  type UserProfile,
 } from '@/lib/astrokline/mock-astrology-data';
-import type { BirthData } from '@/components/astrokline/ui/birth-info-context';
+import { apiToProfile } from '@/lib/astrokline/profile-transform';
+import { trackEvent } from '@/lib/astrokline/track-event';
+import {
+  ArrowUp,
+  Award,
+  BarChart3,
+  Binary,
+  Brain,
+  Clock,
+  Cpu,
+  Database,
+  GraduationCap,
+  Layers,
+  Lock,
+  SearchCode,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  TrendingDown,
+  TrendingUp,
+} from 'lucide-react';
 
-/**
- * Convert natal chart API response to UserProfile for ChartHero
- */
-function apiToProfile(apiData: any, birthData: BirthData): UserProfile {
-  const planets = apiData.planets || [];
-  const findPlanet = (name: string) => {
-    const p = planets.find((pl: any) => pl.name === name);
-    if (!p) return { sign: "Unknown", degree: 0, minute: 0, house: 1 };
-    const deg = Math.floor(p.signDegree);
-    const min = Math.round((p.signDegree - deg) * 60);
-    return { sign: p.sign, degree: deg, minute: min, house: p.house || 1 };
-  };
-
-  const asc = apiData.ascendant || { sign: "Unknown", degree: 0 };
-  const ascDeg = Math.floor(asc.degree);
-  const ascMin = Math.round((asc.degree - ascDeg) * 60);
-
-  // Calculate element percentages from planet signs
-  const elementMap: Record<string, string> = {
-    Aries: "fire", Taurus: "earth", Gemini: "air", Cancer: "water",
-    Leo: "fire", Virgo: "earth", Libra: "air", Scorpio: "water",
-    Sagittarius: "fire", Capricorn: "earth", Aquarius: "air", Pisces: "water",
-  };
-  const modalityMap: Record<string, string> = {
-    Aries: "cardinal", Taurus: "fixed", Gemini: "mutable", Cancer: "cardinal",
-    Leo: "fixed", Virgo: "mutable", Libra: "cardinal", Scorpio: "fixed",
-    Sagittarius: "mutable", Capricorn: "cardinal", Aquarius: "fixed", Pisces: "mutable",
-  };
-
-  const elCounts = { fire: 0, earth: 0, air: 0, water: 0 };
-  const modCounts = { cardinal: 0, fixed: 0, mutable: 0 };
-  const total = planets.length || 1;
-
-  planets.forEach((p: any) => {
-    const el = elementMap[p.sign];
-    const mod = modalityMap[p.sign];
-    if (el) (elCounts as any)[el]++;
-    if (mod) (modCounts as any)[mod]++;
-  });
-
-  // Convert to percentages
-  const elements = {
-    fire: Math.round((elCounts.fire / total) * 100),
-    earth: Math.round((elCounts.earth / total) * 100),
-    air: Math.round((elCounts.air / total) * 100),
-    water: Math.round((elCounts.water / total) * 100),
-  };
-  const modalities = {
-    cardinal: Math.round((modCounts.cardinal / total) * 100),
-    fixed: Math.round((modCounts.fixed / total) * 100),
-    mutable: Math.round((modCounts.mutable / total) * 100),
-  };
-
-  // Simple life path number from birthdate
-  const dateDigits = birthData.date.replace(/-/g, "").split("").map(Number);
-  let lpn = dateDigits.reduce((a, b) => a + b, 0);
-  while (lpn > 9 && lpn !== 11 && lpn !== 22) {
-    lpn = String(lpn).split("").map(Number).reduce((a, b) => a + b, 0);
-  }
-
-  return {
-    name: birthData.name,
-    birthDate: birthData.date,
-    birthTime: birthData.timeSlot === "unknown" ? "12:00" : birthData.timeSlot.split("-")[0],
-    birthLocation: birthData.location,
-    sun: findPlanet("Sun"),
-    moon: findPlanet("Moon"),
-    rising: { sign: asc.sign, degree: ascDeg, minute: ascMin, house: 1, name: "Ascendant" },
-    planets: planets.map((p: any) => ({
-      sign: p.sign,
-      degree: Math.floor(p.signDegree),
-      minute: Math.round((p.signDegree - Math.floor(p.signDegree)) * 60),
-      house: p.house || 1,
-      name: p.name
-    })),
-    elements,
-    modalities,
-    lifePathNumber: lpn,
-    overallAverageScore: 82,
-  };
-}
+import { useRouter } from '@/core/i18n/navigation';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/shared/components/ui/accordion';
+import { cn } from '@/shared/lib/utils';
 
 // ─── Floating Mini Nav ───
 function FloatingNav() {
+  const [activeId, setActiveId] = useState<string>('destiny-summary');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-30% 0px -70% 0px' }
+    );
+
+    const sections = [
+      'destiny-summary',
+      'kline-hero',
+      'life-stages',
+      'natal-chart',
+      'ai-insight',
+    ];
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   const items = [
-    { id: 'kline-hero', icon: BarChart3, label: 'Chart' },
-    { id: 'natal-chart', icon: Star, label: 'Natal Chart' },
+    { id: 'destiny-summary', icon: ArrowUp, label: 'Profile' },
+    { id: 'kline-hero', icon: BarChart3, label: 'K-Line' },
+    { id: 'life-stages', icon: Layers, label: 'Stages' },
+    { id: 'natal-chart', icon: Star, label: 'Natal' },
     { id: 'ai-insight', icon: Brain, label: 'AI Reading' },
-    { id: 'daily-link', icon: Clock, label: 'Transits' },
   ];
   return (
-    <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-2">
-      {items.map((item) => (
-        <button
-          key={item.id}
-          onClick={() => scrollTo(item.id)}
-          className="group flex items-center gap-2 p-2 rounded-xl bg-[#0A0A0F]/80 border border-white/10 hover:border-primary/30 backdrop-blur-md transition-all hover:scale-105"
-          title={item.label}
-        >
-          <item.icon className="w-4 h-4 text-white/40 group-hover:text-primary transition-colors" />
-          <span className="text-[10px] text-white/0 group-hover:text-white/60 transition-all w-0 group-hover:w-14 overflow-hidden whitespace-nowrap">
-            {item.label}
-          </span>
-        </button>
-      ))}
+    <div className="fixed top-1/2 right-3 z-50 hidden -translate-y-1/2 flex-col gap-2 lg:flex">
+      {items.map((item) => {
+        const isActive = activeId === item.id;
+        return (
+          <button
+            key={item.id}
+            onClick={() => scrollTo(item.id)}
+            className={cn(
+              'group flex items-center gap-2 rounded-xl border p-2 backdrop-blur-md transition-all hover:scale-105',
+              isActive
+                ? 'bg-primary/20 border-primary/50 shadow-[0_0_15px_rgba(212,175,55,0.3)]'
+                : 'hover:border-primary/30 border-white/10 bg-[#0A0A0F]/80'
+            )}
+            title={item.label}
+          >
+            <item.icon
+              className={cn(
+                'h-4 w-4 transition-colors',
+                isActive
+                  ? 'text-primary'
+                  : 'group-hover:text-primary text-white/40'
+              )}
+            />
+            <span
+              className={cn(
+                'overflow-hidden text-[10px] whitespace-nowrap transition-all',
+                isActive
+                  ? 'text-primary/90 w-16 px-1 opacity-100'
+                  : 'w-0 text-white/0 opacity-0 group-hover:w-16 group-hover:px-1 group-hover:text-white/60 group-hover:opacity-100'
+              )}
+            >
+              {item.label}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
-// ─── Expandable Full Premium Lock (used only for landing page) ───
-function PremiumGate({ label, isPremium, isUserData, onEnterBirthInfo, children }: { label: string; isPremium: boolean; isUserData?: boolean; onEnterBirthInfo?: () => void; children: React.ReactNode }) {
-  if (isPremium) {
-    return <>{children}</>;
-  }
+type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';
 
-  return (
-    <div className="relative overflow-hidden group">
-      <div className="blur-[10px] pointer-events-none select-none opacity-40 transition-all duration-500 group-hover:blur-[12px] group-hover:opacity-30">
-        {children}
-      </div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-background/20 backdrop-blur-[1px]">
-        <div className="flex flex-col items-center gap-4 px-8 py-6 rounded-3xl bg-background/90 border border-primary/20 shadow-[0_0_40px_rgba(212,175,55,0.15)] max-w-sm text-center">
-          <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.2)]">
-            <Lock className="w-5 h-5 text-primary" />
-          </div>
-          <h4 className="text-lg font-bold text-foreground">{label}</h4>
-          
-          {!isUserData ? (
-            <>
-              <p className="text-sm text-muted-foreground mb-2">Enter your birth details to unlock your personalized analysis.</p>
-              <button
-                onClick={onEnterBirthInfo}
-                className="w-full py-3 rounded-full bg-primary/10 border border-primary/40 text-primary text-sm font-bold hover:bg-primary/20 hover:scale-105 transition-all shadow-[0_0_20px_rgba(212,175,55,0.1)] flex items-center justify-center gap-2"
-              >
-                <Sparkles className="w-4 h-4" /> Enter Birth Info
-              </button>
-            </>
-          ) : (
-            <>
-              <p className="text-sm text-muted-foreground mb-2">Upgrade to Premium to unlock your full cosmic blueprint.</p>
-              <a
-                href="/#pricing"
-                className="w-full py-3 rounded-full bg-primary/10 border border-primary/40 text-primary text-sm font-bold hover:bg-primary/20 hover:scale-105 transition-all shadow-[0_0_20px_rgba(212,175,55,0.1)] flex items-center justify-center gap-2"
-              >
-                Unlock Analysis
-              </a>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
+export function KlineClient({
+  userTier,
+  isLoggedIn = false,
+}: {
+  userTier: string;
+  isLoggedIn?: boolean;
+}) {
+  const router = useRouter();
+  const tier: AppTier = !isLoggedIn
+    ? 'GUEST'
+    : userTier === 'PREMIUM'
+      ? 'PRO'
+      : userTier === 'STANDARD'
+        ? 'LITE'
+        : 'FREE';
 
-export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string; isLoggedIn?: boolean }) {
-  // All users get 100-year K-Line free
-  const isPremium = true; // always treat as premium for content visibility
-  const [profile, setProfile] = useState<UserProfile>(MOCK_USER_PROFILE);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isUserData, setIsUserData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
-  const [showChartDetails, setShowChartDetails] = useState(true);
+  const [selectedYear, setSelectedYear] = useState<number | undefined>(
+    undefined
+  );
   const { open: openBirthModal } = useBirthInfoModal();
 
   // Dynamically generate 100-year Kline data based on actual birth year (fallback to 1990)
-  const birthYear = parseInt(profile.birthDate?.split('-')[0] || '1990', 10);
+  const birthYear = parseInt(profile?.birthDate?.split('-')[0] || '1990', 10);
   const klineData = useMemo(() => generateKlineData(birthYear), [birthYear]);
 
-  // Content States for AI Generator
-  const [destinyReading, setDestinyReading] = useState(MOCK_DESTINY_READING);
-  const [radarData, setRadarData] = useState(MOCK_RADAR_DATA);
-  const [next30Days, setNext30Days] = useState(MOCK_NEXT_30_DAYS);
   const [transitDetails, setTransitDetails] = useState(MOCK_TRANSIT_DETAILS);
 
   // Registration nudge & quota modal state
   const [showNudge, setShowNudge] = useState(false);
   const [showQuotaModal, setShowQuotaModal] = useState(false);
-  const [quotaInfo, setQuotaInfo] = useState({ used: 0, total: 2, isLifetime: true, userTier: 'FREE' });
-  const [currentBirthData, setCurrentBirthData] = useState<BirthData | null>(null);
+  const [quotaInfo, setQuotaInfo] = useState({
+    used: 0,
+    total: 2,
+    isLifetime: true,
+    userTier: 'FREE',
+  });
   const [showPricingInline, setShowPricingInline] = useState(false);
 
   // Open inline pricing modal
@@ -235,272 +190,469 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
     setShowPricingInline(true);
   };
 
-  const handleCalculateBirthData = useCallback(async (birthData: BirthData) => {
-    setIsLoading(true);
+  const handleCalculateBirthData = useCallback(
+    async (birthData: BirthData) => {
+      setIsLoading(true);
+      let shouldResetLoading = true;
 
-    try {
-      // Parse date
-      const [year, month, day] = birthData.date.split('-').map(Number);
-      const timezone = -(new Date().getTimezoneOffset() / 60);
+      try {
+        // Parse date
+        const [year, month, day] = birthData.date.split('-').map(Number);
+        const timezone = -(new Date().getTimezoneOffset() / 60);
 
-      const response = await fetch('/api/astrology/natal-chart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          year, month, day,
+        const profileToSave = {
+          year,
+          month,
+          day,
           timeSlot: birthData.timeSlot,
           timezone,
           latitude: birthData.lat,
           longitude: birthData.lon,
-        }),
-      });
+        };
 
-      const result = await response.json();
+        // Fetch actual data
+        const response = await fetch('/api/astrology/natal-chart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(profileToSave),
+        });
 
-      if (result.success && result.data) {
-        const newProfile = apiToProfile(result.data, birthData);
-        setProfile(newProfile);
-        setIsUserData(true);
-        setCurrentBirthData(birthData);
-        trackEvent('kline_result_loaded');
+        const result = await response.json();
 
-        // Auto-save for logged-in users
-        if (isLoggedIn) {
-          fetch('/api/kline/save', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              isSelf: true,
-              label: birthData.name || 'Me',
-              birthDate: birthData.date,
-              birthTime: birthData.timeSlot,
-              birthPlace: birthData.location,
-              birthLat: String(birthData.lat),
-              birthLng: String(birthData.lon),
-              klineResult: { profile: newProfile, rawApiData: result.data },
-            }),
-          }).catch(err => console.error('Auto-save error:', err));
-        } else {
-          // Cache result to localStorage for later migration after signup
-          saveKlineResult({ profile: newProfile, rawApiData: result.data, birthData });
-          // Show registration nudge after 3 seconds for non-logged-in users
-          setTimeout(() => setShowNudge(true), 3000);
-        }
+        if (result.success && result.data) {
+          const newProfile = {
+            ...apiToProfile(result.data, birthData),
+            overallAverageScore:
+              result.reportData?.overallAverageScore ?? 82,
+          };
+          const persistedResult = {
+            profile: newProfile,
+            birthData,
+          };
+          const cachedResult = {
+            ...persistedResult,
+            rawApiData: result.data,
+            klineData: result.reportData?.klineData,
+            transitDetails: result.reportData?.transitDetails,
+          };
 
-        // Fetch AI readings in background
-        Promise.all([
-          fetch('/api/astrology/destiny-reading', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ profile: newProfile })
-          }).then(res => res.json()),
-          fetch('/api/astrology/daily-transit', {
-             method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({ profile: newProfile })
-          }).then(res => res.json())
-        ]).then(([destinyRes, transitRes]) => {
-           if (destinyRes.success && destinyRes.data) {
-             setRadarData(destinyRes.data.radarData);
-             setDestinyReading(destinyRes.data.destinyReading);
-             setNext30Days(destinyRes.data.next30Days);
-           }
-           if (transitRes.success && transitRes.data) {
-             const year = new Date().getFullYear();
-             setTransitDetails({ [year]: transitRes.data.transits });
-           }
-        }).catch(err => console.error("AI Generation Error: ", err));
-
-      } else {
-        console.error("API Error:", result.error);
-      }
-    } catch (err) {
-      console.error("Failed to fetch natal chart:", err);
-    } finally {
-      setIsLoading(false);
-      setTimeout(() => document.getElementById('kline-hero')?.scrollIntoView({ behavior: 'smooth' }), 200);
-    }
-  }, []);
-
-  // Load from cache on mount, or auto-open birth modal if no data
-  useEffect(() => {
-    const saved = getSavedBirthData();
-    if (saved) {
-      const loadCached = async () => {
-        try {
-          const [year, month, day] = saved.date.split('-').map(Number);
-          const timezone = -(new Date().getTimezoneOffset() / 60);
-          const response = await fetch('/api/astrology/natal-chart', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              year, month, day,
-              timeSlot: saved.timeSlot,
-              timezone,
-              latitude: saved.lat,
-              longitude: saved.lon,
-            }),
-          });
-          const result = await response.json();
-          if (result.success && result.data) {
-            const newProfile = apiToProfile(result.data, saved);
-            setProfile(newProfile);
-            setIsUserData(true);
-            setCurrentBirthData(saved);
+          // The result page hydrates from localStorage first, so persist the
+          // freshly generated chart before we navigate there.
+          saveKlineResult(cachedResult);
+          const hydratedResult = getSavedKlineResult();
+          if (!hydratedResult?.profile) {
+            throw new Error('Failed to persist generated K-Line result');
           }
-        } catch (err) {
-          console.error('Cache restore error:', err);
+          setProfile(newProfile);
+          trackEvent('kline_result_loaded');
+
+          // Auto-save for logged-in users
+          if (isLoggedIn) {
+            fetch('/api/kline/save', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                isSelf: true,
+                label: birthData.name || 'Me',
+                birthDate: birthData.date,
+                birthTime: birthData.timeSlot,
+                birthPlace: birthData.location,
+                birthLat: String(birthData.lat),
+                birthLng: String(birthData.lon),
+                klineResult: cachedResult,
+              }),
+            }).catch((err) => console.error('Auto-save error:', err));
+          } else {
+            // Show registration nudge after 3 seconds for non-logged-in users
+            setTimeout(() => setShowNudge(true), 3000);
+          }
+
+          // Removed unnecessary and slow Destiny AI calculations which are hidden on the page.
+          shouldResetLoading = false;
+          router.replace('/kline/result');
+          return;
+        } else {
+          console.error('API Error:', result.error);
         }
-      };
-      loadCached();
-    } else {
-      // No saved data — auto-open birth info modal after brief delay
+      } catch (err) {
+        console.error('Failed to fetch natal chart:', err);
+      } finally {
+        if (shouldResetLoading) {
+          setIsLoading(false);
+          setTimeout(
+            () =>
+              document
+                .getElementById('kline-hero')
+                ?.scrollIntoView({ behavior: 'smooth' }),
+            200
+          );
+        }
+      }
+    },
+    [isLoggedIn, router]
+  );
+
+  // Auto-open modal if empty
+  useEffect(() => {
+    const savedBirth = getSavedBirthData();
+    if (!savedBirth) {
       const t = setTimeout(() => openBirthModal(handleCalculateBirthData), 500);
       return () => clearTimeout(t);
     }
-  }, []);
+  }, [openBirthModal, handleCalculateBirthData]);
 
   const handleGetMyKline = () => {
     openBirthModal(handleCalculateBirthData);
   };
 
   return (
-    <div className="min-h-screen bg-background astro-starfield">
+    <div className="bg-background astro-starfield min-h-screen">
+      {/* ── Global Page Breadcrumb ── */}
+      <div className="relative z-50 mx-auto w-full max-w-7xl px-4 pt-24 md:px-8">
+        <PageBreadcrumb className="mb-0" />
+      </div>
 
-      {/* ===== LIGHTWEIGHT LOADING SPINNER ===== */}
+      {/* ===== 3D SPATIAL LOADER ===== */}
       {isLoading && (
-        <div className="fixed inset-0 z-[200] bg-background/90 backdrop-blur-xl flex flex-col items-center justify-center gap-4">
-          <div className="w-12 h-12 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
-          <p className="text-sm text-white/50 font-mono animate-pulse">Calculating natal positions...</p>
+        <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#0A0A0A]/95 backdrop-blur-2xl">
+          <AstrologyLoader
+            isLoading={true}
+            durationMs={6000}
+            className="scale-110"
+          />
         </div>
       )}
 
-      {/* ============================================================ */}
-      {/* =================== RESULT PAGE (有数据) =================== */}
-      {/* ============================================================ */}
-      {isUserData ? (
-        <>
-          {/* ── Identity Bar ── */}
-          <div className="mt-16 bg-[#0A0A0F]/90 border-b border-white/5">
-            <div className="max-w-5xl mx-auto px-4 md:px-6 py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[9px] font-bold uppercase tracking-widest">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Live
-                </span>
-                <span className="text-sm font-medium text-white/80">{profile.name}</span>
-                <span className="text-white/15">|</span>
-                <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-white/40">
-                  <Sun className="w-3 h-3 text-yellow-500/60" />
-                  <span>{profile.sun.sign}</span>
-                  <Moon className="w-3 h-3 text-blue-400/60" />
-                  <span>{profile.moon.sign}</span>
-                  <ArrowUp className="w-3 h-3 text-purple-400/60" />
-                  <span>{profile.rising.sign}</span>
+      <div className="flex w-full flex-col pb-24">
+        {/* Hero Section */}
+        <div className="relative flex flex-col items-center justify-center border-b border-white/5 bg-gradient-to-b from-transparent to-[#15131A]/30 px-4 py-20 text-center">
+          <div className="background-gradient-to-t from-background pointer-events-none absolute inset-0 via-transparent to-transparent" />
+          <div className="relative z-10 mx-auto w-full max-w-3xl space-y-6">
+            <div className="bg-primary/10 border-primary/20 text-primary mx-auto mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+              <Sparkles className="h-3.5 w-3.5" /> Personal K-Line Generator
+            </div>
+            <h1 className="mb-2 font-serif text-4xl leading-tight font-bold tracking-tight text-white drop-shadow-md md:text-5xl lg:text-6xl">
+              Personal{' '}
+              <span className="bg-gradient-to-r from-[#D4AF37] to-[#F5EBBA] bg-clip-text text-transparent">
+                Timing Map
+              </span>
+            </h1>
+            <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed font-light text-white/60 md:text-lg">
+              See where your strongest years, weakest years, and turning points
+              are likely to happen.
+            </p>
+            <button
+              onClick={handleGetMyKline}
+              className="group bg-primary text-primary-foreground hover:bg-primary/90 relative inline-flex h-12 items-center justify-center gap-3 rounded-full px-8 text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] active:scale-95 md:h-14 md:text-base"
+            >
+              Generate My K-Line
+              <ArrowUp className="h-4 w-4 rotate-45 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </button>
+
+            {/* Trust & Authority Badges */}
+            <div className="mx-auto mt-10 w-full max-w-4xl border-t border-white/5 pt-10">
+              <p className="mb-6 text-[10px] font-medium tracking-[0.2em] text-white/30 uppercase md:text-xs">
+                Built on trusted astronomical data
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 opacity-70 grayscale transition-all duration-500 hover:grayscale-0 md:gap-12">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                    <Cpu className="h-5 w-5 text-zinc-400" />
+                  </div>
+                  <div className="text-left leading-tight">
+                    <p className="text-xs font-bold text-white/80">
+                      Swiss Ephemeris
+                    </p>
+                    <p className="text-[10px] text-zinc-500">DE431 Engine</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setShowChartDetails(!showChartDetails)}
-                  className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-[11px] font-medium hover:bg-white/10 transition-all flex items-center gap-1"
-                >
-                  Chart Details
-                  {showChartDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                </button>
-                <button
-                  onClick={handleGetMyKline}
-                  className="px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-[11px] font-bold hover:bg-primary/20 transition-all"
-                >
-                  Recalculate
-                </button>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                    <GraduationCap className="h-5 w-5 text-zinc-400" />
+                  </div>
+                  <div className="text-left leading-tight">
+                    <p className="text-xs font-bold text-white/80">
+                      Quant Method
+                    </p>
+                    <p className="text-[10px] text-zinc-500">
+                      Quantitative Method
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                    <Award className="h-5 w-5 text-zinc-400" />
+                  </div>
+                  <div className="text-left leading-tight">
+                    <p className="text-xs font-bold text-white/80">NASA JPL</p>
+                    <p className="text-[10px] text-zinc-500">
+                      Planetary dataset
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                    <ShieldCheck className="h-5 w-5 text-zinc-400" />
+                  </div>
+                  <div className="text-left leading-tight">
+                    <p className="text-xs font-bold text-white/80">
+                      Encrypted
+                    </p>
+                    <p className="text-[10px] text-zinc-500">
+                      Private by default
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* ── Professional settings ── */}
-          <ChartSettingsPanel />
-
-          {/* ─── FloatingNav (右侧浮动导航) ─── */}
-          <FloatingNav />
-
-          {/* ── 1. HERO IDENTITY CARD (全宽分数卡) ── */}
-          <ReportSection id="destiny-summary" divider={false} className="pt-6 pb-4">
-            <DestinySummaryCard
-              profile={profile}
-              klineData={klineData}
-            />
-          </ReportSection>
-
-          {/* ── 1.5 NATAL CHART (星盘 + 个人信息 + Natal Coordinates) ── */}
-          <ReportSection id="natal-chart" divider={false} className="pb-2">
-            <ChartHero profile={profile} />
-          </ReportSection>
-
-          {/* ── 2. K-LINE CHART ── */}
-          <ReportSection id="kline-hero" divider={false} className="pt-2 pb-4">
-            <InteractiveChart
-              data={klineData}
-              transitDetails={transitDetails}
-              onNodeClick={(year) => setSelectedYear(year)}
-              selectedYear={selectedYear}
-              birthYear={birthYear}
-            />
-          </ReportSection>
-
-          {/* ── 3. LIFE STAGE SCORES ── */}
-          <ReportSection id="life-stages" divider={false} className="pb-4">
-            <LifeStageScores
-              data={klineData}
-              birthYear={birthYear}
-            />
-          </ReportSection>
-
-          {/* ── 5. AI DEEP READING CTA ── */}
-          <ReportSection id="ai-insight" divider={false} className="pb-4">
-            <AiPersonalityInsight profile={profile} isPremium={isPremium} />
-          </ReportSection>
-
-          {/* ── 6. COSMIC PERSONALITY + DEEP ANALYSIS ── */}
-          <ReportSection id="personality">
-            <CosmicPersonalityProfile profile={profile} />
-          </ReportSection>
-          <ReportSection id="radar"><LifeRadar data={radarData} /></ReportSection>
-          <ReportSection id="energy"><CurrentEnergy /></ReportSection>
-          <ReportSection id="reading"><ReadingSummary reading={destinyReading} /></ReportSection>
-          <ReportSection id="next30"><Next30Days data={next30Days} /></ReportSection>
-
-          {/* ── 7. Daily Cross-Link ── */}
-          <ReportSection id="daily-link">
-            <CrossLinkCard target="daily" />
-          </ReportSection>
-
-          {/* ── 8. Footer ── */}
-          <ReportSection id="report-footer" className="pb-12">
-            <ReportFooter profile={profile} />
-          </ReportSection>
-        </>
-      ) : (
-        /* ============================================================ */
-        /* ======= EMPTY STATE — Auto-opens BirthInfoModal =========== */
-        /* ============================================================ */
-        <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
-          <div className="w-14 h-14 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
-            <Sparkles className="w-6 h-6 text-primary" />
-          </div>
-          <h1 className="text-2xl md:text-3xl font-serif font-bold text-white/90 mb-3">
-            Your Destiny K-Line
-          </h1>
-          <p className="text-sm text-white/50 mb-8 leading-relaxed max-w-md">
-            Enter your birth details to calculate your personalized cosmic trajectory — peaks, valleys, and turning points mapped across your lifetime.
-          </p>
-          <button
-            onClick={handleGetMyKline}
-            className="px-6 py-3 rounded-xl bg-primary/10 border border-primary/30 text-primary text-sm font-bold hover:bg-primary/20 hover:scale-105 transition-all"
-          >
-            Enter Birth Info
-          </button>
         </div>
-      )}
+
+        {/* Section 1: Algorithmic Scoring Methodology */}
+        <div className="mx-auto w-full max-w-6xl px-6 py-20">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 font-serif text-3xl font-bold text-white md:text-4xl">
+              How The Score Works
+            </h2>
+            <p className="text-muted-foreground mx-auto max-w-3xl">
+              The score is built from long cycles, transit pressure, and chart
+              structure. It is meant to help users read timing, not memorize
+              astrology jargon.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="hover:border-primary/20 rounded-3xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-green-500/10 text-green-400">
+                <TrendingUp className="h-6 w-6" />
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-white">
+                High-Momentum Years
+              </h3>
+              <p className="text-sm leading-relaxed text-white/50">
+                These are the years when the chart is more supportive. They are
+                better for launches, visibility, and bigger moves.
+              </p>
+            </div>
+
+            <div className="hover:border-primary/20 rounded-3xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
+                <TrendingDown className="h-6 w-6" />
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-white">
+                High-Pressure Years
+              </h3>
+              <p className="text-sm leading-relaxed text-white/50">
+                These are the years where protection, restructuring, and tighter
+                decisions matter more than speed.
+              </p>
+            </div>
+
+            <div className="hover:border-primary/20 rounded-3xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-400">
+                <Clock className="h-6 w-6" />
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-white">
+                Stable Years
+              </h3>
+              <p className="text-sm leading-relaxed text-white/50">
+                These are the years for consolidation. They are less dramatic,
+                but often useful for cleanup, skill building, and repositioning.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 2: Case Study */}
+        <div className="w-full border-y border-white/5 bg-[#110F15] py-20">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-bold tracking-widest text-white/60 uppercase">
+                <SearchCode className="h-3.5 w-3.5" /> Case Study
+              </div>
+              <h2 className="font-serif text-3xl leading-tight font-bold text-white md:text-4xl">
+                A Real Example: <br />
+                <span className="text-primary italic">
+                  Steve Jobs
+                </span>
+              </h2>
+              <p className="text-base leading-relaxed text-white/60">
+                His K-Line shows how major lows, recoveries, and peak years can
+                line up with real-world turning points.
+              </p>
+              <ul className="space-y-4">
+                <li className="flex gap-4">
+                  <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]" />
+                  <div>
+                    <strong className="mb-1 block text-white">
+                      1985: Major setback
+                    </strong>
+                    <span className="text-sm text-white/50">
+                      The curve marks a deep low during one of the most
+                      disruptive periods of his career.
+                    </span>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]" />
+                  <div>
+                    <strong className="mb-1 block text-white">
+                      1997: Strong recovery
+                    </strong>
+                    <span className="text-sm text-white/50">
+                      The score turns sharply upward as his public and business
+                      position improves again.
+                    </span>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full shadow-[0_0_10px_#D4AF37]" />
+                  <div>
+                    <strong className="mb-1 block text-white">
+                      2007: Peak momentum
+                    </strong>
+                    <span className="text-sm text-white/50">
+                      The curve reaches one of its strongest points during a
+                      defining product and leadership period.
+                    </span>
+                  </div>
+                </li>
+              </ul>
+              <div className="pt-4">
+                <button
+                  onClick={handleGetMyKline}
+                  className="text-primary hover:text-primary/80 flex cursor-pointer items-center gap-2 font-bold transition-colors"
+                >
+                  Generate my K-Line{' '}
+                  <ArrowUp className="h-4 w-4 rotate-45" />
+                </button>
+              </div>
+            </div>
+            <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-black p-6 shadow-2xl md:aspect-[4/3]">
+              {/* Fake abstract chart representing the case study */}
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+                  backgroundSize: '40px 40px',
+                }}
+              />
+              <svg
+                viewBox="0 0 400 300"
+                className="h-full w-full drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]"
+              >
+                <path
+                  d="M 0 250 C 50 180, 80 280, 120 280 C 180 280, 200 150, 250 80 C 300 10, 350 40, 400 20"
+                  fill="none"
+                  stroke="url(#steveGrad)"
+                  strokeWidth="4"
+                />
+                <defs>
+                  <linearGradient id="steveGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#ef4444" />
+                    <stop offset="50%" stopColor="#D4AF37" />
+                    <stop offset="100%" stopColor="#22c55e" />
+                  </linearGradient>
+                </defs>
+                <circle cx="120" cy="280" r="5" fill="#ef4444" />
+                <circle cx="250" cy="80" r="5" fill="#D4AF37" />
+                <circle cx="400" cy="20" r="5" fill="#22c55e" />
+              </svg>
+              <div className="absolute bottom-10 left-10 font-mono text-[10px] tracking-widest text-white/50 uppercase">
+                1985 (Exile)
+              </div>
+              <div className="absolute top-[40%] right-[30%] font-mono text-[10px] tracking-widest text-white/50 uppercase">
+                1997 (Return)
+              </div>
+              <div className="text-primary absolute top-10 right-4 font-mono text-[10px] font-bold tracking-widest uppercase drop-shadow-md">
+                2007 (iPhone)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 3: Tech Methodology */}
+        <div className="mx-auto max-w-4xl px-6 py-24 text-center">
+          <Cpu className="text-primary/50 mx-auto mb-6 h-10 w-10" />
+          <h2 className="mb-6 font-serif text-2xl font-bold text-white md:text-3xl">
+            Built on verified astronomy data
+          </h2>
+          <p className="mb-8 leading-relaxed text-white/50">
+            We calculate planetary movement data, then turn it into a readable
+            score and timing curve.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 font-mono text-xs tracking-widest text-white/30 uppercase">
+            <span className="flex items-center gap-1">
+              <Database className="h-3 w-3" /> SWISSEPH DE431
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <Binary className="h-3 w-3" /> Orb-Decay Algorithms
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <Cpu className="h-3 w-3" /> Ptolemaic Geometric Scoring
+            </span>
+          </div>
+        </div>
+
+        {/* Section 4: Deep Horoscope FAQ */}
+        <div className="mx-auto w-full max-w-4xl px-6 py-16">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 font-serif text-3xl font-bold text-white">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-muted-foreground">
+              Common questions about the chart, timing, and privacy.
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-white/5 bg-[#15131A] p-6 shadow-2xl md:p-10">
+            <Accordion type="single" collapsible className="w-full">
+              {[
+                {
+                  question:
+                    'Do I need an exact birth time for an accurate K-Line?',
+                  answer:
+                    "While an exact birth time (within 15 minutes) guarantees the highest accuracy for your Moon's transit speed and determining your exact Ascendant degree, our engine can calculate a generalized 24-hour baseline. However, we highly recommend approximating if possible for precise Placidus house domification.",
+                },
+                {
+                  question: 'How is K-Line different from a normal horoscope?',
+                  answer:
+                    'Generic horoscopes generalize outer planet transits across an entire sun-sign demographic (1/12th of the population). AstroKline mathematically maps transiting heavyweights directly onto your unique localized geocentric coordinate snapshot, calculating exact geometric orb collisions down to 0.001°.',
+                },
+                {
+                  question: 'Is my birth data kept private?',
+                  answer:
+                    'Absolutely. We do not sell your personal astrological data. All computations are handled securely, and your exact spacetime coordinates are used solely for generating your lifetime blueprint and algorithmic metrics.',
+                },
+                {
+                  question: 'What does a lower K-Line period mean?',
+                  answer:
+                    "Cosmically, negative slopes represent intense geometric 'Squares' or 'Oppositions'—primarily from Saturn or Pluto. These are not periods of doom; they are karmic crucibles meant for restructuring. The K-Line helps you visually anticipate and brace for these growth periods so you aren't blindsided.",
+                },
+              ].map((faq, i) => (
+                <AccordionItem
+                  key={i}
+                  value={`item-${i}`}
+                  className="border-b border-white/10 last:border-0"
+                >
+                  <AccordionTrigger className="hover:text-primary py-6 text-left text-base font-semibold transition-colors md:text-lg">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground pr-6 pb-6 leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </div>
 
       {/* Registration Nudge for non-logged-in users */}
       {!isLoggedIn && (
@@ -523,50 +675,74 @@ export function KlineClient({ userTier, isLoggedIn = false }: { userTier: string
 
       {/* ─── Inline Pricing Modal ─── */}
       {showPricingInline && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={() => setShowPricingInline(false)}>
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          onClick={() => setShowPricingInline(false)}
+        >
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
           <div
-            className="relative max-w-lg w-full mx-4 rounded-2xl border border-primary/20 bg-background/95 backdrop-blur-xl shadow-[0_0_60px_rgba(212,175,55,0.15)] p-8 max-h-[80vh] overflow-y-auto"
-            onClick={e => e.stopPropagation()}
+            className="border-primary/20 bg-background/95 relative mx-4 max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl border p-8 shadow-[0_0_60px_rgba(212,175,55,0.15)] backdrop-blur-xl"
+            onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setShowPricingInline(false)}
-              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors text-lg"
+              className="text-muted-foreground hover:text-foreground absolute top-4 right-4 text-lg transition-colors"
             >
               ✕
             </button>
-            <div className="text-center mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-5 h-5 text-primary" />
+            <div className="mb-6 text-center">
+              <div className="bg-primary/10 border-primary/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border">
+                <Sparkles className="text-primary h-5 w-5" />
               </div>
               <h3 className="text-2xl font-bold">Unlock Your Full Blueprint</h3>
-              <p className="text-sm text-muted-foreground mt-2">Choose a plan to unlock your complete 10-year destiny K-Line and deep analysis.</p>
+              <p className="text-muted-foreground mt-2 text-sm">
+                Choose a plan to unlock your complete 10-year destiny K-Line and
+                deep analysis.
+              </p>
             </div>
             <div className="space-y-4">
               {[
-                { name: 'Standard', price: '$199', desc: '1-2 Year Future K-Line + Career & Love tracks', id: 'standard' },
-                { name: 'Premium', price: '$299', desc: 'Full 10+ Year K-Line + All 4 dimensions + AI Deep Chat', id: 'premium', featured: true },
-              ].map(plan => (
+                {
+                  name: 'Lite',
+                  price: '$39.9',
+                  desc: '1-2 Year Future K-Line + Career & Love tracks',
+                  id: 'standard',
+                },
+                {
+                  name: 'Pro',
+                  price: '$79.9',
+                  desc: 'Full 10+ Year K-Line + All 4 dimensions + AI Deep Chat',
+                  id: 'premium',
+                  featured: true,
+                },
+              ].map((plan) => (
                 <a
                   key={plan.id}
                   href={`/pricing`}
-                  onClick={() => trackEvent('pricing_plan_click', { plan: plan.id, source: 'inline_modal' })}
+                  onClick={() =>
+                    trackEvent('pricing_plan_click', {
+                      plan: plan.id,
+                      source: 'inline_modal',
+                    })
+                  }
                   className={cn(
-                    "block p-5 rounded-xl border transition-all hover:scale-[1.02]",
+                    'block rounded-xl border p-5 transition-all hover:scale-[1.02]',
                     plan.featured
-                      ? "border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]"
-                      : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                      ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]'
+                      : 'border-white/10 bg-white/[0.02] hover:border-white/20'
                   )}
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-bold text-foreground">{plan.name}</h4>
-                    <span className="text-primary font-bold text-lg">{plan.price}</span>
+                  <div className="mb-2 flex items-center justify-between">
+                    <h4 className="text-foreground font-bold">{plan.name}</h4>
+                    <span className="text-primary text-lg font-bold">
+                      {plan.price}
+                    </span>
                   </div>
-                  <p className="text-xs text-muted-foreground">{plan.desc}</p>
+                  <p className="text-muted-foreground text-xs">{plan.desc}</p>
                 </a>
               ))}
             </div>
-            <p className="text-center text-xs text-muted-foreground/50 font-mono mt-6">
+            <p className="text-muted-foreground/50 mt-6 text-center font-mono text-xs">
               7-day money-back guarantee · Secure checkout
             </p>
           </div>

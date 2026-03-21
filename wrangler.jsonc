@@ -1,69 +1,62 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"main": ".open-next/worker.js",
-	"name": "astro",
-	"compatibility_date": "2026-03-13",
-	"compatibility_flags": [
-		"nodejs_compat",
-		"global_fetch_strictly_public"
-	],
-	"assets": {
-		"directory": ".open-next/assets",
-		"binding": "ASSETS"
-	},
-	"services": [
-		{
-			// Self-reference service binding, the service name must match the worker name
-			// see https://opennext.js.org/cloudflare/caching
-			"binding": "WORKER_SELF_REFERENCE",
-			"service": "astro"
-		}
-	],
-	"r2_buckets": [
-		// Use R2 incremental cache
-		// See https://opennext.js.org/cloudflare/caching
-		{
-			"binding": "NEXT_INC_CACHE_R2_BUCKET",
-			// Create the bucket before deploying
-			"bucket_name": "cache"
-		}
-	],
-	"images": {
-		// Enable image optimization
-		// see https://opennext.js.org/cloudflare/howtos/image
-		"binding": "IMAGES"
-	},
-	"observability": {
-		"enabled": true
-	},
-	"hyperdrive": [
-		{
-			"binding": "HYPERDRIVE",
-			"id": "d8b09da463394b4f89329b16fb10f8e0",
-			"localConnectionString": "postgresql://postgres.lwvoxpyzbgnlkvtoycws:1ihxZjqx4hRD1AoC@aws-1-us-east-1.pooler.supabase.com:5432/postgres"
-		}
-	],
-	"vars": {
-		"NEXT_PUBLIC_APP_URL": "https://astrokline.com",
-		"NEXT_PUBLIC_APP_NAME": "AstroKline",
-		"NEXT_PUBLIC_THEME": "default",
-		"NEXT_PUBLIC_APPEARANCE": "dark",
-		"DATABASE_PROVIDER": "postgresql",
-		"DATABASE_URL": "postgresql://postgres.lwvoxpyzbgnlkvtoycws:1ihxZjqx4hRD1AoC@aws-1-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true",
-		"DB_SINGLETON_ENABLED": "false",
-		"DB_MAX_CONNECTIONS": "1",
-		"AUTH_SECRET": "AstroKlineSecretKey123!@#",
-		"AUTH_URL": "https://astrokline.com",
-		"CREEM_API_KEY": "creem_test_6cQdpe8WFbURVs4mt78CCt",
-		"CREEM_API_URL": "https://test-api.creem.io/v1",
-		"CREEM_WEBHOOK_SECRET": "whsec_40KIgvZoNEfVuLoJUgrXuZ",
-		"NEXT_PUBLIC_CREEM_PRO_MONTHLY_ID": "prod_7VQizPwkz9x1Oq7PPrbBrZ",
-		"NEXT_PUBLIC_CREEM_PRO_ANNUAL_ID": "prod_1LrFNMgcBhSvmaIgraE8hP",
-		"NEXT_PUBLIC_CREEM_PREMIUM_MONTHLY_ID": "prod_7mQE0Aa1KG0jW9a4RQvuIs",
-		"NEXT_PUBLIC_CREEM_PREMIUM_ANNUAL_ID": "prod_59xIpg4XA7Jkfw1SAEdsk4",
-		"CREEM_ENABLED": "false",
-		"CREEM_ENVIRONMENT": "sandbox",
-		"CREEM_SIGNING_SECRET": "whsec_40KIgvZoNEfVuLoJUgrXuZ",
-		"DEFAULT_PAYMENT_PROVIDER": "infini"
-	}
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "astro",
+  "compatibility_date": "2026-03-13",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "astro",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "cache",
+    },
+    {
+      "binding": "USER_UPLOADS",
+      "bucket_name": "astrokline",
+    },
+  ],
+  "images": {
+    "binding": "IMAGES",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "d8b09da463394b4f89329b16fb10f8e0",
+    },
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "astrokline-db",
+      "database_id": "231e51c7-e4a1-44b2-a8b9-083a1b2fb732",
+      "migrations_dir": "src/config/db/migrations_d1",
+    },
+  ],
+  "vars": {
+    "NEXT_PUBLIC_APP_URL": "https://astrokline.com",
+    "NEXT_PUBLIC_APP_NAME": "AstroKline",
+    "NEXT_PUBLIC_THEME": "default",
+    "NEXT_PUBLIC_APPEARANCE": "dark",
+    "DATABASE_PROVIDER": "postgresql",
+    "DB_SINGLETON_ENABLED": "false",
+    "DB_MAX_CONNECTIONS": "1",
+    "AUTH_URL": "https://astrokline.com",
+    "CREEM_API_URL": "https://api.creem.io/v1",
+    "CREEM_ENABLED": "true",
+    "CREEM_ENVIRONMENT": "production",
+    "CREEM_PRODUCT_IDS": "{\"standard-monthly\":\"prod_16Mj633l9p6dmy8O0yGB8R\",\"standard-yearly\":\"prod_46ihSB3UzYBnmaN8vHQGT5\",\"premium-monthly\":\"prod_3G0ajLC6YzcjX32zlOqoty\",\"premium-yearly\":\"prod_6wDdNnV6NeZFOwVhHAOsGC\"}",
+    "DEFAULT_PAYMENT_PROVIDER": "creem",
+  },
 }

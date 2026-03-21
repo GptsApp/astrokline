@@ -80,6 +80,7 @@ export function Hero({
           <div className="flex items-center justify-center gap-4">
             {section.buttons.map((button, idx) => (
               <Button
+                type="button"
                 asChild
                 size={button.size || 'default'}
                 variant={button.variant || 'default'}

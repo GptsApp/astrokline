@@ -1,5 +1,7 @@
 'use client';
 
+import { useMemo } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/shared/components/ui/button';
@@ -27,8 +29,18 @@ import { SignInForm } from './sign-in-form';
 export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
   const t = useTranslations('common.sign');
   const { isShowSignModal, setIsShowSignModal } = useAppContext();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const resolvedCallbackUrl = useMemo(() => {
+    if (callbackUrl && callbackUrl !== '/') {
+      return callbackUrl;
+    }
+
+    const query = searchParams.toString();
+    return `${pathname || '/'}${query ? `?${query}` : ''}`;
+  }, [callbackUrl, pathname, searchParams]);
 
   if (isDesktop) {
     return (
@@ -38,7 +50,7 @@ export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
             <DialogTitle>{t('sign_in_title')}</DialogTitle>
             <DialogDescription>{t('sign_in_description')}</DialogDescription>
           </DialogHeader>
-          <SignInForm callbackUrl={callbackUrl} />
+          <SignInForm callbackUrl={resolvedCallbackUrl} />
         </DialogContent>
       </Dialog>
     );
@@ -51,7 +63,7 @@ export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
           <DrawerTitle>{t('sign_in_title')}</DrawerTitle>
           <DrawerDescription>{t('sign_in_description')}</DrawerDescription>
         </DrawerHeader>
-        <SignInForm callbackUrl={callbackUrl} className="mt-8 px-4" />
+        <SignInForm callbackUrl={resolvedCallbackUrl} className="mt-8 px-4" />
         <DrawerFooter className="pt-4">
           <DrawerClose asChild>
             <Button variant="outline">{t('cancel_title')}</Button>

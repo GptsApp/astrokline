@@ -53,14 +53,12 @@ export default async function CategoryBlogPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  // load blog data
   const t = await getTranslations('pages.blog');
 
   const { page: pageNum, pageSize } = await searchParams;
   const page = pageNum || 1;
   const limit = pageSize || 30;
 
-  // get current category
   const categoryData = await findTaxonomy({
     slug,
     status: TaxonomyStatus.PUBLISHED,
@@ -69,7 +67,6 @@ export default async function CategoryBlogPage({
     return <Empty message={`category not found`} />;
   }
 
-  // get posts data
   const postsData = await getPosts({
     category: categoryData.id,
     type: DBPostType.ARTICLE,
@@ -78,13 +75,11 @@ export default async function CategoryBlogPage({
     limit,
   });
 
-  // get categories data
   const categoriesData = await getTaxonomies({
     type: TaxonomyType.CATEGORY,
     status: TaxonomyStatus.PUBLISHED,
   });
 
-  // current category data
   const currentCategory: CategoryType = {
     id: categoryData.id,
     slug: categoryData.slug,
@@ -92,7 +87,6 @@ export default async function CategoryBlogPage({
     url: `/blog/category/${categoryData.slug}`,
   };
 
-  // build category
   const categories: CategoryType[] = categoriesData.map((category) => ({
     id: category.id,
     slug: category.slug,
@@ -106,7 +100,6 @@ export default async function CategoryBlogPage({
     url: `/blog`,
   });
 
-  // build posts
   const posts: PostType[] = postsData.map((post) => ({
     id: post.id,
     title: post.title || '',
@@ -118,8 +111,7 @@ export default async function CategoryBlogPage({
     url: `/blog/${post.slug}`,
   }));
 
-  // build page sections
-  const _page: DynamicPage = {
+  const pageData: DynamicPage = {
     title: t('page.title'),
     sections: {
       blog: {
@@ -133,8 +125,7 @@ export default async function CategoryBlogPage({
     },
   };
 
-  // load page component
   const Page = await getThemePage('dynamic-page');
 
-  return <Page locale={locale} page={_page} />;
+  return <Page locale={locale} page={pageData} />;
 }

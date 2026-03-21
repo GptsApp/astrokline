@@ -1,9 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Brain, Shield, AlertTriangle } from 'lucide-react';
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Activity,
+  AlertTriangle,
+  Brain,
+  Briefcase,
+  Coins,
+  Heart,
+  Shield,
+  Sparkles,
+} from 'lucide-react';
 
 interface Props {
   profile: UserProfile;
@@ -14,6 +23,10 @@ interface InsightData {
   nickname: string;
   coreQuote: string;
   summary: string;
+  career: string;
+  relationships: string;
+  wealth: string;
+  health: string;
   strengths: string;
   warnings: string;
 }
@@ -48,34 +61,33 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
   // ── CTA Button (before trigger) ──
   if (!triggered) {
     return (
-      <div className="w-full relative">
-        {/* Glow */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/5 via-purple-600/5 to-[#D4AF37]/5 rounded-2xl blur-xl pointer-events-none" />
-        
-        <div className="relative w-full rounded-2xl border border-primary/20 bg-gradient-to-br from-[#111015] to-[#0d0b14] p-6 sm:p-8 text-center space-y-4">
-          <div className="w-14 h-14 mx-auto rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
-            <Brain className="w-7 h-7 text-primary" />
-          </div>
-          
-          <div className="space-y-2">
-            <h3 className="text-lg sm:text-xl font-bold text-white">AI Deep Reading</h3>
-            <p className="text-sm text-white/50 max-w-md mx-auto leading-relaxed">
-              Decode your cosmic blueprint with AI-powered personality analysis, strengths assessment, and life guidance.
+      <div className="relative flex w-full flex-col items-center pb-8">
+        {/* Title */}
+        <h3 className="mb-4 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+          AI Reading CTA
+        </h3>
+
+        <button
+          type="button"
+          onClick={handleTrigger}
+          className="group relative w-full max-w-2xl overflow-hidden rounded-xl shadow-[0_0_30px_rgba(212,175,55,0.15)] transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(212,175,55,0.3)] active:scale-[0.98]"
+        >
+          {/* subtle shine effect */}
+          <div className="absolute inset-0 z-10 translate-x-[-100%] bg-gradient-to-r from-white/0 via-white/30 to-white/0 transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
+
+          <div className="relative z-0 flex h-full w-full flex-col items-center justify-center gap-1 bg-gradient-to-b from-[#e5c147] to-[#c5a028] px-4 py-4 transition-colors md:py-5">
+            <h4 className="flex items-center gap-2 text-base font-bold text-black md:text-lg">
+              <Sparkles
+                className="h-4 w-4 text-black md:h-5 md:w-5"
+                fill="currentColor"
+              />
+              AI Deep Reading — Decode Your Cosmic Blueprint
+            </h4>
+            <p className="text-[11px] font-medium text-black/80 md:text-xs">
+              Personalized analysis powered by Gemini AI
             </p>
           </div>
-
-          <button
-            onClick={handleTrigger}
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B8962E] text-black font-bold text-sm shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] hover:scale-105 transition-all"
-          >
-            <Sparkles className="w-4 h-4" />
-            Generate AI Reading
-          </button>
-
-          <p className="text-[10px] text-white/30 font-mono">
-            Powered by Gemini 2.5 Flash · Swiss Ephemeris DE431
-          </p>
-        </div>
+        </button>
       </div>
     );
   }
@@ -83,11 +95,13 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
   // ── Loading ──
   if (loading) {
     return (
-      <div className="w-full rounded-2xl border border-primary/20 bg-[#111015]/90 backdrop-blur-xl p-8 flex flex-col items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
-          <Brain className="w-5 h-5 text-primary" />
+      <div className="border-primary/20 flex w-full flex-col items-center gap-4 rounded-2xl border bg-[#111015]/90 p-8 backdrop-blur-xl">
+        <div className="bg-primary/10 flex h-10 w-10 animate-pulse items-center justify-center rounded-full">
+          <Brain className="text-primary h-5 w-5" />
         </div>
-        <p className="text-sm text-muted-foreground animate-pulse">AI is analyzing your cosmic blueprint...</p>
+        <p className="text-muted-foreground animate-pulse text-sm">
+          AI is analyzing your cosmic blueprint...
+        </p>
       </div>
     );
   }
@@ -95,11 +109,17 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
   // ── Error ──
   if (error) {
     return (
-      <div className="w-full rounded-2xl border border-rose-500/20 bg-[#111015]/90 p-6 text-center space-y-3">
-        <p className="text-sm text-rose-400">AI reading failed. Please try again.</p>
+      <div className="w-full space-y-3 rounded-2xl border border-rose-500/20 bg-[#111015]/90 p-6 text-center">
+        <p className="text-sm text-rose-400">
+          AI reading failed. Please try again.
+        </p>
         <button
-          onClick={() => { setTriggered(false); setError(false); }}
-          className="text-xs text-primary hover:underline"
+          type="button"
+          onClick={() => {
+            setTriggered(false);
+            setError(false);
+          }}
+          className="text-primary text-xs hover:underline"
         >
           Retry
         </button>
@@ -116,68 +136,160 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="w-full rounded-2xl border border-primary/20 bg-gradient-to-br from-[#111015] to-[#0d0b14] backdrop-blur-xl overflow-hidden relative"
+        className="border-primary/20 relative w-full overflow-hidden rounded-2xl border bg-gradient-to-br from-[#111015] to-[#0d0b14] backdrop-blur-xl"
       >
         {/* Glow */}
-        <div className="absolute top-0 left-1/3 w-[200px] h-[200px] bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
+        <div className="bg-primary/5 pointer-events-none absolute top-0 left-1/3 h-[200px] w-[200px] rounded-full blur-[80px]" />
 
         {/* Header */}
-        <div className="p-4 sm:p-6 pb-0 relative z-10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-primary" />
+        <div className="relative z-10 p-4 pb-0 sm:p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="bg-primary/10 border-primary/30 flex h-8 w-8 items-center justify-center rounded-full border">
+              <Sparkles className="text-primary h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white/90 tracking-wide uppercase">AI Personality Insight</h3>
-              <p className="text-[10px] text-white/40 tracking-widest uppercase font-mono">Powered by Gemini 2.5 Flash</p>
+              <h3 className="text-sm font-bold tracking-wide text-white/90 uppercase">
+                AI Personality Insight
+              </h3>
+              <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase">
+                Powered by Gemini 2.5 Flash
+              </p>
             </div>
           </div>
 
           {/* Nickname Badge */}
           {insight.nickname && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-4">
-              <span className="text-sm font-bold text-primary">「{insight.nickname}」</span>
+            <div className="bg-primary/10 border-primary/30 mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-2">
+              <span className="text-primary text-sm font-bold">
+                「{insight.nickname}」
+              </span>
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6 space-y-5 relative z-10">
+        <div className="relative z-10 space-y-6 p-4 sm:p-6">
           {/* Core Quote */}
           {insight.coreQuote && (
-            <div className="text-center py-3 px-4 rounded-xl bg-primary/5 border border-primary/10">
-              <p className="text-base md:text-lg font-serif text-primary/90 italic leading-relaxed">
+            <div className="from-primary/5 via-primary/10 to-primary/5 border-primary/20 rounded-2xl border bg-gradient-to-r px-5 py-4 text-center shadow-[0_0_20px_rgba(212,175,55,0.05)]">
+              <p className="text-primary/90 font-serif text-lg leading-relaxed font-semibold italic md:text-xl">
                 「{insight.coreQuote}」
               </p>
             </div>
           )}
 
-          {/* Summary */}
-          <div className="space-y-2">
-            <p className="text-sm md:text-[15px] text-white/80 leading-[1.8] whitespace-pre-line">{insight.summary}</p>
+          {/* Intro Section */}
+          <div className="space-y-3 rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+            <h4 className="mb-3 flex items-center gap-2 border-b border-white/10 pb-2 text-sm font-bold tracking-widest text-white/80 uppercase">
+              <Brain className="text-primary h-4 w-4" />
+              Core Identity
+            </h4>
+            <p className="text-sm leading-[1.8] whitespace-pre-line text-white/70 md:text-[15px]">
+              {insight.summary}
+            </p>
           </div>
 
-          {/* Strengths */}
-          {insight.strengths && (
-            <div className="space-y-2 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-              <div className="flex items-center gap-2 text-emerald-400">
-                <Shield className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">Your Strengths</span>
+          {/* Four Dimensions Grid */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {/* Career */}
+            {insight.career && (
+              <div className="space-y-3 rounded-2xl border border-blue-500/10 bg-blue-500/5 p-5 transition-colors hover:bg-blue-500/10">
+                <div className="flex items-center justify-between border-b border-blue-500/10 pb-2">
+                  <div className="flex items-center gap-2 text-blue-400">
+                    <Briefcase className="h-4 w-4" />
+                    <span className="text-xs font-bold tracking-wider uppercase">
+                      Career & Ambition
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
+                  {insight.career}
+                </p>
               </div>
-              <p className="text-sm text-white/70 leading-relaxed">{insight.strengths}</p>
-            </div>
-          )}
+            )}
 
-          {/* Warnings */}
-          {insight.warnings && (
-            <div className="space-y-2 p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
-              <div className="flex items-center gap-2 text-amber-400">
-                <AlertTriangle className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">Watch Out</span>
+            {/* Wealth */}
+            {insight.wealth && (
+              <div className="space-y-3 rounded-2xl border border-emerald-500/10 bg-emerald-500/5 p-5 transition-colors hover:bg-emerald-500/10">
+                <div className="flex items-center justify-between border-b border-emerald-500/10 pb-2">
+                  <div className="flex items-center gap-2 text-emerald-400">
+                    <Coins className="h-4 w-4" />
+                    <span className="text-xs font-bold tracking-wider uppercase">
+                      Wealth & Abundance
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
+                  {insight.wealth}
+                </p>
               </div>
-              <p className="text-sm text-white/70 leading-relaxed">{insight.warnings}</p>
-            </div>
-          )}
+            )}
+
+            {/* Relationships */}
+            {insight.relationships && (
+              <div className="space-y-3 rounded-2xl border border-rose-500/10 bg-rose-500/5 p-5 transition-colors hover:bg-rose-500/10">
+                <div className="flex items-center justify-between border-b border-rose-500/10 pb-2">
+                  <div className="flex items-center gap-2 text-rose-400">
+                    <Heart className="h-4 w-4" />
+                    <span className="text-xs font-bold tracking-wider uppercase">
+                      Love & Connections
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
+                  {insight.relationships}
+                </p>
+              </div>
+            )}
+
+            {/* Health */}
+            {insight.health && (
+              <div className="space-y-3 rounded-2xl border border-teal-500/10 bg-teal-500/5 p-5 transition-colors hover:bg-teal-500/10">
+                <div className="flex items-center justify-between border-b border-teal-500/10 pb-2">
+                  <div className="flex items-center gap-2 text-teal-400">
+                    <Activity className="h-4 w-4" />
+                    <span className="text-xs font-bold tracking-wider uppercase">
+                      Energy & Vitality
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
+                  {insight.health}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Strengths & Warnings */}
+          <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2">
+            {insight.strengths && (
+              <div className="bg-primary/5 border-primary/20 space-y-3 rounded-2xl border p-5">
+                <div className="text-primary flex items-center gap-2">
+                  <Shield className="h-4 w-4" />
+                  <span className="text-xs font-bold tracking-wider uppercase">
+                    Superpowers
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
+                  {insight.strengths}
+                </p>
+              </div>
+            )}
+
+            {insight.warnings && (
+              <div className="space-y-3 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5">
+                <div className="flex items-center gap-2 text-amber-400">
+                  <AlertTriangle className="h-4 w-4" />
+                  <span className="text-xs font-bold tracking-wider uppercase">
+                    Shadow Work
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
+                  {insight.warnings}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

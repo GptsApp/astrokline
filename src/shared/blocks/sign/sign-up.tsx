@@ -45,7 +45,8 @@ export function SignUp({
   const isEmailAuthEnabled =
     configs.email_auth_enabled !== 'false' ||
     (!isGoogleAuthEnabled && !isGithubAuthEnabled); // no social providers enabled, auto enable email auth
-  const emailVerificationEnabled = configs.email_verification_enabled === 'true';
+  const emailVerificationEnabled =
+    configs.email_verification_enabled === 'true';
 
   if (callbackUrl) {
     if (
@@ -66,6 +67,11 @@ export function SignUp({
       return path.slice(locale.length + 1) || '/';
     return path;
   };
+  const normalizedCallbackUrl = stripLocalePrefix(callbackUrl || '/');
+  const signInHref =
+    normalizedCallbackUrl && normalizedCallbackUrl !== '/'
+      ? `/sign-in?callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`
+      : '/sign-in';
 
   const reportAffiliate = ({
     userEmail,
@@ -115,13 +121,13 @@ export function SignUp({
           name,
         },
         {
-          onRequest: (ctx) => {
+          onRequest: () => {
             // loading is already set above; keep as no-op for safety
           },
-          onResponse: (ctx) => {
+          onResponse: () => {
             // Do NOT reset loading here; navigation may not have completed yet.
           },
-          onSuccess: (ctx) => {
+          onSuccess: () => {
             // report affiliate
             reportAffiliate({ userEmail: email });
 
@@ -129,16 +135,15 @@ export function SignUp({
               configs.email_verification_enabled === 'true';
 
             if (emailVerificationEnabled) {
-              const normalizedCallbackUrl = stripLocalePrefix(callbackUrl);
               const verifyPath = `/verify-email?sent=1&email=${encodeURIComponent(
                 email
               )}&callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`;
 
-            // IMPORTANT: callbackURL must not contain its own '&' query params.
-            // We redirect to home/callbackUrl after verification; verify page is just the waiting UI.
+              // IMPORTANT: callbackURL must not contain its own '&' query params.
+              // We redirect to home/callbackUrl after verification; verify page is just the waiting UI.
               void authClient.sendVerificationEmail({
                 email,
-              callbackURL: `${base}${normalizedCallbackUrl || '/'}`,
+                callbackURL: `${base}${normalizedCallbackUrl || '/'}`,
               });
 
               // next/navigation router expects fully qualified path (including locale when non-default)
@@ -211,7 +216,7 @@ export function SignUp({
                   value={email}
                 />
                 {emailVerificationEnabled && (
-                  <p className="text-amber-600 text-xs">
+                  <p className="text-xs text-amber-600">
                     {t('email_verification_hint')}
                   </p>
                 )}
@@ -225,11 +230,18 @@ export function SignUp({
                   placeholder={t('password_placeholder')}
                   autoComplete="password"
                   value={password}
-                  onChange={(e) => { setPassword(e.target.value); setPasswordTouched(true); }}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setPasswordTouched(true);
+                  }}
                 />
                 {showPasswordHint && (
-                  <p className={`text-xs transition-colors ${passwordValid ? 'text-emerald-500' : 'text-amber-500'}`}>
-                    {passwordValid ? '✓ Password strength OK' : `Password must be at least 8 characters (${password.length}/8)`}
+                  <p
+                    className={`text-xs transition-colors ${passwordValid ? 'text-emerald-500' : 'text-amber-500'}`}
+                  >
+                    {passwordValid
+                      ? '✓ Password strength OK'
+                      : `Password must be at least 8 characters (${password.length}/8)`}
                   </p>
                 )}
               </div>
@@ -257,7 +269,7 @@ export function SignUp({
           <div className="flex w-full justify-center border-t py-4">
             <p className="text-center text-xs text-neutral-500">
               {t('already_have_account')}
-              <Link href="/sign-in" className="underline">
+              <Link href={signInHref} className="underline">
                 <span className="cursor-pointer dark:text-white/70">
                   {t('sign_in_title')}
                 </span>

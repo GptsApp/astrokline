@@ -55,7 +55,6 @@ export default async function BlogDetailPage({
     return <Empty message={`Post not found`} />;
   }
 
-  // build page sections
   const page: DynamicPage = {
     sections: {
       blogDetail: {

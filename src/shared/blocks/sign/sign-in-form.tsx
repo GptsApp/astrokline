@@ -56,6 +56,11 @@ export function SignInForm({
       return path.slice(locale.length + 1) || '/';
     return path;
   };
+  const normalizedCallbackUrl = stripLocalePrefix(callbackUrl || '/');
+  const signUpHref =
+    normalizedCallbackUrl && normalizedCallbackUrl !== '/'
+      ? `/sign-up?callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`
+      : '/sign-up';
 
   const handleSignIn = async () => {
     if (loading) {
@@ -78,27 +83,27 @@ export function SignInForm({
           callbackURL: callbackUrl,
         },
         {
-          onRequest: (ctx) => {
+          onRequest: () => {
             // loading is already set above; keep as no-op for safety
           },
-          onResponse: (ctx) => {
+          onResponse: () => {
             // Do NOT reset loading here; navigation may not have completed yet.
           },
-          onSuccess: (ctx) => {
-            // Keep loading=true until navigation completes.
+          onSuccess: () => {
+            router.push(normalizedCallbackUrl || '/');
+            router.refresh();
           },
           onError: (e: any) => {
             const status = e?.error?.status;
             if (status === 403) {
-              const normalizedCallbackUrl = stripLocalePrefix(callbackUrl);
               const verifyPath = `/verify-email?sent=1&email=${encodeURIComponent(
                 email
               )}&callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`;
 
-              // Send verification email with callback to verify page.
+              // Keep the email link callback simple; verify page remains the waiting UI.
               void authClient.sendVerificationEmail({
                 email,
-                callbackURL: `${base}${verifyPath}`,
+                callbackURL: `${base}${normalizedCallbackUrl || '/'}`,
               });
 
               // i18n router will prefix locale automatically; do NOT include locale here.
@@ -192,7 +197,7 @@ export function SignInForm({
         <div className="flex w-full justify-center border-t py-4">
           <p className="text-center text-xs text-neutral-500">
             {t('no_account')}
-            <Link href="/sign-up" className="underline">
+            <Link href={signUpHref} className="underline">
               <span className="cursor-pointer dark:text-white/70">
                 {t('sign_up_title')}
               </span>

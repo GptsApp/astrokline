@@ -37,6 +37,7 @@ export function Cta({
             <div className="mt-12 flex flex-wrap justify-center gap-4">
               {section.buttons?.map((button, idx) => (
                 <Button
+                  type="button"
                   asChild
                   size={button.size || 'default'}
                   variant={button.variant || 'default'}

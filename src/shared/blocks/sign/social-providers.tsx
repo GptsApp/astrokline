@@ -3,6 +3,14 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { signIn } from '@/core/auth/client';
+import { useRouter } from '@/core/i18n/navigation';
+import { defaultLocale } from '@/config/locale';
+import { Button } from '@/shared/components/ui/button';
+import { useAppContext } from '@/shared/contexts/app';
+import { cn } from '@/shared/lib/utils';
+import { Button as ButtonType } from '@/shared/types/blocks/common';
+
 // Inline SVG icons to avoid react-icons full bundle (1.9 MB → ~1 KB)
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
@@ -16,15 +24,6 @@ const GithubIcon = () => (
   </svg>
 );
 
-
-import { signIn } from '@/core/auth/client';
-import { useRouter } from '@/core/i18n/navigation';
-import { defaultLocale } from '@/config/locale';
-import { Button } from '@/shared/components/ui/button';
-import { useAppContext } from '@/shared/contexts/app';
-import { cn } from '@/shared/lib/utils';
-import { Button as ButtonType } from '@/shared/types/blocks/common';
-
 export function SocialProviders({
   configs,
   callbackUrl,
@@ -37,12 +36,12 @@ export function SocialProviders({
   setLoading: (loading: boolean) => void;
 }) {
   const t = useTranslations('common.sign');
+  const locale = useLocale();
   const router = useRouter();
 
   const { setIsShowSignModal } = useAppContext();
 
   if (callbackUrl) {
-    const locale = useLocale();
     if (
       locale !== defaultLocale &&
       callbackUrl.startsWith('/') &&

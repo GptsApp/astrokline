@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server';
+
+import {
+  getOrCreateReferralCode,
+  getReferralStats,
+} from '@/shared/models/referral';
 import { getSignUser } from '@/shared/models/user';
-import { getOrCreateReferralCode, getReferralStats } from '@/shared/models/referral';
 
 export async function GET() {
   try {
     const user = await getSignUser();
     if (!user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
     }
 
     const code = await getOrCreateReferralCode(user.id);
@@ -24,6 +31,9 @@ export async function GET() {
     });
   } catch (error: any) {
     console.error('Referral error:', error);
-    return NextResponse.json({ error: error.message || 'Failed' }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || 'Failed' },
+      { status: 500 }
+    );
   }
 }

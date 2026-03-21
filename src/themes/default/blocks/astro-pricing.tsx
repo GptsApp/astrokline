@@ -1,8 +1,9 @@
 'use client';
 
-import { Pricing } from '@/components/astrokline/sections/pricing';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
+
+import { Pricing as ThemePricing } from './pricing';
 
 export function AstroPricing({
   section,
@@ -13,7 +14,7 @@ export function AstroPricing({
 }) {
   return (
     <div className={cn('astro-starfield', section.className, className)}>
-      <Pricing />
+      <ThemePricing section={section as any} />
     </div>
   );
 }

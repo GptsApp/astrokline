@@ -7,6 +7,7 @@ import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context
 
 export function CTA() {
   const { open } = useBirthInfoModal();
+
   return (
     <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
       {/* Background glow and texture */}
@@ -44,12 +45,10 @@ export function CTA() {
             size="lg"
             className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-2xl shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:shadow-[0_0_50px_-5px_var(--primary)] hover:scale-105"
             onClick={() => {
-              open(() => {
-                window.location.href = '/kline';
-              });
+              open();
             }}
           >
-            Reveal My Astrology K-Line Now
+            Generate My K-Line
             <ArrowRight className="ml-2 w-5 h-5 shrink-0" />
           </Button>
           

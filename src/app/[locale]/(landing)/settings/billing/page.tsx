@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { getTranslations } from 'next-intl/server';
 
+import { PaymentStatusSync } from '@/shared/blocks/payment/payment-status-sync';
 import { Empty } from '@/shared/blocks/common';
 import { PanelCard } from '@/shared/blocks/panel';
 import { TableCard } from '@/shared/blocks/table';
@@ -19,9 +20,23 @@ import { type Table } from '@/shared/types/blocks/table';
 export default async function BillingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: number; pageSize?: number; status?: string }>;
+  searchParams: Promise<{
+    page?: number;
+    pageSize?: number;
+    status?: string;
+    payment?: string;
+    order_no?: string;
+    provider?: string;
+  }>;
 }) {
-  const { page: pageNum, pageSize, status } = await searchParams;
+  const {
+    page: pageNum,
+    pageSize,
+    status,
+    payment,
+    order_no,
+    provider,
+  } = await searchParams;
   const page = pageNum || 1;
   const limit = pageSize || 20;
 
@@ -230,6 +245,29 @@ export default async function BillingPage({
 
   return (
     <div className="space-y-8">
+      <PaymentStatusSync
+        status={
+          payment === 'success'
+            ? 'success'
+            : payment === 'failed'
+              ? 'failed'
+              : payment === 'cancelled'
+                ? 'cancelled'
+                : null
+        }
+      />
+      {payment === 'success' ? (
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-5">
+          <div className="text-sm font-semibold text-emerald-200">
+            Payment received.
+          </div>
+          <p className="mt-1 text-sm leading-6 text-white/70">
+            Your subscription is now updating in AstroKline.
+            {provider ? ` Provider: ${provider}.` : ''}
+            {order_no ? ` Order: ${order_no}.` : ''}
+          </p>
+        </div>
+      ) : null}
       <PanelCard
         label={currentSubscription?.status}
         title={t('view.title')}

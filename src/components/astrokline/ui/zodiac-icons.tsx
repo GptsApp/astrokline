@@ -35,11 +35,21 @@ const ZODIAC_PATHS: Record<string, string> = {
 };
 
 const SIGN_NAMES = [
-  'Aries','Taurus','Gemini','Cancer','Leo','Virgo',
-  'Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces',
+  'Aries',
+  'Taurus',
+  'Gemini',
+  'Cancer',
+  'Leo',
+  'Virgo',
+  'Libra',
+  'Scorpio',
+  'Sagittarius',
+  'Capricorn',
+  'Aquarius',
+  'Pisces',
 ] as const;
 
-type ZodiacSign = typeof SIGN_NAMES[number];
+type ZodiacSign = (typeof SIGN_NAMES)[number];
 
 interface ZodiacIconProps {
   sign: ZodiacSign;
@@ -47,10 +57,14 @@ interface ZodiacIconProps {
   className?: string;
 }
 
-export function ZodiacIcon({ sign, size = 16, className = '' }: ZodiacIconProps) {
+export function ZodiacIcon({
+  sign,
+  size = 16,
+  className = '',
+}: ZodiacIconProps) {
   const d = ZODIAC_PATHS[sign];
   if (!d) return null;
-  
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

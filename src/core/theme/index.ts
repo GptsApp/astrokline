@@ -22,19 +22,15 @@ export async function getThemePage(pageName: string, theme?: string) {
 
   try {
     // load theme page
-    const module = await import(`@/themes/${loadTheme}/pages/${pageName}`);
-    return module.default;
+    const pageModule = await import(`@/themes/${loadTheme}/pages/${pageName}`);
+    return pageModule.default;
   } catch (error) {
     // fallback to default theme
     if (loadTheme !== defaultTheme) {
-      try {
-        const fallbackModule = await import(
-          `@/themes/${defaultTheme}/pages/${pageName}`
-        );
-        return fallbackModule.default;
-      } catch (fallbackError) {
-        throw fallbackError;
-      }
+      const fallbackModule = await import(
+        `@/themes/${defaultTheme}/pages/${pageName}`
+      );
+      return fallbackModule.default;
     }
 
     throw error;
@@ -49,19 +45,17 @@ export async function getThemeLayout(layoutName: string, theme?: string) {
 
   try {
     // load theme layout
-    const module = await import(`@/themes/${loadTheme}/layouts/${layoutName}`);
-    return module.default;
+    const layoutModule = await import(
+      `@/themes/${loadTheme}/layouts/${layoutName}`
+    );
+    return layoutModule.default;
   } catch (error) {
     // fallback to default theme
     if (loadTheme !== defaultTheme) {
-      try {
-        const fallbackModule = await import(
-          `@/themes/${defaultTheme}/layouts/${layoutName}`
-        );
-        return fallbackModule.default;
-      } catch (fallbackError) {
-        throw fallbackError;
-      }
+      const fallbackModule = await import(
+        `@/themes/${defaultTheme}/layouts/${layoutName}`
+      );
+      return fallbackModule.default;
     }
 
     throw error;
@@ -87,9 +81,11 @@ export async function getThemeBlock(blockName: string, theme?: string) {
 
   try {
     // load theme block
-    const module = await import(`@/themes/${loadTheme}/blocks/${blockName}`);
+    const blockModule = await import(
+      `@/themes/${loadTheme}/blocks/${blockName}`
+    );
     // Try PascalCase named export first, then original blockName
-    const component = module[pascalCaseName] || module[blockName];
+    const component = blockModule[pascalCaseName] || blockModule[blockName];
     if (!component) {
       throw new Error(`No valid export found in block "${blockName}"`);
     }
@@ -97,21 +93,17 @@ export async function getThemeBlock(blockName: string, theme?: string) {
   } catch (error) {
     // fallback to default theme
     if (loadTheme !== defaultTheme) {
-      try {
-        const fallbackModule = await import(
-          `@/themes/${defaultTheme}/blocks/${blockName}`
+      const fallbackModule = await import(
+        `@/themes/${defaultTheme}/blocks/${blockName}`
+      );
+      const fallbackComponent =
+        fallbackModule[pascalCaseName] || fallbackModule[blockName];
+      if (!fallbackComponent) {
+        throw new Error(
+          `No valid export found in fallback block "${blockName}"`
         );
-        const fallbackComponent =
-          fallbackModule[pascalCaseName] || fallbackModule[blockName];
-        if (!fallbackComponent) {
-          throw new Error(
-            `No valid export found in fallback block "${blockName}"`
-          );
-        }
-        return fallbackComponent;
-      } catch (fallbackError) {
-        throw fallbackError;
       }
+      return fallbackComponent;
     }
 
     throw error;

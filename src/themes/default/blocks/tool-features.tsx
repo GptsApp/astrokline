@@ -1,9 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Section } from '@/shared/types/blocks/landing';
-import { cn } from '@/shared/lib/utils';
+
 import { SmartIcon } from '@/shared/blocks/common';
+import { cn } from '@/shared/lib/utils';
+import { Section } from '@/shared/types/blocks/landing';
 
 export function ToolFeatures({
   section,
@@ -17,25 +18,29 @@ export function ToolFeatures({
   return (
     <section
       id={section.id || 'features'}
-      className={cn('py-24 bg-background relative overflow-hidden', section.className, className)}
+      className={cn(
+        'bg-background relative overflow-hidden py-24',
+        section.className,
+        className
+      )}
     >
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-20">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="mb-20 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             {section.headline && (
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+              <div className="bg-primary/10 text-primary mb-6 inline-flex items-center rounded-full px-4 py-2 text-sm font-medium">
                 {section.headline}
               </div>
             )}
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+            <h2 className="mb-6 text-3xl font-bold md:text-5xl">
               {section.title}
             </h2>
             {section.description && (
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
                 {section.description}
               </p>
             )}
@@ -50,8 +55,8 @@ export function ToolFeatures({
               <div
                 key={index}
                 className={cn(
-                  "flex flex-col gap-12 lg:gap-24 items-center",
-                  isReversed ? "lg:flex-row-reverse" : "lg:flex-row"
+                  'flex flex-col items-center gap-12 lg:gap-24',
+                  isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'
                 )}
               >
                 {/* Text Side */}
@@ -62,30 +67,42 @@ export function ToolFeatures({
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="flex-1 space-y-8"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
                     {feature.icon ? (
-                      <SmartIcon name={feature.icon} className="w-8 h-8 text-primary" />
+                      <SmartIcon
+                        name={feature.icon}
+                        className="text-primary h-8 w-8"
+                      />
                     ) : (
-                      <div className="text-2xl font-black text-primary/40 leading-none">0{index + 1}</div>
+                      <div className="text-primary/40 text-2xl leading-none font-black">
+                        0{index + 1}
+                      </div>
                     )}
                   </div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-foreground">
+                  <h3 className="text-foreground text-3xl font-bold md:text-4xl">
                     {feature.title}
                   </h3>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground text-lg leading-relaxed">
                     {feature.description}
                   </p>
-                  
+
                   {feature.items && (
                     <ul className="space-y-4 pt-4">
                       {feature.items.map((item: any, i: number) => (
                         <li key={i} className="flex items-start gap-4">
-                          <div className="w-6 h-6 mt-1 rounded-full bg-primary/20 flex flex-shrink-0 items-center justify-center">
-                            <SmartIcon name={item.icon || "Check"} className="w-3.5 h-3.5 text-primary" />
+                          <div className="bg-primary/20 mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full">
+                            <SmartIcon
+                              name={item.icon || 'Check'}
+                              className="text-primary h-3.5 w-3.5"
+                            />
                           </div>
                           <div>
-                            <h4 className="font-bold text-foreground">{item.title}</h4>
-                            <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                            <h4 className="text-foreground font-bold">
+                              {item.title}
+                            </h4>
+                            <p className="text-muted-foreground text-sm leading-relaxed">
+                              {item.description}
+                            </p>
                           </div>
                         </li>
                       ))}
@@ -99,20 +116,20 @@ export function ToolFeatures({
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="flex-1 w-full"
+                  className="w-full flex-1"
                 >
-                  <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#15131A] aspect-[4/3] flex items-center justify-center group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50" />
+                  <div className="group relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-[#15131A] shadow-2xl">
+                    <div className="from-primary/5 absolute inset-0 bg-gradient-to-br to-transparent opacity-50" />
                     {feature.image ? (
-                      <img 
-                        src={feature.image.src} 
+                      <img
+                        src={feature.image.src}
                         alt={feature.image.alt || feature.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="text-center p-8">
-                        <div className="w-20 h-20 mx-auto rounded-full bg-white/5 mb-4 animate-pulse" />
-                        <div className="h-4 w-32 bg-white/5 mx-auto rounded animate-pulse" />
+                      <div className="p-8 text-center">
+                        <div className="mx-auto mb-4 h-20 w-20 animate-pulse rounded-full bg-white/5" />
+                        <div className="mx-auto h-4 w-32 animate-pulse rounded bg-white/5" />
                       </div>
                     )}
                   </div>

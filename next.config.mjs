@@ -15,9 +15,7 @@ const withNextIntl = createNextIntlPlugin({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
-  output: process.env.VERCEL ? undefined : 'standalone',
+  output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
   outputFileTracingRoot: process.cwd(),
   reactStrictMode: false,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
@@ -72,12 +70,12 @@ const nextConfig = {
     return config;
   },
   experimental: {
-    turbopackFileSystemCacheForDev: true,
     mdxRs: false,
   },
-  reactCompiler: true,
 };
 
 export default withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
 
-initOpenNextCloudflareForDev();
+if (process.env.NODE_ENV === 'development') {
+  initOpenNextCloudflareForDev();
+}

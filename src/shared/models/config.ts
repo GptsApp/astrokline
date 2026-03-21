@@ -13,6 +13,9 @@ export type NewConfig = typeof config.$inferInsert;
 export type UpdateConfig = Partial<Omit<NewConfig, 'name'>>;
 
 export type Configs = Record<string, string>;
+export type GetAllConfigsOptions = {
+  fresh?: boolean;
+};
 
 export const CACHE_TAG_CONFIGS = 'configs';
 
@@ -49,25 +52,27 @@ export async function addConfig(newConfig: NewConfig) {
   return result;
 }
 
-export const getConfigs = unstable_cache(
-  async (): Promise<Configs> => {
-    const configs: Record<string, string> = {};
+async function loadConfigsFromDb(): Promise<Configs> {
+  const configs: Record<string, string> = {};
 
-    if (!envConfigs.database_url) {
-      return configs;
-    }
-
-    const result = await db().select().from(config);
-    if (!result) {
-      return configs;
-    }
-
-    for (const config of result) {
-      configs[config.name] = config.value ?? '';
-    }
-
+  if (!envConfigs.database_url) {
     return configs;
-  },
+  }
+
+  const result = await db().select().from(config);
+  if (!result) {
+    return configs;
+  }
+
+  for (const config of result) {
+    configs[config.name] = config.value ?? '';
+  }
+
+  return configs;
+}
+
+export const getConfigs = unstable_cache(
+  async (): Promise<Configs> => loadConfigsFromDb(),
   ['configs'],
   {
     revalidate: 3600,
@@ -75,13 +80,19 @@ export const getConfigs = unstable_cache(
   }
 );
 
-export async function getAllConfigs(): Promise<Configs> {
+export async function getFreshConfigs(): Promise<Configs> {
+  return loadConfigsFromDb();
+}
+
+export async function getAllConfigs(
+  options: GetAllConfigsOptions = {}
+): Promise<Configs> {
   let dbConfigs: Configs = {};
 
   // only get configs from db in server side
   if (typeof window === 'undefined' && envConfigs.database_url) {
     try {
-      dbConfigs = await getConfigs();
+      dbConfigs = options.fresh ? await getFreshConfigs() : await getConfigs();
     } catch (e) {
       console.log(`get configs from db failed:`, e);
       dbConfigs = {};
@@ -91,11 +102,10 @@ export async function getAllConfigs(): Promise<Configs> {
   const settingNames = await getAllSettingNames();
   settingNames.forEach((key) => {
     const upperKey = key.toUpperCase();
-    // use env configs if available
-    if (process.env[upperKey]) {
-      dbConfigs[key] = process.env[upperKey] ?? '';
-    } else if (process.env[key]) {
-      dbConfigs[key] = process.env[key] ?? '';
+    const envValue = process.env[upperKey] ?? process.env[key];
+    // Keep DB/admin settings as the source of truth and only backfill missing env-backed values.
+    if ((dbConfigs[key] === undefined || dbConfigs[key] === '') && envValue) {
+      dbConfigs[key] = envValue;
     }
   });
 
@@ -108,7 +118,7 @@ export async function getAllConfigs(): Promise<Configs> {
 }
 
 export async function getPublicConfigs(): Promise<Configs> {
-  let allConfigs = await getAllConfigs();
+  const allConfigs = await getAllConfigs();
 
   const publicConfigs: Record<string, string> = {};
 

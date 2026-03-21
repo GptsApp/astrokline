@@ -1,7 +1,8 @@
-import { eq, and, sql as drizzleSql } from 'drizzle-orm';
-import { db } from '@/core/db';
-import { userReferrals, userKlineQuota } from '@/config/db/schema';
 import { createHash } from 'crypto';
+import { and, sql as drizzleSql, eq } from 'drizzle-orm';
+
+import { db } from '@/core/db';
+import { userKlineQuota, userReferrals } from '@/config/db/schema';
 
 type UserReferral = typeof userReferrals.$inferSelect;
 
@@ -24,7 +25,12 @@ export async function getOrCreateReferralCode(userId: string): Promise<string> {
   const [existing] = await db()
     .select()
     .from(userReferrals)
-    .where(and(eq(userReferrals.referrerId, userId), eq(userReferrals.status, 'pending')))
+    .where(
+      and(
+        eq(userReferrals.referrerId, userId),
+        eq(userReferrals.status, 'pending')
+      )
+    )
     .limit(1);
 
   if (existing) return existing.referralCode;
@@ -43,15 +49,20 @@ export async function getOrCreateReferralCode(userId: string): Promise<string> {
 /**
  * Process a referral when a new user signs up with a referral code
  */
-export async function processReferral(referralCode: string, newUserId: string): Promise<boolean> {
+export async function processReferral(
+  referralCode: string,
+  newUserId: string
+): Promise<boolean> {
   // Find the referral
   const [referral] = await db()
     .select()
     .from(userReferrals)
-    .where(and(
-      eq(userReferrals.referralCode, referralCode),
-      eq(userReferrals.status, 'pending'),
-    ))
+    .where(
+      and(
+        eq(userReferrals.referralCode, referralCode),
+        eq(userReferrals.status, 'pending')
+      )
+    )
     .limit(1);
 
   if (!referral) return false;
@@ -89,7 +100,9 @@ export async function getReferralStats(userId: string) {
     .from(userReferrals)
     .where(eq(userReferrals.referrerId, userId));
 
-  const completed = all.filter((r: UserReferral) => r.status === 'completed').length;
+  const completed = all.filter(
+    (r: UserReferral) => r.status === 'completed'
+  ).length;
   const pending = all.find((r: UserReferral) => r.status === 'pending');
 
   return {

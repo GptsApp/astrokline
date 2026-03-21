@@ -184,7 +184,7 @@ function withSqliteCompat<T extends object>(dbInstance: T): T {
  * So we intentionally return `any` to keep call sites stable.
  */
 export function db(): any {
-  if (['sqlite', 'turso'].includes(envConfigs.database_provider)) {
+  if (['sqlite', 'turso', 'd1'].includes(envConfigs.database_provider)) {
     return withSqliteCompat(getSqliteDb() as any);
   }
 
@@ -212,7 +212,7 @@ export function dbMysql(): ReturnType<typeof getMysqlDb> {
 }
 
 export function dbSqlite(): ReturnType<typeof getSqliteDb> {
-  if (!['sqlite', 'turso'].includes(envConfigs.database_provider)) {
+  if (!['sqlite', 'turso', 'd1'].includes(envConfigs.database_provider)) {
     throw new Error('Database provider is not SQLite');
   }
 

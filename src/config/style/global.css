@@ -4,6 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/typography';
 
 @layer base {
   * {
@@ -12,7 +13,12 @@
   body {
     @apply bg-background text-foreground font-sans tracking-wide;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif tracking-normal;
   }
 }
@@ -119,7 +125,12 @@ pre {
   body {
     @apply bg-background text-foreground tracking-wide;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif tracking-normal;
   }
 }

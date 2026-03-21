@@ -37,7 +37,6 @@ export function SignIn({
   const [email, setEmail] = useState(defaultEmail || '');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   const isGoogleAuthEnabled = configs.google_auth_enabled === 'true';
   const isGithubAuthEnabled = configs.github_auth_enabled === 'true';
@@ -64,6 +63,11 @@ export function SignIn({
       return path.slice(locale.length + 1) || '/';
     return path;
   };
+  const normalizedCallbackUrl = stripLocalePrefix(callbackUrl || '/');
+  const signUpHref =
+    normalizedCallbackUrl && normalizedCallbackUrl !== '/'
+      ? `/sign-up?callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`
+      : '/sign-up';
 
   const handleSignIn = async () => {
     if (loading) {
@@ -86,19 +90,19 @@ export function SignIn({
           callbackURL: callbackUrl,
         },
         {
-          onRequest: (ctx) => {
+          onRequest: () => {
             // loading is already set above; keep as no-op for safety
           },
-          onResponse: (ctx) => {
+          onResponse: () => {
             // Do NOT reset loading here; navigation may not have completed yet.
           },
-          onSuccess: (ctx) => {
-            // Keep loading=true until navigation completes.
+          onSuccess: () => {
+            router.push(normalizedCallbackUrl || '/');
+            router.refresh();
           },
           onError: (e: any) => {
             const status = e?.error?.status;
             if (status === 403) {
-              const normalizedCallbackUrl = stripLocalePrefix(callbackUrl);
               const verifyPath = `/verify-email?sent=1&email=${encodeURIComponent(
                 email
               )}&callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`;
@@ -217,7 +221,7 @@ export function SignIn({
           <div className="flex w-full justify-center border-t py-4">
             <p className="text-center text-xs text-neutral-500">
               {t('no_account')}
-              <Link href="/sign-up" className="underline">
+              <Link href={signUpHref} className="underline">
                 <span className="cursor-pointer dark:text-white/70">
                   {t('sign_up_title')}
                 </span>

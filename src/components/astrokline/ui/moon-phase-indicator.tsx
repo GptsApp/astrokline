@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * Calculate the current moon phase and zodiac sign.
@@ -21,8 +21,18 @@ const MOON_PHASE_NAMES = [
 ] as const;
 
 const ZODIAC_SIGNS = [
-  'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-  'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces',
+  'Aries',
+  'Taurus',
+  'Gemini',
+  'Cancer',
+  'Leo',
+  'Virgo',
+  'Libra',
+  'Scorpio',
+  'Sagittarius',
+  'Capricorn',
+  'Aquarius',
+  'Pisces',
 ] as const;
 
 /** SVG moon phase icon — illumination percentage determines the visual */
@@ -33,7 +43,14 @@ function MoonIcon({ phaseIndex }: { phaseIndex: number }) {
   const isWaning = phaseIndex >= 5;
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" className="shrink-0">
-      <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        fill="rgba(255,255,255,0.08)"
+        stroke="rgba(255,255,255,0.2)"
+        strokeWidth="1"
+      />
       {illumination > 0 && (
         <ellipse
           cx="12"
@@ -60,10 +77,12 @@ function calculateMoonData(date: Date): MoonData {
   const synodicMonth = 29.53059; // days
   const siderealMonth = 27.321661; // days
 
-  const daysSinceNewMoon = (date.getTime() - knownNewMoon) / (1000 * 60 * 60 * 24);
+  const daysSinceNewMoon =
+    (date.getTime() - knownNewMoon) / (1000 * 60 * 60 * 24);
 
   // Moon phase (synodic)
-  const lunarAge = ((daysSinceNewMoon % synodicMonth) + synodicMonth) % synodicMonth;
+  const lunarAge =
+    ((daysSinceNewMoon % synodicMonth) + synodicMonth) % synodicMonth;
   const phaseIndex = Math.floor((lunarAge / synodicMonth) * 8) % 8;
 
   // Moon sign (sidereal, simplified)
@@ -88,9 +107,11 @@ export function MoonPhaseIndicator() {
   if (!moonData) return null;
 
   return (
-    <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-white/50 select-none">
+    <div className="hidden items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-[11px] text-white/50 select-none lg:flex">
       <MoonIcon phaseIndex={moonData.phaseIndex} />
-      <span className="tracking-wide">{moonData.phase} in {moonData.sign}</span>
+      <span className="tracking-wide">
+        {moonData.phase} in {moonData.sign}
+      </span>
     </div>
   );
 }

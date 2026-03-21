@@ -90,6 +90,7 @@ export function ShowcasesFlow({
           <div className="container mx-auto mt-8 mb-12 flex flex-wrap justify-center gap-4">
             {section.buttons.map((button) => (
               <Button
+                type="button"
                 key={button.title}
                 variant={button.variant || 'default'}
                 size={button.size || 'sm'}
@@ -198,6 +199,7 @@ export function ShowcasesFlow({
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Button
+                      type="button"
                       asChild
                       variant={(item as any).button.variant || 'default'}
                       size={(item as any).button.size || 'sm'}
@@ -245,6 +247,7 @@ export function ShowcasesFlow({
               onClick={() => setSelectedIndex(null)}
             >
               <button
+                type="button"
                 className="absolute top-4 right-4 z-50 text-white/70 transition-colors hover:text-white"
                 onClick={() => setSelectedIndex(null)}
               >
@@ -252,6 +255,7 @@ export function ShowcasesFlow({
               </button>
 
               <button
+                type="button"
                 className="absolute top-1/2 left-4 z-50 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white/70 transition-colors hover:bg-black/40 hover:text-white"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -262,6 +266,7 @@ export function ShowcasesFlow({
               </button>
 
               <button
+                type="button"
                 className="absolute top-1/2 right-4 z-50 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white/70 transition-colors hover:bg-black/40 hover:text-white"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -298,6 +303,7 @@ export function ShowcasesFlow({
                     {(filteredItems[selectedIndex] as any).button && (
                       <div className="mt-4">
                         <Button
+                          type="button"
                           asChild
                           variant={
                             (filteredItems[selectedIndex] as any).button

@@ -1,4 +1,5 @@
 import { eq } from 'drizzle-orm';
+
 import { db } from '@/core/db';
 import { userKlineQuota } from '@/config/db/schema';
 
@@ -14,7 +15,10 @@ const QUOTA_LIMITS: Record<string, { total: number; isLifetime: boolean }> = {
 /**
  * Get or initialize quota for a user
  */
-export async function getOrInitQuota(userId: string, userTier: string = 'FREE'): Promise<UserKlineQuota> {
+export async function getOrInitQuota(
+  userId: string,
+  userTier: string = 'FREE'
+): Promise<UserKlineQuota> {
   const [existing] = await db()
     .select()
     .from(userKlineQuota)
@@ -24,11 +28,22 @@ export async function getOrInitQuota(userId: string, userTier: string = 'FREE'):
   if (existing) {
     // Check if period needs reset (monthly users)
     const limits = QUOTA_LIMITS[userTier] || QUOTA_LIMITS.FREE;
-    if (!limits.isLifetime && existing.periodEnd && new Date() > existing.periodEnd) {
+    if (
+      !limits.isLifetime &&
+      existing.periodEnd &&
+      new Date() > existing.periodEnd
+    ) {
       // Reset for new month
       const now = new Date();
       const periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
-      const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+      const periodEnd = new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        0,
+        23,
+        59,
+        59
+      );
 
       const [updated] = await db()
         .update(userKlineQuota)
@@ -63,7 +78,10 @@ export async function getOrInitQuota(userId: string, userTier: string = 'FREE'):
 /**
  * Initialize quota for a new user
  */
-export async function initQuota(userId: string, userTier: string = 'FREE'): Promise<UserKlineQuota> {
+export async function initQuota(
+  userId: string,
+  userTier: string = 'FREE'
+): Promise<UserKlineQuota> {
   const limits = QUOTA_LIMITS[userTier] || QUOTA_LIMITS.FREE;
 
   const now = new Date();
@@ -96,7 +114,10 @@ export async function initQuota(userId: string, userTier: string = 'FREE'): Prom
 /**
  * Check if user has remaining quota
  */
-export async function checkQuota(userId: string, userTier: string = 'FREE'): Promise<{
+export async function checkQuota(
+  userId: string,
+  userTier: string = 'FREE'
+): Promise<{
   hasQuota: boolean;
   used: number;
   total: number;
@@ -122,7 +143,10 @@ export async function checkQuota(userId: string, userTier: string = 'FREE'): Pro
 /**
  * Consume one quota unit
  */
-export async function consumeQuota(userId: string, userTier: string = 'FREE'): Promise<boolean> {
+export async function consumeQuota(
+  userId: string,
+  userTier: string = 'FREE'
+): Promise<boolean> {
   const quota = await getOrInitQuota(userId, userTier);
   const limits = QUOTA_LIMITS[userTier] || QUOTA_LIMITS.FREE;
 
@@ -147,6 +171,9 @@ export async function consumeQuota(userId: string, userTier: string = 'FREE'): P
 /**
  * Get quota status for display
  */
-export async function getQuotaStatus(userId: string, userTier: string = 'FREE') {
+export async function getQuotaStatus(
+  userId: string,
+  userTier: string = 'FREE'
+) {
   return checkQuota(userId, userTier);
 }

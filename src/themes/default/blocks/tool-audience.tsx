@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Section } from '@/shared/types/blocks/landing';
-import { cn } from '@/shared/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+
 import { SmartIcon } from '@/shared/blocks/common';
+import { cn } from '@/shared/lib/utils';
+import { Section } from '@/shared/types/blocks/landing';
 
 export function ToolAudience({
   section,
@@ -21,40 +22,49 @@ export function ToolAudience({
   return (
     <section
       id={section.id || 'audience'}
-      className={cn('py-24 bg-[#0A0A0A] relative overflow-hidden', section.className, className)}
+      className={cn(
+        'relative overflow-hidden bg-[#0A0A0A] py-24',
+        section.className,
+        className
+      )}
     >
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="mb-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Who is <span className="text-primary">{section.highlight_text || 'this tool'}</span> for?
+            <h2 className="mb-6 text-3xl font-bold md:text-5xl">
+              Who is{' '}
+              <span className="text-primary">
+                {section.highlight_text || 'this tool'}
+              </span>{' '}
+              for?
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
               {section.description}
             </p>
           </motion.div>
         </div>
 
         {/* Desktop Tabs / Mobile Scroll */}
-        <div className="flex overflow-x-auto hide-scrollbar gap-4 justify-start md:justify-center mb-12 scroll-smooth pb-4 md:pb-0">
+        <div className="hide-scrollbar mb-12 flex justify-start gap-4 overflow-x-auto scroll-smooth pb-4 md:justify-center md:pb-0">
           {tabs.map((tab: any, index: number) => {
             const isActive = activeTab === index;
             return (
               <button
+                type="button"
                 key={index}
                 onClick={() => setActiveTab(index)}
                 className={cn(
-                  "flex items-center gap-2 px-6 py-3 rounded-full text-sm md:text-base font-medium transition-all whitespace-nowrap",
-                  isActive 
-                    ? "bg-primary text-primary-foreground shadow-[0_0_20px_rgba(212,175,55,0.3)]" 
-                    : "bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                  'flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium whitespace-nowrap transition-all md:text-base',
+                  isActive
+                    ? 'bg-primary text-primary-foreground shadow-[0_0_20px_rgba(212,175,55,0.3)]'
+                    : 'text-muted-foreground hover:text-foreground bg-white/5 hover:bg-white/10'
                 )}
               >
-                {tab.icon && <SmartIcon name={tab.icon} className="w-4 h-4" />}
+                {tab.icon && <SmartIcon name={tab.icon} className="h-4 w-4" />}
                 {tab.title}
               </button>
             );
@@ -70,45 +80,60 @@ export function ToolAudience({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 1.05, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+              className="absolute inset-0 grid grid-cols-1 items-center gap-12 md:grid-cols-2"
             >
               <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
-                  <SmartIcon name={tabs[activeTab].icon || "Star"} className="w-5 h-5" />
+                <div className="bg-primary/10 text-primary mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2">
+                  <SmartIcon
+                    name={tabs[activeTab].icon || 'Star'}
+                    className="h-5 w-5"
+                  />
                   <span className="font-bold">{tabs[activeTab].title}</span>
                 </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-foreground">
+                <h3 className="text-foreground text-3xl font-bold md:text-4xl">
                   {tabs[activeTab].headline}
                 </h3>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground text-lg leading-relaxed">
                   {tabs[activeTab].description}
                 </p>
-                
+
                 {tabs[activeTab].benefits && (
                   <ul className="space-y-4 pt-6">
-                    {tabs[activeTab].benefits.map((benefit: string, i: number) => (
-                      <li key={i} className="flex items-start gap-4">
-                        <div className="w-6 h-6 mt-1 flex flex-shrink-0 items-center justify-center">
-                          <SmartIcon name="CheckCircle" className="w-5 h-5 text-primary" />
-                        </div>
-                        <span className="text-foreground leading-relaxed">{benefit}</span>
-                      </li>
-                    ))}
+                    {tabs[activeTab].benefits.map(
+                      (benefit: string, i: number) => (
+                        <li key={i} className="flex items-start gap-4">
+                          <div className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center">
+                            <SmartIcon
+                              name="CheckCircle"
+                              className="text-primary h-5 w-5"
+                            />
+                          </div>
+                          <span className="text-foreground leading-relaxed">
+                            {benefit}
+                          </span>
+                        </li>
+                      )
+                    )}
                   </ul>
                 )}
               </div>
 
-              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#15131A] aspect-square md:aspect-[4/3] flex items-center justify-center">
+              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-[#15131A] shadow-2xl md:aspect-[4/3]">
                 {tabs[activeTab].image ? (
-                  <img 
-                    src={tabs[activeTab].image.src} 
+                  <img
+                    src={tabs[activeTab].image.src}
                     alt={tabs[activeTab].image.alt || tabs[activeTab].title}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] flex flex-col items-center justify-center p-12 text-center border-t border-white/5">
-                    <SmartIcon name={tabs[activeTab].icon || "Image"} className="w-24 h-24 text-white/5 mb-6" />
-                    <p className="text-white/20 font-mono text-sm">{tabs[activeTab].title} Interface Preview...</p>
+                  <div className="flex h-full w-full flex-col items-center justify-center border-t border-white/5 bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] p-12 text-center">
+                    <SmartIcon
+                      name={tabs[activeTab].icon || 'Image'}
+                      className="mb-6 h-24 w-24 text-white/5"
+                    />
+                    <p className="font-mono text-sm text-white/20">
+                      {tabs[activeTab].title} Interface Preview...
+                    </p>
                   </div>
                 )}
               </div>

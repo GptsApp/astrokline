@@ -3,8 +3,8 @@
     "show_sections": [
       "hero",
       "kline-preview",
+      "how-it-works",
       "features",
-      "methodology",
       "testimonials",
       "pricing",
       "faq",
@@ -14,59 +14,236 @@
       "hero": {
         "id": "hero",
         "block": "astro-hero",
-        "title": "Stop Guessing Your Future. Read Your Astrology K-Line.",
-        "highlight_text": "Astrology K-Line",
-        "description": "AstroKline is the world's first AI that transforms your birth chart into a real-time destiny K-Line — a stunning, scannable map of your life's cosmic peaks, valleys, and turning points.",
+        "title": "See Your K-Line. Know When To Push.",
+        "highlight_text": "K-Line",
+        "description": "Enter your birth data and get a timing map for your strongest push, pause, and protection windows.",
         "announcement": {
           "badge": "V2.0",
-          "title": "🔥 2,847 readings generated today",
+          "title": "Live K-Line readings today",
           "url": "/daily"
         },
-        "tip": "Trusted by 26,000+ cosmic navigators who charted their destiny"
+        "tip": "Used to read timing, pressure, and momentum"
       },
       "kline-preview": {
         "id": "kline-preview",
         "block": "astro-kline-preview",
-        "title": "Your Natal Chart, Visualized as a K-Line.",
-        "label": "Interactive Destiny K-Line Tracker",
-        "description": "Watch your planetary energy unfold in real-time. An intuitive astrology chart that maps cosmic transits into a trajectory you can actually read — like a stock chart for your destiny.",
+        "title": "Your Birth Chart, Turned Into a K-Line.",
+        "label": "100-Year Destiny Trajectory",
+        "description": "See where your long-term highs, lows, and reversals are likely to happen.",
         "className": "astro-starfield"
+      },
+      "how-it-works": {
+        "id": "how-it-works",
+        "block": "astro-how-it-works",
+        "title": "Three Steps",
+        "description": "No astrology background needed."
       },
       "features": {
         "id": "features",
         "block": "astro-features",
-        "title": "The Astrology Chart That Maps Your Destiny.",
-        "description": "See the invisible planetary forces shaping your life journey."
+        "title": "Use Timing Better.",
+        "description": "Turn chart timing into clearer decisions."
       },
       "methodology": {
         "id": "methodology",
         "block": "astro-methodology",
-        "title": "Professional-Grade Methodology.",
-        "description": "AstroKline uses the same astronomical engine trusted by professional astrologers worldwide."
+        "title": "How It Works",
+        "description": "Built from transit timing, long-cycle scoring, and chart structure."
       },
       "testimonials": {
         "id": "testimonials",
         "block": "astro-testimonials",
-        "title": "Astrology Guidance for Every Life Phase.",
-        "description": "Join thousands who found clarity through their birth chart K-Line."
+        "title": "Used Across Career, Money, and Relationships.",
+        "description": "Read where the pressure is, then act with better timing."
       },
       "pricing": {
         "id": "pricing",
         "block": "astro-pricing",
-        "title": "Invest in Cosmic Clarity.",
-        "description": "Choose the depth of your astrology chart reading."
+        "title": "Choose Your Plan",
+        "description": "Pick the depth, save limit, and tools you need.",
+        "groups": [
+          {
+            "name": "monthly",
+            "title": "Monthly"
+          },
+          {
+            "name": "yearly",
+            "title": "Yearly",
+            "label": "Save 50%"
+          }
+        ],
+        "items": [
+          {
+            "title": "Free",
+            "description": "Start free and see how your timing map works.",
+            "features_title": "Includes",
+            "features": [
+              "Full 100-year K-Line",
+              "Core AI reading",
+              "Basic yearly tooltip insights",
+              "Raw chart data",
+              "2 saved K-Lines for life"
+            ],
+            "interval": "month",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "Free",
+            "button": {
+              "title": "Start Free",
+              "url": "/pricing"
+            },
+            "product_id": "free-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Lite",
+            "description": "Unlock practical guidance and save the charts you want to revisit.",
+            "features_title": "Everything in Free, plus",
+            "features": [
+              "10 saved K-Lines each month",
+              "Career, Wealth, Love, and Health modules",
+              "Annual transit summaries in chart tooltips",
+              "Saved reports in your dashboard",
+              "Upgrade to Pro anytime"
+            ],
+            "interval": "month",
+            "amount": 3990,
+            "currency": "USD",
+            "price": "$39.9",
+            "unit": "/ month",
+            "is_featured": false,
+            "tip": "Billed Monthly",
+            "button": {
+              "title": "Choose Lite",
+              "url": "/pricing"
+            },
+            "product_id": "standard-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Pro",
+            "description": "Full detail, priority access, and the strongest decision tools.",
+            "label": "Most Complete",
+            "features_title": "Everything in Lite, plus",
+            "features": [
+              "30 saved K-Lines / month",
+              "Exact transit detail for every turning year",
+              "Strengths and Blindspots modules",
+              "Click any year for an instant deep reading",
+              "Priority Access to Every New Release",
+              "Export polished PDF reports",
+              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+            ],
+            "interval": "month",
+            "amount": 7990,
+            "currency": "USD",
+            "price": "$79.9",
+            "unit": "/ month",
+            "is_featured": true,
+            "tip": "Billed Monthly",
+            "button": {
+              "title": "Choose Pro",
+              "url": "/pricing"
+            },
+            "product_id": "premium-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Free",
+            "description": "Start free and see how your timing map works.",
+            "features_title": "Includes",
+            "features": [
+              "Full 100-year K-Line",
+              "Core AI reading",
+              "Basic yearly tooltip insights",
+              "Raw chart data",
+              "2 saved K-Lines for life"
+            ],
+            "interval": "year",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "Free",
+            "button": {
+              "title": "Start Free",
+              "url": "/pricing"
+            },
+            "product_id": "free-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Lite",
+            "description": "Unlock practical guidance and save the charts you want to revisit.",
+            "features_title": "Everything in Free, plus",
+            "features": [
+              "10 saved K-Lines each month",
+              "Career, Wealth, Love, and Health modules",
+              "Annual transit summaries in chart tooltips",
+              "Saved reports in your dashboard",
+              "Upgrade to Pro anytime"
+            ],
+            "interval": "year",
+            "amount": 23880,
+            "currency": "USD",
+            "price": "$19.9",
+            "original_price": "$39.9",
+            "unit": "/ month",
+            "is_featured": false,
+            "tip": "Billed yearly at $238.8",
+            "button": {
+              "title": "Choose Lite",
+              "url": "/pricing"
+            },
+            "product_id": "standard-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Pro",
+            "description": "Full detail, priority access, and the strongest decision tools.",
+            "label": "Most Complete",
+            "features_title": "Everything in Lite, plus",
+            "features": [
+              "30 saved K-Lines / month",
+              "Exact transit detail for every turning year",
+              "Strengths and Blindspots modules",
+              "Click any year for an instant deep reading",
+              "Priority Access to Every New Release",
+              "Export polished PDF reports",
+              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+            ],
+            "interval": "year",
+            "amount": 47880,
+            "currency": "USD",
+            "price": "$39.9",
+            "original_price": "$79.9",
+            "unit": "/ month",
+            "is_featured": true,
+            "tip": "Billed yearly at $478.8",
+            "button": {
+              "title": "Choose Pro",
+              "url": "/pricing"
+            },
+            "product_id": "premium-yearly",
+            "group": "yearly"
+          }
+        ]
       },
       "faq": {
         "id": "faq",
         "block": "astro-faq",
         "title": "Frequently Asked Questions",
-        "description": "Everything you need to know about reading your destiny K-Line."
+        "description": "Key questions about using the K-Line."
       },
       "cta": {
         "id": "cta",
         "block": "astro-cta",
-        "title": "Stop wandering in the dark. Read your astrology K-Line.",
-        "description": "Join thousands who unlocked their birth chart destiny map with AstroKline."
+        "title": "Generate Your K-Line.",
+        "description": "See your next strong window, weak window, and turning point."
       }
     }
   }

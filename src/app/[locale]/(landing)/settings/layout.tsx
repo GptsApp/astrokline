@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { getTranslations } from 'next-intl/server';
-import { ConsoleLayout } from '@/shared/blocks/console/layout';
+
 import { LocaleDetector, TopBanner } from '@/shared/blocks/common';
+import { ConsoleLayout } from '@/shared/blocks/console/layout';
 import { Header } from '@/shared/types/blocks/landing';
 
 export default async function SettingsLayout({
@@ -25,7 +26,7 @@ export default async function SettingsLayout({
       title={title}
       nav={nav}
       bottomNav={bottomNav}
-      className="py-16 md:py-20 bg-background astro-starfield min-h-screen"
+      className="bg-background astro-starfield min-h-screen py-16 md:py-20"
     >
       <LocaleDetector />
       {header.topbanner && header.topbanner.text && (

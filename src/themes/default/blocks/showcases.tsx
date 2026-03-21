@@ -154,6 +154,7 @@ export function Showcases({
                       {hasButton && (
                         <div className="mt-4">
                           <Button
+                            type="button"
                             asChild
                             variant={(item as any).button.variant || 'default'}
                             size={(item as any).button.size || 'sm'}

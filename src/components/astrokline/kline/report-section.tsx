@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from '@/shared/lib/utils';
 
 interface ReportSectionProps {
   id?: string;
@@ -25,7 +25,10 @@ export function ReportSection({
 }: ReportSectionProps) {
   if (fullBleed) {
     return (
-      <section id={id} className={cn(divider && "border-t border-white/5", className)}>
+      <section
+        id={id}
+        className={cn(divider && 'border-t border-white/5', className)}
+      >
         {children}
       </section>
     );
@@ -35,8 +38,8 @@ export function ReportSection({
     <section
       id={id}
       className={cn(
-        "max-w-5xl mx-auto px-4 md:px-6 py-8",
-        divider && "border-t border-white/5",
+        'mx-auto max-w-5xl px-4 py-8 md:px-6',
+        divider && 'border-t border-white/5',
         className
       )}
     >

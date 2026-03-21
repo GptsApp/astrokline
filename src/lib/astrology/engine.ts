@@ -21,7 +21,7 @@ export interface BirthInput {
   day: number;
   hour: number;
   minute: number;
-  timezone: number;     // UTC offset, e.g. +8 for Beijing, -5 for NYC
+  timezone: number; // UTC offset, e.g. +8 for Beijing, -5 for NYC
   latitude: number;
   longitude: number;
 }
@@ -58,9 +58,28 @@ export interface NatalChartResult {
   midheaven: { sign: string; degree: number };
 }
 
+export interface TransitDateInput {
+  year: number;
+  month: number;
+  day: number;
+  hour?: number;
+  minute?: number;
+  timezone?: number;
+}
+
 const ZODIAC_SIGNS = [
-  "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
-  "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+  'Aries',
+  'Taurus',
+  'Gemini',
+  'Cancer',
+  'Leo',
+  'Virgo',
+  'Libra',
+  'Scorpio',
+  'Sagittarius',
+  'Capricorn',
+  'Aquarius',
+  'Pisces',
 ];
 
 const DEG = Math.PI / 180;
@@ -70,31 +89,42 @@ function mod360(x: number): number {
   return ((x % 360) + 360) % 360;
 }
 
-function sinDeg(d: number): number { return Math.sin(d * DEG); }
-function cosDeg(d: number): number { return Math.cos(d * DEG); }
-function tanDeg(d: number): number { return Math.tan(d * DEG); }
-function atanDeg2(y: number, x: number): number { return Math.atan2(y, x) * RAD; }
+function sinDeg(d: number): number {
+  return Math.sin(d * DEG);
+}
+function cosDeg(d: number): number {
+  return Math.cos(d * DEG);
+}
+function tanDeg(d: number): number {
+  return Math.tan(d * DEG);
+}
+function atanDeg2(y: number, x: number): number {
+  return Math.atan2(y, x) * RAD;
+}
 
 function longitudeToSign(longitude: number): { sign: string; degree: number } {
   const norm = mod360(longitude);
   const signIndex = Math.floor(norm / 30) % 12;
   const degree = norm % 30;
-  return { sign: ZODIAC_SIGNS[signIndex], degree: Math.round(degree * 100) / 100 };
+  return {
+    sign: ZODIAC_SIGNS[signIndex],
+    degree: Math.round(degree * 100) / 100,
+  };
 }
 
 // ── Planet definitions ──
 
 const PLANET_LIST = [
-  { body: 'Sun',     name: 'Sun',     symbol: 'SUN' },
-  { body: 'Moon',    name: 'Moon',    symbol: 'MOO' },
+  { body: 'Sun', name: 'Sun', symbol: 'SUN' },
+  { body: 'Moon', name: 'Moon', symbol: 'MOO' },
   { body: 'Mercury', name: 'Mercury', symbol: 'MER' },
-  { body: 'Venus',   name: 'Venus',   symbol: 'VEN' },
-  { body: 'Mars',    name: 'Mars',    symbol: 'MAR' },
+  { body: 'Venus', name: 'Venus', symbol: 'VEN' },
+  { body: 'Mars', name: 'Mars', symbol: 'MAR' },
   { body: 'Jupiter', name: 'Jupiter', symbol: 'JUP' },
-  { body: 'Saturn',  name: 'Saturn',  symbol: 'SAT' },
-  { body: 'Uranus',  name: 'Uranus',  symbol: 'URA' },
+  { body: 'Saturn', name: 'Saturn', symbol: 'SAT' },
+  { body: 'Uranus', name: 'Uranus', symbol: 'URA' },
   { body: 'Neptune', name: 'Neptune', symbol: 'NEP' },
-  { body: 'Pluto',   name: 'Pluto',   symbol: 'PLU' },
+  { body: 'Pluto', name: 'Pluto', symbol: 'PLU' },
 ];
 
 // ── Get geocentric ecliptic longitude for any body ──
@@ -146,30 +176,35 @@ function calcHouses(
   const lstDeg = lstHours * 15; // convert hours to degrees
 
   // Midheaven (MC) — RAMC to ecliptic longitude
-  const mc = mod360(atanDeg2(sinDeg(lstDeg), cosDeg(lstDeg) * cosDeg(obliquity)));
+  const mc = mod360(
+    atanDeg2(sinDeg(lstDeg), cosDeg(lstDeg) * cosDeg(obliquity))
+  );
 
   // Ascendant
   const ascNum = cosDeg(lstDeg);
-  const ascDen = -(sinDeg(obliquity) * tanDeg(latitude) + cosDeg(obliquity) * sinDeg(lstDeg));
+  const ascDen = -(
+    sinDeg(obliquity) * tanDeg(latitude) +
+    cosDeg(obliquity) * sinDeg(lstDeg)
+  );
   const asc = mod360(atanDeg2(ascNum, ascDen));
 
   // Placidus house cusps (simplified interpolation)
   const cusps: number[] = new Array(12);
-  cusps[0] = asc;                           // 1st house = ASC
-  cusps[9] = mc;                            // 10th house = MC
-  cusps[6] = mod360(asc + 180);            // 7th house = DSC
-  cusps[3] = mod360(mc + 180);             // 4th house = IC
+  cusps[0] = asc; // 1st house = ASC
+  cusps[9] = mc; // 10th house = MC
+  cusps[6] = mod360(asc + 180); // 7th house = DSC
+  cusps[3] = mod360(mc + 180); // 4th house = IC
 
   // Interpolate intermediate cusps
-  cusps[1] = mod360(asc + (mod360(cusps[3] - asc)) / 3);
-  cusps[2] = mod360(asc + 2 * (mod360(cusps[3] - asc)) / 3);
-  cusps[4] = mod360(cusps[3] + (mod360(cusps[6] - cusps[3])) / 3);
-  cusps[5] = mod360(cusps[3] + 2 * (mod360(cusps[6] - cusps[3])) / 3);
-  cusps[7] = mod360(cusps[6] + (mod360(mc - cusps[6])) / 3);
-  cusps[8] = mod360(cusps[6] + 2 * (mod360(mc - cusps[6])) / 3);
+  cusps[1] = mod360(asc + mod360(cusps[3] - asc) / 3);
+  cusps[2] = mod360(asc + (2 * mod360(cusps[3] - asc)) / 3);
+  cusps[4] = mod360(cusps[3] + mod360(cusps[6] - cusps[3]) / 3);
+  cusps[5] = mod360(cusps[3] + (2 * mod360(cusps[6] - cusps[3])) / 3);
+  cusps[7] = mod360(cusps[6] + mod360(mc - cusps[6]) / 3);
+  cusps[8] = mod360(cusps[6] + (2 * mod360(mc - cusps[6])) / 3);
   const ascPlus = asc < mc ? asc + 360 : asc;
   cusps[10] = mod360(mc + (ascPlus - mc) / 3);
-  cusps[11] = mod360(mc + 2 * (ascPlus - mc) / 3);
+  cusps[11] = mod360(mc + (2 * (ascPlus - mc)) / 3);
 
   return { cusps, ascendant: asc, mc };
 }
@@ -191,7 +226,9 @@ function assignHouse(planetLon: number, cusps: number[]): number {
 
 // ── Main calculation ──
 
-export async function calculateNatalChart(input: BirthInput): Promise<NatalChartResult> {
+export async function calculateNatalChart(
+  input: BirthInput
+): Promise<NatalChartResult> {
   // Convert local time to UTC
   const utcHour = input.hour - input.timezone;
   const utcMinute = input.minute;
@@ -208,7 +245,10 @@ export async function calculateNatalChart(input: BirthInput): Promise<NatalChart
     // Simple month/year rollback (handle edge cases)
     if (day < 1) {
       month -= 1;
-      if (month < 1) { month = 12; year -= 1; }
+      if (month < 1) {
+        month = 12;
+        year -= 1;
+      }
       day = new Date(year, month, 0).getDate(); // last day of previous month
     }
   } else if (adjustedHour >= 24) {
@@ -218,7 +258,10 @@ export async function calculateNatalChart(input: BirthInput): Promise<NatalChart
     if (day > daysInMonth) {
       day = 1;
       month += 1;
-      if (month > 12) { month = 1; year += 1; }
+      if (month > 12) {
+        month = 1;
+        year += 1;
+      }
     }
   }
 
@@ -233,7 +276,7 @@ export async function calculateNatalChart(input: BirthInput): Promise<NatalChart
 
   // Get sidereal time at the observer's location
   const gst = Astronomy.SiderealTime(time); // Greenwich sidereal time in hours
-  const lst = mod360((gst * 15) + input.longitude) / 15; // Local sidereal time in hours
+  const lst = mod360(gst * 15 + input.longitude) / 15; // Local sidereal time in hours
 
   // Calculate houses
   const { cusps, ascendant, mc } = calcHouses(lst, input.latitude, obliquity);
@@ -269,11 +312,11 @@ export async function calculateNatalChart(input: BirthInput): Promise<NatalChart
 
   // Aspects
   const ASPECT_DEFS = [
-    { name: "Conjunction", angle: 0, orb: 8 },
-    { name: "Sextile", angle: 60, orb: 6 },
-    { name: "Square", angle: 90, orb: 7 },
-    { name: "Trine", angle: 120, orb: 8 },
-    { name: "Opposition", angle: 180, orb: 8 },
+    { name: 'Conjunction', angle: 0, orb: 8 },
+    { name: 'Sextile', angle: 60, orb: 6 },
+    { name: 'Square', angle: 90, orb: 7 },
+    { name: 'Trine', angle: 120, orb: 8 },
+    { name: 'Opposition', angle: 180, orb: 8 },
   ];
 
   const aspects: AspectData[] = [];
@@ -305,13 +348,51 @@ export async function calculateNatalChart(input: BirthInput): Promise<NatalChart
   };
 }
 
+export function calculateTransitPositionsForDate(
+  input: TransitDateInput
+): PlanetPosition[] {
+  const timezone = input.timezone ?? 0;
+  const localHour = input.hour ?? 12;
+  const localMinute = input.minute ?? 0;
+  const utcDate = new Date(
+    Date.UTC(
+      input.year,
+      input.month - 1,
+      input.day,
+      localHour - timezone,
+      localMinute,
+      0
+    )
+  );
+  const time = Astronomy.MakeTime(utcDate);
+
+  return PLANET_LIST.map((planetDef) => {
+    const longitude = getGeocentricLongitude(planetDef.body, time);
+    const retrograde = isRetrograde(planetDef.body, time);
+    const signInfo = longitudeToSign(longitude);
+
+    return {
+      name: planetDef.name,
+      symbol: planetDef.symbol,
+      longitude,
+      sign: signInfo.sign,
+      signDegree: signInfo.degree,
+      house: 0,
+      retrograde,
+    };
+  });
+}
+
 /**
  * Parse a time-slot string like "14:00-15:00" into a midpoint hour.
  * Returns 12 for "unknown".
  */
-export function timeSlotToHourMinute(slot: string): { hour: number; minute: number } {
-  if (slot === "unknown") return { hour: 12, minute: 0 };
-  const [start] = slot.split("-");
-  const [h, m] = start.split(":").map(Number);
+export function timeSlotToHourMinute(slot: string): {
+  hour: number;
+  minute: number;
+} {
+  if (slot === 'unknown') return { hour: 12, minute: 0 };
+  const [start] = slot.split('-');
+  const [h, m] = start.split(':').map(Number);
   return { hour: h, minute: (m || 0) + 30 };
 }

@@ -1,60 +1,72 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Database, Compass, LayoutGrid, Target, Clock, MapPin } from "lucide-react";
+import { motion } from 'framer-motion';
+import {
+  Clock,
+  Compass,
+  Database,
+  LayoutGrid,
+  MapPin,
+  Target,
+} from 'lucide-react';
 
 const methodItems = [
   {
     icon: Database,
-    label: "Swiss Ephemeris",
-    detail: "Arcsecond-precision planetary positions (DE431)",
+    label: 'Swiss Ephemeris',
+    detail: 'Arcsecond-precision planetary positions (DE431)',
   },
   {
     icon: Compass,
-    label: "Tropical Zodiac",
-    detail: "Western standard, season-aligned system",
+    label: 'Tropical Zodiac',
+    detail: 'Western standard, season-aligned system',
   },
   {
     icon: LayoutGrid,
-    label: "Placidus Houses",
-    detail: "Most widely adopted house system globally",
+    label: 'Placidus Houses',
+    detail: 'Most widely adopted house system globally',
   },
   {
     icon: Target,
-    label: "Applying / Separating",
-    detail: "Full aspect phase distinction with configurable orbs",
+    label: 'Applying / Separating',
+    detail: 'Full aspect phase distinction with configurable orbs',
   },
   {
     icon: Clock,
-    label: "DST-Aware",
-    detail: "Full historical timezone & daylight saving support",
+    label: 'DST-Aware',
+    detail: 'Full historical timezone & daylight saving support',
   },
   {
     icon: MapPin,
-    label: "GPS-Precise",
-    detail: "Geocentric calculation with exact birth coordinates",
+    label: 'GPS-Precise',
+    detail: 'Geocentric calculation with exact birth coordinates',
   },
 ];
 
 export function MethodologyBadge() {
   return (
-    <section id="methodology" className="py-20 bg-background relative overflow-hidden">
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
+    <section
+      id="methodology"
+      className="bg-background relative overflow-hidden py-20"
+    >
+      <div className="relative z-10 mx-auto max-w-5xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-12 text-center"
         >
-          <p className="text-xs uppercase tracking-[0.3em] text-primary/70 font-mono mb-3">
+          <p className="text-primary/70 mb-3 font-mono text-xs tracking-[0.3em] uppercase">
             Built on Real Astronomy
           </p>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">
-            Professional-Grade <span className="text-primary">Methodology.</span>
+          <h2 className="mb-3 text-2xl font-bold md:text-3xl">
+            Professional-Grade{' '}
+            <span className="text-primary">Methodology.</span>
           </h2>
-          <p className="text-muted-foreground text-sm max-w-xl mx-auto leading-relaxed">
-            AstroKline uses the same astronomical engine trusted by professional astrologers worldwide.
-            Every calculation is transparent, precise, and verifiable.
+          <p className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed">
+            AstroKline uses the same astronomical engine trusted by professional
+            astrologers worldwide. Every calculation is transparent, precise,
+            and verifiable.
           </p>
         </motion.div>
 
@@ -63,7 +75,7 @@ export function MethodologyBadge() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-2 md:grid-cols-3 gap-4"
+          className="grid grid-cols-2 gap-4 md:grid-cols-3"
         >
           {methodItems.map((item, i) => (
             <motion.div
@@ -72,16 +84,20 @@ export function MethodologyBadge() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.05 * i }}
-              className="group relative rounded-2xl border border-white/5 bg-[#15131A] p-5 hover:border-primary/20 transition-all duration-300"
+              className="group hover:border-primary/20 relative rounded-2xl border border-white/5 bg-[#15131A] p-5 transition-all duration-300"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+              <div className="from-primary/5 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="relative z-10 flex flex-col gap-3">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <item.icon className="w-4 h-4 text-primary" />
+                <div className="bg-primary/10 border-primary/20 flex h-9 w-9 items-center justify-center rounded-xl border">
+                  <item.icon className="text-primary h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white/90 mb-1">{item.label}</h3>
-                  <p className="text-[11px] text-white/40 leading-relaxed">{item.detail}</p>
+                  <h3 className="mb-1 text-sm font-bold text-white/90">
+                    {item.label}
+                  </h3>
+                  <p className="text-[11px] leading-relaxed text-white/40">
+                    {item.detail}
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -94,11 +110,17 @@ export function MethodologyBadge() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="mt-10 text-center"
+          className="mt-10 space-y-6 text-center"
         >
-          <p className="text-xs text-white/20 font-mono tracking-wider">
+          <p className="font-mono text-xs tracking-wider text-white/20">
             Aligned with OPA & ISAR professional standards
           </p>
+          <a
+            href="#pricing"
+            className="text-foreground hover:border-primary/20 inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.06] px-6 py-2.5 text-sm font-medium transition-all hover:bg-white/[0.12]"
+          >
+            See our precision in action →
+          </a>
         </motion.div>
       </div>
     </section>

@@ -16,35 +16,37 @@ export default async function DynamicPage({
         <h1 className="sr-only">{page.title}</h1>
       )}
       {page?.sections &&
-        (page.show_sections || Object.keys(page.sections)).map(async (sectionKey: string) => {
-          const section = page.sections?.[sectionKey];
-          if (!section || section.disabled === true) {
-            return null;
-          }
+        (page.show_sections || Object.keys(page.sections)).map(
+          async (sectionKey: string) => {
+            const section = page.sections?.[sectionKey];
+            if (!section || section.disabled === true) {
+              return null;
+            }
 
-          // block name
-          const block = section.block || section.id || sectionKey;
+            // block name
+            const block = section.block || section.id || sectionKey;
 
-          switch (block) {
-            default:
-              try {
-                if (section.component) {
-                  return section.component;
+            switch (block) {
+              default:
+                try {
+                  if (section.component) {
+                    return section.component;
+                  }
+
+                  const DynamicBlock = await getThemeBlock(block);
+                  return (
+                    <DynamicBlock
+                      key={sectionKey}
+                      section={section}
+                      {...(data || section.data || {})}
+                    />
+                  );
+                } catch (error) {
+                  return null;
                 }
-
-                const DynamicBlock = await getThemeBlock(block);
-                return (
-                  <DynamicBlock
-                    key={sectionKey}
-                    section={section}
-                    {...(data || section.data || {})}
-                  />
-                );
-              } catch (error) {
-                return null;
-              }
+            }
           }
-        })}
+        )}
     </>
   );
 }

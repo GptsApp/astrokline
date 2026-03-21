@@ -1,7 +1,10 @@
 import postgres from 'postgres';
 
 const DATABASE_URL = process.env.DATABASE_URL;
-if (!DATABASE_URL) { console.error('DATABASE_URL not set'); process.exit(1); }
+if (!DATABASE_URL) {
+  console.error('DATABASE_URL not set');
+  process.exit(1);
+}
 const sql = postgres(DATABASE_URL);
 
 async function main() {
@@ -12,4 +15,7 @@ async function main() {
   console.log('✅ Done');
   await sql.end();
 }
-main().catch(err => { console.error(err); process.exit(1); });
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

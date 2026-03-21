@@ -1,157 +1,298 @@
+import Link from 'next/link';
 import { Metadata } from 'next';
 
+import { envConfigs } from '@/config';
+
+const aboutUrl = `${envConfigs.app_url}/about`;
+
 export const metadata: Metadata = {
-  title: 'About AstroKline - The Science Behind Your Destiny K-Line',
-  description: 'AstroKline combines NASA-grade Swiss Ephemeris calculations with AI-powered interpretation to create the world\'s first interactive destiny timeline visualization.',
+  title: 'About AstroKline | AI Astrology, Birth Chart Timing, and K-Line Forecasts',
+  description:
+    'Learn how AstroKline turns birth chart data, Swiss Ephemeris calculations, and AI interpretation into a practical astrology timing map for career, money, relationships, and daily decisions.',
+  keywords: [
+    'about astrokline',
+    'ai astrology',
+    'birth chart reading',
+    'natal chart analysis',
+    'astrology timing',
+    'astrology k line',
+    'destiny chart',
+    'swiss ephemeris astrology',
+  ],
+  alternates: {
+    canonical: aboutUrl,
+  },
+  openGraph: {
+    title: 'About AstroKline',
+    description:
+      'AstroKline combines Swiss Ephemeris precision, astrology timing logic, and AI interpretation to turn birth charts into a practical K-Line forecast.',
+    url: aboutUrl,
+    type: 'article',
+  },
 };
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About AstroKline',
+  url: aboutUrl,
+  description:
+    'About AstroKline, an AI astrology platform that converts birth chart timing into a readable K-Line forecast.',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'AstroKline',
+    url: envConfigs.app_url,
+    sameAs: [envConfigs.app_url],
+    description:
+      'AstroKline is an astrology software product focused on birth chart timing, long-cycle analysis, and AI-powered interpretation.',
+  },
+};
+
+const principles = [
+  {
+    title: 'Astronomy Before Interpretation',
+    description:
+      'We start with exact birth-chart calculation, not generic sign-based copy. AstroKline uses Swiss Ephemeris data so the underlying planetary positions are precise before any interpretation begins.',
+  },
+  {
+    title: 'Timing Beats Vague Inspiration',
+    description:
+      'Most astrology content tells users what they are. We focus on when pressure rises, when momentum improves, and when turning points are likely to matter.',
+  },
+  {
+    title: 'Readable Output Matters',
+    description:
+      'A birth chart can be accurate and still be unusable. The K-Line format exists to make complex transit and cycle data readable at a glance.',
+  },
+  {
+    title: 'Privacy Is Product Quality',
+    description:
+      'Birth data is sensitive. We treat data protection as a product requirement, not a note hidden at the bottom of the page.',
+  },
+];
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/3 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-purple-500/5 rounded-full blur-[100px]" />
+    <main className="bg-background text-foreground min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+
+      <section className="relative overflow-hidden border-b border-white/5 pt-32 pb-16">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="bg-primary/10 absolute top-16 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full blur-[120px]" />
+          <div className="absolute right-10 bottom-0 h-56 w-56 rounded-full bg-emerald-500/5 blur-[100px]" />
         </div>
-        <div className="max-w-3xl mx-auto px-6 relative z-10 text-center">
-          <span className="text-[11px] font-mono uppercase tracking-[0.3em] text-primary/70 mb-4 block">About Us</span>
-          <h1 className="text-4xl md:text-5xl font-serif tracking-tight text-white/90 mb-6 leading-tight">
-            The Science Behind<br />Your Destiny K-Line
+        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+          <p className="text-primary/70 mb-4 font-mono text-xs tracking-[0.3em] uppercase">
+            About AstroKline
+          </p>
+          <h1 className="mx-auto max-w-3xl text-4xl leading-tight font-bold tracking-tight md:text-6xl">
+            A Practical Astrology Product Built Around Timing, Not Fluff
           </h1>
-          <p className="text-lg text-white/50 leading-relaxed max-w-xl mx-auto">
-            We believe astrology should be built on real astronomy, interpreted with psychological depth, and delivered as an experience you can actually use.
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
+            AstroKline was created for people who want more than a generic
+            horoscope. We built a system that turns birth chart data into a
+            readable timing map, so users can understand momentum, friction,
+            and turning points across life, work, money, and relationships.
           </p>
         </div>
       </section>
 
-      {/* Origin Story */}
-      <section className="py-16 border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-2xl font-serif text-white/90 mb-8">Who Built This</h2>
-          <div className="space-y-6 text-[15px] text-white/70 leading-relaxed">
+      <section className="border-b border-white/5 py-16">
+        <article className="mx-auto max-w-4xl px-6">
+          <div className="prose prose-invert prose-headings:text-white prose-p:text-white/70 prose-li:text-white/70 max-w-none">
+            <h2>Why AstroKline Exists</h2>
             <p>
-              AstroKline was born from a simple frustration: most astrology apps give you a paragraph about your Sun sign and call it a day. We wanted something that treats your birth chart with the precision it deserves — and presents it in a way that actually reveals the shape of your life.
+              The internet is full of astrology content, but most of it is not
+              useful when a person is trying to make a real decision. A generic
+              horoscope can be entertaining, yet it rarely answers the harder
+              questions: when a risky period is likely to peak, when pressure
+              starts to ease, and when a strong career or relationship window
+              becomes more likely.
             </p>
             <p>
-              Behind the scenes is a team that combines <strong className="text-white/90">data science and cloud engineering</strong> with a deep respect for astrological tradition. Our astronomical calculations run on <strong className="text-white/90">Swiss Ephemeris (DE431)</strong> — the same dataset used by professional observatories — ensuring every planetary position is accurate to fractions of a degree.
+              AstroKline was built to answer those questions. We wanted an
+              astrology tool that respects the complexity of a natal chart while
+              still giving users an interface they can understand in seconds.
+              That is why the product centers on the K-Line, a long-range visual
+              forecast that translates chart structure and cycle timing into a
+              clear directional curve.
+            </p>
+
+            <h2>What AstroKline Actually Does</h2>
+            <p>
+              AstroKline combines three layers of work. The first layer is
+              astronomical calculation. The second layer is timing logic based on
+              long-cycle astrology and planetary interaction. The third layer is
+              AI interpretation that turns raw chart output into readable
+              language.
             </p>
             <p>
-              But numbers alone don&apos;t change lives. Our AI interpretation layer is trained to translate raw chart data into <strong className="text-white/90">psychologically grounded insights</strong> — not vague horoscope fluff, but precise observations about your behavioral patterns, timing windows, and growth edges.
+              In practice, this means a user can enter birth data and get more
+              than a static birth chart. They can see a forward-looking
+              structure: stronger windows, weaker windows, major reversals, and
+              periods that deserve patience instead of force. That is why users
+              come to AstroKline for far more than entertainment. They use it
+              for career planning, relationship timing, self-reflection, and
+              daily risk calibration.
             </p>
+
+            <h2>Why We Use Swiss Ephemeris</h2>
+            <p>
+              Accuracy starts with the underlying chart. AstroKline relies on
+              Swiss Ephemeris because it is one of the most trusted astronomical
+              engines available for astrology software. When a platform claims
+              to deliver a personalized birth chart reading, that claim is weak
+              unless the planetary positions are calculated correctly.
+            </p>
+            <p>
+              Using a serious ephemeris does not automatically make an astrology
+              product valuable, but it removes a major source of noise. It means
+              the later interpretation layer begins with reliable coordinates
+              instead of shortcuts or low-precision approximations.
+            </p>
+
+            <h2>What Makes the K-Line Different</h2>
+            <p>
+              The K-Line is the core idea behind AstroKline. Traditional chart
+              reports often overwhelm users with symbols, houses, aspects, and
+              dense text. We wanted a format that preserved depth while making
+              patterns visible. The K-Line solves that by translating timing
+              stress and timing support into a clear line of movement.
+            </p>
+            <p>
+              Instead of reading ten separate passages and trying to mentally
+              merge them, the user sees a visual summary first. That summary can
+              then be explored in detail through the full chart and AI reading.
+              People search for terms like birth chart timeline, astrology
+              timing chart, and AI natal chart reading. AstroKline is designed
+              to satisfy that intent directly.
+            </p>
+
+            <h2>Our Editorial Standard for AI Astrology</h2>
+            <p>
+              AI can make astrology more readable, but it also creates a risk of
+              generic output. AstroKline is not built to produce vague feel-good
+              text. The interpretation layer is meant to stay anchored to chart
+              structure, timing logic, and user context.
+            </p>
+            <p>
+              That means we care about specificity. If the chart suggests a
+              period of compression, the language should reflect compression. If
+              the cycle suggests expansion, the output should explain what kind
+              of expansion is more likely and where caution still matters. Our
+              goal is not to inflate certainty. It is to improve usefulness.
+            </p>
+
+            <h2>Who AstroKline Is For</h2>
+            <p>
+              AstroKline is for users who want a practical astrology workflow.
+              Some are astrology beginners who need a clearer starting point.
+              Others already know natal chart basics and want a better way to
+              understand timing. Many are professionals, founders, creatives, or
+              people navigating uncertainty who want one dashboard that turns
+              symbolism into decision support.
+            </p>
+            <p>
+              It is not a substitute for medical, legal, or financial advice.
+              It is a timing and reflection tool. Used correctly, it helps users
+              frame seasons of action, restraint, review, and recovery with more
+              structure than mainstream horoscope content provides.
+            </p>
+
+            <h2>What We Believe About Privacy</h2>
+            <p>
+              Birth data is intimate. A platform that asks for someone&apos;s
+              birth time, birthplace, and personal profile should handle that
+              data responsibly. We treat privacy as a product requirement. That
+              is also why our public pages link clearly to our{' '}
+              <Link href="/privacy-policy" className="text-primary no-underline">
+                Privacy Policy
+              </Link>{' '}
+              and{' '}
+              <Link
+                href="/terms-of-service"
+                className="text-primary no-underline"
+              >
+                Terms of Service
+              </Link>
+              .
+            </p>
+
+            <h2>Where To Start</h2>
+            <p>
+              If you want to understand AstroKline in practice, the fastest path
+              is to view a sample{' '}
+              <Link href="/kline" className="text-primary no-underline">
+                K-Line reading
+              </Link>
+              , explore the{' '}
+              <Link href="/daily" className="text-primary no-underline">
+                daily forecast
+              </Link>
+              , and compare plan depth on the{' '}
+              <Link href="/pricing" className="text-primary no-underline">
+                pricing page
+              </Link>
+              . That gives a clearer picture than any slogan can.
+            </p>
+            <p>
+              AstroKline exists to make astrology timing usable. That is the
+              product standard we work against, and it is the reason this
+              company, this page, and this software exist.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section className="border-b border-white/5 bg-white/[0.02] py-16">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="mb-8 text-3xl font-bold tracking-tight">
+            The Principles Behind the Product
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {principles.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-3xl border border-white/8 bg-[#111015] p-7"
+              >
+                <h3 className="mb-3 text-xl font-semibold text-white/90">
+                  {item.title}
+                </h3>
+                <p className="leading-7 text-white/65">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What Makes Us Different */}
-      <section className="py-16 border-t border-white/5 bg-white/[0.01]">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-2xl font-serif text-white/90 mb-8">What Makes AstroKline Different</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl bg-[#111015] border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-              </div>
-              <h3 className="text-base font-bold text-white/90 mb-2">The K-Line Visualization</h3>
-              <p className="text-sm text-white/60 leading-relaxed">
-                We invented the Destiny K-Line — an interactive timeline that maps your life&apos;s energy flow across decades. No other astrology tool shows you the shape of your entire life at a glance.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-[#111015] border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20"/><path d="M2 12h20"/></svg>
-              </div>
-              <h3 className="text-base font-bold text-white/90 mb-2">NASA-Grade Precision</h3>
-              <p className="text-sm text-white/60 leading-relaxed">
-                Every chart is calculated using Swiss Ephemeris DE431 — the gold standard in astronomical computation. Placidus house system, True Node. No shortcuts, no rounding.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-[#111015] border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-purple-400"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-              </div>
-              <h3 className="text-base font-bold text-white/90 mb-2">AI + Psychology</h3>
-              <p className="text-sm text-white/60 leading-relaxed">
-                Our AI doesn&apos;t generate generic horoscopes. It analyzes your full chart — aspects, transits, progressions — and translates them into psychologically grounded, actionable guidance.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-[#111015] border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              </div>
-              <h3 className="text-base font-bold text-white/90 mb-2">Privacy First</h3>
-              <p className="text-sm text-white/60 leading-relaxed">
-                Your birth data is yours. We don&apos;t sell it, share it, or use it for advertising. All calculations happen server-side with industry-standard encryption.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Editorial Process */}
-      <section className="py-16 border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-2xl font-serif text-white/90 mb-8">Our Process</h2>
-          <div className="space-y-8">
-            <div className="flex gap-4">
-              <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-xs font-bold">1</div>
-              <div>
-                <h3 className="text-base font-bold text-white/90 mb-1">Precise Astronomical Calculation</h3>
-                <p className="text-sm text-white/60 leading-relaxed">
-                  Your birth time and location are fed into Swiss Ephemeris to compute exact planetary positions, house cusps, aspects, and midpoints — down to arc-seconds of precision.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-xs font-bold">2</div>
-              <div>
-                <h3 className="text-base font-bold text-white/90 mb-1">K-Line Algorithm</h3>
-                <p className="text-sm text-white/60 leading-relaxed">
-                  Our proprietary algorithm maps major planetary transits (Saturn returns, Jupiter cycles, eclipses, nodal returns) into a continuous energy timeline that reveals the rhythm of your life.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-xs font-bold">3</div>
-              <div>
-                <h3 className="text-base font-bold text-white/90 mb-1">AI-Powered Interpretation</h3>
-                <p className="text-sm text-white/60 leading-relaxed">
-                  Only after the math is complete does our AI layer engage — translating raw astronomical data into clear, psychologically grounded insights about your personality, relationships, career, and timing.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-xs font-bold">4</div>
-              <div>
-                <h3 className="text-base font-bold text-white/90 mb-1">Continuous Calibration</h3>
-                <p className="text-sm text-white/60 leading-relaxed">
-                  We continuously refine our interpretation models against real user feedback, ensuring that every reading gets smarter, more precise, and more useful over time.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-serif text-white/90 mb-4">Ready to See Your K-Line?</h2>
-          <p className="text-sm text-white/50 mb-8 max-w-md mx-auto">
-            It takes 30 seconds to enter your birth info. No credit card required. Your destiny timeline is waiting.
+      <section className="py-16">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Read Your Timing With More Structure
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/65">
+            Start with the K-Line if you want to see how AstroKline turns birth
+            chart data into something practical and readable.
           </p>
-          <a
-            href="/kline"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:bg-primary/90 transition-all hover:scale-105"
-          >
-            Reveal My K-Line
-          </a>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/kline"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-12 items-center justify-center rounded-xl px-6 text-sm font-semibold"
+            >
+              Explore the K-Line
+            </Link>
+            <Link
+              href="/pricing"
+              className="inline-flex h-12 items-center justify-center rounded-xl border border-white/10 px-6 text-sm font-semibold text-white/80 transition-colors hover:bg-white/5"
+            >
+              View Pricing
+            </Link>
+          </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

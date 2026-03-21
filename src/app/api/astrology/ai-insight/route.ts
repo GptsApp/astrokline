@@ -2,7 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generatePersonalityInsight } from '@/lib/astrokline/gemini';
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 
+import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
+
 export async function POST(request: NextRequest) {
+  const limited = enforceMinIntervalRateLimit(request, {
+    intervalMs: 5000,
+    keyPrefix: 'ai-insight',
+  });
+  if (limited) {
+    return limited;
+  }
+
   try {
     const body = await request.json();
     const profile = body.profile as UserProfile;

@@ -1,8 +1,22 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { DestinyReading } from "@/lib/astrokline/mock-astrology-data";
-import { Layers, Hourglass, ArrowRightCircle, Sparkles, Zap, Shield, Heart, Brain, Target, Eye, Clock, Leaf, Star } from "lucide-react";
+import { DestinyReading } from '@/lib/astrokline/mock-astrology-data';
+import { motion } from 'framer-motion';
+import {
+  ArrowRightCircle,
+  Brain,
+  Clock,
+  Eye,
+  Heart,
+  Hourglass,
+  Layers,
+  Leaf,
+  Shield,
+  Sparkles,
+  Star,
+  Target,
+  Zap,
+} from 'lucide-react';
 
 interface CoreInsight {
   tag: string;
@@ -29,24 +43,28 @@ interface Props {
 }
 
 const tagIcons: Record<string, typeof Brain> = {
-  "Core Pattern": Brain,
-  "Hidden Gift": Eye,
-  "Shadow Pattern": Heart,
-  "Strategic Edge": Target,
-  "Body Wisdom": Leaf,
+  'Core Pattern': Brain,
+  'Hidden Gift': Eye,
+  'Shadow Pattern': Heart,
+  'Strategic Edge': Target,
+  'Body Wisdom': Leaf,
 };
 
 export function ReadingSummary({ reading }: Props) {
   const insights: CoreInsight[] = reading.coreInsights || [];
-  const cosmicQuote = reading.cosmicQuote || "You are not behind. You are precisely where a builder needs to be before their defining decade begins.";
+  const cosmicQuote =
+    reading.cosmicQuote ||
+    'You are not behind. You are precisely where a builder needs to be before their defining decade begins.';
 
   return (
-    <div className="w-full space-y-8 max-w-7xl mx-auto px-4 md:px-6">
+    <div className="mx-auto w-full max-w-7xl space-y-8 px-4 md:px-6">
       {/* Section Header */}
       <div className="flex items-center gap-3">
-        <Sparkles className="w-5 h-5 text-[#D4AF37]" />
-        <h2 className="text-2xl font-serif tracking-tight text-white/90">Cosmic Diagnosis</h2>
-        <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent ml-4" />
+        <Sparkles className="h-5 w-5 text-[#D4AF37]" />
+        <h2 className="font-serif text-2xl tracking-tight text-white/90">
+          Cosmic Diagnosis
+        </h2>
+        <div className="ml-4 h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
       </div>
 
       {/* ── HERO QUOTE ── */}
@@ -54,16 +72,20 @@ export function ReadingSummary({ reading }: Props) {
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="relative px-6 py-8 rounded-2xl bg-gradient-to-br from-[#D4AF37]/5 via-transparent to-purple-500/5 border border-[#D4AF37]/20 overflow-hidden"
+        className="relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/5 via-transparent to-purple-500/5 px-6 py-8"
       >
-        <div className="absolute top-4 left-6 text-5xl text-[#D4AF37]/10 font-serif leading-none">&ldquo;</div>
-        <div className="absolute bottom-4 right-6 text-5xl text-[#D4AF37]/10 font-serif leading-none">&rdquo;</div>
-        <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-[#D4AF37]/5 rounded-full blur-[80px] pointer-events-none" />
-        
-        <blockquote className="relative z-10 text-lg md:text-xl font-serif text-white/90 leading-relaxed text-center max-w-3xl mx-auto">
+        <div className="absolute top-4 left-6 font-serif text-5xl leading-none text-[#D4AF37]/10">
+          &ldquo;
+        </div>
+        <div className="absolute right-6 bottom-4 font-serif text-5xl leading-none text-[#D4AF37]/10">
+          &rdquo;
+        </div>
+        <div className="pointer-events-none absolute top-0 right-0 h-[200px] w-[200px] rounded-full bg-[#D4AF37]/5 blur-[80px]" />
+
+        <blockquote className="relative z-10 mx-auto max-w-3xl text-center font-serif text-lg leading-relaxed text-white/90 md:text-xl">
           {cosmicQuote}
         </blockquote>
-        <p className="relative z-10 text-center text-[10px] text-[#D4AF37] font-mono uppercase tracking-widest mt-3">
+        <p className="relative z-10 mt-3 text-center font-mono text-[10px] tracking-widest text-[#D4AF37] uppercase">
           Your Cosmic Truth
         </p>
       </motion.div>
@@ -72,11 +94,15 @@ export function ReadingSummary({ reading }: Props) {
       {insights.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Eye className="w-4 h-4 text-purple-400" />
-            <h3 className="text-base font-serif text-white/80">What The Stars See In You</h3>
-            <span className="ml-auto text-[9px] font-mono text-white/25 uppercase tracking-widest">AI Precision</span>
+            <Eye className="h-4 w-4 text-purple-400" />
+            <h3 className="font-serif text-base text-white/80">
+              What The Stars See In You
+            </h3>
+            <span className="ml-auto font-mono text-[9px] tracking-widest text-white/25 uppercase">
+              AI Precision
+            </span>
           </div>
-          
+
           {insights.map((insight, idx) => {
             const Icon = tagIcons[insight.tag] || Star;
             return (
@@ -86,20 +112,28 @@ export function ReadingSummary({ reading }: Props) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.08 }}
-                className="group flex gap-3 p-4 rounded-xl bg-[#111015] border border-white/5 hover:border-white/10 transition-all"
+                className="group flex gap-3 rounded-xl border border-white/5 bg-[#111015] p-4 transition-all hover:border-white/10"
               >
-                <div className="shrink-0 mt-0.5">
-                  <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-[#D4AF37]/30 transition-colors">
-                    <Icon className="w-4 h-4 text-white/40 group-hover:text-[#D4AF37] transition-colors" />
+                <div className="mt-0.5 shrink-0">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors group-hover:border-[#D4AF37]/30">
+                    <Icon className="h-4 w-4 text-white/40 transition-colors group-hover:text-[#D4AF37]" />
                   </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-purple-400/80">{insight.tag}</span>
-                  <p className="text-sm text-white/70 leading-relaxed mt-0.5">{insight.text}</p>
+                <div className="min-w-0 flex-1">
+                  <span className="text-[9px] font-bold tracking-widest text-purple-400/80 uppercase">
+                    {insight.tag}
+                  </span>
+                  <p className="mt-0.5 text-sm leading-relaxed text-white/70">
+                    {insight.text}
+                  </p>
                 </div>
-                <div className="shrink-0 flex flex-col items-center justify-center gap-0.5">
-                  <span className="text-base font-bold text-[#D4AF37] font-mono leading-none">{insight.match}%</span>
-                  <span className="text-[7px] text-white/25 uppercase tracking-widest">match</span>
+                <div className="flex shrink-0 flex-col items-center justify-center gap-0.5">
+                  <span className="font-mono text-base leading-none font-bold text-[#D4AF37]">
+                    {insight.match}%
+                  </span>
+                  <span className="text-[7px] tracking-widest text-white/25 uppercase">
+                    match
+                  </span>
                 </div>
               </motion.div>
             );
@@ -113,86 +147,119 @@ export function ReadingSummary({ reading }: Props) {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="p-5 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent border border-purple-500/15 relative overflow-hidden"
+          className="relative overflow-hidden rounded-2xl border border-purple-500/15 bg-gradient-to-br from-purple-500/5 to-transparent p-5"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-[60px] pointer-events-none" />
+          <div className="pointer-events-none absolute top-0 right-0 h-32 w-32 rounded-full bg-purple-500/10 blur-[60px]" />
           <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-3">
-              <Star className="w-4 h-4 text-purple-400" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-purple-400">Hidden Talent</span>
+            <div className="mb-3 flex items-center gap-2">
+              <Star className="h-4 w-4 text-purple-400" />
+              <span className="text-[10px] font-bold tracking-widest text-purple-400 uppercase">
+                Hidden Talent
+              </span>
             </div>
-            <h4 className="text-lg font-serif text-white/90 mb-2">{reading.hiddenTalent.title}</h4>
-            <p className="text-sm text-white/60 leading-relaxed mb-3">{reading.hiddenTalent.description}</p>
-            <div className="px-4 py-3 rounded-xl bg-purple-500/5 border border-purple-500/10">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] mb-1">How to Activate</p>
-              <p className="text-sm text-white/80 leading-relaxed">{reading.hiddenTalent.activationAdvice}</p>
+            <h4 className="mb-2 font-serif text-lg text-white/90">
+              {reading.hiddenTalent.title}
+            </h4>
+            <p className="mb-3 text-sm leading-relaxed text-white/60">
+              {reading.hiddenTalent.description}
+            </p>
+            <div className="rounded-xl border border-purple-500/10 bg-purple-500/5 px-4 py-3">
+              <p className="mb-1 text-[10px] font-bold tracking-widest text-[#D4AF37] uppercase">
+                How to Activate
+              </p>
+              <p className="text-sm leading-relaxed text-white/80">
+                {reading.hiddenTalent.activationAdvice}
+              </p>
             </div>
           </div>
         </motion.div>
       )}
 
       {/* ── 3-CARD DIAGNOSIS ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* Structure */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="p-5 rounded-2xl bg-[#111015] border border-white/5 shadow-xl relative overflow-hidden group"
+          className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111015] p-5 shadow-xl"
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 rounded-full blur-[40px] group-hover:bg-yellow-500/10 transition-colors" />
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-center justify-between mb-4">
-               <Layers className="w-5 h-5 text-white/50" />
-               <span className="text-[9px] font-bold uppercase tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 px-2 py-0.5 rounded-full">01</span>
+          <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-yellow-500/5 blur-[40px] transition-colors group-hover:bg-yellow-500/10" />
+          <div className="relative z-10 flex h-full flex-col">
+            <div className="mb-4 flex items-center justify-between">
+              <Layers className="h-5 w-5 text-white/50" />
+              <span className="rounded-full bg-[#D4AF37]/10 px-2 py-0.5 text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
+                01
+              </span>
             </div>
-            <h3 className="text-lg font-serif text-white/90 mb-1">{reading.structure.title}</h3>
-            <div className="text-[10px] font-mono text-[#D4AF37] mb-3">{reading.structure.element}</div>
-            <p className="text-xs text-white/60 leading-relaxed mb-4 flex-1">{reading.structure.description}</p>
-            <div className="pt-3 border-t border-white/5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-rose-400 mb-0.5">Core Vulnerability</p>
-              <p className="text-xs text-white/80">{reading.structure.coreChallenge}</p>
+            <h3 className="mb-1 font-serif text-lg text-white/90">
+              {reading.structure.title}
+            </h3>
+            <div className="mb-3 font-mono text-[10px] text-[#D4AF37]">
+              {reading.structure.element}
+            </div>
+            <p className="mb-4 flex-1 text-xs leading-relaxed text-white/60">
+              {reading.structure.description}
+            </p>
+            <div className="border-t border-white/5 pt-3">
+              <p className="mb-0.5 text-[10px] font-bold tracking-wider text-rose-400 uppercase">
+                Core Vulnerability
+              </p>
+              <p className="text-xs text-white/80">
+                {reading.structure.coreChallenge}
+              </p>
             </div>
           </div>
         </motion.div>
 
         {/* Phase */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="p-5 rounded-2xl bg-[#111015] border border-white/5 shadow-xl relative overflow-hidden group"
+          className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111015] p-5 shadow-xl"
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-[40px] group-hover:bg-blue-500/10 transition-colors" />
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-center justify-between mb-4">
-               <Hourglass className="w-5 h-5 text-white/50" />
-               <span className="text-[9px] font-bold uppercase tracking-widest text-[#3B82F6] bg-[#3B82F6]/10 px-2 py-0.5 rounded-full">02</span>
+          <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-blue-500/5 blur-[40px] transition-colors group-hover:bg-blue-500/10" />
+          <div className="relative z-10 flex h-full flex-col">
+            <div className="mb-4 flex items-center justify-between">
+              <Hourglass className="h-5 w-5 text-white/50" />
+              <span className="rounded-full bg-[#3B82F6]/10 px-2 py-0.5 text-[9px] font-bold tracking-widest text-[#3B82F6] uppercase">
+                02
+              </span>
             </div>
-            <h3 className="text-lg font-serif text-white/90 mb-3">{reading.phase.title}</h3>
-            <div className="space-y-3 flex-1">
-               <div>
-                 <p className="text-[10px] font-bold uppercase tracking-wider text-white/35 mb-0.5">Why you feel stuck</p>
-                 <p className="text-xs text-white/60 leading-relaxed">{reading.phase.whyStuck}</p>
-               </div>
-            </div>
-            <div className="pt-4 mt-3 border-t border-white/5 space-y-2">
+            <h3 className="mb-3 font-serif text-lg text-white/90">
+              {reading.phase.title}
+            </h3>
+            <div className="flex-1 space-y-3">
               <div>
-                 <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-0.5">Turning Point</p>
-                 <p className="text-xs text-white font-bold">{reading.phase.turningPoint}</p>
+                <p className="mb-0.5 text-[10px] font-bold tracking-wider text-white/35 uppercase">
+                  Why you feel stuck
+                </p>
+                <p className="text-xs leading-relaxed text-white/60">
+                  {reading.phase.whyStuck}
+                </p>
               </div>
-              <div className="w-full bg-white/5 rounded-full h-1 overflow-hidden">
-                <motion.div 
-                   initial={{ width: 0 }}
-                   whileInView={{ width: `${reading.phase.momentum}%` }}
-                   transition={{ duration: 1.5, ease: "easeOut" }}
-                   className="h-full bg-gradient-to-r from-blue-500 to-emerald-400"
+            </div>
+            <div className="mt-3 space-y-2 border-t border-white/5 pt-4">
+              <div>
+                <p className="mb-0.5 text-[10px] font-bold tracking-wider text-emerald-400 uppercase">
+                  Turning Point
+                </p>
+                <p className="text-xs font-bold text-white">
+                  {reading.phase.turningPoint}
+                </p>
+              </div>
+              <div className="h-1 w-full overflow-hidden rounded-full bg-white/5">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${reading.phase.momentum}%` }}
+                  transition={{ duration: 1.5, ease: 'easeOut' }}
+                  className="h-full bg-gradient-to-r from-blue-500 to-emerald-400"
                 />
               </div>
-              <div className="flex justify-between text-[9px] font-mono text-white/35">
+              <div className="flex justify-between font-mono text-[9px] text-white/35">
                 <span>Momentum</span>
                 <span>{reading.phase.momentum}%</span>
               </div>
@@ -201,30 +268,59 @@ export function ReadingSummary({ reading }: Props) {
         </motion.div>
 
         {/* Action — with health + timing */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="p-5 rounded-2xl bg-gradient-to-br from-[#D4AF37]/10 to-transparent border border-[#D4AF37]/20 shadow-xl relative overflow-hidden group"
+          className="group relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/10 to-transparent p-5 shadow-xl"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/10 rounded-full blur-[50px] group-hover:scale-110 transition-transform duration-700" />
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-center justify-between mb-4">
-               <ArrowRightCircle className="w-5 h-5 text-[#D4AF37]" />
-               <span className="text-[9px] font-bold uppercase tracking-widest text-black bg-[#D4AF37] px-2 py-0.5 rounded-full shadow-[0_0_10px_rgba(212,175,55,0.3)]">03</span>
+          <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-[#D4AF37]/10 blur-[50px] transition-transform duration-700 group-hover:scale-110" />
+          <div className="relative z-10 flex h-full flex-col">
+            <div className="mb-4 flex items-center justify-between">
+              <ArrowRightCircle className="h-5 w-5 text-[#D4AF37]" />
+              <span className="rounded-full bg-[#D4AF37] px-2 py-0.5 text-[9px] font-bold tracking-widest text-black uppercase shadow-[0_0_10px_rgba(212,175,55,0.3)]">
+                03
+              </span>
             </div>
-            <h3 className="text-lg font-serif text-white/90 mb-4">Strategic Directives</h3>
-            <div className="space-y-3 flex-1">
-               <AdviceItem icon={Zap} label="Career" color="text-rose-400" text={reading.advice.career} />
-               <AdviceItem icon={Shield} label="Wealth" color="text-emerald-400" text={reading.advice.wealth} />
-               <AdviceItem icon={Heart} label="Relationships" color="text-blue-400" text={reading.advice.relationships} />
-               {reading.advice.health && (
-                 <AdviceItem icon={Leaf} label="Health" color="text-teal-400" text={reading.advice.health} />
-               )}
-               {reading.advice.timing && (
-                 <AdviceItem icon={Clock} label="Timing" color="text-[#D4AF37]" text={reading.advice.timing} />
-               )}
+            <h3 className="mb-4 font-serif text-lg text-white/90">
+              Strategic Directives
+            </h3>
+            <div className="flex-1 space-y-3">
+              <AdviceItem
+                icon={Zap}
+                label="Career"
+                color="text-rose-400"
+                text={reading.advice.career}
+              />
+              <AdviceItem
+                icon={Shield}
+                label="Wealth"
+                color="text-emerald-400"
+                text={reading.advice.wealth}
+              />
+              <AdviceItem
+                icon={Heart}
+                label="Relationships"
+                color="text-blue-400"
+                text={reading.advice.relationships}
+              />
+              {reading.advice.health && (
+                <AdviceItem
+                  icon={Leaf}
+                  label="Health"
+                  color="text-teal-400"
+                  text={reading.advice.health}
+                />
+              )}
+              {reading.advice.timing && (
+                <AdviceItem
+                  icon={Clock}
+                  label="Timing"
+                  color="text-[#D4AF37]"
+                  text={reading.advice.timing}
+                />
+              )}
             </div>
           </div>
         </motion.div>
@@ -233,13 +329,27 @@ export function ReadingSummary({ reading }: Props) {
   );
 }
 
-function AdviceItem({ icon: Icon, label, color, text }: { icon: typeof Zap; label: string; color: string; text: string }) {
+function AdviceItem({
+  icon: Icon,
+  label,
+  color,
+  text,
+}: {
+  icon: typeof Zap;
+  label: string;
+  color: string;
+  text: string;
+}) {
   return (
     <div className="flex gap-2">
-      <div className="mt-0.5"><Icon className={`w-3.5 h-3.5 ${color}`} /></div>
+      <div className="mt-0.5">
+        <Icon className={`h-3.5 w-3.5 ${color}`} />
+      </div>
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-wider text-white/50 mb-0.5">{label}</p>
-        <p className="text-xs text-white/80 leading-relaxed">{text}</p>
+        <p className="mb-0.5 text-[10px] font-bold tracking-wider text-white/50 uppercase">
+          {label}
+        </p>
+        <p className="text-xs leading-relaxed text-white/80">{text}</p>
       </div>
     </div>
   );

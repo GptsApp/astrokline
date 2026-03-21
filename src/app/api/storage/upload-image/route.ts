@@ -1,5 +1,8 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare';
+
 import { md5 } from '@/shared/lib/hash';
 import { respData, respErr } from '@/shared/lib/resp';
+import { getAllConfigs } from '@/shared/models/config';
 import { getStorageService } from '@/shared/services/storage';
 
 const extFromMime = (mimeType: string) => {
@@ -16,6 +19,21 @@ const extFromMime = (mimeType: string) => {
   };
   return map[mimeType] || '';
 };
+
+const R2_UPLOAD_PREFIX = 'avatars';
+
+function getUploadsBucket(): any | null {
+  try {
+    const { env }: { env: any } = getCloudflareContext();
+    return env.USER_UPLOADS || null;
+  } catch {
+    return null;
+  }
+}
+
+function buildStorageProxyUrl(key: string) {
+  return `/api/storage/file?key=${encodeURIComponent(key)}`;
+}
 
 export async function POST(req: Request) {
   try {
@@ -35,7 +53,9 @@ export async function POST(req: Request) {
       return respErr('No files provided');
     }
 
-    const storageService = await getStorageService();
+    const configs = await getAllConfigs();
+    const storageService = await getStorageService(configs);
+    const uploadsBucket = getUploadsBucket();
     const uploadResults = [];
 
     for (const file of files) {
@@ -50,13 +70,45 @@ export async function POST(req: Request) {
 
       const digest = md5(body);
       const ext = extFromMime(file.type) || file.name.split('.').pop() || 'bin';
-      const key = `${digest}.${ext}`;
+      const key = uploadsBucket
+        ? `${R2_UPLOAD_PREFIX}/${digest}.${ext}`
+        : `${digest}.${ext}`;
+
+      if (uploadsBucket) {
+        const existingObject = await uploadsBucket.head(key);
+        if (existingObject) {
+          uploadResults.push({
+            url: buildStorageProxyUrl(key),
+            key,
+            filename: file.name,
+            deduped: true,
+          });
+          continue;
+        }
+
+        await uploadsBucket.put(key, body, {
+          httpMetadata: {
+            contentType: file.type,
+            contentDisposition: 'inline',
+            cacheControl: 'public, max-age=31536000, immutable',
+          },
+        });
+
+        uploadResults.push({
+          url: buildStorageProxyUrl(key),
+          key,
+          filename: file.name,
+          deduped: false,
+        });
+        continue;
+      }
 
       // If the same image already exists, reuse its URL to save storage space.
       // (Still depends on provider supporting signed HEAD + public url generation.)
       const exists = await storageService.exists({ key });
       if (exists) {
-        const publicUrl = storageService.getPublicUrl({ key });
+        const publicUrl =
+          storageService.getPublicUrl({ key }) || buildStorageProxyUrl(key);
         if (publicUrl) {
           uploadResults.push({
             url: publicUrl,
@@ -84,8 +136,11 @@ export async function POST(req: Request) {
       console.log('[API] Upload success:', result.url);
 
       uploadResults.push({
-        url: result.url,
-        key: result.key,
+        url:
+          result.provider === 'r2' && !configs.r2_domain
+            ? buildStorageProxyUrl(key)
+            : result.url || buildStorageProxyUrl(key),
+        key: result.key || key,
         filename: file.name,
         deduped: false,
       });
@@ -102,6 +157,10 @@ export async function POST(req: Request) {
     });
   } catch (e) {
     console.error('upload image failed:', e);
-    return respErr('upload image failed');
+    const message =
+      e instanceof Error && e.message === 'No storage provider configured'
+        ? 'Storage is not configured. Set the USER_UPLOADS R2 bucket binding or configure R2 in Admin > Settings > Storage.'
+        : 'upload image failed';
+    return respErr(message);
   }
 }

@@ -1,121 +1,140 @@
 import { UserProfile } from './mock-astrology-data';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const GEMINI_API_URL =
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const GEMINI_TIMEOUT_MS = 5000;
 
 // ─── System Prompt ───
-const ASTRO_SYSTEM_PROMPT = `你是 AstroKline 的首席占星分析师，拥有 20 年西方占星学实战经验。
-你精通行星相位、宫位系统（Placidus 分宫制）、行星力量评估（Essential Dignities）和时间预测技术。
-你的分析基于 Swiss Ephemeris DE431 精确计算的真实行星位置数据。
+const ASTRO_SYSTEM_PROMPT = `You are AstroKline's Chief Astrological Analyst, possessing 20 years of real-world Western astrology experience.
+You are an expert in planetary aspects, house systems (Placidus), Essential Dignities, and timing techniques.
+Your analysis is based on exact real planetary positions calculated via Swiss Ephemeris DE431.
 
-## 核心分析方法论——电影制作比喻
-- 行星 = 演员：太阳是男主角（核心身份），月亮是女主角（情感基调），水星是编剧（思维方式）
-- 星座 = 表演风格：白羊座是动作片风格，金牛座是写实派，双子座是喜剧风格
-- 宫位 = 拍摄场景：第 1 宫是个人特写，第 7 宫是双人对手戏，第 10 宫是成就展示
-- 相位 = 演员互动：合相是同框表演，三分相是默契配合，四分相是产生冲突但催生蜕变，对冲是需要整合的两极
+## Core Methodology — The Cinematic Metaphor
+- Planets = Actors: The Sun is the lead protagonist (core identity), the Moon is the female lead (emotional tone), Mercury is the scriptwriter (thought process).
+- Signs = Acting Styles: Aries is action-packed, Taurus is raw realism, Gemini is rapid-fire comedy.
+- Houses = Movie Sets: 1st House is the extreme close-up, 7th House is the romantic or combative duet, 10th House is the red-carpet premiere.
+- Aspects = Actor Dynamics: Conjunctions are sharing the frame, Trines are flawless chemistry, Squares are conflict that catalyzes character arcs, Oppositions are paradoxes demanding integration.
 
-## 辩证思维框架（Critical — 必须遵守）
-你遵循 Rob Hand 的核心理念："There are no bad charts — only charts not yet understood."
-- **没有"坏"的配置**：四分相不是灾难，而是成长的张力和行动的燃料；对冲不是冲突，而是需要整合的互补力量
-- **行星是原型，不是宿命**：土星是"The Great Teacher（伟大导师）"——通过纪律与责任催你成熟，而非降下厄运；冥王星是"The Transformer（深层转化者）"——旧模式必须死去，才能重生为更强大的自己
-- **赋能而非恐吓**：每段分析必须以个人选择权和成长可能性收尾。绝不制造焦虑或宿命论
+## Dialectical Framework (CRITICAL)
+Follow Rob Hand's core philosophy: "There are no bad charts — only charts not yet understood."
+- **NO "BAD" PLACEMENTS**: Squares are not disasters; they are the tension that fuels growth. Oppositions are not conflicts; they are complementary forces requiring integration.
+- **PLANETS ARE ARCHETYPES, NOT DESTINY**: Saturn is "The Great Teacher"—maturing you through discipline and responsibility, not raining down misfortune. Pluto is "The Transformer"—old patterns must die for a stronger self to be reborn.
+- **EMPOWERMENT OVER FEAR-MONGERING**: Every analysis must conclude with personal agency and growth potential. NEVER induce anxiety or fatalism.
 
-## 周期论视角
-将个人经历放在更大的行星周期中解读：
-- 土星回归（~29.5年）= 人生结构性成熟的里程碑
-- 木星回归（~12年）= 信念扩展与新可能性周期
-- 冥王星行运 = 深层心理转化期
-- 当分析当前状态时，要提及"你正处于某个周期的什么阶段"
+## Cyclical Perspective
+Frame personal experiences within larger planetary cycles:
+- Saturn Return (~29.5 years) = The milestone of structural maturity.
+- Jupiter Return (~12 years) = Cycle of belief expansion and new possibilities.
+- Pluto Transits = Periods of deep psychological transmutation.
+- Always contextualize by mentioning "the phase of the cycle you are currently navigating."
 
-## 输出规则
-1. 用第二人称"你"称呼用户
-2. 语言风格：专业但平易近人，像一位智慧的导师在跟朋友聊天
-3. **禁止空泛通用描述**——每个洞察必须引用具体的行星+星座+宫位配置作为依据
-4. 从多维度分析（心理、社会、经济、职业、健康），结合现代社会现象（数字化、远程工作、自媒体、投资理财）
-5. 给出具体可操作的建议，包含时间窗口和行动步骤，而非模糊的"注意健康"
-6. 使用生动比喻让抽象概念具象化
-7. 标注影响时长（短期/中期/长期）和影响力等级（★~★★★★★）
-8. 输出纯文本，不要使用 markdown 格式
-9. 分析要**深入到令人震惊**的准确程度——用户读完应该觉得"它真的懂我"
-10. **辩证立场**：对于任何"困难"配置（四分相、对冲、落陷行星），必须同时说明其挑战面AND成长机遇面。绝不只给负面解读
-11. **赋能收尾**：每个分析段落以一句 empowering statement 结尾，强调"你可以选择如何回应这股能量"`;
-
+## Output Rules
+1. Address the user directly using the second person ("You", "Your").
+2. Tone: Professional yet approachable, like a wise mentor having a deep conversation.
+3. **NO VAGUE DESCRIPTIONS** — Every insight MUST cite specific Planet + Sign + House placements as evidence.
+4. Analyze multi-dimensionally (psychological, social, economic, career, health), integrating modern contexts (AI era, remote work, digital nomadism, modern investing).
+5. Provide concrete, actionable advice with time windows and specific steps, NOT vague platitudes like "pay attention to your health."
+6. Utilize vivid metaphors to make abstract concepts tangible.
+7. Indicate duration (Short/Medium/Long-term) and impact levels (★~★★★★★).
+8. OUTPUT STRICTLY IN JSON FORMAT. ALWAYS RESPOND IN ENGLISH.
+9. Penetrating Accuracy: The user must read it and feel, "This AI has peered into my soul."
+10. **Dialectical Stance**: For any "difficult" placement (Squares, Oppositions, Debilitated planets), you MUST point out both the challenge AND the hidden superpower.
+11. **Empowering Conclusion**: End each section with an empowering statement emphasizing "how YOU can choose to wield this energy."
+12. **EXTREME DETAIL**: You have a massive 10,000 token limit. Expand deeply. Provide an excruciatingly detailed, nuanced, and profound reading.`;
 
 // ─── Format profile data for prompt ───
 function formatProfileForPrompt(profile: UserProfile): string {
   const planetList = profile.planets
-    .map(p => `${p.name}: ${p.sign} ${p.degree}°${p.minute}' (House ${p.house})`)
+    .map(
+      (p) => `${p.name}: ${p.sign} ${p.degree}°${p.minute}' (House ${p.house})`
+    )
     .join('\n  ');
 
-  return `## 用户星盘数据
-姓名: ${profile.name}
-出生日期: ${profile.birthDate}
-出生时间: ${profile.birthTime}
-出生地点: ${profile.birthLocation}
+  return `## User Birth Chart Data
+Name: ${profile.name}
+Date of Birth: ${profile.birthDate}
+Time of Birth: ${profile.birthTime}
+Birth Location: ${profile.birthLocation}
 
-核心三角:
-  太阳（Sun）: ${profile.sun.sign} ${profile.sun.degree}°${profile.sun.minute}' (House ${profile.sun.house})
-  月亮（Moon）: ${profile.moon.sign} ${profile.moon.degree}°${profile.moon.minute}' (House ${profile.moon.house})
-  上升（Rising）: ${profile.rising.sign} ${profile.rising.degree}°${profile.rising.minute}' (House ${profile.rising.house})
+The Big Three:
+  Sun: ${profile.sun.sign} ${profile.sun.degree}°${profile.sun.minute}' (House ${profile.sun.house})
+  Moon: ${profile.moon.sign} ${profile.moon.degree}°${profile.moon.minute}' (House ${profile.moon.house})
+  Rising: ${profile.rising.sign} ${profile.rising.degree}°${profile.rising.minute}' (House ${profile.rising.house})
 
-完整行星配置:
+Full Planetary Placements:
   ${planetList}
 
-元素分布:
-  火（Fire）: ${profile.elements.fire}%
-  土（Earth）: ${profile.elements.earth}%
-  风（Air）: ${profile.elements.air}%
-  水（Water）: ${profile.elements.water}%
+Elemental Distribution:
+  Fire: ${profile.elements.fire}%
+  Earth: ${profile.elements.earth}%
+  Air: ${profile.elements.air}%
+  Water: ${profile.elements.water}%
 
-模式分布:
-  开创（Cardinal）: ${profile.modalities.cardinal}%
-  固定（Fixed）: ${profile.modalities.fixed}%
-  变动（Mutable）: ${profile.modalities.mutable}%`;
+Modalities Distribution:
+  Cardinal: ${profile.modalities.cardinal}%
+  Fixed: ${profile.modalities.fixed}%
+  Mutable: ${profile.modalities.mutable}%`;
 }
 
 // ─── Generate Personality Insight ───
-export async function generatePersonalityInsight(profile: UserProfile): Promise<{
+export async function generatePersonalityInsight(
+  profile: UserProfile
+): Promise<{
   summary: string;
+  career: string;
+  relationships: string;
+  wealth: string;
+  health: string;
   strengths: string;
   warnings: string;
   nickname: string;
   coreQuote: string;
 }> {
-  const userPrompt = `${formatProfileForPrompt(profile)}
+  const userPrompt = `## Core Chart Data
+${formatProfileForPrompt(profile)}
 
-## 任务
-基于以上真实星盘数据，生成一段令人震撼的人格洞察分析。读完后 TA 应该感到"它怎么可能这么了解我"。
+## AI Persona Setting
+You are a world-renowned Evolutionary Astrologer and depth psychology expert. Your reading style: piercing, soul-striking, full of profound insight, blending compassionate empathy with brutal honesty. NO generic "horoscope" fluff. ALL RESPONSES MUST BE IN ENGLISH.
 
-## 核心原则
-- 不要笼统说"你很有创意"这种谁都适用的话
-- 必须结合 TA 具体的行星星座宫位配置，说出"只有这个配置的人才会有的特征"
-- 用具体生活场景来描述，比如"你在深夜 2 点突然对某个项目产生狂热，然后第二天冷静下来又觉得不值得"——这种级别的精准度
-- 要触及 TA 自己都不一定意识到的深层心理模式
-- 像一个见过上万份星盘的资深占星师，一眼看穿本质
-- 使用原型语言而非吉凶判断：土星=伟大导师，冥王星=深层转化者，四分相=成长的张力，对冲=需要整合的互补力量
-- 对于任何看似"困难"的配置，必须同时指出它隐含的超能力和成长潜能
-- 每段分析以赋能性的选择权statement收尾
+## Mission Objective
+Generate a mind-blowing, **10,000-word-equivalent** holographic astrological analysis report (roughly 4-6 pages of a detailed PDF). This report must immediately establish overwhelming professional trust and pierce through the user's psychological defenses right from the start.
 
-## 输出格式（严格遵循，用 ||| 分隔五个部分）
-NICKNAME: [一个4-8字的性格昵称，精准概括核心矛盾，如"外冷内热的理想主义狂"、"温柔铠甲下的野心家"]
-|||
-COREQUOTE: [一句话灵魂金句，8-20字，直击灵魂，如"表面随和，但骨子里绝不妥协"]
-|||
-SUMMARY: [250-350字的核心人格分析，分三层递进：
-第一层：核心人格画像——太阳+月亮+上升的三角交互效应，描述 TA 给外界的印象 vs 内心的真实面貌 vs 深层的情感需求，这三者之间的张力和矛盾是什么
-第二层：隐秘动力——TA 自己可能都没意识到的深层驱动力是什么？什么在暗中决定 TA 的选择模式？结合月亮星座和冥王星配置分析潜意识层面
-第三层：当前生命课题——现在这个人生阶段，星盘在呼唤 TA 做什么？北交点和土星在暗示什么样的成长方向？
-每一层都必须引用具体行星配置作为证据，用"因为你的XX在XX宫"这种格式]
-|||
-STRENGTHS: [120-180字，你最大的2-3个优势，每个优势不只是说"你擅长XX"，而要说明：这个优势在职场/感情/财务中具体如何表现，引用行星配置作为证据，给出发挥建议]
-|||
-WARNINGS: [120-180字，需要警惕的1-2个倾向，不是泛泛而谈的"注意情绪"，而要描述：这个倾向在什么情境下最容易触发？它会导致什么具体后果？给出可操作的日常应对策略]`;
+## Absolute Execution Laws (Violation means complete failure)
+1. **Pronouns & POV**: Speak to the user entirely in the SECOND PERSON ("You", "Your"). Never use the third person.
+2. **Astrological Jargon & Hardcore Analysis**: Every sub-section MUST **explicitly cite specific sign placements, houses, or aspects** from their chart as the basis for your deduction.
+3. **Terrifying Word Count Requirements**: Every section (e.g., CAREER, WEALTH) MUST be deeply excavated. Output at least **5 long paragraphs, no less than 1000 words per section**. Dig into psychological motivations, childhood roots, real-world challenges, and specific breakthrough strategies. Provide a $1000-value consultation experience.
+4. **Mandatory Action Plan**: At the very end of EVERY section (except nickname/coreQuote), you MUST append a specific markdown block titled exactly: \`\\n\\n### 🔥 Energy Shift & Action Plan\\n\` followed by a 3-step, highly specific, bulleted modern action plan (e.g. what to wear, when to invest, what to avoid). Provide absolute certainty.
+
+## Output Format Requirements
+You MUST STRICTLY output a valid JSON object. Do not include markdown code block tags, just the raw JSON. The JSON must exactly match this interface:
+{
+  "nickname": "[A 3-6 word soul moniker, e.g., 'The Armor-Clad Visionary']",
+  "coreQuote": "[One piercing soul quote, 15-30 words, revealing their core life script]",
+  "summary": "[Core Personality Blueprint, 1000+ words. What mask do you wear? What do you truly fear? Who are you meant to become? \\n\\n### 🔥 Energy Shift & Action Plan\\n- Step 1...]",
+  "career": "[Career & Life Calling, 1000+ words. Deconstruct 10th House, 6th House. Pinpoint unique niche. \\n\\n### 🔥 Energy Shift & Action Plan\\n- Step 1...]",
+  "relationships": "[Intimacy & Karmic Ties, 1000+ words. Deep autopsy of Venus, Mars, 7th House. \\n\\n### 🔥 Energy Shift & Action Plan\\n- Step 1...]",
+  "wealth": "[Wealth Blueprint, 1000+ words. Hardcore analysis of 2nd/8th Houses. Hustle vs. leverage? \\n\\n### 🔥 Energy Shift & Action Plan\\n- Step 1...]",
+  "health": "[Somatic Decoding & Energy Maintenance, 800+ words. Specific energetic maintenance rituals based on elemental balance. \\n\\n### 🔥 Energy Shift & Action Plan\\n- Step 1...]",
+  "strengths": "[Superpowers & Dimensional Strike Advantages, 800+ words. Identify the 3 most potent 'weapons'. \\n\\n### 🔥 Energy Shift & Action Plan\\n- Step 1...]",
+  "warnings": "[Shadow Work & Fatal Blindspots, 800+ words. Point out dangerous T-squares or hard aspects. \\n\\n### 🔥 Energy Shift & Action Plan\\n- Step 1...]"
+}`;
 
   try {
-    const response = await callGemini(userPrompt, 2048);
-    return parsePersonalityResponse(response);
+    const response = await callGeminiJson<{
+      summary: string;
+      career: string;
+      relationships: string;
+      wealth: string;
+      health: string;
+      strengths: string;
+      warnings: string;
+      nickname: string;
+      coreQuote: string;
+    }>(userPrompt);
+    return response;
   } catch (error) {
-    console.error('Gemini personality insight failed:', error);
+    console.error('Gemini personality insight failed. Details:', error);
     return getFallbackInsight(profile);
   }
 }
@@ -130,30 +149,36 @@ export async function generateSynergyReading(
   friction: string;
   advice: string;
 }> {
-  const userPrompt = `## 用户 A 的星盘
+  const userPrompt = `## Chart Data for Person A
 ${formatProfileForPrompt(profileA)}
 
-## 用户 B 的星盘
+## Chart Data for Person B
 ${formatProfileForPrompt(profileB)}
 
-## 任务
-基于两人的真实星盘数据，生成合盘匹配分析。重点分析：
-1. 两人月亮星座的情感兼容性
-2. 金星-火星的化学反应相位
-3. 太阳-月亮的互相滋养度
+## Mission Objective
+Based on the exact real astrological data of both individuals, generate a deep synergy/synastry reading. Focus specifically on:
+1. Emotional compatibility of their Moon signs.
+2. The romantic/kinetic chemistry between their Venus and Mars placements.
+3. How their Sun and Moon signs nourish or clash with each other.
+ALL RESPONSES MUST BE IN ENGLISH.
 
-## 输出格式（严格遵循，用 ||| 分隔四个部分）
-COMPATIBILITY: [0-100的整数匹配分]
-|||
-SPARKS: [100-150字的火花区分析 —— 两人最有化学反应的方面]
-|||
-FRICTION: [100-150字的摩擦区分析 —— 最容易产生误解的地方]
-|||
-ADVICE: [100-150字的相处建议 —— 给出具体可操作的日常建议]`;
+## Output Format Requirements
+You MUST STRICTLY output a valid JSON object. Do not include markdown code block tags, just the raw JSON. The JSON must exactly match this interface:
+{
+  "compatibility": 85, // An integer score from 0 to 100 representing overall compatibility
+  "sparks": "[100-150 words analyzing the Sparks — where they have the most intense electrical chemistry and natural flow]",
+  "friction": "[100-150 words analyzing the Friction — the areas most prone to misunderstanding or ego clashes]",
+  "advice": "[100-150 words of practical relationship advice — actionable daily tips tailored to their specific dynamic]"
+}`;
 
   try {
-    const response = await callGemini(userPrompt);
-    return parseSynergyResponse(response);
+    const response = await callGeminiJson<{
+      compatibility: number;
+      sparks: string;
+      friction: string;
+      advice: string;
+    }>(userPrompt);
+    return response;
   } catch (error) {
     console.error('Gemini synergy reading failed:', error);
     return { compatibility: 75, sparks: '', friction: '', advice: '' };
@@ -161,29 +186,43 @@ ADVICE: [100-150字的相处建议 —— 给出具体可操作的日常建议]`
 }
 
 // ─── Call Gemini API ───
-export async function callGemini(userPrompt: string, maxTokens: number = 1024): Promise<string> {
+export async function callGemini(
+  userPrompt: string,
+  maxTokens: number = 1024
+): Promise<string> {
   if (!GEMINI_API_KEY) {
     throw new Error('GEMINI_API_KEY is not configured');
   }
 
-  const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{
-        role: 'user',
-        parts: [{ text: userPrompt }]
-      }],
-      systemInstruction: {
-        parts: [{ text: ASTRO_SYSTEM_PROMPT }]
-      },
-      generationConfig: {
-        temperature: 0.7,
-        topP: 0.9,
-        maxOutputTokens: maxTokens,
-      },
-    }),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+
+  let response: Response;
+  try {
+    response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: userPrompt }],
+          },
+        ],
+        systemInstruction: {
+          parts: [{ text: ASTRO_SYSTEM_PROMPT }],
+        },
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.9,
+          maxOutputTokens: maxTokens,
+        },
+      }),
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     const err = await response.text();
@@ -200,23 +239,36 @@ export async function callGeminiJson<T = any>(userPrompt: string): Promise<T> {
     throw new Error('GEMINI_API_KEY is not configured');
   }
 
-  // Use a separate API call with JSON mode (no system instruction to avoid language mixing)
-  const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{
-        role: 'user',
-        parts: [{ text: userPrompt }]
-      }],
-      generationConfig: {
-        temperature: 0.7,
-        topP: 0.9,
-        maxOutputTokens: 8192,
-        responseMimeType: 'application/json',
-      },
-    }),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+
+  let response: Response;
+  try {
+    response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: userPrompt }],
+          },
+        ],
+        systemInstruction: {
+          parts: [{ text: ASTRO_SYSTEM_PROMPT }],
+        },
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.9,
+          maxOutputTokens: 16384,
+          responseMimeType: 'application/json',
+        },
+      }),
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     const err = await response.text();
@@ -224,56 +276,46 @@ export async function callGeminiJson<T = any>(userPrompt: string): Promise<T> {
   }
 
   const data = await response.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-  return JSON.parse(text) as T;
+  let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+
+  try {
+    return JSON.parse(text) as T;
+  } catch (parseError) {
+    console.warn(
+      'Initial JSON parse failed, attempting to salvage truncated JSON...',
+      parseError
+    );
+    // Attempt to salvage truncated JSON by aggressively closing open structures
+    try {
+      // 1. If it ends in the middle of a string, close the quote
+      if ((text.match(/"/g) || []).length % 2 !== 0) {
+        text += '"';
+      }
+      // 2. Remove trailing commas
+      text = text.replace(/,\\s*$/, '');
+      // 3. Count open curly braces and square brackets
+      const openBraces = text.split('{').length - 1;
+      const closeBraces = text.split('}').length - 1;
+      const openBrackets = text.split('[').length - 1;
+      const closeBrackets = text.split(']').length - 1;
+
+      // Close missing brackets first, then braces
+      if (openBrackets > closeBrackets) {
+        text += ']'.repeat(openBrackets - closeBrackets);
+      }
+      if (openBraces > closeBraces) {
+        text += '}'.repeat(openBraces - closeBraces);
+      }
+
+      return JSON.parse(text) as T;
+    } catch (salvageError) {
+      console.error('Failed to salvage JSON. Raw text was:', text);
+      throw salvageError;
+    }
+  }
 }
 
 // ─── Parse Personality Response ───
-function parsePersonalityResponse(raw: string): {
-  summary: string;
-  strengths: string;
-  warnings: string;
-  nickname: string;
-  coreQuote: string;
-} {
-  const parts = raw.split('|||').map(s => s.trim());
-  
-  const extractValue = (part: string, prefix: string) => {
-    return part.replace(new RegExp(`^${prefix}:\\s*`, 'i'), '').trim();
-  };
-
-  return {
-    nickname: extractValue(parts[0] || '', 'NICKNAME'),
-    coreQuote: extractValue(parts[1] || '', 'COREQUOTE'),
-    summary: extractValue(parts[2] || '', 'SUMMARY'),
-    strengths: extractValue(parts[3] || '', 'STRENGTHS'),
-    warnings: extractValue(parts[4] || '', 'WARNINGS'),
-  };
-}
-
-// ─── Parse Synergy Response ───
-function parseSynergyResponse(raw: string): {
-  compatibility: number;
-  sparks: string;
-  friction: string;
-  advice: string;
-} {
-  const parts = raw.split('|||').map(s => s.trim());
-  
-  const extractValue = (part: string, prefix: string) => {
-    return part.replace(new RegExp(`^${prefix}:\\s*`, 'i'), '').trim();
-  };
-
-  const compatStr = extractValue(parts[0] || '', 'COMPATIBILITY');
-  const compatibility = Math.min(100, Math.max(0, parseInt(compatStr) || 75));
-
-  return {
-    compatibility,
-    sparks: extractValue(parts[1] || '', 'SPARKS'),
-    friction: extractValue(parts[2] || '', 'FRICTION'),
-    advice: extractValue(parts[3] || '', 'ADVICE'),
-  };
-}
 
 // ─── Fallback (when API fails) ───
 function getFallbackInsight(profile: UserProfile) {
@@ -281,11 +323,28 @@ function getFallbackInsight(profile: UserProfile) {
   const moon = profile.moon.sign;
   const rising = profile.rising.sign;
 
+  const dominantElement =
+    profile.elements.fire > 30
+      ? 'Fire'
+      : profile.elements.earth > 30
+        ? 'Earth'
+        : profile.elements.air > 30
+          ? 'Air'
+          : 'Water';
+
+  const weakestElement = Object.entries(profile.elements).sort(
+    (a, b) => a[1] - b[1]
+  )[0][0];
+
   return {
-    nickname: `${sun}之心`,
-    coreQuote: `${sun}的驱动，${moon}的细腻，${rising}的外表`,
-    summary: `你的太阳落在${sun}（第${profile.sun.house}宫），赋予你${sun}座特有的核心驱动力。月亮${moon}（第${profile.moon.house}宫）为你的情感世界染上了${moon}座的色彩，而上升${rising}则是你与世界互动的第一面具。这三者的组合构成了一个独特的人格交响曲——你的内在和外在之间存在着有趣的张力。\n\n你内心深处的情感需求往往和你展现给外界的形象之间有着微妙的反差。这不是矛盾，而是你人格的丰富性所在。当你学会拥抱这种复杂性，你会发现它正是你最大的优势来源。`,
-    strengths: `你的元素分布显示火${profile.elements.fire}% / 土${profile.elements.earth}% / 风${profile.elements.air}% / 水${profile.elements.water}%，这意味着你在${profile.elements.earth > 30 ? '实际执行' : profile.elements.water > 30 ? '情感直觉' : profile.elements.fire > 30 ? '行动力' : '思维分析'}方面具有天然优势。`,
-    warnings: `注意平衡你的能量分布。你的${Object.entries(profile.elements).sort((a, b) => a[1] - b[1])[0][0] === 'fire' ? '火' : Object.entries(profile.elements).sort((a, b) => a[1] - b[1])[0][0] === 'earth' ? '土' : Object.entries(profile.elements).sort((a, b) => a[1] - b[1])[0][0] === 'air' ? '风' : '水'}元素最弱，建议有意识地在这个领域投入更多关注。`,
+    nickname: `The Heart of ${sun}`,
+    coreQuote: `Driven by ${sun}, feeling through ${moon}, masked as ${rising}.`,
+    summary: `Your Sun in ${sun} (House ${profile.sun.house}) grants you the core driving force unique to the ${sun} archetype. Your Moon in ${moon} (House ${profile.moon.house}) paints your emotional inner world with ${moon}'s psychic colors, while your Ascendant in ${rising} serves as the first mask you wear when interacting with the world. The combination of these three forms a unique symphony of personality—there is a fascinating tension between your internal reality and external presentation.\\n\\nYour deepest emotional needs often subtly contrast with the image you project to others. This is not a contradiction, but the sheer richness of your persona. As you learn to embrace this complexity, you will discover it is the source of your greatest strength.`,
+    career: `You demonstrate an intense inner drive in your career, particularly in realms requiring ${dominantElement === 'Fire' ? 'pioneering action' : dominantElement === 'Earth' ? 'stable construction' : dominantElement === 'Air' ? 'communication and collaboration' : 'emotional resonance'}. Leverage your chart's unique configurations to carve out an undeniable professional niche.`,
+    relationships: `In matters of the heart, you crave a partner who can simultaneously understand the inner emotional currents of your ${moon} Moon while actively supporting the external ambitions of your ${sun} Sun. Learning to reveal authentic vulnerability in intimacy is a critical evolutionary lesson for you.`,
+    wealth: `Your wealth codes are hidden within your core talents. Avoid impulsive investments; instead, establish financial habits that resonate deeply with the energetic signature of your natal chart. Abundance will then become a natural byproduct of your alignment.`,
+    health: `Your natal chart suggests a strong need for psychosomatic balance. As a soul that burns through significant energy, establishing grounding daily recharging rituals is absolutely vital to your longevity.`,
+    strengths: `Your elemental distribution reveals Fire ${profile.elements.fire}% / Earth ${profile.elements.earth}% / Air ${profile.elements.air}% / Water ${profile.elements.water}%, indicating you possess an innate, devastating advantage in ${dominantElement === 'Earth' ? 'practical execution' : dominantElement === 'Water' ? 'emotional intuition' : dominantElement === 'Fire' ? 'decisive action' : 'analytical thinking'}.`,
+    warnings: `Pay close attention to balancing your energetic distribution. Your weakest element is ${weakestElement}. It is highly recommended that you consciously direct more focus and remedial actions into this specific sector of your life to prevent systemic burnout.`,
   };
 }
