@@ -5,12 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
+import { useRouter } from '@/core/i18n/navigation';
 import { trackEvent } from '@/lib/astrokline/track-event';
 
 export function MobileStickyCta() {
   const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
   const { open } = useBirthInfoModal();
+  const router = useRouter();
 
   // Only show on home page variants
   const isHomePage = pathname === '/' || pathname.endsWith('/en') || pathname.endsWith('/zh');
@@ -48,7 +50,9 @@ export function MobileStickyCta() {
           <button
             onClick={() => {
               trackEvent('mobile_sticky_cta_click');
-              open();
+              open((birthData) => {
+                router.push('/kline');
+              });
             }}
             className="w-full max-w-[400px] h-14 bg-primary text-primary-foreground font-bold rounded-2xl shadow-[0_10px_40px_-10px_rgba(212,175,55,0.5)] flex items-center justify-center gap-2 group relative overflow-hidden backdrop-blur-md border border-primary/20"
           >

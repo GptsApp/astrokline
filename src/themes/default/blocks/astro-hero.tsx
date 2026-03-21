@@ -6,6 +6,7 @@ import { ArrowRight, Check, Sparkles, Star } from 'lucide-react';
 
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
 import { trackEvent } from '@/lib/astrokline/track-event';
+import { useRouter } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
@@ -26,6 +27,7 @@ export function AstroHero({
   className?: string;
 }) {
   const { open } = useBirthInfoModal();
+  const router = useRouter();
   const [proofIndex, setProofIndex] = useState(0);
 
   useEffect(() => {
@@ -181,7 +183,10 @@ export function AstroHero({
                 type="button"
                 onClick={() => {
                   trackEvent('hero_cta_click', { source: 'hero_button' });
-                  open();
+                  open((birthData) => {
+                    // User completed birth info → navigate to /kline where auto-calculate triggers
+                    router.push('/kline');
+                  });
                 }}
                 className="group h-14 w-full animate-[pulse_2s_ease-in-out_infinite] rounded-xl bg-primary px-10 text-lg font-bold text-primary-foreground shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-[1.03] hover:bg-primary/90 hover:animate-none hover:shadow-[0_0_40px_-5px_var(--primary)] active:scale-95 md:w-auto"
               >

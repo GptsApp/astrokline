@@ -3,10 +3,12 @@
 import { Compass, CornerRightDown, FileDigit, LineChart } from 'lucide-react';
 
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
+import { useRouter } from '@/core/i18n/navigation';
 import { Section } from '@/shared/types/blocks/landing';
 
 export function HowItWorks({ section }: { section?: Section }) {
   const { open } = useBirthInfoModal();
+  const router = useRouter();
 
   const steps = [
     {
@@ -76,7 +78,7 @@ export function HowItWorks({ section }: { section?: Section }) {
         <div className="mt-20 flex justify-center">
           <button
             type="button"
-            onClick={() => open()}
+            onClick={() => open((birthData) => { router.push('/kline'); })}
             className="group border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary relative flex items-center gap-3 rounded-full border px-8 py-3 font-medium shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all hover:shadow-[0_0_25px_rgba(212,175,55,0.15)]"
           >
             <span>Generate My K-Line</span>

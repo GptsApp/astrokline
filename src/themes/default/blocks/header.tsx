@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
-import { Link, usePathname } from '@/core/i18n/navigation';
+import { Link, usePathname, useRouter } from '@/core/i18n/navigation';
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
 import { MoonPhaseIndicator } from '@/components/astrokline/ui/moon-phase-indicator';
 import {
@@ -51,6 +51,7 @@ export function Header({ header }: { header: HeaderType }) {
   const isLarge = useMedia('(min-width: 64rem)');
   const pathname = usePathname();
   const { open } = useBirthInfoModal();
+  const router = useRouter();
 
   useEffect(() => {
     // Listen to scroll event to enable header styles on scroll
@@ -294,7 +295,9 @@ export function Header({ header }: { header: HeaderType }) {
                 <div className="flex w-full flex-row items-center gap-4 sm:flex-row sm:gap-6 sm:space-y-0 md:w-fit">
                   <button
                     onClick={() => {
-                      open();
+                      open((birthData) => {
+                        router.push('/kline');
+                      });
                     }}
                     type="button"
                     aria-label="Open Birth Info Form"

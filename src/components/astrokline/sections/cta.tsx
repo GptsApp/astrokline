@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Gift, Zap, LockKeyhole, FlaskConical } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
+import { useRouter } from '@/core/i18n/navigation';
 
 export function CTA() {
   const { open } = useBirthInfoModal();
+  const router = useRouter();
 
   return (
     <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
@@ -45,7 +47,9 @@ export function CTA() {
             size="lg"
             className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-2xl shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:shadow-[0_0_50px_-5px_var(--primary)] hover:scale-105"
             onClick={() => {
-              open();
+              open((birthData) => {
+                router.push('/kline');
+              });
             }}
           >
             Generate My K-Line

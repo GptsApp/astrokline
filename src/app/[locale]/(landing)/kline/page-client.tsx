@@ -292,11 +292,18 @@ export function KlineClient({
     [isLoggedIn, router]
   );
 
-  // Auto-open modal if empty
+  // Auto-open modal if no birth data, or auto-calculate if birth data exists but no result
   useEffect(() => {
     const savedBirth = getSavedBirthData();
     if (!savedBirth) {
+      // No birth data at all → open modal to collect info
       const t = setTimeout(() => openBirthModal(handleCalculateBirthData), 500);
+      return () => clearTimeout(t);
+    }
+    // Birth data exists but no result yet → auto-trigger calculation
+    const savedResult = getSavedKlineResult();
+    if (!savedResult?.profile) {
+      const t = setTimeout(() => handleCalculateBirthData(savedBirth), 300);
       return () => clearTimeout(t);
     }
   }, [openBirthModal, handleCalculateBirthData]);
