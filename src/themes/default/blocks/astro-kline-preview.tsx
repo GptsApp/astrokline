@@ -60,19 +60,6 @@ export function AstroKlinePreview({
               isSimulation={true}
             />
           </div>
-
-          {/* Blurred Future Zone Overlay */}
-          <div className="absolute top-14 bottom-10 right-0 w-[25%] z-30 pointer-events-none">
-            <div className="absolute inset-0 backdrop-blur-[6px] bg-gradient-to-l from-background/80 via-background/40 to-transparent" />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-auto">
-              <a
-                href="#pricing"
-                className="px-4 py-2 rounded-full bg-primary/20 border border-primary/40 text-primary text-xs font-bold shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:bg-primary/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] transition-all whitespace-nowrap"
-              >
-                Unlock Future
-              </a>
-            </div>
-          </div>
         </motion.div>
 
         {/* Below-chart CTA */}

@@ -462,12 +462,12 @@ export function InteractiveChart({
                   <ReferenceLine
                     x={currentAge}
                     label={{
-                      position: 'top',
+                      position: 'insideBottomRight',
                       value: currentAge.toString(),
                       fill: 'rgba(255,255,255,0.9)',
                       fontSize: 12,
                       fontWeight: 600,
-                      offset: 15,
+                      offset: 10,
                       fontFamily: 'sans-serif',
                     }}
                     stroke="none"
