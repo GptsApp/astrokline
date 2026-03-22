@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Check, Sparkles, Star } from 'lucide-react';
+import Image from 'next/image';
 
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
 import { trackEvent } from '@/lib/astrokline/track-event';
@@ -97,34 +98,39 @@ export function AstroHero({
 
           <div className="mb-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <div className="flex -space-x-4">
-              <img
+              <Image
                 className="border-background z-[60] h-10 w-10 rounded-full border-2 object-cover"
                 src="/images/avatars/diverse/hero_casual_1.webp"
                 alt="AstroKline user"
+                width={40} height={40}
                 loading="lazy"
               />
-              <img
+              <Image
                 className="border-background z-[50] h-10 w-10 rounded-full border-2 object-cover"
                 src="/images/avatars/diverse/hero_casual_2.webp"
                 alt="AstroKline user"
+                width={40} height={40}
                 loading="lazy"
               />
-              <img
+              <Image
                 className="border-background z-[40] h-10 w-10 rounded-full border-2 object-cover"
                 src="/images/avatars/diverse/hero_casual_3.webp"
                 alt="AstroKline user"
+                width={40} height={40}
                 loading="lazy"
               />
-              <img
+              <Image
                 className="border-background z-[30] h-10 w-10 rounded-full border-2 object-cover"
                 src="/images/avatars/diverse/hero_casual_4.webp"
                 alt="AstroKline user"
+                width={40} height={40}
                 loading="lazy"
               />
-              <img
+              <Image
                 className="border-background z-[20] h-10 w-10 rounded-full border-2 object-cover"
                 src="/images/avatars/diverse/hero_casual_5.webp"
                 alt="AstroKline user"
+                width={40} height={40}
                 loading="lazy"
               />
               <div className="border-background relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 bg-emerald-500/10 shadow-inner backdrop-blur-sm">
@@ -184,8 +190,8 @@ export function AstroHero({
                 onClick={() => {
                   trackEvent('hero_cta_click', { source: 'hero_button' });
                   open((birthData) => {
-                    // User completed birth info → navigate to /kline where auto-calculate triggers
-                    router.push('/kline');
+                    // User completed birth info → navigate to result page where auto-calculate triggers
+                    router.push('/kline/result');
                   });
                 }}
                 className="group h-14 w-full animate-[pulse_2s_ease-in-out_infinite] rounded-xl bg-primary px-10 text-lg font-bold text-primary-foreground shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-[1.03] hover:bg-primary/90 hover:animate-none hover:shadow-[0_0_40px_-5px_var(--primary)] active:scale-95 md:w-auto"
@@ -212,6 +218,28 @@ export function AstroHero({
                   </span>
                 </div>
               </div>
+
+              {/* Added Micro-Testimonial for Social Proof / Conversion Drop */}
+              {(section as any).social_proof && (
+                <div className="mt-8 flex max-w-sm items-start gap-4 rounded-2xl bg-white/5 p-4 text-left shadow-inner transition-colors hover:bg-white/10">
+                  <Image src={(section as any).social_proof.avatar} alt="User review" width={40} height={40} className="shrink-0 rounded-full object-cover" />
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-0.5 text-amber-400">
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                    </div>
+                    <p className="font-serif mt-1.5 text-xs italic leading-relaxed text-white/90">
+                      {(section as any).social_proof.quote}
+                    </p>
+                    <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-white/40">
+                      {(section as any).social_proof.author}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

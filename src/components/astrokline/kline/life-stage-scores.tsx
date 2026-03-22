@@ -1,8 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
+import { motion } from 'framer-motion';
 import type { DestinyScorePoint } from '@/lib/astrokline/mock-astrology-data';
-import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
+import { Minus, Sparkles, TrendingDown, TrendingUp } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
 
@@ -11,19 +12,21 @@ interface Props {
   birthYear: number;
 }
 
+import { useTranslations } from 'next-intl';
+
 interface StageInfo {
-  label: string;
+  key: string;
   ageRange: string;
   startAge: number;
   endAge: number;
 }
 
 const STAGES: StageInfo[] = [
-  { label: 'Childhood', ageRange: '0-12', startAge: 0, endAge: 12 },
-  { label: 'Youth', ageRange: '13-30', startAge: 13, endAge: 30 },
-  { label: 'Prime', ageRange: '31-50', startAge: 31, endAge: 50 },
-  { label: 'Middle', ageRange: '51-65', startAge: 51, endAge: 65 },
-  { label: 'Elder', ageRange: '66+', startAge: 66, endAge: 100 },
+  { key: 'childhood', ageRange: '0-12', startAge: 0, endAge: 12 },
+  { key: 'youth', ageRange: '13-30', startAge: 13, endAge: 30 },
+  { key: 'prime', ageRange: '31-50', startAge: 31, endAge: 50 },
+  { key: 'middle', ageRange: '51-65', startAge: 51, endAge: 65 },
+  { key: 'elder', ageRange: '66+', startAge: 66, endAge: 100 },
 ];
 
 function getScoreColor(score: number): string {
@@ -50,15 +53,17 @@ function getTrendIcon(trend: number) {
   return <Minus className="h-3.5 w-3.5 text-white/40" />;
 }
 
-function getTrendLabel(trend: number): string {
-  if (trend > 10) return 'Rising Fast';
-  if (trend > 3) return 'Rising';
-  if (trend > -3) return 'Stable';
-  if (trend > -10) return 'Declining';
-  return 'Falling';
+function getTrendLabel(trend: number, t: any): string {
+  if (trend > 10) return t('trends.rising_fast');
+  if (trend > 3) return t('trends.rising');
+  if (trend > -3) return t('trends.stable');
+  if (trend > -10) return t('trends.declining');
+  return t('trends.falling');
 }
 
 export function LifeStageScores({ data, birthYear }: Props) {
+  const t = useTranslations('pages.index.page.sections.kline_result.scores');
+
   const stats = useMemo(() => {
     const currentYear = new Date().getFullYear();
     const currentAge = currentYear - birthYear;
@@ -128,77 +133,96 @@ export function LifeStageScores({ data, birthYear }: Props) {
   }, [data, birthYear]);
 
   return (
-    <div className="w-full space-y-6">
-      {/* Stage Scores */}
-      <div>
-        <h3 className="mb-3 text-center text-[10px] font-bold tracking-widest text-white/40 uppercase">
-          Life Stage Scores
-        </h3>
-        <div className="grid grid-cols-5 gap-2 sm:gap-3">
-          {stats.stageScores.map((stage) => {
+    <div className="mx-auto w-full max-w-5xl space-y-10">
+      <div className="rounded-[3rem] border border-white/5 bg-[#0A0A0F]/60 p-6 shadow-2xl backdrop-blur-xl md:p-10">
+        <div className="mb-10 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-primary/90 uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            {t("engine")}
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+            className="text-2xl font-bold tracking-tight text-white md:text-4xl"
+          >
+            {t("title")}
+          </motion.h2>
+        </div>
+
+        {/* Stage Scores */}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4">
+          {stats.stageScores.map((stage, i) => {
             const isCurrentStage =
               stats.currentAge >= stage.startAge &&
               stats.currentAge <= stage.endAge;
             return (
-              <div
-                key={stage.label}
-                className={`relative rounded-xl border p-2 text-center transition-all ${getScoreColor(stage.score)} ${
+              <motion.div
+                key={stage.key}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className={cn(
+                  'group relative flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border p-6 transition-all duration-300 hover:scale-105',
                   isCurrentStage
-                    ? 'shadow-[0_0_15px_rgba(212,175,55,0.15)] ring-1 ring-[#D4AF37]/40'
-                    : ''
-                }`}
+                    ? 'border-[#D4AF37]/50 bg-[#D4AF37]/10 shadow-[0_0_30px_rgba(212,175,55,0.2)]'
+                    : 'border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
+                )}
               >
-                <p className="font-mono text-[10px] opacity-80">
-                  {stage.label}
-                </p>
-                <p className="mt-1 font-mono text-xl leading-none font-bold sm:text-2xl">
+                {isCurrentStage && (
+                  <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#D4AF37]/20 to-transparent opacity-50" />
+                )}
+                <div className={cn("relative z-10 mb-2 mt-1 text-[10px] font-bold tracking-[0.2em] uppercase", isCurrentStage ? "text-[#F4E1A1]" : "text-white/40")}>
+                  {/* @ts-ignore - dynamic key */}
+                  {t(`stages.${stage.key}`)}
+                </div>
+                <div className={cn("relative z-10 font-mono text-3xl font-black tracking-tighter sm:text-4xl", getScoreColor(stage.score).split(' ')[0])}>
                   {stage.score}
-                </p>
-              </div>
+                </div>
+                {isCurrentStage && <div className="mt-3 relative z-10 rounded-full bg-[#D4AF37]/20 px-2 py-0.5 text-[9px] font-bold text-[#F4E1A1] uppercase">{t('current')}</div>}
+              </motion.div>
             );
           })}
         </div>
-      </div>
 
-      {/* Summary Stats */}
-      <div>
-        <h3 className="mb-3 text-center text-[10px] font-bold tracking-widest text-white/40 uppercase">
-          Summary Stats
-        </h3>
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-xl border border-white/5 bg-[#1A1820]/80 px-4 py-3 text-sm text-white/70">
-          <div className="flex items-center gap-2">
-            <span>Historical Avg</span>
-            <span className="font-mono text-white/90">
-              {stats.historicalAvg}
-            </span>
+        {/* Summary Stats */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+          className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 rounded-[2rem] border border-white/5 bg-black/20 px-8 py-5 text-sm backdrop-blur-md"
+        >
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.historical_avg")}</span>
+            <span className="font-mono text-lg font-bold text-white/90">{stats.historicalAvg}</span>
           </div>
-          <div className="hidden h-3 w-px bg-white/10 sm:block" />
-          <div className="flex items-center gap-2">
-            <span>Future Avg</span>
-            <span className="font-mono text-white/90">{stats.futureAvg}</span>
+          <div className="hidden h-6 w-px bg-white/10 sm:block" />
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.future_avg")}</span>
+            <span className="font-mono text-lg font-bold text-white/90">{stats.futureAvg}</span>
           </div>
-          <div className="hidden h-3 w-px bg-white/10 sm:block" />
-          <div className="flex items-center gap-2">
-            <span>Peak Age</span>
-            <span className="font-mono text-white/90">{stats.peakAge}</span>
+          <div className="hidden h-6 w-px bg-white/10 sm:block" />
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.peak_age")}</span>
+            <span className="font-mono text-lg font-bold text-[#D4AF37]">{stats.peakAge}</span>
           </div>
-          <div className="hidden h-3 w-px bg-white/10 sm:block" />
-          <div className="flex items-center gap-2">
-            <span>Trend</span>
+          <div className="hidden h-6 w-px bg-white/10 sm:block" />
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.trend")}</span>
             <span
               className={cn(
-                'font-mono font-medium',
+                'font-mono text-lg font-bold',
                 stats.trend > 3
                   ? 'text-emerald-400'
                   : stats.trend < -3
                     ? 'text-rose-400'
-                    : 'text-white/50'
+                    : 'text-white/60'
               )}
             >
-              {getTrendLabel(stats.trend)}
+              {getTrendLabel(stats.trend, t)}
             </span>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

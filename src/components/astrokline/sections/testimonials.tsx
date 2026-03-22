@@ -3,56 +3,66 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 
+import { Marquee } from "@/shared/components/ui/marquee";
+
 export function Testimonials() {
   const testimonials = [
     {
       name: "Sarah Jenkins",
       title: "Freelance Writer",
-      avatar: "/images/avatars/sarah.webp",
-      content: "After my breakup I felt paralyzed — should I move cities? Change careers? My K-Line showed the pressure would lift in 8 months and a strong creative window was opening. I waited, launched my newsletter at the right time, and it took off. That timing wasn't luck.",
+      avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Sarah&backgroundColor=b6e3f4",
+      content: "After my breakup I felt completely paralyzed — should I move cities? Change careers? My K-Line showed the emotional pressure would lift in exactly 8 months and a strong creative window was opening. I waited, launched my newsletter at the right time, and it took off. That timing wasn't luck, it was mapped in my chart from day one.",
       score: 5,
-      duration: "8 months",
+      duration: "14 months",
     },
     {
       name: "David Chen",
-      title: "Art Director",
-      avatar: "/images/avatars/david.webp",
-      content: "I'm a skeptic. But when I saw my K-Line had identified the exact year I burned out — and predicted my creative breakthrough 2 years later — I couldn't ignore it. Now I check it before any major career move. It's not astrology fluff, it's timing data.",
+      title: "Tech Lead",
+      avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=David_robot&backgroundColor=ffdfbf",
+      content: "As a software engineer, I used to roll my eyes at horoscopes. But mapping my life trajectory as a literal K-Line curve? That made sense. When I saw it correctly identified the exact year I burned out at my previous job, I was sold.",
       score: 4,
       duration: "3 months",
     },
     {
       name: "Elena Rodriguez",
       title: "Small Business Owner",
-      avatar: "/images/avatars/elena.webp",
-      content: "I was about to sign a lease on a second location. My K-Line showed a sharp financial dip coming in 6 months. I delayed the expansion, and 6 months later my industry hit a downturn. That one decision saved me $40K. Best $39.9 I ever spent.",
+      avatar: "/images/avatars/diverse/hero_casual_1.webp",
+      content: "Best $39.9 I ever spent. Saved me from signing a terrible commercial lease right before a major financial dip.",
       score: 5,
       duration: "1 year",
     },
     {
       name: "Marcus Thorne",
-      title: "Marketing Consultant",
-      avatar: "/images/avatars/marcus.webp",
-      content: "I used to read daily horoscopes and roll my eyes. AstroKline is completely different — it showed me I have a strong momentum window opening in 2027 and to build foundations now. For the first time, I have a cosmic strategy, not just cosmic vibes.",
-      score: 4,
-      duration: "6 months",
+      title: "Consultant",
+      avatar: "https://api.dicebear.com/7.x/micah/svg?seed=Marcus&backgroundColor=d1d4f9",
+      content: "Scarily accurate.",
+      score: 5,
+      duration: "2 months",
     },
     {
       name: "Aisha Patel",
       title: "Yoga Instructor",
-      avatar: "/images/avatars/aisha.webp",
-      content: "I check my K-Line whenever anxiety about the future creeps in. Seeing that my current 'low period' is actually a known restructuring phase — and that a strong upswing starts next year — gives me real peace. It's like having a map when you're lost.",
-      score: 5,
+      avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=Aisha&backgroundColor=c0aede",
+      content: "I check my K-Line whenever anxiety creeps in. Seeing my current 'low period' is actually a known restructuring phase gives me real peace of mind.",
+      score: 4,
       duration: "4 months",
     },
     {
-      name: "James Wilson",
+      name: "James W.",
       title: "Accountant",
-      avatar: "/images/avatars/james.webp",
-      content: "I'm a numbers person, so the dimensional breakdown into Career, Wealth, and Love trajectories actually made sense to me. My Saturn Return was the hardest year of my life — but I saw it coming on my K-Line 6 months early and prepared. That preparation changed everything.",
-      score: 4,
+      avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=James&backgroundColor=ffb4e6",
+      content: "I'm a numbers person. The dimensional breakdown into Career, Wealth, and Love actually makes sense. My Saturn Return was brutal, but I saw it coming on my K-Line 6 months early and prepared for it. That preparation changed everything for me.",
+      score: 5,
       duration: "11 months",
     },
+    {
+      name: "Riley Cooper",
+      title: "Product Manager",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Riley&style=circle&backgroundColor=cddc39",
+      content: "Literally a cheat code for timing big life decisions. If you're on the fence about quitting your job, check your chart first.",
+      score: 5,
+      duration: "6 months",
+    }
   ];
 
   return (
@@ -87,46 +97,51 @@ export function Testimonials() {
           </div>
         </div>
 
-        {/* Testimonials Grid (Masonry feel) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="group relative rounded-2xl border border-white/5 bg-[#15131A] p-6 overflow-hidden flex flex-col justify-between"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              <div className="relative z-10 flex flex-col h-full">
-                {/* Stars */}
-                <div className="flex gap-1 mb-6">
-                  {[...Array(testimonial.score)].map((_, index) => (
-                    <Star key={index} className="w-4 h-4 fill-primary text-primary" />
-                  ))}
-                </div>
+        {/* Testimonials Marquee */}
+        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden mt-8">
+          <Marquee pauseOnHover className="[--duration:40s]">
+            {testimonials.map((testimonial, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="group relative rounded-2xl border border-white/5 bg-[#15131A] p-6 overflow-hidden flex flex-col justify-between w-[350px] shrink-0"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
-                {/* Content */}
-                <p className="text-muted-foreground leading-relaxed mb-8 flex-grow">
-                  &quot;{testimonial.content}&quot;
-                </p>
-                
-                {/* Profile */}
-                <div className="flex items-center gap-4 mt-auto">
-                  <div className="w-10 h-10 rounded-full bg-[#2A2633] border border-white/10 overflow-hidden shadow-inner shrink-0">
-                    <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover" loading="lazy" />
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Stars */}
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(testimonial.score)].map((_, index) => (
+                      <Star key={index} className="w-4 h-4 fill-primary text-primary" />
+                    ))}
                   </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-foreground">{testimonial.name}</h4>
-                    <p className="text-xs text-muted-foreground">{testimonial.title}</p>
-                    <p className="text-[10px] text-muted-foreground/50 font-mono mt-0.5">AstroKline user for {(testimonial as any).duration}</p>
+                  
+                  {/* Content */}
+                  <p className="text-muted-foreground leading-relaxed mb-8 flex-grow">
+                    &quot;{testimonial.content}&quot;
+                  </p>
+                  
+                  {/* Profile */}
+                  <div className="flex items-center gap-4 mt-auto">
+                    <div className="w-10 h-10 rounded-full bg-[#2A2633] border border-white/10 overflow-hidden shadow-inner shrink-0">
+                      <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-foreground">{testimonial.name}</h4>
+                      <p className="text-xs text-muted-foreground">{testimonial.title}</p>
+                      <p className="text-[10px] text-muted-foreground/50 font-mono mt-0.5">AstroKline user for {(testimonial as any).duration}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </Marquee>
+          
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background dark:from-background" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background dark:from-background" />
         </div>
       </div>
 

@@ -16,13 +16,18 @@
         "block": "astro-hero",
         "title": "Your Next 10 Years, Mapped Before You Act.",
         "highlight_text": "K-Line",
-        "description": "Don't wait for life to surprise you. Enter your birth data and see exactly when your strongest windows, biggest risks, and turning points are coming.",
+        "description": "Don't walk into your next career move or relationship blind. Enter your birth data and instantly uncover your strongest windows, biggest risks, and hidden turning points.",
         "announcement": {
           "badge": "V2.0",
           "title": "Live K-Line readings today",
           "url": "/daily"
         },
-        "tip": "Used by 26,000+ people to time career moves, investments, and relationships"
+        "tip": "Used by 26,000+ people to time career moves, investments, and relationships",
+        "social_proof": {
+           "quote": "\"I avoided a major career mistake thanks to this map. Astoundingly accurate.\"",
+           "author": "- Sarah J., San Francisco",
+           "avatar": "/images/avatars/diverse/hero_casual_1.webp"
+        }
       },
       "kline-preview": {
         "id": "kline-preview",
@@ -41,8 +46,37 @@
       "features": {
         "id": "features",
         "block": "astro-features",
-        "title": "Know When to Push, Pause, or Protect.",
-        "description": "Turn invisible cosmic timing into clear, confident decisions."
+        "engine": "The Astrokline Engine",
+        "title1": "A Dashboard For",
+        "title2": "Your Timeline.",
+        "description": "We don't do vague horoscopes. We use exact ephemeris data to plot your life's momentum, friction, and turning points into a clear, tactical chart.",
+        "card1": {
+          "title": "Full-Life K-Line Map",
+          "desc": "Visualize decades of energy peaks and valleys. Instantly know if you are in a high-momentum push phase or a high-friction protective phase.",
+          "tooltip": "Score: 92 (Peak Year)"
+        },
+        "card2": {
+          "title": "Transit Navigator",
+          "desc": "Track the exact timing of critical planetary transits like Jupiter Returns and Saturn crossings before they hit.",
+          "items": [
+            { "title": "Jupiter Trine Sun", "time": "Starts in 3 months", "stat": "+8 Momentum" },
+            { "title": "Saturn Conjunction", "time": "Peak pressure in {year}", "stat": "-4 Friction" }
+          ]
+        },
+        "card3": {
+          "title": "AI Context Engine",
+          "desc": "Swiss Ephemeris precision meets AI. It doesn't just show the math; it speaks to you like a master astrologer, explaining what the data means for your life.",
+          "badge": "Destiny AI Interpretation",
+          "quote": "The curve dips smartly because Pluto is squaring your MC. This isn't bad luck—it's meant to break down outdated career structures so you can rebuild on a truer foundation next year. Protect your capital, don't force expansion."
+        },
+        "card4": {
+          "title": "Astronomical Precision",
+          "desc": "Powered by NASA JPL planetary data (DE431) and Swiss Ephemeris. We calculate your exact geometry down to 0.001°, mapping the orbital decay of planetary influence into a single numerical score.",
+          "data1_label": "JUP_TRANSIT",
+          "data1_val": "24°15'32\"",
+          "data2_label": "PLU_SQUARE_MC",
+          "data2_val": "ORB: 0°41'"
+        }
       },
       "methodology": {
         "id": "methodology",
@@ -75,7 +109,7 @@
         "items": [
           {
             "title": "Free",
-            "description": "See your 100-year K-Line and find out what's coming.",
+            "description": "Instantly unlock 1 critical turning point in your 2026 chart and see your 100-year trajectory.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
@@ -153,7 +187,7 @@
           },
           {
             "title": "Free",
-            "description": "See your 100-year K-Line and find out what's coming.",
+            "description": "Instantly unlock 1 critical turning point in your 2026 chart and see your 100-year trajectory.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
@@ -244,6 +278,66 @@
         "block": "astro-cta",
         "title": "Your Turning Point Is Coming.",
         "description": "The question is: will you see it before it hits, or after?"
+      },
+      "kline_result": {
+        "scores": {
+          "title": "Your Baseline Across Eras",
+          "engine": "Decade Averages",
+          "stages": {
+            "childhood": "Childhood",
+            "youth": "Youth",
+            "prime": "Prime",
+            "middle": "Middle",
+            "elder": "Elder"
+          },
+          "labels": {
+            "excellent": "Excellent",
+            "good": "Good",
+            "average": "Average",
+            "weak": "Weak",
+            "poor": "Poor"
+          },
+          "trends": {
+            "rising_fast": "Rising Fast",
+            "rising": "Rising",
+            "stable": "Stable",
+            "declining": "Declining",
+            "falling": "Falling"
+          },
+          "stats": {
+            "historical_avg": "Past Avg",
+            "future_avg": "Future Avg",
+            "peak_age": "Peak Age",
+            "trend": "Trend"
+          },
+          "current": "Current"
+        },
+        "page_client": {
+          "how_it_is_calculated": "How The Curve Is Calculated",
+          "calculation_desc1": "We use the Swiss Ephemeris DE431 dataset to compute the precise coordinates of major planetary bodies at any given point in your life.",
+          "calculation_desc2": "Instead of general horoscopes, the algorithm plots the geometric angles (aspects) between transiting planets and your natal chart. High-synchronicity transits (trines, sextiles) plot a rising score, while friction transits (squares, oppositions) plot a dip.",
+          "how_to_read": "How To Read The Markers",
+          "markers_desc1": "The gold line is your overarching momentum trajectory. When it rises, external forces are generally supportive of expansion.",
+          "markers_desc2": "Nodes along the curve indicate exact transit hits. Clicking a bright node provides AI-driven analysis of that specific year's astrological weather.",
+          "reading_title": "K-Line Reading",
+          "cards": {
+            "highest_point": {
+              "title": "Highest Point",
+              "stat": "Age {age}",
+              "desc": "Peak momentum year. The trajectory favors expansion, visibility, and capitalizing on established foundations."
+            },
+            "lowest_point": {
+              "title": "Lowest Point",
+              "stat": "Age {age}",
+              "desc": "Key friction year. Structural re-evaluation. A time for building internal resilience rather than external force."
+            },
+            "current_status": {
+              "title": "Current Status",
+              "stat": "Age {age}",
+              "desc": "You are currently entering a {trend} phase. Time to align your actions with the upcoming cycle."
+            }
+          }
+        }
       }
     }
   }

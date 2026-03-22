@@ -1,0 +1,74 @@
+{
+  "header": {
+    "show_sign": true,
+    "brand": {
+      "title": "AstroKline",
+      "logo": {
+        "src": "/images/astrokline-logo.webp",
+        "alt": "AstroKline logo"
+      }
+    },
+    "nav": {
+      "items": [
+        { "title": "機能", "url": "/#features" },
+        { "title": "K-Line", "url": "/kline" },
+        { "title": "料金", "url": "/pricing" },
+        { "title": "FAQ", "url": "/#faq" }
+      ]
+    },
+    "user_nav": {
+      "items": [
+        { "title": "ダッシュボード", "url": "/dashboard", "icon": "LayoutDashboard" },
+        { "title": "毎日の運勢", "url": "/dashboard/daily", "icon": "Sun" },
+        { "title": "K-Line", "url": "/dashboard/kline", "icon": "Activity" },
+        { "title": "設定", "url": "/settings", "icon": "Settings" }
+      ]
+    }
+  },
+  "footer": {
+    "brand": {
+      "title": "AstroKline",
+      "description": "AstroKlineは出生図のデータをシンプルなタイミングマップに変換し、好調な時期、不調な時期、そして転換点を見つけることができます。",
+      "logo": {
+        "src": "/images/astrokline-logo.webp",
+        "alt": "AstroKline logo"
+      }
+    },
+    "nav": {
+      "items": [
+        {
+          "title": "製品",
+          "children": [
+            { "title": "機能", "url": "/#features" },
+            { "title": "K-Line", "url": "/kline" },
+            { "title": "料金", "url": "/pricing" }
+          ]
+        },
+        {
+          "title": "リソース",
+          "children": [
+            { "title": "FAQ", "url": "/#faq" },
+            { "title": "ブログ", "url": "/blog" }
+          ]
+        },
+        {
+          "title": "法的情報",
+          "children": [
+            { "title": "プライバシーポリシー", "url": "/privacy-policy" },
+            { "title": "利用規約", "url": "/terms-of-service" }
+          ]
+        }
+      ]
+    },
+    "social": {
+      "items": [
+        { "title": "メールサポート", "url": "mailto:support@astrokline.com", "icon": "Mail" },
+        { "title": "X (Twitter)", "url": "", "icon": "Twitter" }
+      ]
+    },
+    "copyright": "© 2026 AstroKline. AIによる占星術とK-Lineの精度の融合。無断複写・転載を禁じます。",
+    "show_theme": true,
+    "show_locale": true,
+    "show_built_with": false
+  }
+}

@@ -1,0 +1,58 @@
+
+> shipany-template-two@1.8.2 dev
+> next dev
+
+[MDX] updated map file in 5.076666000000046ms
+[MDX] started dev server
+[MDX] started dev server
+[MDX] started dev server
+   ▲ Next.js 15.5.7
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.212:3000
+   - Environments: .env.development
+   - Experiments (use with caution):
+     ⨯ mdxRs
+
+ ✓ Starting...
+Found a non-empty CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE variable for binding. Hyperdrive will connect to this database during local development.
+Using secrets defined in .dev.vars
+ ✓ Ready in 3.7s
+ ✓ Compiled /middleware in 195ms (207 modules)
+ ○ Compiling /[locale]/kline/result ...
+ ✓ Compiled /[locale]/kline/result in 10.7s (10843 modules)
+ GET /kline/result 200 in 15620ms
+ ○ Compiling /[locale] ...
+ ✓ Compiled /[locale] in 7.1s (10224 modules)
+ GET / 200 in 10466ms
+ ○ Compiling /api/config/get-configs ...
+ ✓ Compiled /api/config/get-configs in 9.2s (10826 modules)
+ POST /api/config/get-configs 200 in 9633ms
+ GET /api/auth/get-session 200 in 13143ms
+ ○ Compiling /api/user/get-user-info ...
+ ✓ Compiled /api/user/get-user-info in 5.8s (10833 modules)
+ POST /api/user/get-user-info 200 in 6690ms
+ GET /es 200 in 1178ms
+ POST /api/config/get-configs 200 in 351ms
+ POST /api/user/get-user-info 200 in 428ms
+ ✓ Compiled in 35.3s (10253 modules)
+ GET /es 200 in 2606ms
+ ✓ Compiled in 25.8s (10253 modules)
+ GET /es 200 in 3326ms
+ ✓ Compiled in 4.8s (10253 modules)
+ GET /es 200 in 838ms
+ ✓ Compiled in 3.8s (3926 modules)
+ GET /es 200 in 106ms
+ ✓ Compiled in 6.6s (3926 modules)
+ GET /es 200 in 728ms
+ ✓ Compiled in 5.7s (10253 modules)
+ GET /es 200 in 2082ms
+ ✓ Compiled in 3.6s (10253 modules)
+ GET /es 200 in 880ms
+ ✓ Compiled in 13.5s (10253 modules)
+ GET /es 200 in 1351ms
+ ✓ Compiled in 4.3s (10253 modules)
+ GET /es 200 in 751ms
+ ✓ Compiled in 13s (10253 modules)
+ GET /es 200 in 2009ms
+ ✓ Compiled in 4.6s (10253 modules)
+ GET /es 200 in 548ms

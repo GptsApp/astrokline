@@ -2,9 +2,11 @@ import { envConfigs } from '..';
 
 export const localeNames: any = {
   en: 'English',
+  es: 'Español',
+  ja: '日本語',
 };
 
-export const locales = ['en'];
+export const locales = ['en', 'es', 'ja'];
 
 export const defaultLocale = envConfigs.locale;
 

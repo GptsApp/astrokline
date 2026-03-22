@@ -1,0 +1,31 @@
+{
+  "title": "Dashboard",
+  "nav": {
+    "items": [
+      {
+        "title": "Overview",
+        "url": "/dashboard",
+        "icon": "Home"
+      },
+      {
+        "title": "K-Line",
+        "url": "/dashboard/kline",
+        "icon": "Activity"
+      },
+      {
+        "title": "Daily Forecast",
+        "url": "/dashboard/daily",
+        "icon": "Sun"
+      }
+    ]
+  },
+  "bottom_nav": {
+    "items": [
+      {
+        "title": "Settings",
+        "url": "/settings/profile",
+        "icon": "Settings"
+      }
+    ]
+  }
+}

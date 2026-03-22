@@ -51,7 +51,7 @@ export function MobileStickyCta() {
             onClick={() => {
               trackEvent('mobile_sticky_cta_click');
               open((birthData) => {
-                router.push('/kline');
+                router.push('/kline/result');
               });
             }}
             className="w-full max-w-[400px] h-14 bg-primary text-primary-foreground font-bold rounded-2xl shadow-[0_10px_40px_-10px_rgba(212,175,55,0.5)] flex items-center justify-center gap-2 group relative overflow-hidden backdrop-blur-md border border-primary/20"

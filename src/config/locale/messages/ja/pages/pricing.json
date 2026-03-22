@@ -1,0 +1,192 @@
+{
+  "metadata": {
+    "title": "AstroKline 料金プラン",
+    "description": "必要な深さとボリュームに合わせたプランをお選びください。"
+  },
+  "page": {
+    "title": "AstroKline 料金プラン",
+    "sections": {
+      "pricing": {
+        "id": "pricing",
+        "block": "astro-pricing",
+        "title": "タイミングの優位性を手に入れる",
+        "description": "間違ったタイミングでの正しい決断は、やはり間違った決断です。必要な深さをお選びください。",
+        "groups": [
+          {
+            "name": "monthly",
+            "title": "月額"
+          },
+          {
+            "name": "yearly",
+            "title": "年額",
+            "label": "50% オフ"
+          }
+        ],
+        "items": [
+          {
+            "title": "無料",
+            "description": "あなたの100年間のK-Lineチャートを見て、何が待ち受けているかを発見してください。",
+            "features_title": "含まれるもの",
+            "features": [
+              "100年間の完全なK-Lineカーブ",
+              "AIによるコアリーディング",
+              "年ごとの勢いの洞察",
+              "生のネイタルチャートデータ",
+              "生涯で2つの保存済みチャート"
+            ],
+            "interval": "month",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "無料",
+            "button": {
+              "title": "無料でK-Lineを見る",
+              "url": "/pricing"
+            },
+            "product_id": "free-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Lite",
+            "description": "どの年に力を入れ、どの年を守るべきかを知りましょう。タイミングを味方につけて決断を下してください。",
+            "features_title": "無料版のすべてに加えて",
+            "features": [
+              "月に10個の保存済みK-Lines",
+              "キャリア、富、恋愛、健康の内訳",
+              "年次トランジットの要約",
+              "保存済みレポートのある個人ダッシュボード",
+              "いつでもProへアップグレード可能"
+            ],
+            "interval": "month",
+            "amount": 3990,
+            "currency": "USD",
+            "price": "$39.9",
+            "unit": " / 月",
+            "is_featured": false,
+            "tip": "月額請求",
+            "button": {
+              "title": "タイミングマップをアンロック",
+              "url": "/pricing"
+            },
+            "product_id": "standard-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Pro",
+            "description": "もう二度と盲目的に転換点に足を踏み入れないでください。すべてのツール、すべての年、すべての次元への完全アクセス。",
+            "label": "大きな決断に最適",
+            "features_title": "Lite版のすべてに加えて",
+            "features": [
+              "月に30個の保存済みK-Lines",
+              "任意の年をクリックして即座にディープリーディング",
+              "強みと盲点の分析",
+              "すべての転機となる年の正確なトランジット詳細",
+              "すべての新リリースへの優先アクセス",
+              "洗練されたPDFレポートのエクスポート",
+              "ライフレーダー、運命のリーディング"
+            ],
+            "interval": "month",
+            "amount": 7990,
+            "currency": "USD",
+            "price": "$79.9",
+            "unit": " / 月",
+            "is_featured": true,
+            "tip": "月額請求",
+            "button": {
+              "title": "フルアクセスを取得",
+              "url": "/pricing"
+            },
+            "product_id": "premium-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "無料",
+            "description": "あなたの100年間のK-Lineチャートを見て、何が待ち受けているかを発見してください。",
+            "features_title": "含まれるもの",
+            "features": [
+              "100年間の完全なK-Lineカーブ",
+              "AIによるコアリーディング",
+              "年ごとの勢いの洞察",
+              "生のネイタルチャートデータ",
+              "生涯で2つの保存済みチャート"
+            ],
+            "interval": "year",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "無料",
+            "button": {
+              "title": "無料でK-Lineを見る",
+              "url": "/pricing"
+            },
+            "product_id": "free-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Lite",
+            "description": "どの年に力を入れ、どの年を守るべきかを知りましょう。タイミングを味方につけて決断を下してください。",
+            "features_title": "無料版のすべてに加えて",
+            "features": [
+              "月に10個の保存済みK-Lines",
+              "キャリア、富、恋愛、健康の内訳",
+              "年次トランジットの要約",
+              "保存済みレポートのある個人ダッシュボード",
+              "いつでもProへアップグレード可能"
+            ],
+            "interval": "year",
+            "amount": 23880,
+            "currency": "USD",
+            "price": "$19.9",
+            "original_price": "$39.9",
+            "unit": " / 月",
+            "is_featured": false,
+            "tip": "年額 $238.8 で請求",
+            "button": {
+              "title": "タイミングマップをアンロック",
+              "url": "/pricing"
+            },
+            "product_id": "standard-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Pro",
+            "description": "もう二度と盲目的に転換点に足を踏み入れないでください。すべてのツール、すべての年、すべての次元への完全アクセス。",
+            "label": "大きな決断に最適",
+            "features_title": "Lite版のすべてに加えて",
+            "features": [
+              "月に30個の保存済みK-Lines",
+              "任意の年をクリックして即座にディープリーディング",
+              "強みと盲点の分析",
+              "すべての転機となる年の正確なトランジット詳細",
+              "すべての新リリースへの優先アクセス",
+              "洗練されたPDFレポートのエクスポート",
+              "ライフレーダー、運命のリーディング"
+            ],
+            "interval": "year",
+            "amount": 47880,
+            "currency": "USD",
+            "price": "$39.9",
+            "original_price": "$79.9",
+            "unit": " / 月",
+            "is_featured": true,
+            "tip": "年額 $478.8 で請求",
+            "button": {
+              "title": "フルアクセスを取得",
+              "url": "/pricing"
+            },
+            "product_id": "premium-yearly",
+            "group": "yearly"
+          }
+        ]
+      }
+    }
+  },
+  "messages": {
+    "current_plan": "現在のプラン",
+    "processing": "処理中"
+  }
+}

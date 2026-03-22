@@ -402,7 +402,7 @@ export function InteractiveChart({
         {/* Main Candlestick Chart */}
         <div className="w-full overflow-visible">
           <div
-            className="h-[300px] md:h-[420px]"
+            className="h-[480px] md:h-[550px]"
             style={{ overflow: 'visible' }}
           >
             <ResponsiveContainer width="100%" height="100%">
@@ -548,12 +548,10 @@ export function InteractiveChart({
                     strokeWidth: 1,
                     strokeDasharray: '4 4',
                   }}
-                  allowEscapeViewBox={{ x: false, y: true }}
+                  allowEscapeViewBox={{ x: false, y: false }}
                   wrapperStyle={{
                     zIndex: 99999,
                     pointerEvents: 'none',
-                    overflow: 'visible',
-                    maxWidth: 'calc(100vw - 16px)',
                   }}
                   isAnimationActive={false}
                 />

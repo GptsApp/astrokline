@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "title": "AstroKline — Personal Timing Map",
+    "description": "Generate a personal K-Line from your birth chart and see when to push, pause, and protect.",
+    "keywords": "astrokline, astrology chart, birth chart, natal chart, horoscope, destiny chart, K-line, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast, personalized astrology, star chart analysis"
+  },
+  "sign": {
+    "sign_in_title": "Sign In",
+    "sign_in_description": "Access your saved charts and reports.",
+    "sign_up_title": "Sign Up",
+    "sign_up_description": "Create your account and save your chart.",
+    "email_title": "Email",
+    "email_placeholder": "you@example.com",
+    "password_title": "Password",
+    "password_placeholder": "Enter your password",
+    "forgot_password": "Forgot password?",
+    "or": "Or",
+    "continue": "Continue",
+    "no_account": "Don't have an account?",
+    "already_have_account": "Already have an account?",
+    "email_sign_in": "Sign in with Email",
+    "google_sign_in_title": "Sign in with Google",
+    "github_sign_in_title": "Sign in with GitHub",
+    "close_title": "Close",
+    "cancel_title": "Cancel",
+    "sign_out_title": "Sign Out",
+    "billing_title": "Billing",
+    "name_title": "Name",
+    "name_placeholder": "Your name",
+    "email_verification_hint": "Use an email address you can access. You will verify it after sign up.",
+    "admin_title": "Admin System",
+    "credits_title": "Credits: {credits}",
+    "verify_email_sent": "Verification email sent. Check your inbox.",
+    "verify_email_required": "Verify your email before signing in.",
+    "resend_verification": "Resend verification email",
+    "resend_verification_sent": "Verification email resent. Check your inbox.",
+    "verify_email_page_title": "Check your email",
+    "verify_email_page_description": "To continue, click the link sent to",
+    "verify_email_continue": "Continue",
+    "verify_email_tip": "After you verify, click Continue.",
+    "verify_email_not_verified_yet": "Not verified yet. Open the link in your email first.",
+    "verify_email_account_mismatch": "You are signed in as {current}. This page is waiting for {expected}.",
+    "resend_verification_countdown": "Resend verification email ({seconds}s)",
+    "resend_verification_wait": "Wait {seconds}s before resending.",
+    "back_to_sign_in": "Back to Sign In"
+  },
+  "payment": {
+    "choose_payment_method": "Choose Payment Method",
+    "choose_payment_method_description": "",
+    "cancel_title": "Cancel"
+  },
+  "locale_detector": {
+    "title": "We detected your browser language is {locale}. Switch to it?",
+    "switch_to": "Switch to {locale}"
+  },
+  "birthModal": {
+    "locationHint": "La ubicación precisa determina la alineación exacta de tus casas y planetas. (Requerido para mayor precisión)"
+  },
+  "crossLinkCard": {
+    "lockedText": "Desbloquea tus puntos de inflexión de 10 años"
+  }
+}

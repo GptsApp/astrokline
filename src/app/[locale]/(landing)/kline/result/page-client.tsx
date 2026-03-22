@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
@@ -38,6 +39,7 @@ import {
 
 import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
+import { useTranslations } from 'next-intl';
 
 function getScoreBand(score: number) {
   if (score >= 82) {
@@ -73,27 +75,42 @@ function InsightCard({
   title,
   detail,
   accentClass,
+  glowClass = 'bg-primary/20',
+  delay = 0,
 }: {
   icon: typeof TrendingUp;
   label: string;
   title: string;
   detail: string;
   accentClass: string;
+  glowClass?: string;
+  delay?: number;
 }) {
   return (
-    <div className="rounded-[28px] border border-white/8 bg-white/[0.035] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.24)] backdrop-blur-md">
-      <div
-        className={cn(
-          'mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.18em] uppercase',
-          accentClass
-        )}
-      >
-        <Icon className="h-3.5 w-3.5" />
-        {label}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.6, delay }}
+      className="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-[#0A0A0F]/40 p-8 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:border-white/10 hover:bg-[#0A0A0F]/60"
+    >
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className={cn('absolute -top-32 -right-32 z-0 h-64 w-64 rounded-full blur-[100px] transition-all duration-700 opacity-20 group-hover:opacity-50', glowClass)} />
+      
+      <div className="relative z-10 flex h-full flex-col">
+        <div
+          className={cn(
+            'mb-6 w-fit inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-lg',
+            accentClass
+          )}
+        >
+          <Icon className="h-4 w-4" />
+          {label}
+        </div>
+        <div className="text-xl font-bold tracking-tight text-white md:text-2xl">{title}</div>
+        <p className="mt-4 text-sm leading-relaxed text-white/50 transition-colors group-hover:text-white/70">{detail}</p>
       </div>
-      <div className="text-lg font-semibold text-white md:text-xl">{title}</div>
-      <p className="mt-3 text-sm leading-7 text-white/62">{detail}</p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -192,6 +209,7 @@ export function ResultClient({
   userTier: string;
   isLoggedIn?: boolean;
 }) {
+  const t = useTranslations('pages.index.page.sections.kline_result.page_client');
   const router = useRouter();
   const tier: AppTier = !isLoggedIn
     ? 'GUEST'
@@ -423,124 +441,159 @@ export function ResultClient({
         divider={false}
         className="relative z-[40] pb-6"
       >
-        <div className="rounded-[32px] border border-white/8 bg-[#111015]/82 p-6 shadow-2xl backdrop-blur-md md:p-8">
-          <div className="mb-8 max-w-3xl">
-            <div className="text-primary/80 mb-3 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase">
+        <div className="rounded-[3rem] border border-white/5 bg-[#0A0A0F]/60 p-6 shadow-2xl backdrop-blur-xl md:p-10">
+          <div className="mb-10 max-w-3xl">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-primary/90 uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+            >
               <Sparkles className="h-3.5 w-3.5" />
-              K-Line Reading
-            </div>
-            <h2 className="text-2xl font-semibold tracking-tight text-white md:text-4xl">
+              {t("reading_title")}
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+              className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl"
+            >
               Read the position first, then decide the move
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-white/62 md:text-base">
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+              className="mt-6 text-base leading-loose text-white/60 md:text-lg"
+            >
               This chart answers the questions users actually care about: are
               you in an expansion phase or a protection phase, which years are
               strongest for aggressive action, and which years require tighter
               risk control.
-            </p>
+            </motion.p>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             <InsightCard
               icon={TrendingUp}
-              label="Highest Point"
+              label={t("cards.highest_point.title")}
               title={
                 highestPoint
-                  ? `${formatAgeYearLabel(highestPoint.year, birthYear)} · Score ${highestPoint.score}`
+                  ? `${t("cards.highest_point.stat", { age: highestPoint.year - birthYear })} · ${highestPoint.year} · Score ${highestPoint.score}`
                   : 'Highest point unavailable'
               }
-              detail={highestBand.summary}
-              accentClass="border-emerald-400/20 bg-emerald-500/10 text-emerald-200"
+              detail={t("cards.highest_point.desc")}
+              accentClass="border-emerald-400/20 bg-emerald-500/10 text-emerald-300"
+              glowClass="bg-emerald-500"
+              delay={0.1}
             />
             <InsightCard
               icon={TrendingDown}
-              label="Lowest Point"
+              label={t("cards.lowest_point.title")}
               title={
                 lowestPoint
-                  ? `${formatAgeYearLabel(lowestPoint.year, birthYear)} · Score ${lowestPoint.score}`
+                  ? `${t("cards.lowest_point.stat", { age: lowestPoint.year - birthYear })} · ${lowestPoint.year} · Score ${lowestPoint.score}`
                   : 'Lowest point unavailable'
               }
-              detail={lowestBand.summary}
-              accentClass="border-sky-400/20 bg-sky-500/10 text-sky-200"
+              detail={t("cards.lowest_point.desc")}
+              accentClass="border-sky-400/20 bg-sky-500/10 text-sky-300"
+              glowClass="bg-sky-500"
+              delay={0.2}
             />
             <InsightCard
               icon={Target}
-              label="Current Position"
+              label={t("cards.current_status.title")}
               title={
                 currentPoint
-                  ? `${formatAgeYearLabel(currentPoint.year, birthYear)} · Score ${currentPoint.score}`
+                  ? `${t("cards.current_status.stat", { age: currentPoint.year - birthYear })} · ${currentPoint.year} · Score ${currentPoint.score}`
                   : 'Current year is outside the chart'
               }
               detail={
                 currentPoint
-                  ? currentBand.summary
+                  ? t("cards.current_status.desc", { trend: currentPoint.score > 50 ? 'expansion' : 'protection' })
                   : 'Your current age is outside the visible range, so use the long-term average as the better reference point.'
               }
               accentClass="border-[#D4AF37]/20 bg-[#D4AF37]/10 text-[#F4E1A1]"
+              glowClass="bg-[#D4AF37]"
+              delay={0.3}
             />
           </div>
 
-          <div className="mt-4 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5">
-              <div className="mb-3 text-[11px] font-semibold tracking-[0.18em] text-white/40 uppercase">
-                How The Curve Is Calculated
+          <div className="mt-5 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-[#0A0A0F]/40 p-8 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:border-white/10 hover:bg-[#0A0A0F]/60"
+            >
+              <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              
+              <div className="relative z-10 mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] text-white/50 uppercase backdrop-blur-md">
+                <Brain className="h-4 w-4" />
+                {t("how_it_is_calculated")}
               </div>
-              <div className="grid gap-3 md:grid-cols-3">
-                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                  <div className="text-sm font-semibold text-white">
-                    Long cycle
+              
+              <div className="relative z-10 grid gap-4 md:grid-cols-3">
+                {[
+                  {
+                    title: 'Long cycle',
+                    desc: 'Sets the broad direction of the life curve and shows which periods naturally support expansion versus restructuring.',
+                  },
+                  {
+                    title: 'Medium cycle',
+                    desc: 'Controls pacing. Some years stack momentum, while others are better for consolidation and cleanup.',
+                  },
+                  {
+                    title: 'Turning points',
+                    desc: 'Highlights inflection years so users can change strategy before pressure becomes obvious.',
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="rounded-3xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.05] hover:shadow-xl">
+                    <div className="text-base font-bold text-white/90">{item.title}</div>
+                    <p className="mt-3 text-sm leading-relaxed text-white/50">{item.desc}</p>
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-white/58">
-                    Sets the broad direction of the life curve and shows which
-                    periods naturally support expansion versus restructuring.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                  <div className="text-sm font-semibold text-white">
-                    Medium cycle
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-white/58">
-                    Controls pacing. Some years stack momentum, while others are
-                    better for consolidation and cleanup.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                  <div className="text-sm font-semibold text-white">
-                    Turning points
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-white/58">
-                    Highlights inflection years so users can change strategy
-                    before pressure becomes obvious.
-                  </p>
-                </div>
+                ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="rounded-[28px] border border-white/8 bg-white/[0.03] p-5">
-              <div className="mb-3 text-[11px] font-semibold tracking-[0.18em] text-white/40 uppercase">
-                How To Read The Markers
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-[#0A0A0F]/40 p-8 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:border-white/10 hover:bg-[#0A0A0F]/60"
+            >
+              <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-tl from-white/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              
+              <div className="relative z-10 mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] text-white/50 uppercase backdrop-blur-md">
+                <Target className="h-4 w-4" />
+                {t("how_to_read")}
               </div>
-              <div className="space-y-3">
-                <div className="rounded-2xl border border-emerald-400/15 bg-emerald-500/8 p-4 text-sm leading-6 text-white/65">
-                  <span className="font-semibold text-emerald-200">
-                    Green star
-                  </span>{' '}
-                  marks the strongest expansion window across the full curve.
+              
+              <div className="relative z-10 space-y-4">
+                <div className="flex items-center gap-5 rounded-3xl border border-emerald-400/10 bg-emerald-500/5 p-5 transition-all duration-300 hover:bg-emerald-500/10 hover:shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-300 shadow-inner">
+                    <Star className="h-5 w-5" />
+                  </div>
+                  <div className="text-sm leading-relaxed text-white/60">
+                    <span className="font-bold text-emerald-200">Green star</span> marks the strongest expansion window across the full curve.
+                  </div>
                 </div>
-                <div className="rounded-2xl border border-sky-400/15 bg-sky-500/8 p-4 text-sm leading-6 text-white/65">
-                  <span className="font-semibold text-sky-200">Blue star</span>{' '}
-                  marks the deepest protection window where structure matters
-                  more than speed.
+                
+                <div className="flex items-center gap-5 rounded-3xl border border-sky-400/10 bg-sky-500/5 p-5 transition-all duration-300 hover:bg-sky-500/10 hover:shadow-[0_0_20px_rgba(14,165,233,0.1)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-sky-500/20 text-sky-300 shadow-inner">
+                    <Star className="h-5 w-5" />
+                  </div>
+                  <div className="text-sm leading-relaxed text-white/60">
+                    <span className="font-bold text-sky-200">Blue star</span> marks the deepest protection window where structure matters more than speed.
+                  </div>
                 </div>
-                <div className="rounded-2xl border border-[#D4AF37]/15 bg-[#D4AF37]/8 p-4 text-sm leading-6 text-white/65">
-                  <span className="font-semibold text-[#F4E1A1]">
-                    Dashed line
-                  </span>{' '}
-                  shows your current age so users can judge how close they are
-                  to a peak, a low, or a reversal zone.
+                
+                <div className="flex items-center gap-5 rounded-3xl border border-[#D4AF37]/10 bg-[#D4AF37]/5 p-5 transition-all duration-300 hover:bg-[#D4AF37]/10 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/20 text-[#D4AF37] shadow-inner">
+                    <div className="h-0.5 w-5 rounded-full bg-[#D4AF37] opacity-80 mix-blend-screen" />
+                  </div>
+                  <div className="text-sm leading-relaxed text-white/60">
+                    <span className="font-bold text-[#F4E1A1]">Dashed line</span> shows your current age to judge distance to a peak, low, or reversal zone.
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </ReportSection>

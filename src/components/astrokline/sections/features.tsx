@@ -1,188 +1,251 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Brain, Clock, Cpu, ArrowUpRight, Shield } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function Features() {
-
+  const t = useTranslations("pages.index.page.sections.features");
   return (
-    <section id="features" className="py-24 bg-background relative overflow-hidden">
-      <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
+    <section id="features" className="py-32 bg-[#0A0A0A] relative overflow-hidden">
+      {/* Deep Background Ambience */}
+      <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-primary/10 rounded-full blur-[180px] pointer-events-none translate-x-1/4 -translate-y-1/4" />
+      <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
       
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="text-center md:text-left mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            The Astrology Chart That Maps Your <span className="text-primary text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">Destiny.</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            See the invisible planetary forces shaping your journey. An elegant synthesis of<br className="hidden md:block"/>
-            ancient natal chart wisdom and modern K-Line visualization.
-          </p>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-20">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm font-medium mb-6 backdrop-blur-md"
+          >
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span>{t("engine")}</span>
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight text-white"
+          >
+            {t("title1")} <br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FCDD73] to-[#8B7321]">{t("title2")}</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+          >
+            {t("description")}
+          </motion.p>
         </div>
 
-        {/* Bento Grid layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px]">
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 auto-rows-[420px]">
           
-          {/* Card 1: Top Left - Life Map */}
+          {/* Card 1: Top Left - Full Life Timeline */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            className="md:col-span-5 md:row-span-1 group relative rounded-3xl border border-white/5 bg-[#15131A] overflow-hidden flex flex-col"
+            transition={{ duration: 0.5 }}
+            className="md:col-span-7 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-            
-            <div className="p-8 pb-0 shrink-0 relative z-10">
-              <h3 className="text-2xl font-bold mb-2 text-foreground">Full Life K-Line Overview</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
-                Not just daily horoscopes. A holistic astrology chart showing your life&apos;s peaks and valleys — mapping your cosmic energy across decades like a destiny stock chart.
-              </p>
-            </div>
-            
-            {/* Visual: Abstract Glowing Journey */}
-            <div className="flex-1 mt-6 relative w-full overflow-hidden flex justify-center items-end opacity-80 group-hover:opacity-100 transition-opacity">
-               <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent pointer-events-none" />
-               <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 50">
-                 <path d="M0,50 Q20,20 50,30 T100,10 L100,50 Z" fill="url(#glow-wave)" stroke="none" opacity="0.4" />
-                 <path d="M0,50 Q20,20 50,30 T100,10" fill="none" stroke="#D4AF37" strokeWidth="1.5" className="drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
-                 <defs>
-                   <linearGradient id="glow-wave" x1="0" y1="0" x2="0" y2="1">
-                     <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.5" />
-                     <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
-                   </linearGradient>
-                 </defs>
-               </svg>
-            </div>
-          </motion.div>
-
-          {/* Card 2: Top Right - Turning Points */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="md:col-span-7 md:row-span-1 group relative rounded-3xl border border-white/5 bg-[#15131A] overflow-hidden flex flex-col"
-          >
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
-            
-            <div className="p-8 pb-0 relative z-10">
-              <h3 className="text-2xl font-bold mb-2 text-foreground">Planetary Transit Navigator</h3>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            <div className="p-10 pb-0 relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                  <div className="flex items-end gap-[3px] h-4">
+                    <div className="w-1 h-3 bg-primary rounded-full group-hover:h-4 transition-all duration-300"/>
+                    <div className="w-1 h-2 bg-primary/70 rounded-full group-hover:h-3 transition-all duration-300 delay-75"/>
+                    <div className="w-1 h-4 bg-primary/40 rounded-full group-hover:h-2 transition-all duration-300 delay-150"/>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-white">{t("card1.title")}</h3>
+              </div>
               <p className="text-muted-foreground text-sm leading-relaxed max-w-[400px]">
-                Anticipate your most transformative moments with precision. Know exactly when a career breakthrough or a soulmate connection is written in your birth chart transits.
+                {t("card1.desc")}
               </p>
             </div>
             
-            {/* Visual: Timeline Nodes with emotional labels */}
-            <div className="flex-1 w-full flex items-center justify-center p-8 relative">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[100px] bg-primary/10 blur-[50px] rounded-full pointer-events-none" />
-                
-                <div className="relative w-full max-w-[500px] flex items-center justify-between">
-                  <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-y-1/2" />
-                  
-                  {/* Past Node */}
-                  <div className="relative flex flex-col items-center gap-3">
-                    <span className="text-[10px] uppercase font-mono text-white/40">2021</span>
-                    <div className="w-3 h-3 rounded-full bg-white/20" />
-                  </div>
+            {/* Realistically Mocked Chart UI */}
+            <div className="flex-1 mt-6 relative w-full overflow-hidden flex items-end px-10">
+                <div className="absolute inset-x-0 bottom-0 h-[250px] bg-gradient-to-t from-primary/10 to-transparent pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent, black)" }} />
+                <div className="w-[120%] h-[200px] relative -left-[10%] opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:-translate-y-2">
+                  <svg className="w-full h-full" viewBox="0 0 1000 200" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="kline-area" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#D4AF37" stopOpacity="0.0" />
+                      </linearGradient>
+                      <filter id="glow-gold" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="8" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                      </filter>
+                    </defs>
+                    
+                    {/* Grid Lines */}
+                    {[40, 80, 120, 160].map(y => (
+                      <line key={y} x1="0" y1={y} x2="1000" y2={y} stroke="rgba(255,255,255,0.05)" strokeDasharray="4 4" />
+                    ))}
 
-                  {/* Active Emotional Node */}
-                  <div className="relative flex flex-col items-center gap-4 -translate-y-2">
-                    <div className="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#D4AF37]/20 to-[#8B7321]/20 border border-primary/30 text-xs font-semibold text-[#FCDD73] shadow-[0_0_20px_rgba(212,175,55,0.2)] whitespace-nowrap">
-                      <Sparkles className="w-3 h-3 inline-block mr-1" /> Career Zenith
-                    </div>
-                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center shadow-[0_0_15px_#D4AF37]">
-                       <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                    </div>
-                    <span className="text-xs font-mono text-primary font-bold">NOW</span>
-                  </div>
-
-                  {/* Future Node */}
-                  <div className="relative flex flex-col items-center gap-3">
-                    <span className="text-[10px] uppercase font-mono text-white/40">2026</span>
-                    <div className="w-3 h-3 rounded-full bg-white/20" />
-                  </div>
+                    <path d="M0,150 Q150,180 250,90 T550,60 T800,140 T1000,40 L1000,200 L0,200 Z" fill="url(#kline-area)" />
+                    <path d="M0,150 Q150,180 250,90 T550,60 T800,140 T1000,40" fill="none" stroke="#D4AF37" strokeWidth="4" filter="url(#glow-gold)" />
+                    
+                    {/* Highlight Dot */}
+                    <circle cx="550" cy="60" r="8" fill="#121115" stroke="#D4AF37" strokeWidth="3" />
+                  </svg>
+                  {/* Floating tooltip */}
+                  <motion.div 
+                    animate={{ y: [-5, 5, -5] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-[10px] left-[55%] -translate-x-1/2 bg-[#1A1820] border border-primary/30 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-2xl z-20 backdrop-blur-md flex items-center gap-2"
+                  >
+                    <ArrowUpRight className="w-3 h-3 text-emerald-400" /> {t("card1.tooltip")}
+                  </motion.div>
                 </div>
             </div>
           </motion.div>
 
-          {/* Card 3: Bottom Left - Beyond 12 Signs */}
+          {/* Card 2: Top Right - Core Transit Navigation */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="md:col-span-7 md:row-span-1 group relative rounded-3xl border border-white/5 bg-[#15131A] overflow-hidden flex flex-col"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="md:col-span-5 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col items-center text-center px-8 pt-10"
           >
-            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" />
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
             
-            <div className="p-8 pb-0 relative z-10 w-full text-left md:text-right md:ml-auto">
-              <h3 className="text-2xl font-bold mb-2 text-foreground">Beyond the 12 Zodiac Signs</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed max-w-[400px] ml-auto shrink-0 md:text-right">
-                You are more than your Sun sign. Your natal chart K-Line is calculated using your precise birth time and GPS coordinates, revealing an astrological signature entirely unique to you.
-              </p>
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+               <Clock className="w-5 h-5 text-white/80 group-hover:text-primary transition-colors" />
             </div>
+            <h3 className="text-2xl font-bold text-white mb-3">{t("card2.title")}</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+              {t("card2.desc")}
+            </p>
             
-            {/* Visual: Celestial Connections */}
-            <div className="flex-1 flex justify-center items-center relative overflow-hidden mt-8 md:mt-2">
-               <div className="absolute inset-0 bg-primary/10 blur-[90px] rounded-full" />
-               <div className="relative w-[300px] h-[150px] opacity-70 group-hover:opacity-100 transition-opacity scale-125 md:scale-150 transform translate-x-[-10%] md:translate-x-[-20%] md:translate-y-[20%]">
-                 {/* Constellation-like lines */}
-                 <svg className="w-full h-full" viewBox="0 0 300 150">
-                    <path d="M50,100 L120,40 L180,80 L250,50" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="4 4"/>
-                    <path d="M120,40 L150,120 L250,50" fill="none" stroke="rgba(212,175,55,0.3)" strokeWidth="1"/>
-                    
-                    {/* Stars/Planets */}
-                    <circle cx="50" cy="100" r="3" fill="#FFF" opacity="0.5"/>
-                    <circle cx="120" cy="40" r="5" fill="#D4AF37" className="animate-pulse shadow-[0_0_10px_#D4AF37]"/>
-                    <circle cx="180" cy="80" r="2" fill="#FFF" opacity="0.3"/>
-                    <circle cx="150" cy="120" r="4" fill="#FCDD73" opacity="0.8"/>
-                    <circle cx="250" cy="50" r="3" fill="#FFF" opacity="0.6"/>
-                    
-                    {/* Concentric rings hinting at a birth chart */}
-                    <circle cx="150" cy="150" r="100" fill="none" stroke="rgba(212,175,55,0.1)" strokeWidth="1" strokeDasharray="2 6"/>
-                    <circle cx="150" cy="150" r="140" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
-                 </svg>
+            <div className="flex-1 w-full relative flex items-center justify-center -mb-8">
+               <div className="w-full max-w-[320px] space-y-4">
+                 {/* Transit Card 1 */}
+                 <div className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 flex items-center gap-4 backdrop-blur-sm group-hover:border-white/20 transition-all group-hover:scale-[1.02] relative shadow-lg">
+                   <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                     <Sparkles className="w-5 h-5 text-emerald-400" />
+                   </div>
+                   <div className="text-left flex-1">
+                     <div className="text-sm font-bold text-white mb-0.5">{t("card2.items.0.title")}</div>
+                     <div className="text-xs text-white/50">{t("card2.items.0.time")}</div>
+                   </div>
+                   <div className="text-emerald-400 text-xs font-mono font-bold">{t("card2.items.0.stat")}</div>
+                 </div>
+                 
+                 {/* Transit Card 2 */}
+                 <div className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 flex items-center gap-4 backdrop-blur-sm group-hover:border-white/20 transition-all duration-500 delay-75 group-hover:scale-[1.02] relative shadow-lg opacity-60 group-hover:opacity-100">
+                   <div className="w-12 h-12 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
+                     <Shield className="w-5 h-5 text-rose-400" />
+                   </div>
+                   <div className="text-left flex-1">
+                     <div className="text-sm font-bold text-white mb-0.5">{t("card2.items.1.title")}</div>
+                     <div className="text-xs text-white/50">{t("card2.items.1.time", { year: 2026 })}</div>
+                   </div>
+                   <div className="text-rose-400 text-xs font-mono font-bold">{t("card2.items.1.stat")}</div>
+                 </div>
                </div>
             </div>
           </motion.div>
 
-          {/* Card 4: Bottom Right - AI Astrologer */}
+          {/* Card 3: Bottom Left - AI Engine */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="md:col-span-5 md:row-span-1 group relative rounded-3xl border border-white/5 bg-[#15131A] overflow-hidden flex flex-col"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="md:col-span-5 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col p-10 pr-0"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" />
-            
-            <div className="p-8 pb-0 relative z-10">
-              <h3 className="text-2xl font-bold mb-2 text-foreground">AI Astrology Engine</h3>
+            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" />
+            <div className="relative z-10 pr-10">
+              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+                 <Brain className="w-5 h-5 text-white/80 group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">{t("card3.title")}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
-                Swiss Ephemeris precision meets advanced AI — translating complex planetary transits into deeply authentic, crystal-clear astrology guidance.
+                {t("card3.desc")}
               </p>
             </div>
             
-            {/* Visual: Soft AI Message Bubble */}
-            <div className="flex-1 w-full flex justify-center items-center relative z-10 px-6">
-               <div className="relative w-full p-5 rounded-2xl bg-[#1A1820] border border-white/10 shadow-2xl group-hover:border-primary/30 transition-colors">
-                  <div className="flex items-start gap-4">
-                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#8B7321] p-[1px] shrink-0 mt-1">
-                       <div className="w-full h-full bg-[#1A1820] rounded-full flex items-center justify-center">
-                         <div className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
-                       </div>
-                     </div>
-                     <div className="space-y-3">
-                       <div className="text-sm text-white/90 leading-relaxed font-medium">
-                         &quot;The upcoming Jupiter transit brings profound emotional healing. It&apos;s time to finally let go of past weight.&quot;
-                       </div>
-                       <div className="flex gap-2">
-                          <div className="h-1.5 w-16 bg-primary/40 rounded-full" />
-                          <div className="h-1.5 w-8 bg-white/10 rounded-full" />
-                       </div>
-                     </div>
-                  </div>
+            {/* Realistically Mocked Chat Interface */}
+            <div className="flex-1 mt-6 relative w-[130%] bg-black/40 border-t border-l border-white/10 rounded-tl-3xl p-8 pb-0 pt-10 flex flex-col gap-4 shadow-inner">
+               <div className="bg-[#1A1820] border border-white/10 p-5 rounded-2xl rounded-tl-sm self-start max-w-[85%] shadow-xl shadow-black/50 relative">
+                 <div className="absolute -top-3 left-4 bg-primary/10 border border-primary/20 text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest">
+                   {t("card3.badge")}
+                 </div>
+                 <p className="text-sm leading-relaxed text-white/90">
+                   {t("card3.quote")}
+                 </p>
+               </div>
+            </div>
+          </motion.div>
+
+          {/* Card 4: Bottom Right - Astronomical Precision */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="md:col-span-7 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col p-10 pr-0 pb-0"
+          >
+            <div className="max-w-[400px] relative z-10 pr-10">
+              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+                 <Cpu className="w-5 h-5 text-white/80 group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">{t("card4.title")}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+                {t("card4.desc")}
+              </p>
+            </div>
+            
+            {/* Visual: Polished Astrological Wheel / Tech Mesh */}
+            <div className="flex-1 relative w-full h-[250px] overflow-hidden rounded-tl-2xl border-t border-l border-white/10 bg-black/40 shadow-inner group-hover:border-primary/20 transition-colors">
+               <div className="absolute top-1/2 left-[60%] -translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px]">
+                 <motion.svg 
+                   animate={{ rotate: 360 }}
+                   transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+                   viewBox="0 0 200 200" className="w-full h-full opacity-40 group-hover:opacity-60 transition-opacity"
+                 >
+                   {/* Multiple concentric geometric circles */}
+                   <circle cx="100" cy="100" r="90" fill="none" stroke="#D4AF37" strokeWidth="0.5" strokeDasharray="2 4" />
+                   <circle cx="100" cy="100" r="75" fill="none" stroke="#ffffff" strokeWidth="0.5" opacity="0.2" />
+                   <circle cx="100" cy="100" r="60" fill="none" stroke="#D4AF37" strokeWidth="0.2" />
+                   
+                   {/* Orbital lines and planetary nodes */}
+                   {[0, 45, 90, 135, 180, 225, 270, 315].map(deg => (
+                     <line key={deg} x1="100" y1="10" x2="100" y2="190" stroke="#ffffff" strokeWidth="0.5" opacity="0.1" transform={`rotate(${deg} 100 100)`} />
+                   ))}
+
+                   {/* Techy Zodiac Slice Marks */}
+                   <path d="M100,10 L100,25 M100,175 L100,190" stroke="#D4AF37" strokeWidth="2" />
+                   <path d="M10,100 L25,100 M175,100 L190,100" stroke="#D4AF37" strokeWidth="2" />
+                   
+                   {/* Planetary bodies */}
+                   <circle cx="160" cy="50" r="3" fill="#FFF" className="drop-shadow-[0_0_8px_#FFF]" />
+                   <circle cx="30" cy="80" r="4" fill="#D4AF37" className="drop-shadow-[0_0_10px_#D4AF37]" />
+                   <circle cx="120" cy="170" r="2" fill="#FCDD73" />
+                 </motion.svg>
+                 
+                 {/* Floating Data Panels */}
+                 <div className="absolute top-[20%] right-[30%] bg-black/80 border border-white/10 backdrop-blur-md px-3 py-2 rounded-lg text-[10px] font-mono text-white/80 shadow-2xl">
+                    <span className="text-primary pr-2">{t("card4.data1_label")}</span>
+                    {t("card4.data1_val")}
+                 </div>
+                 <div className="absolute bottom-[30%] left-[20%] bg-black/80 border border-white/10 backdrop-blur-md px-3 py-2 rounded-lg text-[10px] font-mono text-white/80 shadow-2xl">
+                    <span className="text-rose-400 pr-2">{t("card4.data2_label")}</span>
+                    {t("card4.data2_val")}
+                 </div>
                </div>
             </div>
           </motion.div>

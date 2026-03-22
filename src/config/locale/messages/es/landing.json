@@ -1,0 +1,74 @@
+{
+  "header": {
+    "show_sign": true,
+    "brand": {
+      "title": "AstroKline",
+      "logo": {
+        "src": "/images/astrokline-logo.webp",
+        "alt": "AstroKline logo"
+      }
+    },
+    "nav": {
+      "items": [
+        { "title": "Características", "url": "/#features" },
+        { "title": "K-Line", "url": "/kline" },
+        { "title": "Precios", "url": "/pricing" },
+        { "title": "FAQ", "url": "/#faq" }
+      ]
+    },
+    "user_nav": {
+      "items": [
+        { "title": "Panel", "url": "/dashboard", "icon": "LayoutDashboard" },
+        { "title": "Pronóstico Diario", "url": "/dashboard/daily", "icon": "Sun" },
+        { "title": "K-Line", "url": "/dashboard/kline", "icon": "Activity" },
+        { "title": "Configuración", "url": "/settings", "icon": "Settings" }
+      ]
+    }
+  },
+  "footer": {
+    "brand": {
+      "title": "AstroKline",
+      "description": "AstroKline convierte los datos de la carta natal en un mapa de tiempo simple para que puedas identificar períodos fuertes, períodos débiles y puntos de inflexión.",
+      "logo": {
+        "src": "/images/astrokline-logo.webp",
+        "alt": "AstroKline logo"
+      }
+    },
+    "nav": {
+      "items": [
+        {
+          "title": "Producto",
+          "children": [
+            { "title": "Características", "url": "/#features" },
+            { "title": "K-Line", "url": "/kline" },
+            { "title": "Precios", "url": "/pricing" }
+          ]
+        },
+        {
+          "title": "Recursos",
+          "children": [
+            { "title": "FAQ", "url": "/#faq" },
+            { "title": "Blog", "url": "/blog" }
+          ]
+        },
+        {
+          "title": "Legal",
+          "children": [
+            { "title": "Política de Privacidad", "url": "/privacy-policy" },
+            { "title": "Términos de Servicio", "url": "/terms-of-service" }
+          ]
+        }
+      ]
+    },
+    "social": {
+      "items": [
+        { "title": "Soporte por Correo", "url": "mailto:support@astrokline.com", "icon": "Mail" },
+        { "title": "X (Twitter)", "url": "", "icon": "Twitter" }
+      ]
+    },
+    "copyright": "© 2026 AstroKline. Astrología impulsada por IA combinada con la precisión de K-Line. Todos los derechos reservados.",
+    "show_theme": true,
+    "show_locale": true,
+    "show_built_with": false
+  }
+}

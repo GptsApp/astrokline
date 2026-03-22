@@ -52,5 +52,11 @@
   "locale_detector": {
     "title": "We detected your browser language is {locale}. Switch to it?",
     "switch_to": "Switch to {locale}"
+  },
+  "birthModal": {
+    "locationHint": "Precise location determines your exact house and planetary alignments. (Required for accuracy)"
+  },
+  "crossLinkCard": {
+    "lockedText": "Unlock 10-Year Turning Points"
   }
 }

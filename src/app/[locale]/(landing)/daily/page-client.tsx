@@ -9,10 +9,12 @@ import {
   useBirthInfoModal,
 } from '@/components/astrokline/ui/birth-info-context';
 import { Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function DailyClient({ userTier: _userTier }: { userTier: string }) {
   const { open } = useBirthInfoModal();
   const [hasUserData, setHasUserData] = useState(false);
+  const t = useTranslations('common.daily');
 
   useEffect(() => {
     setHasUserData(!!getSavedBirthData());

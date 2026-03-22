@@ -1,0 +1,192 @@
+{
+  "metadata": {
+    "title": "Precios de AstroKline",
+    "description": "Elige el plan que se adapte a la profundidad y volumen que necesitas."
+  },
+  "page": {
+    "title": "Precios de AstroKline",
+    "sections": {
+      "pricing": {
+        "id": "pricing",
+        "block": "astro-pricing",
+        "title": "Desbloquea tu Ventaja de Tiempo",
+        "description": "La decisión correcta en el momento equivocado sigue siendo la decisión equivocada. Elige la profundidad que necesitas.",
+        "groups": [
+          {
+            "name": "monthly",
+            "title": "Mensual"
+          },
+          {
+            "name": "yearly",
+            "title": "Anual",
+            "label": "Ahorra 50%"
+          }
+        ],
+        "items": [
+          {
+            "title": "Gratis",
+            "description": "Mira tu K-Line de 100 años y descubre lo que viene.",
+            "features_title": "Incluye",
+            "features": [
+              "Curva K-Line completa de 100 años",
+              "Lectura principal impulsada por IA",
+              "Insights anuales de impulso",
+              "Datos puros de carta natal",
+              "2 cartas guardadas de por vida"
+            ],
+            "interval": "month",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "Gratis",
+            "button": {
+              "title": "Ver Mi K-Line Gratis",
+              "url": "/pricing"
+            },
+            "product_id": "free-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Lite",
+            "description": "Sabe qué años presionar y cuáles proteger. Toma decisiones con el tiempo de tu lado.",
+            "features_title": "Todo en Gratis, más",
+            "features": [
+              "10 K-Lines guardados por mes",
+              "Desgloses de Carrera, Riqueza, Amor y Salud",
+              "Resúmenes anuales de tránsitos",
+              "Panel personal con reportes",
+              "Sube a Pro en cualquier momento"
+            ],
+            "interval": "month",
+            "amount": 3990,
+            "currency": "USD",
+            "price": "$39.9",
+            "unit": "/ mes",
+            "is_featured": false,
+            "tip": "Facturado Mensualmente",
+            "button": {
+              "title": "Desbloquear Mi Mapa de Tiempo",
+              "url": "/pricing"
+            },
+            "product_id": "standard-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Pro",
+            "description": "Nunca vuelvas a entrar a un punto de inflexión a ciegas. Acceso total a cada herramienta, cada año, cada dimensión.",
+            "label": "Mejor para Grandes Decisiones",
+            "features_title": "Todo en Lite, más",
+            "features": [
+              "30 K-Lines guardados por mes",
+              "Clica cualquier año para lectura profunda",
+              "Análisis de Fortalezas y Puntos Ciegos",
+              "Detalle exacto de tránsito para cada año de inflexión",
+              "Acceso prioritario a lanzamientos",
+              "Exportar reportes pulidos en PDF",
+              "Radar de Vida, Lectura de Destino"
+            ],
+            "interval": "month",
+            "amount": 7990,
+            "currency": "USD",
+            "price": "$79.9",
+            "unit": "/ mes",
+            "is_featured": true,
+            "tip": "Facturado Mensualmente",
+            "button": {
+              "title": "Obtener Acceso Total",
+              "url": "/pricing"
+            },
+            "product_id": "premium-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Gratis",
+            "description": "Mira tu K-Line de 100 años y descubre lo que viene.",
+            "features_title": "Incluye",
+            "features": [
+              "Curva K-Line completa de 100 años",
+              "Lectura principal impulsada por IA",
+              "Insights anuales de impulso",
+              "Datos puros de carta natal",
+              "2 cartas guardadas de por vida"
+            ],
+            "interval": "year",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "Gratis",
+            "button": {
+              "title": "Ver Mi K-Line Gratis",
+              "url": "/pricing"
+            },
+            "product_id": "free-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Lite",
+            "description": "Sabe qué años presionar y cuáles proteger. Toma decisiones con el tiempo de tu lado.",
+            "features_title": "Todo en Gratis, más",
+            "features": [
+              "10 K-Lines guardados por mes",
+              "Desgloses de Carrera, Riqueza, Amor y Salud",
+              "Resúmenes anuales de tránsitos",
+              "Panel personal con reportes",
+              "Sube a Pro en cualquier momento"
+            ],
+            "interval": "year",
+            "amount": 23880,
+            "currency": "USD",
+            "price": "$19.9",
+            "original_price": "$39.9",
+            "unit": "/ mes",
+            "is_featured": false,
+            "tip": "Facturado anualmente a $238.8",
+            "button": {
+              "title": "Desbloquear Mi Mapa de Tiempo",
+              "url": "/pricing"
+            },
+            "product_id": "standard-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Pro",
+            "description": "Nunca vuelvas a entrar a un punto de inflexión a ciegas. Acceso total a cada herramienta, cada año, cada dimensión.",
+            "label": "Mejor para Grandes Decisiones",
+            "features_title": "Todo en Lite, más",
+            "features": [
+              "30 K-Lines guardados por mes",
+              "Clica cualquier año para lectura profunda",
+              "Análisis de Fortalezas y Puntos Ciegos",
+              "Detalle exacto de tránsito para cada año de inflexión",
+              "Acceso prioritario a lanzamientos",
+              "Exportar reportes pulidos en PDF",
+              "Radar de Vida, Lectura de Destino"
+            ],
+            "interval": "year",
+            "amount": 47880,
+            "currency": "USD",
+            "price": "$39.9",
+            "original_price": "$79.9",
+            "unit": "/ mes",
+            "is_featured": true,
+            "tip": "Facturado anualmente a $478.8",
+            "button": {
+              "title": "Obtener Acceso Total",
+              "url": "/pricing"
+            },
+            "product_id": "premium-yearly",
+            "group": "yearly"
+          }
+        ]
+      }
+    }
+  },
+  "messages": {
+    "current_plan": "Plan Actual",
+    "processing": "Procesando"
+  }
+}

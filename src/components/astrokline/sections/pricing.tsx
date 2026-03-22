@@ -117,10 +117,10 @@ const plans: Plan[] = [
 /* ─── Payment Icons ─── */
 function PaymentIcons() {
   const icons = [
-    { name: 'Visa', src: '/images/pay/visa.png' },
-    { name: 'Mastercard', src: '/images/pay/mastercard.png' },
-    { name: 'USDC', src: '/images/pay/usdc.png' },
-    { name: 'USDT', src: '/images/pay/usdt.png' },
+    { name: 'Visa', src: '/images/pay/visa.webp' },
+    { name: 'Mastercard', src: '/images/pay/mastercard.webp' },
+    { name: 'USDC', src: '/images/pay/usdc.webp' },
+    { name: 'USDT', src: '/images/pay/usdt.webp' },
   ];
   return (
     <div className="flex flex-col items-center gap-4">

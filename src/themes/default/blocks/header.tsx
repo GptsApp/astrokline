@@ -11,6 +11,7 @@ import {
   SignUser,
   SmartIcon,
 } from '@/shared/blocks/common';
+import { LocaleSelector } from '@/shared/blocks/common/locale-selector';
 import {
   Accordion,
   AccordionContent,
@@ -293,10 +294,11 @@ export function Header({ header }: { header: HeaderType }) {
               {/* Header right section: sign + primary CTA only */}
               <div className="mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 in-data-[state=active]:flex max-lg:in-data-[state=active]:mt-6 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
                 <div className="flex w-full flex-row items-center gap-4 sm:flex-row sm:gap-6 sm:space-y-0 md:w-fit">
+                  <LocaleSelector type="icon" />
                   <button
                     onClick={() => {
                       open((birthData) => {
-                        router.push('/kline');
+                        router.push('/kline/result');
                       });
                     }}
                     type="button"

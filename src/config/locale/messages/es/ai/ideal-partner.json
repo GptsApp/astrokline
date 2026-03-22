@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "title": "Ideal Partner Generator",
+    "description": "Discover your ideal partner based on your birthdate and preferences."
+  },
+  "page": {
+    "title": "Ideal Partner Generator",
+    "description": "Discover your ideal partner based on your birthdate and preferences."
+  },
+  "generator": {
+    "title": "Ideal Partner Generator",
+    "description": "Generate an image of your ideal partner based on your cosmic alignment.",
+    "form": {
+      "birthdate": "Your Birthdate",
+      "preference": "Preference",
+      "select_preference": "Select Gender Preference",
+      "male": "Male",
+      "female": "Female",
+      "non_binary": "Non-binary",
+      "any": "Any",
+      "prompt": "Additional Prompt (Optional)",
+      "prompt_placeholder": "Add any specific traits you desire..."
+    },
+    "generate": "Generate Ideal Partner",
+    "checking_account": "Checking Account...",
+    "loading": "Loading...",
+    "generating": "Consulting the Stars...",
+    "sign_in_to_generate": "Sign In to Generate",
+    "credits_cost": "Cost {credits} credits",
+    "credits_remaining": "Remaining {credits} credits",
+    "buy_credits": "Buy Credits",
+    "progress": "Generation Progress",
+    "generated_images": "Your Ideal Partner",
+    "ready_to_generate": "Ready to Generate",
+    "no_images_generated": "No Image Generated yet",
+    "wizard": {
+      "step1_title": "Welcome to your Cosmic Matchmaker",
+      "step1_desc": "Let's find out who the stars have aligned for you.",
+      "start_btn": "Begin Journey",
+      "step2_title": "When did you enter this world?",
+      "step2_desc": "Your birthdate locks in your astral coordinates.",
+      "next_btn": "Continue",
+      "back_btn": "Back",
+      "step3_title": "Who are you looking for?",
+      "step3_desc": "Tell us your preference so we can narrow down the cosmic possibilities."
+    },
+    "paywall": {
+      "title": "Your Soulmate Blueprint (Preview)",
+      "subtitle": "We found 3 critical timing windows in your chart.",
+      "locked_items": [
+        "Three specific locations you are likely to meet.",
+        "The psychological profile your soul recognizes.",
+        "A 10-Year timeline of maximum alignment windows."
+      ],
+      "testimonial_quote": "\"It told me I'd meet him in a learning environment... 3 weeks later at a Spanish class, I did.\"",
+      "testimonial_author": "Elena K.",
+      "unlock_btn": "Upgrade to Reveal Full Report"
+    }
+  }
+}

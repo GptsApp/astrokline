@@ -1,0 +1,51 @@
+{
+  "title": "Settings",
+  "nav": {
+    "items": [
+      {
+        "title": "Overview",
+        "url": "/dashboard",
+        "icon": "Home"
+      },
+      {
+        "title": "K-Line",
+        "url": "/dashboard/kline",
+        "icon": "Activity"
+      },
+      {
+        "title": "Daily Forecast",
+        "url": "/dashboard/daily",
+        "icon": "Sun"
+      }
+    ]
+  },
+  "bottom_nav": {
+    "items": [
+      {
+        "title": "Profile",
+        "url": "/settings/profile",
+        "icon": "User"
+      },
+      {
+        "title": "Billing",
+        "url": "/settings/billing",
+        "icon": "CreditCard"
+      },
+      {
+        "title": "Payments",
+        "url": "/settings/payments",
+        "icon": "DollarSign"
+      },
+      {
+        "title": "Credits",
+        "url": "/settings/credits",
+        "icon": "Coins"
+      },
+      {
+        "title": "API Keys",
+        "url": "/settings/apikeys",
+        "icon": "RiKeyLine"
+      }
+    ]
+  }
+}

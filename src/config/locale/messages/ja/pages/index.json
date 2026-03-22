@@ -1,0 +1,344 @@
+{
+  "page": {
+    "show_sections": [
+      "hero",
+      "kline-preview",
+      "how-it-works",
+      "features",
+      "testimonials",
+      "pricing",
+      "faq",
+      "cta"
+    ],
+    "sections": {
+      "hero": {
+        "id": "hero",
+        "block": "astro-hero",
+        "highlight_text": "K-Line",
+        "title": "あなたの次の10年を、行動する前にマッピング。",
+        "description": "次のキャリアや人間関係のステップに、盲目的に踏み込まないでください。出生データを入力し、あなたの最強の時期、最大のリスク、隠された転機を瞬時に解き明かします。",
+        "announcement": {
+          "badge": "V2.0",
+          "title": "Live K-Line readings today",
+          "url": "/daily"
+        },
+        "tip": "Used by 26,000+ people to time career moves, investments, and relationships",
+        "social_proof": {
+           "quote": "\"このマップのおかげでキャリアの大きなミスを避けられました。驚くほど正確です。\"",
+           "author": "- サラ・J.（サンフランシスコ）",
+           "avatar": "/images/avatars/diverse/hero_casual_1.webp"
+        }
+      },
+      "kline-preview": {
+        "id": "kline-preview",
+        "block": "astro-kline-preview",
+        "title": "Your Birth Chart, Turned Into a K-Line.",
+        "label": "100-Year Destiny Trajectory",
+        "description": "See where your long-term highs, lows, and reversals are likely to happen.",
+        "className": "astro-starfield"
+      },
+      "how-it-works": {
+        "id": "how-it-works",
+        "block": "astro-how-it-works",
+        "title": "Ready in 30 Seconds",
+        "description": "No astrology knowledge needed. Just your birth details."
+      },
+      "features": {
+        "id": "features",
+        "block": "astro-features",
+        "engine": "アストロクライン・エンジン",
+        "title1": "人生のタイムラインの",
+        "title2": "ダッシュボード",
+        "description": "私たちは曖昧な星占いはしません。正確な天文歴データを使用し、あなたの人生の勢い、摩擦、ターニングポイントを明確な戦術的チャートにプロットします。",
+        "card1": {
+           "title": "全人生K-Lineマップ",
+           "desc": "何十年にもわたるエネルギーのピークと谷を視覚化します。現在が勢いのある拡大期か、摩擦の多い保護期かを瞬時に把握します。",
+           "tooltip": "スコア: 92 (ピーク年)"
+        },
+        "card2": {
+           "title": "トランジット・ナビゲーター",
+           "desc": "木星回帰や土星の交差などの主要な惑星トランジットの正確なタイミングを、それらが来る前に追跡します。",
+           "items": [
+             { "title": "木星太陽トライン", "time": "3ヶ月後に開始", "stat": "+8 勢い" },
+             { "title": "土星コンジャンクション", "time": "{year}年に圧力ピーク", "stat": "-4 摩擦" }
+           ]
+        },
+        "card3": {
+           "title": "AI コンテキストエンジン",
+           "desc": "スイス・エフェメリスの精度とAIの融合。単に計算結果を示すだけでなく、熟練の占星術師のように、そのデータがあなたの人生に何を意味するのかを語りかけます。",
+           "badge": "Destiny AI 解釈",
+           "quote": "カーブが急激に下がっているのは、冥王星があなたのMCとスクエアを形成しているためです。これは不運ではありません。古いキャリアの構造を壊し、来年より真実の基盤の上に再構築するためのものです。今の時期は資本を保護し、無理な拡大は控えてください。"
+        },
+        "card4": {
+           "title": "天文学的な精度",
+           "desc": "NASA JPLの惑星データ (DE431) とSwiss Ephemerisを利用。あなたの正確なジオメトリを0.001°まで計算し、惑星の影響の軌道減衰を単一の数値スコアにマッピングします。",
+           "data1_label": "木星トランジット",
+           "data1_val": "24°15'32\"",
+           "data2_label": "冥王星MCスクエア",
+           "data2_val": "オーブ: 0°41'"
+        }
+      },
+      "methodology": {
+        "id": "methodology",
+        "block": "astro-methodology",
+        "title": "How It Works",
+        "description": "Built from transit timing, long-cycle scoring, and chart structure."
+      },
+      "testimonials": {
+        "id": "testimonials",
+        "block": "astro-testimonials",
+        "title": "They Saw It Coming. You Can Too.",
+        "description": "Real stories from people who used their K-Line to dodge setbacks and seize the right moments."
+      },
+      "pricing": {
+        "id": "pricing",
+        "block": "astro-pricing",
+        "title": "Unlock Your Timing Advantage",
+        "description": "The right decision at the wrong time is still the wrong decision. Choose the depth you need.",
+        "groups": [
+          {
+            "name": "monthly",
+            "title": "Monthly"
+          },
+          {
+            "name": "yearly",
+            "title": "Yearly",
+            "label": "Save 50%"
+          }
+        ],
+        "items": [
+          {
+            "title": "無料",
+            "description": "2026年のあなたのチャートにおける1つの重要な転機を即座にアンロックし、100年の軌跡を確認します。",
+            "features_title": "含まれるもの",
+            "features": [
+              "Full 100-year K-Line curve",
+              "AI-powered core reading",
+              "Yearly momentum insights",
+              "Raw natal chart data",
+              "2 saved charts for life"
+            ],
+            "interval": "month",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "Free",
+            "button": {
+              "title": "See My K-Line Free",
+              "url": "/pricing"
+            },
+            "product_id": "free-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Lite",
+            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
+            "features_title": "Everything in Free, plus",
+            "features": [
+              "10 saved K-Lines per month",
+              "Career, Wealth, Love & Health breakdowns",
+              "Annual transit summaries per year",
+              "Personal dashboard with saved reports",
+              "Upgrade to Pro anytime"
+            ],
+            "interval": "month",
+            "amount": 3990,
+            "currency": "USD",
+            "price": "$39.9",
+            "unit": "/ month",
+            "is_featured": false,
+            "tip": "Billed Monthly",
+            "button": {
+              "title": "Unlock My Timing Map",
+              "url": "/pricing"
+            },
+            "product_id": "standard-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Pro",
+            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
+            "label": "Best for Big Decisions",
+            "features_title": "Everything in Lite, plus",
+            "features": [
+              "30 saved K-Lines per month",
+              "Click any year for instant deep reading",
+              "Strengths & Blindspots analysis",
+              "Exact transit detail for every turning year",
+              "Priority access to every new release",
+              "Export polished PDF reports",
+              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+            ],
+            "interval": "month",
+            "amount": 7990,
+            "currency": "USD",
+            "price": "$79.9",
+            "unit": "/ month",
+            "is_featured": true,
+            "tip": "Billed Monthly",
+            "button": {
+              "title": "Get Full Access",
+              "url": "/pricing"
+            },
+            "product_id": "premium-monthly",
+            "group": "monthly"
+          },
+          {
+            "title": "Free",
+            "description": "See your 100-year K-Line and find out what's coming.",
+            "features_title": "Includes",
+            "features": [
+              "Full 100-year K-Line curve",
+              "AI-powered core reading",
+              "Yearly momentum insights",
+              "Raw natal chart data",
+              "2 saved charts for life"
+            ],
+            "interval": "year",
+            "amount": 0,
+            "currency": "USD",
+            "price": "$0",
+            "unit": "",
+            "is_featured": false,
+            "tip": "Free",
+            "button": {
+              "title": "See My K-Line Free",
+              "url": "/pricing"
+            },
+            "product_id": "free-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Lite",
+            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
+            "features_title": "Everything in Free, plus",
+            "features": [
+              "10 saved K-Lines per month",
+              "Career, Wealth, Love & Health breakdowns",
+              "Annual transit summaries per year",
+              "Personal dashboard with saved reports",
+              "Upgrade to Pro anytime"
+            ],
+            "interval": "year",
+            "amount": 23880,
+            "currency": "USD",
+            "price": "$19.9",
+            "original_price": "$39.9",
+            "unit": "/ month",
+            "is_featured": false,
+            "tip": "Billed yearly at $238.8",
+            "button": {
+              "title": "Unlock My Timing Map",
+              "url": "/pricing"
+            },
+            "product_id": "standard-yearly",
+            "group": "yearly"
+          },
+          {
+            "title": "Pro",
+            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
+            "label": "Best for Big Decisions",
+            "features_title": "Everything in Lite, plus",
+            "features": [
+              "30 saved K-Lines per month",
+              "Click any year for instant deep reading",
+              "Strengths & Blindspots analysis",
+              "Exact transit detail for every turning year",
+              "Priority access to every new release",
+              "Export polished PDF reports",
+              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+            ],
+            "interval": "year",
+            "amount": 47880,
+            "currency": "USD",
+            "price": "$39.9",
+            "original_price": "$79.9",
+            "unit": "/ month",
+            "is_featured": true,
+            "tip": "Billed yearly at $478.8",
+            "button": {
+              "title": "Get Full Access",
+              "url": "/pricing"
+            },
+            "product_id": "premium-yearly",
+            "group": "yearly"
+          }
+        ]
+      },
+      "faq": {
+        "id": "faq",
+        "block": "astro-faq",
+        "title": "Questions Before You Start",
+        "description": "Everything you need to know about your K-Line and how it's built."
+      },
+      "cta": {
+        "id": "cta",
+        "block": "astro-cta",
+        "title": "Your Turning Point Is Coming.",
+        "description": "The question is: will you see it before it hits, or after?"
+      },
+      "kline_result": {
+        "scores": {
+          "title": "時代を通じたあなたのベースライン",
+          "engine": "年代別平均",
+          "stages": {
+            "childhood": "幼年期",
+            "youth": "青年期",
+            "prime": "全盛期",
+            "middle": "中年期",
+            "elder": "老年期"
+          },
+          "labels": {
+            "excellent": "非常に良い",
+            "good": "良い",
+            "average": "普通",
+            "weak": "弱い",
+            "poor": "不調"
+          },
+          "trends": {
+            "rising_fast": "急上昇",
+            "rising": "上昇中",
+            "stable": "安定",
+            "declining": "下降中",
+            "falling": "急降下"
+          },
+          "stats": {
+            "historical_avg": "過去平均",
+            "future_avg": "未来平均",
+            "peak_age": "ピーク年齢",
+            "trend": "トレンド"
+          },
+          "current": "現在"
+        },
+        "page_client": {
+          "how_it_is_calculated": "カーブの計算方法",
+          "calculation_desc1": "Swiss Ephemeris DE431データセットを使用して、あなたの人生の任意の時点における主要な惑星の正確な座標を計算します。",
+          "calculation_desc2": "一般的な星占いとは異なり、このアルゴリズムはトランジット惑星とネイタルチャート間の幾何学的角度（アスペクト）をプロットします。シンクロニシティの高いトランジット（トライン、セクスタイル）は上昇スコアをプロットし、摩擦トランジット（スクエア、オポジション）は下降をプロットします。",
+          "how_to_read": "マーカーの読み解き方",
+          "markers_desc1": "金色のラインは、あなたの全体的な勢いの軌跡です。これが上昇している時、外部要因は概ね拡大をサポートしています。",
+          "markers_desc2": "カーブ上のノードは正確なトランジットのヒットを示します。明るいノードをクリックすると、その特定の年の占星術的な天候についてのAI分析が提供されます。",
+          "reading_title": "K-Line リーディング",
+          "cards": {
+            "highest_point": {
+               "title": "最高点",
+               "stat": "{age}歳",
+               "desc": "勢いのピーク年。軌道は拡大、可視性、そして構築された基盤を活かすことに有利に働きます。"
+            },
+            "lowest_point": {
+               "title": "最低点",
+               "stat": "{age}歳",
+               "desc": "摩擦のターニングポイント年。構造の再評価。外部の力を求めるのではなく、内部の回復力を構築する時期です。"
+            },
+            "current_status": {
+               "title": "現在のステータス",
+               "stat": "{age}歳",
+               "desc": "現在、{trend}の時期に差しかかっています。自身のアクションを次のサイクルに合わせて調整する時です。"
+            }
+          }
+        }
+      }
+    }
+  }
+}

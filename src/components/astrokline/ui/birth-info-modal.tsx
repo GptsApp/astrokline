@@ -13,6 +13,7 @@ import {
   Sparkles,
   User,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import {
   Dialog,
@@ -63,6 +64,7 @@ const STEP_META = [
 export function BirthInfoModal() {
   const { isOpen, close, data, setData, onCompleteCallback } =
     useBirthInfoModal();
+  const t = useTranslations('common.birthModal');
   const [step, setStep] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [hasOpened, setHasOpened] = useState(false);
@@ -92,11 +94,29 @@ export function BirthInfoModal() {
   useEffect(() => {
     if (birthYear && birthMonth && birthDay) {
       const d = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
-      setData((prev) => ({ ...prev, date: d }));
+      setData((prev) => {
+        const newData = { ...prev, date: d };
+        // Auto-save partial data to prevent drop-off loss
+        if (newData.name) {
+          try {
+            localStorage.setItem('astrokline_birth_data', JSON.stringify(newData));
+          } catch (e) {}
+        }
+        return newData;
+      });
     } else {
       setData((prev) => ({ ...prev, date: '' }));
     }
   }, [birthYear, birthMonth, birthDay, setData]);
+
+  // Auto-save on data change if at least name is present
+  useEffect(() => {
+    if (data.name) {
+      try {
+        localStorage.setItem('astrokline_birth_data', JSON.stringify(data));
+      } catch (e) {}
+    }
+  }, [data]);
 
   // Validate current step — returns error string or ""
   const validate = useCallback((): string => {
@@ -395,7 +415,7 @@ export function BirthInfoModal() {
                   Birth Location <span className="text-amber-400">*</span>
                 </Label>
                 <p className="text-muted-foreground -mt-1 text-xs">
-                  Birth location calibrates house positions.
+                  {t('locationHint')}
                 </p>
                 <LocationAutocomplete
                   value={data.location}

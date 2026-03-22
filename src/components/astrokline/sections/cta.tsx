@@ -48,7 +48,7 @@ export function CTA() {
             className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-2xl shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:shadow-[0_0_50px_-5px_var(--primary)] hover:scale-105"
             onClick={() => {
               open((birthData) => {
-                router.push('/kline');
+                router.push('/kline/result');
               });
             }}
           >
