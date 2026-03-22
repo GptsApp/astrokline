@@ -6,7 +6,7 @@ import { Brand as BrandType } from '@/shared/types/blocks/common';
 export function BrandLogo({ brand }: { brand: BrandType }) {
   return (
     <Link
-      href={brand.url || ''}
+      href={brand.url || '/'}
       target={brand.target || '_self'}
       className={`flex items-center space-x-3 ${brand.className}`}
     >

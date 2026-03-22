@@ -187,11 +187,11 @@ export function BirthInfoModal() {
               <Sparkles className="text-primary h-6 w-6" />
             </div>
             <h2 className="text-foreground text-xl font-bold">
-              Unlock Your Cosmic Blueprint
+              Your Timing Map Is Ready To Be Calculated
             </h2>
             <p className="text-muted-foreground mt-1 text-sm">
               Step {step + 1} of 2 —{' '}
-              {step === 0 ? 'Tell us about yourself' : 'Almost there!'}
+              {step === 0 ? "Let's find your chart" : 'Final precision step'}
             </p>
           </div>
         </div>
@@ -442,7 +442,7 @@ export function BirthInfoModal() {
             {step === 1 ? (
               <>
                 <Sparkles className="h-4 w-4" />
-                Generate My Blueprint
+                Unlock My Timing Map
               </>
             ) : (
               <>

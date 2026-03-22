@@ -422,12 +422,10 @@ export function KlineClient({
         <div className="mx-auto w-full max-w-6xl px-6 py-20">
           <div className="mb-16 text-center">
             <h2 className="mb-4 font-serif text-3xl font-bold text-white md:text-4xl">
-              How The Score Works
+              How To Read Your Turning Points
             </h2>
             <p className="text-muted-foreground mx-auto max-w-3xl">
-              The score is built from long cycles, transit pressure, and chart
-              structure. It is meant to help users read timing, not memorize
-              astrology jargon.
+              Your score isn't a grade on your life. It's a weather forecast for your decisions—built from long cycles, transit pressure, and chart structure.
             </p>
           </div>
 
@@ -437,11 +435,10 @@ export function KlineClient({
                 <TrendingUp className="h-6 w-6" />
               </div>
               <h3 className="mb-3 text-xl font-bold text-white">
-                High-Momentum Years
+                Strong Windows (Push)
               </h3>
               <p className="text-sm leading-relaxed text-white/50">
-                These are the years when the chart is more supportive. They are
-                better for launches, visibility, and bigger moves.
+                The cosmic wind is at your back. This is when you launch, invest, ask for the promotion, or make the big move. Effort yields maximum return.
               </p>
             </div>
 
@@ -450,11 +447,10 @@ export function KlineClient({
                 <TrendingDown className="h-6 w-6" />
               </div>
               <h3 className="mb-3 text-xl font-bold text-white">
-                High-Pressure Years
+                Weak Windows (Protect)
               </h3>
               <p className="text-sm leading-relaxed text-white/50">
-                These are the years where protection, restructuring, and tighter
-                decisions matter more than speed.
+                Friction is high. Pushing forward now burns capital and energy. This is your time to protect assets, heal, restructure, and avoid risky gambles.
               </p>
             </div>
 
@@ -463,11 +459,10 @@ export function KlineClient({
                 <Clock className="h-6 w-6" />
               </div>
               <h3 className="mb-3 text-xl font-bold text-white">
-                Stable Years
+                Transition Years (Prepare)
               </h3>
               <p className="text-sm leading-relaxed text-white/50">
-                These are the years for consolidation. They are less dramatic,
-                but often useful for cleanup, skill building, and repositioning.
+                The board is resetting. You might feel stuck, but the foundation you build during these neutral years determines how high you fly in the next strong window.
               </p>
             </div>
           </div>
@@ -481,25 +476,23 @@ export function KlineClient({
                 <SearchCode className="h-3.5 w-3.5" /> Case Study
               </div>
               <h2 className="font-serif text-3xl leading-tight font-bold text-white md:text-4xl">
-                A Real Example: <br />
+                Timing Is Everything: <br />
                 <span className="text-primary italic">
-                  Steve Jobs
+                  Steve Jobs&apos; K-Line
                 </span>
               </h2>
               <p className="text-base leading-relaxed text-white/60">
-                His K-Line shows how major lows, recoveries, and peak years can
-                line up with real-world turning points.
+                Success isn't just hard work; it's doing the right thing at the right time. His cosmic K-Line perfectly mirrors his real-world turning points.
               </p>
               <ul className="space-y-4">
                 <li className="flex gap-4">
                   <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]" />
                   <div>
                     <strong className="mb-1 block text-white">
-                      1985: Major setback
+                      1985: Forced Out (Weak Window)
                     </strong>
                     <span className="text-sm text-white/50">
-                      The curve marks a deep low during one of the most
-                      disruptive periods of his career.
+                      The curve hits a brutal low. Massive friction. He was ousted from Apple. Pushing harder here would have destroyed him; he used this transit block to retreat and build NeXT.
                     </span>
                   </div>
                 </li>
@@ -507,11 +500,10 @@ export function KlineClient({
                   <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]" />
                   <div>
                     <strong className="mb-1 block text-white">
-                      1997: Strong recovery
+                      1997: The Return (Strong Window)
                     </strong>
                     <span className="text-sm text-white/50">
-                      The score turns sharply upward as his public and business
-                      position improves again.
+                      The score turns sharply upward. Cosmic momentum shifts. He strikes when the iron is hot, returning to Apple as interim CEO to save the company.
                     </span>
                   </div>
                 </li>
@@ -519,11 +511,10 @@ export function KlineClient({
                   <div className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full shadow-[0_0_10px_#D4AF37]" />
                   <div>
                     <strong className="mb-1 block text-white">
-                      2007: Peak momentum
+                      2007: Maximum Peak (The iPhone)
                     </strong>
                     <span className="text-sm text-white/50">
-                      The curve reaches one of its strongest points during a
-                      defining product and leadership period.
+                      The K-Line peaks. Perfect alignment between his natal promise and transit timing. He launches the iPhone, changing the world forever.
                     </span>
                   </div>
                 </li>
@@ -623,24 +614,24 @@ export function KlineClient({
               {[
                 {
                   question:
-                    'Do I need an exact birth time for an accurate K-Line?',
+                    'What if I make a major decision during a "Weak Window"?',
                   answer:
-                    "While an exact birth time (within 15 minutes) guarantees the highest accuracy for your Moon's transit speed and determining your exact Ascendant degree, our engine can calculate a generalized 24-hour baseline. However, we highly recommend approximating if possible for precise Placidus house domification.",
+                    "Weak windows (dips in your K-Line) represent high cosmic friction, usually driven by heavy Saturn or Pluto transits. Pushing for rapid expansion during these periods often leads to burnout, financial loss, or blocked progress. These years are designed for defense—protecting assets, cutting losses, and restructuring. Knowing it's a weak window prevents you from blaming yourself for the friction.",
                 },
                 {
-                  question: 'How is K-Line different from a normal horoscope?',
+                  question: 'Does this actually predict my future?',
                   answer:
-                    'Generic horoscopes generalize outer planet transits across an entire sun-sign demographic (1/12th of the population). AstroKline mathematically maps transiting heavyweights directly onto your unique localized geocentric coordinate snapshot, calculating exact geometric orb collisions down to 0.001°.',
+                    "AstroKline doesn't predict events; it predicts the 'weather'. If we tell you it's going to rain (high pressure transit), you can still choose to go outside—but you'll bring an umbrella. By mapping your planetary transits into a K-Line, we show you exactly when your environment will be supportive (high momentum) and when it will be resistant.",
                 },
                 {
-                  question: 'Is my birth data kept private?',
+                  question: 'Why do you need my exact birth time and place?',
                   answer:
-                    'Absolutely. We do not sell your personal astrological data. All computations are handled securely, and your exact spacetime coordinates are used solely for generating your lifetime blueprint and algorithmic metrics.',
+                    "Your exact birth time and location determine your Ascendant and House placements. A 5-minute difference can shift planetary emphasis entirely, changing the timing of your 'Peak' and 'Valley' years. We use Swiss Ephemeris and NASA JPL data to calculate your geometry down to 0.001° for maximum precision.",
                 },
                 {
-                  question: 'What does a lower K-Line period mean?',
+                  question: 'What if I don\'t know my exact birth time?',
                   answer:
-                    "Cosmically, negative slopes represent intense geometric 'Squares' or 'Oppositions'—primarily from Saturn or Pluto. These are not periods of doom; they are karmic crucibles meant for restructuring. The K-Line helps you visually anticipate and brace for these growth periods so you aren't blindsided.",
+                    "If you don't know your exact time, you can select 'I don't know' or estimate a time block. Our system will generate a baseline K-Line focusing on slower-moving outer planets (Jupiter, Saturn, Uranus, etc.) which dominate long-term life chapters. While you lose some exact day-to-day precision, your macro 10-year trends remain highly accurate.",
                 },
               ].map((faq, i) => (
                 <AccordionItem

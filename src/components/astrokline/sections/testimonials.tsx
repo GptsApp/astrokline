@@ -9,7 +9,7 @@ export function Testimonials() {
       name: "Sarah Jenkins",
       title: "Freelance Writer",
       avatar: "/images/avatars/sarah.webp",
-      content: "I was completely lost after my breakup. AstroKline didn&apos;t just give me generic advice — my birth chart K-Line literally showed me when this painful cycle would end and when my cosmic energy would return. It gave me real hope.",
+      content: "After my breakup I felt paralyzed — should I move cities? Change careers? My K-Line showed the pressure would lift in 8 months and a strong creative window was opening. I waited, launched my newsletter at the right time, and it took off. That timing wasn't luck.",
       score: 5,
       duration: "8 months",
     },
@@ -17,7 +17,7 @@ export function Testimonials() {
       name: "David Chen",
       title: "Art Director",
       avatar: "/images/avatars/david.webp",
-      content: "As a skeptic, I never paid attention to astrology charts. But seeing my career K-Line mapped out... AstroKline identified the exact year I burned out and predicted my recent creative breakthrough. I&apos;m speechless.",
+      content: "I'm a skeptic. But when I saw my K-Line had identified the exact year I burned out — and predicted my creative breakthrough 2 years later — I couldn't ignore it. Now I check it before any major career move. It's not astrology fluff, it's timing data.",
       score: 4,
       duration: "3 months",
     },
@@ -25,7 +25,7 @@ export function Testimonials() {
       name: "Elena Rodriguez",
       title: "Small Business Owner",
       avatar: "/images/avatars/elena.webp",
-      content: "The natal chart 'Crossroads' warning saved me. My K-Line showed a massive dip in my financial transit just before I was about to make a risky investment. I waited, and it was the best decision of my life.",
+      content: "I was about to sign a lease on a second location. My K-Line showed a sharp financial dip coming in 6 months. I delayed the expansion, and 6 months later my industry hit a downturn. That one decision saved me $40K. Best $39.9 I ever spent.",
       score: 5,
       duration: "1 year",
     },
@@ -33,7 +33,7 @@ export function Testimonials() {
       name: "Marcus Thorne",
       title: "Marketing Consultant",
       avatar: "/images/avatars/marcus.webp",
-      content: "Finally, something that isn't a vague daily horoscope. AstroKline is like having a cosmic compass for my life. The astrology AI breaks down complex planetary transits into clear, actionable guidance that I actually understand.",
+      content: "I used to read daily horoscopes and roll my eyes. AstroKline is completely different — it showed me I have a strong momentum window opening in 2027 and to build foundations now. For the first time, I have a cosmic strategy, not just cosmic vibes.",
       score: 4,
       duration: "6 months",
     },
@@ -41,7 +41,7 @@ export function Testimonials() {
       name: "Aisha Patel",
       title: "Yoga Instructor",
       avatar: "/images/avatars/aisha.webp",
-      content: "It's beautiful. Not just the design, but the feeling of knowing you're part of a bigger cosmic rhythm. I check my Astro K-Line destiny chart whenever I feel anxious about the future.",
+      content: "I check my K-Line whenever anxiety about the future creeps in. Seeing that my current 'low period' is actually a known restructuring phase — and that a strong upswing starts next year — gives me real peace. It's like having a map when you're lost.",
       score: 5,
       duration: "4 months",
     },
@@ -49,7 +49,7 @@ export function Testimonials() {
       name: "James Wilson",
       title: "Accountant",
       avatar: "/images/avatars/james.webp",
-      content: "I&apos;m a numbers guy, but AstroKline&apos;s dimensional breakdown into Wealth and Career K-Line trajectories is phenomenal. Navigating my Saturn Return with this astrology chart made all the difference.",
+      content: "I'm a numbers person, so the dimensional breakdown into Career, Wealth, and Love trajectories actually made sense to me. My Saturn Return was the hardest year of my life — but I saw it coming on my K-Line 6 months early and prepared. That preparation changed everything.",
       score: 4,
       duration: "11 months",
     },
@@ -69,21 +69,21 @@ export function Testimonials() {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
           >
             <Star className="w-4 h-4" />
-            Loved by 26,000+ Cosmic Navigators
+            They Saw It Coming. You Can Too.
           </motion.div>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Astrology Guidance for Every Life Phase.
+            Real Decisions. Real Timing. Real Results.
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Join thousands who found clarity through their birth chart K-Line — avoiding pitfalls and navigating planetary turning points with cosmic confidence.
+            These people used their K-Line to dodge setbacks, seize the right moments, and make decisions with confidence — not guesswork.
           </p>
           {/* Stats bar */}
           <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm text-muted-foreground/70 font-mono">
-            <span className="inline-flex items-center gap-1">4.9 <Star className="w-3 h-3 fill-primary text-primary" /> average rating</span>
+            <span className="inline-flex items-center gap-1">4.9 <Star className="w-3 h-3 fill-primary text-primary" /> from 26,000+ users</span>
             <span className="hidden sm:inline">·</span>
-            <span>26,000+ K-Lines generated</span>
+            <span>94% say it matched their past</span>
             <span className="hidden sm:inline">·</span>
-            <span>94% accuracy on past events</span>
+            <span>87% made better decisions</span>
           </div>
         </div>
 

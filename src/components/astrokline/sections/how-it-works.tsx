@@ -13,18 +13,18 @@ export function HowItWorks({ section }: { section?: Section }) {
   const steps = [
     {
       icon: FileDigit,
-      title: '1. Enter Your Birth Data',
-      desc: 'Date, time, and birthplace set the chart we calculate from.',
+      title: '1. Enter Your Details',
+      desc: 'No astrology background needed. Just your birth date, time, and place.',
     },
     {
       icon: Compass,
-      title: '2. Calculate The Timing',
-      desc: 'We score long cycles and transit pressure against your natal chart.',
+      title: '2. We Calculate Transits',
+      desc: 'Our engine maps planetary movements against your natal chart.',
     },
     {
       icon: LineChart,
-      title: '3. Read The Curve',
-      desc: 'You get a clear K-Line with stronger years, weaker years, and turning points.',
+      title: '3. Read Your Map',
+      desc: 'See exactly when your strongest windows and major turning points arrive.',
     },
   ];
 
@@ -81,8 +81,8 @@ export function HowItWorks({ section }: { section?: Section }) {
             onClick={() => open((birthData) => { router.push('/kline'); })}
             className="group border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary relative flex items-center gap-3 rounded-full border px-8 py-3 font-medium shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all hover:shadow-[0_0_25px_rgba(212,175,55,0.15)]"
           >
-            <span>Generate My K-Line</span>
-            <div className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span>See My Timing Map</span>
+            <div className="h-2 w-2 rounded-full animate-pulse bg-emerald-500" />
           </button>
         </div>
       </div>

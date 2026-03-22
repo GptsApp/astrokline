@@ -9,8 +9,8 @@
       "pricing": {
         "id": "pricing",
         "block": "astro-pricing",
-        "title": "Choose Your Plan",
-        "description": "Pick the depth, save limit, and tools you need.",
+        "title": "Unlock Your Timing Advantage",
+        "description": "The right decision at the wrong time is still the wrong decision. Choose the depth you need.",
         "groups": [
           {
             "name": "monthly",
@@ -25,14 +25,14 @@
         "items": [
           {
             "title": "Free",
-            "description": "Start free and see how your timing map works.",
+            "description": "See your 100-year K-Line and find out what's coming.",
             "features_title": "Includes",
             "features": [
-              "Full 100-year K-Line",
-              "Core AI reading",
-              "Basic yearly tooltip insights",
-              "Raw chart data",
-              "2 saved K-Lines for life"
+              "Full 100-year K-Line curve",
+              "AI-powered core reading",
+              "Yearly momentum insights",
+              "Raw natal chart data",
+              "2 saved charts for life"
             ],
             "interval": "month",
             "amount": 0,
@@ -42,7 +42,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "Start Free",
+              "title": "See My K-Line Free",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -50,13 +50,13 @@
           },
           {
             "title": "Lite",
-            "description": "Unlock practical guidance and save the charts you want to revisit.",
+            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines each month",
-              "Career, Wealth, Love, and Health modules",
-              "Annual transit summaries in chart tooltips",
-              "Saved reports in your dashboard",
+              "10 saved K-Lines per month",
+              "Career, Wealth, Love & Health breakdowns",
+              "Annual transit summaries per year",
+              "Personal dashboard with saved reports",
               "Upgrade to Pro anytime"
             ],
             "interval": "month",
@@ -67,7 +67,7 @@
             "is_featured": false,
             "tip": "Billed Monthly",
             "button": {
-              "title": "Choose Lite",
+              "title": "Unlock My Timing Map",
               "url": "/pricing"
             },
             "product_id": "standard-monthly",
@@ -75,15 +75,15 @@
           },
           {
             "title": "Pro",
-            "description": "Full detail, priority access, and the strongest decision tools.",
-            "label": "Most Complete",
+            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
+            "label": "Best for Big Decisions",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines / month",
+              "30 saved K-Lines per month",
+              "Click any year for instant deep reading",
+              "Strengths & Blindspots analysis",
               "Exact transit detail for every turning year",
-              "Strengths and Blindspots modules",
-              "Click any year for an instant deep reading",
-              "Priority Access to Every New Release",
+              "Priority access to every new release",
               "Export polished PDF reports",
               "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
             ],
@@ -95,7 +95,7 @@
             "is_featured": true,
             "tip": "Billed Monthly",
             "button": {
-              "title": "Choose Pro",
+              "title": "Get Full Access",
               "url": "/pricing"
             },
             "product_id": "premium-monthly",
@@ -103,14 +103,14 @@
           },
           {
             "title": "Free",
-            "description": "Start free and see how your timing map works.",
+            "description": "See your 100-year K-Line and find out what's coming.",
             "features_title": "Includes",
             "features": [
-              "Full 100-year K-Line",
-              "Core AI reading",
-              "Basic yearly tooltip insights",
-              "Raw chart data",
-              "2 saved K-Lines for life"
+              "Full 100-year K-Line curve",
+              "AI-powered core reading",
+              "Yearly momentum insights",
+              "Raw natal chart data",
+              "2 saved charts for life"
             ],
             "interval": "year",
             "amount": 0,
@@ -120,7 +120,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "Start Free",
+              "title": "See My K-Line Free",
               "url": "/pricing"
             },
             "product_id": "free-yearly",
@@ -128,13 +128,13 @@
           },
           {
             "title": "Lite",
-            "description": "Unlock practical guidance and save the charts you want to revisit.",
+            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines each month",
-              "Career, Wealth, Love, and Health modules",
-              "Annual transit summaries in chart tooltips",
-              "Saved reports in your dashboard",
+              "10 saved K-Lines per month",
+              "Career, Wealth, Love & Health breakdowns",
+              "Annual transit summaries per year",
+              "Personal dashboard with saved reports",
               "Upgrade to Pro anytime"
             ],
             "interval": "year",
@@ -146,7 +146,7 @@
             "is_featured": false,
             "tip": "Billed yearly at $238.8",
             "button": {
-              "title": "Choose Lite",
+              "title": "Unlock My Timing Map",
               "url": "/pricing"
             },
             "product_id": "standard-yearly",
@@ -154,15 +154,15 @@
           },
           {
             "title": "Pro",
-            "description": "Full detail, priority access, and the strongest decision tools.",
-            "label": "Most Complete",
+            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
+            "label": "Best for Big Decisions",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines / month",
+              "30 saved K-Lines per month",
+              "Click any year for instant deep reading",
+              "Strengths & Blindspots analysis",
               "Exact transit detail for every turning year",
-              "Strengths and Blindspots modules",
-              "Click any year for an instant deep reading",
-              "Priority Access to Every New Release",
+              "Priority access to every new release",
               "Export polished PDF reports",
               "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
             ],
@@ -175,7 +175,7 @@
             "is_featured": true,
             "tip": "Billed yearly at $478.8",
             "button": {
-              "title": "Choose Pro",
+              "title": "Get Full Access",
               "url": "/pricing"
             },
             "product_id": "premium-yearly",

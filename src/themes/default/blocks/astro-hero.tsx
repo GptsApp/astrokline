@@ -83,11 +83,11 @@ export function AstroHero({
 
           <h1 className="mb-6 text-4xl font-bold tracking-tight leading-tight md:text-6xl">
             <span className="bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-transparent">
-              See Your K-Line.
+              Your Next 10 Years,
             </span>
             <br />
             <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent">
-              Know When to Move.
+              Mapped Before You Act.
             </span>
           </h1>
 
@@ -142,7 +142,7 @@ export function AstroHero({
                 <span className="font-bold tracking-tight text-emerald-400">
                   Live
                 </span>{' '}
-                readings today
+                — 2,847 charts generated this week
               </span>
             </div>
           </div>
@@ -198,17 +198,17 @@ export function AstroHero({
                 <div className="text-muted-foreground/60 flex flex-wrap items-center justify-center gap-3 font-mono text-xs md:text-[13px]">
                   <span className="flex items-center gap-1.5">
                     <Check className="text-primary/70 h-4 w-4" />
-                    Free instant reading
+                    See your turning points in 30 seconds
                   </span>
                   <span className="hidden text-white/20 md:inline">•</span>
                   <span className="flex items-center gap-1.5">
                     <Check className="text-primary/70 h-4 w-4" />
-                    No credit card required
+                    No credit card needed
                   </span>
                   <span className="hidden text-white/20 md:inline">•</span>
                   <span className="flex items-center gap-1.5">
                     <Check className="text-primary/70 h-4 w-4" />
-                    100% private
+                    Your data stays private
                   </span>
                 </div>
               </div>

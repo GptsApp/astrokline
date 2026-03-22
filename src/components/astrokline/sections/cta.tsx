@@ -26,21 +26,21 @@ export function CTA() {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-8">
             <Sparkles className="w-4 h-4" />
-            <span>Your Astrology K-Line Awaits</span>
+            <span>Your Turning Point Is Closer Than You Think</span>
           </div>
 
           {/* Limited offer badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-4">
-            <Gift className="w-3.5 h-3.5 inline-block mr-1" /> Limited: First reading is free for new users
+            <Gift className="w-3.5 h-3.5 inline-block mr-1" /> First K-Line reading is free — no credit card needed
           </div>
           
           <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-            Stop guessing your cosmic destiny.<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">Read your astrology K-Line.</span>
+            Every year you wait is a year<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">you're flying blind.</span>
           </h2>
           
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            Join thousands who transformed uncertainty into cosmic clarity with AstroKline. Decode your birth chart, visualize planetary turning points, and navigate your destiny with precision.
+            26,000+ people already see their strongest windows, weakest years, and exact turning points. Your K-Line takes 30 seconds to generate — and it could change how you make every major decision.
           </p>
           
           <Button
@@ -57,14 +57,14 @@ export function CTA() {
           </Button>
           
           <p className="mt-6 text-sm text-white/40 font-mono">
-            Requires your exact birth date and location for natal chart precision.
+            Enter your birth date, time, and place. That's all we need.
           </p>
 
           {/* Trust microcopy */}
           <div className="flex flex-wrap justify-center gap-4 mt-2 text-xs text-white/30 font-mono">
-            <span className="inline-flex items-center gap-1"><Zap className="w-3 h-3" /> Takes 30 seconds</span>
-            <span className="inline-flex items-center gap-1"><LockKeyhole className="w-3 h-3" /> 100% private</span>
-            <span className="inline-flex items-center gap-1"><FlaskConical className="w-3 h-3" /> Swiss Ephemeris precision</span>
+            <span className="inline-flex items-center gap-1"><Zap className="w-3 h-3" /> Results in 30 seconds</span>
+            <span className="inline-flex items-center gap-1"><LockKeyhole className="w-3 h-3" /> Your data stays private</span>
+            <span className="inline-flex items-center gap-1"><FlaskConical className="w-3 h-3" /> NASA JPL planetary data</span>
           </div>
         </motion.div>
       </div>

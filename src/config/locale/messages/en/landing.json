@@ -112,6 +112,11 @@
     "social": {
       "items": [
         {
+          "title": "Email Support",
+          "url": "mailto:support@astrokline.com",
+          "icon": "Mail"
+        },
+        {
           "title": "X (Twitter)",
           "url": "",
           "icon": "Twitter"
