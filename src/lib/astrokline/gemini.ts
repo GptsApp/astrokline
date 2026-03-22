@@ -3,7 +3,7 @@ import { UserProfile } from './mock-astrology-data';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 const GEMINI_API_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
-const GEMINI_TIMEOUT_MS = 5000;
+const GEMINI_TIMEOUT_MS = 15000;
 
 // ─── System Prompt ───
 const ASTRO_SYSTEM_PROMPT = `You are AstroKline's Chief Astrological Analyst, possessing 20 years of real-world Western astrology experience.

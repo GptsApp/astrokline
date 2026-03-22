@@ -1,3 +1,4 @@
+import { getSignUser } from '@/shared/models/user';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 import { md5 } from '@/shared/lib/hash';
@@ -37,6 +38,11 @@ function buildStorageProxyUrl(key: string) {
 
 export async function POST(req: Request) {
   try {
+    const user = await getSignUser();
+    if (!user) {
+      return respErr('not login');
+    }
+
     const formData = await req.formData();
     const files = formData.getAll('files') as File[];
 

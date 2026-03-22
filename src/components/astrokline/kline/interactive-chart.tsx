@@ -730,7 +730,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
           </div>
           <div className="flex flex-col items-end">
             <span className="text-2xl leading-none font-bold text-[#D4AF37]">
-              {d.score}
+              {(typeof d.score === 'number' ? d.score.toFixed(1) : d.score)}
             </span>
             <span
               className={`font-mono text-[10px] font-bold ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}
@@ -772,12 +772,12 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
           {/* OHLC in Astrology Terms */}
           <div className="grid grid-cols-4 gap-1 border-b border-white/5 px-4 py-2 text-center">
             {[
-              { label: 'Open', value: d.open, color: 'text-white/50' },
-              { label: 'Peak', value: d.high, color: 'text-purple-400' },
-              { label: 'Nadir', value: d.low, color: 'text-blue-400' },
+              { label: 'Open', value: typeof d.open === 'number' ? d.open.toFixed(2) : d.open, color: 'text-white/50' },
+              { label: 'Peak', value: typeof d.high === 'number' ? d.high.toFixed(2) : d.high, color: 'text-purple-400' },
+              { label: 'Nadir', value: typeof d.low === 'number' ? d.low.toFixed(2) : d.low, color: 'text-blue-400' },
               {
                 label: 'Close',
-                value: d.close,
+                value: typeof d.close === 'number' ? d.close.toFixed(2) : d.close,
                 color: isUp ? 'text-emerald-400' : 'text-rose-400',
               },
             ].map((s) => (
