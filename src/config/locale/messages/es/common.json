@@ -54,7 +54,8 @@
     "switch_to": "Switch to {locale}"
   },
   "birthModal": {
-    "locationHint": "La ubicación precisa determina la alineación exacta de tus casas y planetas. (Requerido para mayor precisión)"
+    "locationHint": "La ubicación precisa determina tus casas exactas y alineaciones planetarias. (Requerido para precisión)",
+    "unknownTimeHint": "No te preocupes. Aún podemos calcular con precisión tus tendencias macro de 10 años utilizando ciclos planetarios mayores."
   },
   "crossLinkCard": {
     "lockedText": "Desbloquea tus puntos de inflexión de 10 años"

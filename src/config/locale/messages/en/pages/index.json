@@ -14,19 +14,28 @@
       "hero": {
         "id": "hero",
         "block": "astro-hero",
-        "title": "Your Next 10 Years, Mapped Before You Act.",
+        "title1": "Is this your turning point",
+        "title2": "or your lowest valley?",
         "highlight_text": "K-Line",
-        "description": "Don't walk into your next career move or relationship blind. Enter your birth data and instantly uncover your strongest windows, biggest risks, and hidden turning points.",
+        "description": "Stop guessing your future. Turn your birth chart into a clear timing map to see exactly when to push in career, and when to protect in love.",
+        "badge": "Personal timing map",
         "announcement": {
           "badge": "V2.0",
           "title": "Live K-Line readings today",
-          "url": "/daily"
+          "url": "/daily",
+          "subtitle": "Start with your first chart for free"
         },
         "tip": "Used by 26,000+ people to time career moves, investments, and relationships",
         "social_proof": {
            "quote": "\"I avoided a major career mistake thanks to this map. Astoundingly accurate.\"",
            "author": "- Sarah J., San Francisco",
-           "avatar": "/images/avatars/diverse/hero_casual_1.webp"
+           "avatar": "/images/avatars/diverse/hero_casual_1.webp",
+           "readers": "Used by <strong className=\"font-bold text-white\">26,000+</strong> readers"
+        },
+        "questions": {
+          "q1": "Find out when you will meet him",
+          "q2": "Should I switch jobs this year?",
+          "q3": "Am I in a low-energy cycle?"
         }
       },
       "kline-preview": {
@@ -320,6 +329,12 @@
           "markers_desc1": "The gold line is your overarching momentum trajectory. When it rises, external forces are generally supportive of expansion.",
           "markers_desc2": "Nodes along the curve indicate exact transit hits. Clicking a bright node provides AI-driven analysis of that specific year's astrological weather.",
           "reading_title": "K-Line Reading",
+          "teaser_hook": "System detects a major turning point in <strong class=\"text-rose-400\">{year}</strong>. This could be your most important decision window in the next 3 years.",
+          "bands": {
+            "expansion": { "label": "Expansion Phase", "summary": "Push visible moves, ask for leverage, and turn momentum into concrete outcomes." },
+            "protection": { "label": "Protection Phase", "summary": "Reduce risk, protect cash flow, and stabilize your position before expanding again." },
+            "build": { "label": "Build Phase", "summary": "Build capability, improve positioning, and prepare for the next stronger window." }
+          },
           "cards": {
             "highest_point": {
               "title": "Highest Point",

@@ -16,10 +16,12 @@ import { useSession } from '@/core/auth/client';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
+import { useTranslations } from 'next-intl';
 
 export function Hero() {
   const { data: session } = useSession();
   const router = useRouter();
+  const t = useTranslations('page.sections.hero');
 
   return (
     <div className="bg-background relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
@@ -46,30 +48,29 @@ export function Hero() {
         >
           <div className="bg-primary/10 border-primary/20 text-primary mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium">
             <Sparkles className="h-4 w-4" />
-            <span>Personal timing map</span>
+            <span>{t('badge')}</span>
           </div>
 
           <h1 className="mb-6 bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-4xl leading-tight font-bold tracking-tight text-transparent md:text-6xl">
-            See Your K-Line.
+            {t('title1')}
             <br />
             <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent">
-              Know When To Push.
+              {t('title2')}
             </span>
           </h1>
 
           <p className="text-muted-foreground mb-8 max-w-xl text-base leading-relaxed md:text-lg">
-            Turn your birth chart into a timing map that shows where to push,
-            pause, and protect.
+            {t('description')}
           </p>
 
           {/* Dynamic Social Proof & Urgency */}
           <div className="mb-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <div className="inline-flex animate-pulse items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400">
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
-              <span>Live readings today</span>
+              <span>{t('announcement.title')}</span>
             </div>
             <div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-400">
-              🔥 <span>Start with your first chart for free</span>
+              🔥 <span>{t('announcement.subtitle')}</span>
             </div>
           </div>
 
@@ -98,11 +99,24 @@ export function Hero() {
                   <Star key={i} className="h-4 w-4 fill-white text-white" />
                 ))}
               </div>
-              <span className="text-foreground/80 text-sm font-medium">
-                Used by <span className="font-bold text-white">26,000+</span>{' '}
-                readers
-              </span>
+              <span 
+                className="text-foreground/80 text-sm font-medium"
+                dangerouslySetInnerHTML={{ __html: t('social_proof.readers') }} 
+              />
             </div>
+          </div>
+
+          {/* Quick Questions Teaser */}
+          <div className="mb-4 flex flex-wrap justify-center gap-2">
+            {[
+              t('questions.q1'),
+              t('questions.q2'),
+              t('questions.q3'),
+            ].map((q, i) => (
+              <span key={i} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/60">
+                {q}
+              </span>
+            ))}
           </div>
 
           {/* Quick Trial Module (Google AI Studio Style Glassmorphism Form) */}

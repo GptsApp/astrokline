@@ -41,27 +41,24 @@ import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
 
-function getScoreBand(score: number) {
+function getScoreBand(score: number, t: any) {
   if (score >= 82) {
     return {
-      label: 'Attack Window',
-      summary:
-        'Push visible moves, ask for leverage, and turn momentum into concrete outcomes.',
+      label: t('bands.expansion.label'),
+      summary: t('bands.expansion.summary'),
     };
   }
 
   if (score <= 38) {
     return {
-      label: 'Protect Window',
-      summary:
-        'Reduce risk, protect cash flow, and stabilize your position before expanding again.',
+      label: t('bands.protection.label'),
+      summary: t('bands.protection.summary'),
     };
   }
 
   return {
-    label: 'Build Window',
-    summary:
-      'Build capability, improve positioning, and prepare for the next stronger window.',
+    label: t('bands.build.label'),
+    summary: t('bands.build.summary'),
   };
 }
 
@@ -254,10 +251,11 @@ export function ResultClient({
     [currentYear, klineData]
   );
   const currentBand = getScoreBand(
-    currentPoint?.score ?? profile?.overallAverageScore ?? 50
+    currentPoint?.score ?? profile?.overallAverageScore ?? 50,
+    t
   );
-  const highestBand = getScoreBand(highestPoint?.score ?? 50);
-  const lowestBand = getScoreBand(lowestPoint?.score ?? 50);
+  const highestBand = getScoreBand(highestPoint?.score ?? 50, t);
+  const lowestBand = getScoreBand(lowestPoint?.score ?? 50, t);
   const selectedYearFocus =
     selectedYear !== undefined ? transitDetails[selectedYear]?.[0] ?? null : null;
 
@@ -425,6 +423,21 @@ export function ResultClient({
         divider={false}
         className="relative z-[50] overflow-visible pt-4 pb-4"
       >
+        {highestPoint && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="mx-auto mb-6 max-w-2xl text-center"
+          >
+            <div className="inline-flex animate-pulse items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 shadow-[0_0_20px_rgba(244,63,94,0.15)]">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500/20 text-rose-400">
+                <Brain className="h-3 w-3" />
+              </span>
+              <span className="text-sm font-semibold text-rose-200" dangerouslySetInnerHTML={{ __html: t("teaser_hook", { year: highestPoint.year }) }} />
+            </div>
+          </motion.div>
+        )}
         <InteractiveChart
           data={klineData}
           transitDetails={transitDetails}

@@ -67,10 +67,10 @@ const plans: Plan[] = [
     period: '/mo',
     description: 'Unlock practical modules and save more reports.',
     features: [
-      { text: 'Past + 1-2 Year Future K-Line', highlight: '1-2 Year' },
-      { text: 'Career & Love dual-track K-Lines' },
+      { text: 'Unlock Relationship Track: Foresee meeting points and crisis periods', highlight: 'Relationship Track' },
+      { text: 'Personal Pitfall Guide: Monthly warnings to avoid wealth traps' },
       { text: 'Unlimited natal chart calculations', highlight: 'Unlimited' },
-      { text: 'Monthly planetary transit alerts' },
+      { text: 'Past + 1-2 Year Future K-Line', highlight: '1-2 Year' },
       { text: 'AI-powered chart interpretation' },
       { text: 'Personalized daily horoscope' },
       { text: 'Sun, Moon & Rising deep analysis' },
@@ -94,17 +94,14 @@ const plans: Plan[] = [
     description:
       'Full detail, full dashboard, highest limits.',
     features: [
+      { text: 'Unlock Wealth & Health Tracks: Full life-area coverage', highlight: '4 tracks' },
       { text: 'Full 10+ Year K-Line Unlocked', highlight: '10+ Year' },
-      { text: 'Career / Love / Wealth / Health tracks', highlight: '4 tracks' },
-      { text: 'Unlimited natal chart calculations', highlight: 'Unlimited' },
+      { text: 'Unlimited AI Astrologer deep chat: Ask specific life questions', highlight: 'Unlimited' },
       { text: 'Real-time planetary transit alerts' },
       { text: 'Priority AI + deep analysis reports' },
       { text: "HD PDF 'Life Book' export (50+ pages)", highlight: '50+ pages' },
-      { text: 'Unlimited AI Astrologer deep chat', highlight: 'Unlimited' },
       { text: 'Exclusive transit survival guides' },
       { text: 'Personalized daily horoscope' },
-      { text: 'Career & Love dual-track K-Lines' },
-      { text: 'Monthly planetary transit alerts' },
       { text: 'VIP priority support' },
     ],
     cta: 'Choose Pro',
@@ -338,6 +335,15 @@ export function Pricing() {
                   <div className="absolute -top-3 left-1/2 z-20 -translate-x-1/2">
                     <div className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-1.5 text-xs font-bold text-white shadow-lg shadow-emerald-500/25">
                       ⭐ Most Popular
+                    </div>
+                  </div>
+                )}
+
+                {/* Dynamic promotion banner for Pro */}
+                {isPro && (
+                  <div className="absolute -top-12 left-0 right-0 z-30 flex justify-center w-full">
+                    <div className="animate-pulse whitespace-nowrap rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-[11px] font-semibold text-rose-200 backdrop-blur-md shadow-[0_0_15px_rgba(244,63,94,0.15)]">
+                      🔥 Your chart shows high volatility. Unlock full guide.
                     </div>
                   </div>
                 )}

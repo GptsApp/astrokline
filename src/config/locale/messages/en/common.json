@@ -54,7 +54,8 @@
     "switch_to": "Switch to {locale}"
   },
   "birthModal": {
-    "locationHint": "Precise location determines your exact house and planetary alignments. (Required for accuracy)"
+    "locationHint": "Precise location determines your exact house and planetary alignments. (Required for accuracy)",
+    "unknownTimeHint": "Don't worry. We can still accurately calculate your 10-year macro trends using major planetary cycles."
   },
   "crossLinkCard": {
     "lockedText": "Unlock 10-Year Turning Points"

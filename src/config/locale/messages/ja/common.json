@@ -54,7 +54,8 @@
     "switch_to": "Switch to {locale}"
   },
   "birthModal": {
-    "locationHint": "正確な場所は、あなたのハウスと惑星の配置を決定します。(精度のために必要です)"
+    "locationHint": "正確な場所は、あなたの正確なハウスと惑星の配置を決定します。（正確さのために必須）",
+    "unknownTimeHint": "ご心配なく。具体的な時間が不明でも、主要な惑星の周期を使用して、今後10年間のマクロなトレンドを正確に計算できます。"
   },
   "crossLinkCard": {
     "lockedText": "10年間の転機をアンロック"

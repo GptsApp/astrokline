@@ -407,6 +407,13 @@ export function BirthInfoModal() {
                   visibleCount={5}
                   loop={true}
                 />
+                <div className="min-h-[36px] mt-2 transition-all">
+                  {data.timeSlot === 'unknown' && (
+                    <div className="animate-in fade-in slide-in-from-top-1 text-xs text-primary/80 bg-primary/10 border border-primary/20 rounded-lg p-2.5">
+                      {t('unknownTimeHint')}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Birth Location */}

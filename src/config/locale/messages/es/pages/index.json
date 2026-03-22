@@ -14,19 +14,28 @@
       "hero": {
         "id": "hero",
         "block": "astro-hero",
+        "title1": "¿Es este tu punto de inflexión",
+        "title2": "o tu valle más bajo?",
         "highlight_text": "K-Line",
-        "title": "Tus próximos 10 años, trazados antes de actuar.",
-        "description": "No tomes tu próxima decisión profesional o personal a ciegas. Ingresa tus datos de nacimiento y descubre al instante tus mejores ventanas, mayores riesgos y puntos de inflexión ocultos.",
+        "description": "Deja de adivinar tu futuro. Convierte tu carta natal en un mapa de tiempo claro para ver exactamente cuándo avanzar en tu carrera y cuándo protegerte en el amor.",
+        "badge": "Mapa de tiempo personal",
         "announcement": {
           "badge": "V2.0",
-          "title": "Live K-Line readings today",
-          "url": "/daily"
+          "title": "Lecturas diarias de K-Line hoy",
+          "url": "/daily",
+          "subtitle": "Empieza con tu primera carta gratis"
         },
-        "tip": "Used by 26,000+ people to time career moves, investments, and relationships",
+        "tip": "Utilizado por más de 26,000 personas para programar movimientos profesionales, inversiones y relaciones",
         "social_proof": {
            "quote": "\"Evité un gran error profesional gracias a este mapa. Asombrosamente preciso.\"",
            "author": "- Sarah J., San Francisco",
-           "avatar": "/images/avatars/diverse/hero_casual_1.webp"
+           "avatar": "/images/avatars/diverse/hero_casual_1.webp",
+           "readers": "Utilizado por <strong className=\"font-bold text-white\">26,000+</strong> lectores"
+        },
+        "questions": {
+          "q1": "Descubre cuándo lo conocerás",
+          "q2": "¿Debería cambiar de trabajo este año?",
+          "q3": "¿Estoy en un ciclo de baja energía?"
         }
       },
       "kline-preview": {
@@ -320,6 +329,12 @@
           "markers_desc1": "La línea dorada es tu trayectoria de impulso global. Cuando sube, las fuerzas externas generalmente apoyan la expansión.",
           "markers_desc2": "Los nodos a lo largo de la curva indican impactos de tránsito exactos. Hacer clic en un nodo brillante proporciona un análisis impulsado por IA del clima astrológico de ese año específico.",
           "reading_title": "Lectura de K-Line",
+          "teaser_hook": "El sistema detecta un punto de inflexión importante en <strong class=\"text-rose-400\">{year}</strong>. Esta podría ser tu ventana de decisión más importante en los próximos 3 años.",
+          "bands": {
+            "expansion": { "label": "Fase de Expansión", "summary": "Avanza, pide influencia y convierte el impulso en resultados concretos." },
+            "protection": { "label": "Fase de Protección", "summary": "Reduce riesgos, protege tu capital y estabiliza tu posición antes de expandirte de nuevo." },
+            "build": { "label": "Fase de Construcción", "summary": "Construye capacidad, mejora tu posicionamiento y prepárate para la próxima ventana." }
+          },
           "cards": {
             "highest_point": {
                "title": "Punto Más Alto",

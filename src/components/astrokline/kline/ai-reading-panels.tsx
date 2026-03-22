@@ -36,6 +36,7 @@ interface ModuleConfig {
   icon: string;
   requiredTier: AppTier;
   shortDesc: string;
+  lockedTeaser?: string;
 }
 
 const MODULES: ModuleConfig[] = [
@@ -52,6 +53,7 @@ const MODULES: ModuleConfig[] = [
     icon: '💼',
     requiredTier: 'LITE',
     shortDesc: 'Work direction, leverage, and timing.',
+    lockedTeaser: 'A hidden pattern suggests a specific timing for your next career leap. Unlock to read...',
   },
   {
     id: 'wealth',
@@ -59,6 +61,7 @@ const MODULES: ModuleConfig[] = [
     icon: '💎',
     requiredTier: 'LITE',
     shortDesc: 'Money patterns and financial decisions.',
+    lockedTeaser: 'There is a high-probability wealth expansion window approaching. Unlock to see when...',
   },
   {
     id: 'love',
@@ -66,6 +69,7 @@ const MODULES: ModuleConfig[] = [
     icon: '❤️',
     requiredTier: 'LITE',
     shortDesc: 'Emotional patterns and relationship pressure points.',
+    lockedTeaser: 'Your chart indicates a significant relationship turning point. Are you prepared?',
   },
   {
     id: 'health',
@@ -73,6 +77,7 @@ const MODULES: ModuleConfig[] = [
     icon: '⚕️',
     requiredTier: 'LITE',
     shortDesc: 'Energy management and burnout risks.',
+    lockedTeaser: 'A specific planetary transit is putting pressure on your energy levels right now...',
   },
   {
     id: 'strengths',
@@ -80,6 +85,7 @@ const MODULES: ModuleConfig[] = [
     icon: '🔥',
     requiredTier: 'PRO',
     shortDesc: 'Your strongest natural advantages.',
+    lockedTeaser: 'You possess an unconventional, hidden advantage that you might be completely ignoring...',
   },
   {
     id: 'shadow',
@@ -87,6 +93,7 @@ const MODULES: ModuleConfig[] = [
     icon: '🌑',
     requiredTier: 'PRO',
     shortDesc: 'Recurring mistakes and pressure patterns.',
+    lockedTeaser: 'There is a recurring karmic blindspot costing you opportunities. Discover what it is...',
   },
 ];
 
@@ -260,43 +267,61 @@ export function AiReadingPanels({
               <button
                 type="button"
                 onClick={() => handleModuleToggle(mod.id, mod.requiredTier)}
-                className="group relative flex w-full items-center justify-between px-6 py-5 text-left focus:outline-none"
+                className="group relative flex w-full flex-col px-6 py-5 text-left focus:outline-none"
               >
-                <div className="z-10 flex items-center gap-4">
-                  <span className="text-2xl opacity-80 transition-transform group-hover:scale-110">
-                    {mod.icon}
-                  </span>
-                  <div>
-                    <h4 className="mb-0.5 text-sm font-bold text-white md:text-base">
-                      {mod.title}
-                    </h4>
-                    <p className="text-[10px] text-white/40 md:text-xs">
-                      {mod.shortDesc}
-                    </p>
+                <div className="flex w-full items-center justify-between z-10">
+                  <div className="flex items-center gap-4">
+                    <span className="text-2xl opacity-80 transition-transform group-hover:scale-110">
+                      {mod.icon}
+                    </span>
+                    <div>
+                      <h4 className="mb-0.5 text-sm font-bold text-white md:text-base">
+                        {mod.title}
+                      </h4>
+                      <p className="text-[10px] text-white/40 md:text-xs">
+                        {mod.shortDesc}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    {!unlocked ? (
+                      <div className="group-hover:bg-primary/10 group-hover:border-primary/30 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 transition-colors">
+                        <Lock className="group-hover:text-primary h-3.5 w-3.5 text-white/50 transition-colors" />
+                        <span className="group-hover:text-primary hidden text-[10px] font-bold tracking-wider text-white/50 uppercase transition-colors md:block">
+                          {mod.requiredTier === 'LITE' ? 'Lite+' : 'Pro Only'}
+                        </span>
+                      </div>
+                    ) : (
+                      <ChevronDown
+                        className={cn(
+                          'h-5 w-5 text-white/30 transition-transform duration-300',
+                          isOpen && 'rotate-180'
+                        )}
+                      />
+                    )}
                   </div>
                 </div>
 
-                <div className="z-10 flex items-center gap-3">
-                  {!unlocked ? (
-                    <div className="group-hover:bg-primary/10 group-hover:border-primary/30 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 transition-colors">
-                      <Lock className="group-hover:text-primary h-3.5 w-3.5 text-white/50 transition-colors" />
-                      <span className="group-hover:text-primary hidden text-[10px] font-bold tracking-wider text-white/50 uppercase transition-colors md:block">
-                        {mod.requiredTier === 'LITE' ? 'Lite+' : 'Pro Only'}
-                      </span>
-                    </div>
-                  ) : (
-                    <ChevronDown
-                      className={cn(
-                        'h-5 w-5 text-white/30 transition-transform duration-300',
-                        isOpen && 'rotate-180'
-                      )}
-                    />
-                  )}
-                </div>
+                {!unlocked && mod.lockedTeaser && (
+                  <div className="mt-5 w-full z-10">
+                     <div className="relative overflow-hidden rounded-xl border border-rose-500/20 bg-rose-500/5 p-4 transition-all duration-300 group-hover:border-rose-500/40">
+                       <p className="blur-[4px] text-xs leading-relaxed text-white/30 select-none">
+                         This is a highly detailed astrological reading containing sensitive predictions about your future. 
+                         It contains exactly what you need to know about this sector of your life. Unlock to reveal the hidden truth.
+                       </p>
+                       <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
+                         <span className="text-sm font-semibold text-rose-300 drop-shadow-lg max-w-[90%] mx-auto">
+                           {mod.lockedTeaser}
+                         </span>
+                       </div>
+                     </div>
+                  </div>
+                )}
 
                 {/* Visual glow on hover for locked modules */}
                 {!unlocked && (
-                  <div className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-transform duration-1000 group-hover:translate-x-[100%]" />
+                  <div className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-transform duration-1000 group-hover:translate-x-[100%] z-0" />
                 )}
               </button>
 

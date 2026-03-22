@@ -56,3 +56,19 @@ Using secrets defined in .dev.vars
  GET /es 200 in 2009ms
  ✓ Compiled in 4.6s (10253 modules)
  GET /es 200 in 548ms
+[MDX] updated map file in 24.101458000019193ms
+[MDX] updated map file in 4.527832999825478ms
+[MDX] updated map file in 27.41466699913144ms
+[MDX] updated map file in 342.4738330002874ms
+[MDX] updated map file in 762.534624999389ms
+[MDX] updated map file in 14.32387499883771ms
+[MDX] updated map file in 2.628124998882413ms
+[MDX] updated map file in 7.096000000834465ms
+[MDX] updated map file in 2.367417000234127ms
+[MDX] updated map file in 1.4460409991443157ms
+[MDX] updated map file in 3.8314580004662275ms
+[MDX] updated map file in 2.568708000704646ms
+[MDX] updated map file in 1.2836250010877848ms
+[MDX] updated map file in 1.4239579997956753ms
+[MDX] updated map file in 2.6247910000383854ms
+[MDX] updated map file in 4.376624999567866ms

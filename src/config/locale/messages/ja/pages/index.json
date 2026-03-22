@@ -14,19 +14,28 @@
       "hero": {
         "id": "hero",
         "block": "astro-hero",
+        "title1": "これはあなたの大きな転機となるか、",
+        "title2": "それともどん底への入り口か？",
         "highlight_text": "K-Line",
-        "title": "あなたの次の10年を、行動する前にマッピング。",
-        "description": "次のキャリアや人間関係のステップに、盲目的に踏み込まないでください。出生データを入力し、あなたの最強の時期、最大のリスク、隠された転機を瞬時に解き明かします。",
+        "description": "未来を推測するのはやめましょう。出生図を明確なタイミングマップに変換し、キャリアにおいていつ攻めるべきか、恋愛においていつ守るべきかを正確に把握しましょう。",
+        "badge": "個人のタイミングマップ",
         "announcement": {
           "badge": "V2.0",
-          "title": "Live K-Line readings today",
-          "url": "/daily"
+          "title": "今日のK-Lineリーディング",
+          "url": "/daily",
+          "subtitle": "最初のチャートを無料で始める"
         },
-        "tip": "Used by 26,000+ people to time career moves, investments, and relationships",
+        "tip": "26,000人以上がキャリアの移動、投資、人間関係のタイミングを計るために使用しています",
         "social_proof": {
            "quote": "\"このマップのおかげでキャリアの大きなミスを避けられました。驚くほど正確です。\"",
            "author": "- サラ・J.（サンフランシスコ）",
-           "avatar": "/images/avatars/diverse/hero_casual_1.webp"
+           "avatar": "/images/avatars/diverse/hero_casual_1.webp",
+           "readers": "ユーザー数 <strong className=\"font-bold text-white\">26,000+</strong> 人"
+        },
+        "questions": {
+          "q1": "彼に出会える時期を知る",
+          "q2": "今年転職すべきですか？",
+          "q3": "私は今、低エネルギの時期にいますか？"
         }
       },
       "kline-preview": {
@@ -320,6 +329,12 @@
           "markers_desc1": "金色のラインは、あなたの全体的な勢いの軌跡です。これが上昇している時、外部要因は概ね拡大をサポートしています。",
           "markers_desc2": "カーブ上のノードは正確なトランジットのヒットを示します。明るいノードをクリックすると、その特定の年の占星術的な天候についてのAI分析が提供されます。",
           "reading_title": "K-Line リーディング",
+          "teaser_hook": "システムが <strong class=\"text-rose-400\">{year}年</strong> に主要な転換点を検出しました。これは今後3年間で最も重要な決断の時期となる可能性があります。",
+          "bands": {
+            "expansion": { "label": "成長期", "summary": "目に見える行動を起こし、勢いを具体的な成果に変えましょう。" },
+            "protection": { "label": "保護期", "summary": "再び拡大する前に、リスクを減らし、基盤を安定させましょう。" },
+            "build": { "label": "蓄力期", "summary": "能力を構築し、位置取りを改善し、次の強い時期に備えましょう。" }
+          },
           "cards": {
             "highest_point": {
                "title": "最高点",
