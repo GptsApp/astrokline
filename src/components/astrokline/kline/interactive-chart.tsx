@@ -41,6 +41,7 @@ type Props = {
   selectedYear?: number;
   birthYear?: number;
   tier?: AppTier;
+  isSimulation?: boolean;
 };
 
 // Generate candle data with dramatic high/low swings
@@ -261,6 +262,7 @@ export function InteractiveChart({
   selectedYear,
   birthYear = 1990,
   tier = 'PRO',
+  isSimulation = false,
 }: Props) {
   const currentYear = new Date().getFullYear();
   const visibleStartAge = currentYear - 1 - birthYear;
@@ -346,7 +348,7 @@ export function InteractiveChart({
             100-Year Chart
           </h3>
           <h2 className="text-xl font-semibold text-white/90 md:text-2xl">
-            100-Year Timing Curve {tier === 'GUEST' && '(Preview Mode)'}
+            100-Year Timing Curve {(tier === 'GUEST' || isSimulation) && '(Preview Mode)'}
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55">
             Read the full curve first, then use the summary below to understand

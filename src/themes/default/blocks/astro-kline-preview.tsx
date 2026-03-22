@@ -56,7 +56,8 @@ export function AstroKlinePreview({
               onNodeClick={(year) => setSelectedYear(year)}
               selectedYear={selectedYear}
               birthYear={1990}
-              tier="GUEST"
+              tier="PRO"
+              isSimulation={true}
             />
           </div>
 
