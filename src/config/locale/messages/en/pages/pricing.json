@@ -9,8 +9,8 @@
       "pricing": {
         "id": "pricing",
         "block": "astro-pricing",
-        "title": "Unlock Your Timing Advantage",
-        "description": "The right decision at the wrong time is still the wrong decision. Choose the depth you need.",
+        "title": "Unlock Your Strategic Advantage",
+        "description": "The right decision at the wrong time is a fatal error. Secure your risk-control dossier to align with your cosmic momentum.",
         "groups": [
           {
             "name": "monthly",
@@ -50,13 +50,13 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
+            "description": "Identify which years to aggressively push and which to protect. Make tactical decisions with timing on your side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines per month",
-              "Career, Wealth, Love & Health breakdowns",
+              "10 saved Risk-Control Maps per month",
+              "Career, Wealth, Love & Health risk vectors",
               "Annual transit summaries per year",
-              "Personal dashboard with saved reports",
+              "Personal dossier dashboard",
               "Upgrade to Pro anytime"
             ],
             "interval": "month",
@@ -67,7 +67,7 @@
             "is_featured": false,
             "tip": "Billed Monthly",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "Archive My Lite Dossier",
               "url": "/pricing"
             },
             "product_id": "standard-monthly",
@@ -75,17 +75,17 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
+            "description": "Never walk into a low-margin-of-error window blind. Full access to your complete strategic dossier, risk vectors, and timing maps.",
+            "label": "Built for Decision Makers",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines per month",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
+              "30 saved Risk-Control Maps per month",
+              "Click any year for instant deep risk reading",
+              "Innate Leverage & Blindspots analysis",
               "Exact transit detail for every turning year",
               "Priority access to every new release",
-              "Export polished PDF reports",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "Export classified PDF dossiers",
+              "Life Radar, Destiny Reading, Next 30 Days"
             ],
             "interval": "month",
             "amount": 7990,
@@ -95,7 +95,7 @@
             "is_featured": true,
             "tip": "Billed Monthly",
             "button": {
-              "title": "Get Full Access",
+              "title": "Secure Full Pro Access",
               "url": "/pricing"
             },
             "product_id": "premium-monthly",
@@ -128,13 +128,13 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
+            "description": "Identify which years to aggressively push and which to protect. Make tactical decisions with timing on your side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines per month",
-              "Career, Wealth, Love & Health breakdowns",
+              "10 saved Risk-Control Maps per month",
+              "Career, Wealth, Love & Health risk vectors",
               "Annual transit summaries per year",
-              "Personal dashboard with saved reports",
+              "Personal dossier dashboard",
               "Upgrade to Pro anytime"
             ],
             "interval": "year",
@@ -146,7 +146,7 @@
             "is_featured": false,
             "tip": "Billed yearly at $238.8",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "Archive My Lite Dossier",
               "url": "/pricing"
             },
             "product_id": "standard-yearly",
@@ -154,17 +154,17 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
+            "description": "Never walk into a low-margin-of-error window blind. Full access to your complete strategic dossier, risk vectors, and timing maps.",
+            "label": "Built for Decision Makers",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines per month",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
+              "30 saved Risk-Control Maps per month",
+              "Click any year for instant deep risk reading",
+              "Innate Leverage & Blindspots analysis",
               "Exact transit detail for every turning year",
               "Priority access to every new release",
-              "Export polished PDF reports",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "Export classified PDF dossiers",
+              "Life Radar, Destiny Reading, Next 30 Days"
             ],
             "interval": "year",
             "amount": 47880,
@@ -175,7 +175,7 @@
             "is_featured": true,
             "tip": "Billed yearly at $478.8",
             "button": {
-              "title": "Get Full Access",
+              "title": "Secure Full Pro Access",
               "url": "/pricing"
             },
             "product_id": "premium-yearly",

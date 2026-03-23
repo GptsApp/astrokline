@@ -26,21 +26,21 @@ export function CTA() {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-8">
             <Sparkles className="w-4 h-4" />
-            <span>Your Turning Point Is Closer Than You Think</span>
+            <span>Your Low-Margin-Of-Error Window Is Approaching</span>
           </div>
 
           {/* Limited offer badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-4">
-            <Gift className="w-3.5 h-3.5 inline-block mr-1" /> First K-Line reading is free — no credit card needed
+            <Gift className="w-3.5 h-3.5 inline-block mr-1" /> Initial Risk-Control Map is free — no credit card needed
           </div>
           
           <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-            Every year you wait is a year<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">you're flying blind.</span>
+            Every decision made without timing data<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">is a blind gamble.</span>
           </h2>
           
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            26,000+ people already see their strongest windows, weakest years, and exact turning points. Your K-Line takes 30 seconds to generate — and it could change how you make every major decision.
+            26,000+ decision makers already use K-Line to identify their strongest windows, weakest years, and strategic turning points. Your initial mapping takes 30 seconds.
           </p>
           
           <Button
@@ -52,7 +52,7 @@ export function CTA() {
               });
             }}
           >
-            Generate My K-Line
+            Get My Risk-Control Map
             <ArrowRight className="ml-2 w-5 h-5 shrink-0" />
           </Button>
           

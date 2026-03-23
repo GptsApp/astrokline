@@ -49,51 +49,51 @@ const MODULES: ModuleConfig[] = [
   },
   {
     id: 'career',
-    title: 'Career',
+    title: 'Career & Leverage',
     icon: '💼',
     requiredTier: 'LITE',
     shortDesc: 'Work direction, leverage, and timing.',
-    lockedTeaser: 'A hidden pattern suggests a specific timing for your next career leap. Unlock to read...',
+    lockedTeaser: 'K-Line indicates your upcoming career window possesses a strictly limited margin of error. Miscalculating your next move could lead to a stagnation cycle. Unlock your risk-control strategy.',
   },
   {
     id: 'wealth',
-    title: 'Wealth',
+    title: 'Wealth & Asset Flow',
     icon: '💎',
     requiredTier: 'LITE',
     shortDesc: 'Money patterns and financial decisions.',
-    lockedTeaser: 'There is a high-probability wealth expansion window approaching. Unlock to see when...',
+    lockedTeaser: 'System detects an imminent, high-volatility wealth expansion window. Ordinary saving won\'t suffice; you need to know exactly when to aggressively allocate. Unlock exact timing.',
   },
   {
     id: 'love',
-    title: 'Relationships',
+    title: 'Relationships & Alignment',
     icon: '❤️',
     requiredTier: 'LITE',
     shortDesc: 'Emotional patterns and relationship pressure points.',
-    lockedTeaser: 'Your chart indicates a significant relationship turning point. Are you prepared?',
+    lockedTeaser: 'A major relationship inflection point is forming in your chart. This transit typically forces either a dramatic separation or a profound commitment. Unlock to navigate this safely.',
   },
   {
     id: 'health',
-    title: 'Health',
+    title: 'Vitality & Burnout',
     icon: '⚕️',
     requiredTier: 'LITE',
     shortDesc: 'Energy management and burnout risks.',
-    lockedTeaser: 'A specific planetary transit is putting pressure on your energy levels right now...',
+    lockedTeaser: 'A harsh planetary square is currently draining your baseline vitality. Your body is entering a metabolic protection phase. Unlock your energy conservation protocol.',
   },
   {
     id: 'strengths',
-    title: 'Strengths',
+    title: 'Innate Leverage (Strengths)',
     icon: '🔥',
     requiredTier: 'PRO',
     shortDesc: 'Your strongest natural advantages.',
-    lockedTeaser: 'You possess an unconventional, hidden advantage that you might be completely ignoring...',
+    lockedTeaser: 'You possess a rare cosmic advantage perfectly suited for the upcoming astrological era, but you are likely suppressing it to fit in. Unlock to reclaim your leverage.',
   },
   {
     id: 'shadow',
-    title: 'Blindspots',
+    title: 'Karmic Blindspots',
     icon: '🌑',
     requiredTier: 'PRO',
     shortDesc: 'Recurring mistakes and pressure patterns.',
-    lockedTeaser: 'There is a recurring karmic blindspot costing you opportunities. Discover what it is...',
+    lockedTeaser: 'Your chart reveals a critical, repeating blindspot that has consistently sabotaged your highest peaks in the past. Identify and neutralize it before the next cycle begins.',
   },
 ];
 
@@ -304,14 +304,20 @@ export function AiReadingPanels({
                 </div>
 
                 {!unlocked && mod.lockedTeaser && (
-                  <div className="mt-5 w-full z-10">
-                     <div className="relative overflow-hidden rounded-xl border border-rose-500/20 bg-rose-500/5 p-4 transition-all duration-300 group-hover:border-rose-500/40">
-                       <p className="blur-[4px] text-xs leading-relaxed text-white/30 select-none">
-                         This is a highly detailed astrological reading containing sensitive predictions about your future. 
-                         It contains exactly what you need to know about this sector of your life. Unlock to reveal the hidden truth.
+                  <div className="mt-5 w-full z-10 drop-shadow-xl">
+                     <div className="relative overflow-hidden rounded-xl border border-[#D4AF37]/20 bg-[#0A0A0F]/80 p-5 transition-all duration-300 group-hover:border-[#D4AF37]/40">
+                       <div className="mb-3 flex items-center justify-between opacity-50">
+                          <span className="font-mono text-[9px] tracking-widest text-[#D4AF37] uppercase">Strategic Dossier</span>
+                          <Lock className="h-3 w-3 text-[#D4AF37]" />
+                       </div>
+                       
+                       <p className="blur-[3px] text-[11px] leading-relaxed text-white/20 select-none font-mono">
+                         [CLASSIFIED]<br/> 
+                         The upcoming transit configurations present a low-tolerance window for error.<br/> 
+                         Based on orbital decay mappings against natal geometry, immediate strategic realignment is recommended. Execution without these parameters may result in suboptimal phase transitions.
                        </p>
-                       <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                         <span className="text-sm font-semibold text-rose-300 drop-shadow-lg max-w-[90%] mx-auto">
+                       <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0A0A0F]/60 p-6 text-center backdrop-blur-[2px]">
+                         <span className="text-[13px] leading-relaxed font-semibold text-white/90 drop-shadow-lg max-w-[95%] mx-auto">
                            {mod.lockedTeaser}
                          </span>
                        </div>

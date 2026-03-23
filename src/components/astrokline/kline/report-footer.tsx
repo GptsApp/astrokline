@@ -38,12 +38,11 @@ export function ReportFooter({ profile }: { profile: UserProfile }) {
 
         <div className="relative z-10">
           <div className="mb-6">
-            <h3 className="mb-1 font-medium text-white">
-              Your Cosmic Blueprint is ready
+            <h3 className="mb-1 text-lg font-bold text-white">
+              Reveal Your True Leverage
             </h3>
-            <p className="text-sm text-white/50">
-              Save {profile.name}&apos;s detailed energetic profile to your
-              device or share it with trusted confidants.
+            <p className="text-sm leading-relaxed text-white/50 mt-2">
+              Astrology is a strategic tool, not a party trick. Save your K-Line report or quietly share your core advantage profile with trusted alliances.
             </p>
           </div>
 
@@ -53,26 +52,26 @@ export function ReportFooter({ profile }: { profile: UserProfile }) {
               onClick={() =>
                 trackEvent('share_button_click', { action: 'download' })
               }
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#D4AF37] py-3.5 text-sm font-medium text-black transition-colors hover:bg-[#FCDD73]"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#D4AF37] py-3.5 text-sm font-bold text-black transition-colors hover:bg-[#FCDD73]"
             >
               <Download className="h-4 w-4" />
-              <span>Save High-Res Blueprint</span>
+              <span>Archive Full Dossier</span>
             </button>
             <button
               type="button"
               onClick={() =>
                 trackEvent('share_button_click', { action: 'share' })
               }
-              className={`flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 py-3.5 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/10 ${
-                showSharePrompt ? 'ring-primary/40 animate-pulse ring-2' : ''
+              className={`flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 py-3.5 text-sm font-medium text-white transition-colors hover:border-[#D4AF37]/50 hover:bg-[#111015]/80 ${
+                showSharePrompt ? 'ring-[#D4AF37]/40 animate-pulse ring-2' : ''
               }`}
             >
               <Share2 className="h-4 w-4" />
-              <span>Share My Destiny Pattern</span>
+              <span>Share My Core Advantage Profile</span>
             </button>
             {showSharePrompt && (
-              <p className="text-primary/80 animate-in fade-in text-xs duration-500">
-                Your K-Line is exceptional — share it with friends!
+              <p className="text-[#D4AF37] animate-in fade-in font-mono text-[10px] tracking-widest uppercase duration-500">
+                High-Volatility Growth Pattern Detected
               </p>
             )}
           </div>

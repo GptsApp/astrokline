@@ -54,39 +54,39 @@ export function RegistrationNudge({
 
           {/* Header */}
           <div className="mb-3 flex items-center gap-2">
-            <Sparkles className="text-primary h-5 w-5" />
+            <Sparkles className="text-[#D4AF37] h-5 w-5" />
             <h3 className="text-foreground text-lg font-bold">
-              Your cosmic blueprint disappears in 24h
+              Secure Your Risk-Control Strategy
             </h3>
           </div>
 
           {/* Benefits */}
-          <ul className="text-muted-foreground mb-4 space-y-1.5 text-sm">
+          <ul className="text-muted-foreground mb-4 space-y-2 text-sm">
             <li className="flex items-center gap-2">
-              <span className="bg-primary/60 h-1.5 w-1.5 rounded-full" />
-              Sign up to keep your cosmic blueprint forever
+              <span className="bg-[#D4AF37] h-1.5 w-1.5 rounded-full shrink-0" />
+              Save this K-Line architectural blueprint permanently.
             </li>
             <li className="flex items-center gap-2">
-              <span className="bg-primary/60 h-1.5 w-1.5 rounded-full" />
-              Check 2 friends&apos; charts for free
+              <span className="bg-[#D4AF37] h-1.5 w-1.5 rounded-full shrink-0" />
+              Receive proactive alerts before major cycle shifts.
             </li>
             <li className="flex items-center gap-2">
-              <span className="bg-primary/60 h-1.5 w-1.5 rounded-full" />
-              Unlock personalized daily horoscope
+              <span className="bg-[#D4AF37] h-1.5 w-1.5 rounded-full shrink-0" />
+              Compare orbital alignments with a key partner (1 free).
             </li>
           </ul>
 
           {/* CTA buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 mt-2">
             <Link
               href={{
                 pathname: '/sign-up',
                 query: { callbackUrl: authCallbackUrl },
               }}
               onClick={() => trackEvent('registration_nudge_signup_click')}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1 rounded-full py-2.5 text-center text-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all"
+              className="bg-[#D4AF37] text-black hover:bg-[#FCDD73] flex-1 rounded-full py-2.5 text-center text-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all"
             >
-              Sign Up Free — Keep My K-Line
+              Archive My Dossier
             </Link>
             <Link
               href={{

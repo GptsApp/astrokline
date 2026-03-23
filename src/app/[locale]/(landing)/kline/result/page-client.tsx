@@ -11,6 +11,7 @@ import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal
 import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
 import { ReportFooter } from '@/components/astrokline/kline/report-footer';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
+import { TrustEvidenceBar } from '@/components/astrokline/kline/trust-evidence-bar';
 import {
   getSavedBirthData,
   getSavedKlineResult,
@@ -35,6 +36,7 @@ import {
   Target,
   TrendingDown,
   TrendingUp,
+  ShieldCheck,
 } from 'lucide-react';
 
 import { useRouter } from '@/core/i18n/navigation';
@@ -417,6 +419,17 @@ export function ResultClient({
         <DestinySummaryCard profile={profile} klineData={klineData} />
       </ReportSection>
 
+      {/* ── 1.5 TRUST BACKING ── */}
+      <ReportSection
+        id="trust-evidence"
+        divider={false}
+        className="relative z-[55] py-2 max-w-4xl mx-auto"
+      >
+        <TrustEvidenceBar 
+          birthLocation={profile.birthLocation}
+        />
+      </ReportSection>
+
       {/* ── 2. THE KARMIC K-LINE ── */}
       <ReportSection
         id="kline-hero"
@@ -698,14 +711,16 @@ export function ResultClient({
               ✕
             </button>
             <div className="mb-6 text-center">
-              <div className="bg-primary/10 border-primary/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border">
-                <Sparkles className="text-primary h-5 w-5" />
+              <div className="bg-[#D4AF37]/10 border-[#D4AF37]/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border">
+                <ShieldCheck className="text-[#D4AF37] h-5 w-5" />
               </div>
-              <h3 className="text-2xl font-bold">Unlock Your Full Blueprint</h3>
-              <p className="text-muted-foreground mt-2 text-sm">
-                Choose a plan to unlock your complete 10-year destiny K-Line and
-                deep analysis.
-              </p>
+              <h3 className="text-2xl font-bold tracking-tight">Strategic Realignment Required</h3>
+              <div className="mx-auto mt-4 max-w-sm rounded-lg border border-rose-500/20 bg-rose-500/5 p-3">
+                <p className="text-xs leading-relaxed text-rose-200/80 font-mono">
+                  [SYSTEM ALERT] Imminent low-margin-of-error window detected in upcoming transits. 
+                  Unlock your classified dossier to view precise risk vectors and optimal timing.
+                </p>
+              </div>
             </div>
             <div className="space-y-4">
               {[

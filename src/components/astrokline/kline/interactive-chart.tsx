@@ -16,6 +16,9 @@ import {
   Sparkles,
   Target,
   Zap,
+  CheckCircle2,
+  ArrowRight,
+  History,
 } from 'lucide-react';
 import {
   Area,
@@ -328,6 +331,25 @@ export function InteractiveChart({
     [chartData, currentAge]
   );
 
+  const pastLowPoint = useMemo(() => {
+    // Find absolute lowest point in the last 10 years before current year
+    const pastData = chartData.filter(d => d.year >= currentYear - 10 && d.year < currentYear);
+    if (!pastData.length) return null;
+    return pastData.reduce((prev, current) => (prev.close < current.close ? prev : current), pastData[0]);
+  }, [chartData, currentYear]);
+
+  const [validationState, setValidationState] = useState<'idle' | 'selected' | 'revealed'>('idle');
+  const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
+
+  const handleValidationSelect = (theme: string) => {
+    if (validationState !== 'idle') return;
+    setSelectedTheme(theme);
+    setValidationState('selected');
+    setTimeout(() => {
+      setValidationState('revealed');
+    }, 800);
+  };
+
   return (
     <div className="relative w-full">
       {/* Mystical Background Glows */}
@@ -559,6 +581,86 @@ export function InteractiveChart({
             </ResponsiveContainer>
           </div>
         </div>
+
+        {/* --- Phase 1: Interactive Past Validation --- */}
+        {pastLowPoint && tier !== 'GUEST' && (
+          <div className="mt-8 relative overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A0F]/60 p-6 shadow-xl backdrop-blur-md">
+            <div className="mb-4 flex items-center gap-2">
+              <History className="h-4 w-4 text-[#D4AF37]" />
+              <h4 className="font-mono text-[10px] font-bold tracking-widest text-[#D4AF37] uppercase">
+                Cosmic Traceback: {pastLowPoint.year}
+              </h4>
+            </div>
+            
+            <h3 className="mb-2 text-base font-bold text-white">
+              System detects {pastLowPoint.year} as a major historical valley.
+            </h3>
+            
+            {validationState === 'idle' && (
+              <div className="animate-in fade-in duration-500">
+                <p className="mb-5 text-sm leading-relaxed text-white/60">
+                  During this Saturn-heavy cycle, your margin for error was extremely low. What was the primary theme of your struggle that year?
+                </p>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {[
+                    'Relationship / Emotional Disconnection',
+                    'Career / Directional Stagnation',
+                    'Intense Internal / Mental Friction'
+                  ].map((theme) => (
+                    <button
+                      key={theme}
+                      onClick={() => handleValidationSelect(theme)}
+                      className="group flex flex-col items-center justify-center rounded-xl border border-white/10 bg-white/5 p-4 text-center transition-all hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10"
+                    >
+                      <span className="text-xs font-medium text-white/80 group-hover:text-[#D4AF37]">
+                        {theme}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {validationState === 'selected' && (
+              <div className="flex h-[120px] items-center justify-center">
+                <div className="flex flex-col items-center justify-center gap-3">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#D4AF37] border-t-transparent" />
+                  <span className="animate-pulse font-mono text-[10px] tracking-widest text-[#D4AF37] uppercase">
+                    Analyzing Chronos Matrix...
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {validationState === 'revealed' && (
+              <div className="animate-in slide-in-from-bottom-4 fade-in duration-700">
+                <div className="mb-3 flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                  <span className="text-sm font-semibold text-emerald-400">
+                    Resonance Confirmed
+                  </span>
+                </div>
+                <p className="mb-4 text-sm leading-relaxed text-white/80">
+                  You survived the cosmic bottleneck of {pastLowPoint.year} regarding <strong>{selectedTheme?.split('/')[0].trim().toLowerCase()}</strong>. The friction you felt wasn't a punishment, but a pruning to realign you. Because you endured that valley, your baseline resilience is permanently elevated.
+                </p>
+                <div className="rounded-lg border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-4">
+                  <p className="flex items-start gap-2 text-sm font-medium text-[#F4E1A1]">
+                    <ArrowRight className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span>
+                      Your next major peak is calculated to arrive around {pastLowPoint.year + 7} (7-year cycle). But a critical <em>low-margin-of-error</em> window precedes it. 
+                      <button onClick={() => {
+                        document.getElementById('ai-insight')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }} className="ml-1 font-bold underline transition-colors hover:text-white">
+                        Unlock your strategy guide
+                      </button> below to ensure you don't miscalculate.
+                    </span>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
       </div>
     </div>
   );

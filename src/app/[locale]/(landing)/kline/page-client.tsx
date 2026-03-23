@@ -336,23 +336,22 @@ export function KlineClient({
           <div className="background-gradient-to-t from-background pointer-events-none absolute inset-0 via-transparent to-transparent" />
           <div className="relative z-10 mx-auto w-full max-w-3xl space-y-6">
             <div className="bg-primary/10 border-primary/20 text-primary mx-auto mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]">
-              <Sparkles className="h-3.5 w-3.5" /> Personal K-Line Generator
+              <Sparkles className="h-3.5 w-3.5" /> Quantitative Cosmic Strategy
             </div>
-            <h1 className="mb-2 font-serif text-4xl leading-tight font-bold tracking-tight text-white drop-shadow-md md:text-5xl lg:text-6xl">
-              Personal{' '}
+            <h1 className="mb-4 font-serif text-4xl leading-tight font-bold tracking-tight text-white drop-shadow-md md:text-5xl lg:text-7xl">
+              100-Year{' '}
               <span className="bg-gradient-to-r from-[#D4AF37] to-[#F5EBBA] bg-clip-text text-transparent">
-                Timing Map
+                Risk & Momentum Map
               </span>
             </h1>
             <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed font-light text-white/60 md:text-lg">
-              See where your strongest years, weakest years, and turning points
-              are likely to happen.
+              Identify your exact low-margin-of-error windows, high-volatility expansion periods, and strategic turning points. Built for decision makers.
             </p>
             <button
               onClick={handleGetMyKline}
               className="group bg-primary text-primary-foreground hover:bg-primary/90 relative inline-flex h-12 items-center justify-center gap-3 rounded-full px-8 text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] active:scale-95 md:h-14 md:text-base"
             >
-              Generate My K-Line
+              Initialize Natal Coordinates
               <ArrowUp className="h-4 w-4 rotate-45 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </button>
 

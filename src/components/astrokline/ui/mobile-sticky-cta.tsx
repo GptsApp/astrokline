@@ -58,7 +58,7 @@ export function MobileStickyCta() {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
             <Sparkles className="w-5 h-5" />
-            <span className="text-lg tracking-tight">Generate My K-Line</span>
+            <span className="text-lg tracking-tight">Get My Risk-Control Map</span>
             <ArrowRight className="w-5 h-5 ml-1 mt-0.5" />
           </button>
         </motion.div>
