@@ -1079,36 +1079,13 @@ export function Pricing({
           </span>
         </div>
 
-        {/* Mini testimonials */}
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
-            <div className="mt-0.5 flex shrink-0 gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="fill-primary text-primary h-3 w-3" />
-              ))}
-            </div>
-            <p className="text-muted-foreground text-xs leading-relaxed">
-              "My K-Line predicted my career breakthrough 6 months before it
-              happened. Best investment I’ve made."
-              <span className="text-foreground/60 mt-1 block font-medium">
-                — Sarah J., NYC
-              </span>
-            </p>
-          </div>
-          <div className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
-            <div className="mt-0.5 flex shrink-0 gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="fill-primary text-primary h-3 w-3" />
-              ))}
-            </div>
-            <p className="text-muted-foreground text-xs leading-relaxed">
-              "Finally an astrology tool that doesn’t insult my intelligence.
-              The Swiss Ephemeris precision is real."
-              <span className="text-foreground/60 mt-1 block font-medium">
-                — David C., London
-              </span>
-            </p>
-          </div>
+        {/* Product trust facts */}
+        <div className="mx-auto flex max-w-2xl flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground/50 font-mono">
+          <span>Swiss Ephemeris DE431</span>
+          <span className="hidden sm:inline">·</span>
+          <span>NASA JPL Planetary Data</span>
+          <span className="hidden sm:inline">·</span>
+          <span>Arcsecond Precision</span>
         </div>
       </div>
 
