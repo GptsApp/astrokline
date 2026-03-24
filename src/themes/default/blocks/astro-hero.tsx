@@ -94,61 +94,14 @@ export function AstroHero({
             {section.description}
           </p>
 
-          <div className="mb-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <div className="flex -space-x-4">
-              <Image
-                className="border-background z-[60] h-10 w-10 rounded-full border-2 object-cover"
-                src="/images/avatars/diverse/hero_casual_1.webp"
-                alt="AstroKline user"
-                width={40} height={40}
-                loading="lazy"
-              />
-              <Image
-                className="border-background z-[50] h-10 w-10 rounded-full border-2 object-cover"
-                src="/images/avatars/diverse/hero_casual_2.webp"
-                alt="AstroKline user"
-                width={40} height={40}
-                loading="lazy"
-              />
-              <Image
-                className="border-background z-[40] h-10 w-10 rounded-full border-2 object-cover"
-                src="/images/avatars/diverse/hero_casual_3.webp"
-                alt="AstroKline user"
-                width={40} height={40}
-                loading="lazy"
-              />
-              <Image
-                className="border-background z-[30] h-10 w-10 rounded-full border-2 object-cover"
-                src="/images/avatars/diverse/hero_casual_4.webp"
-                alt="AstroKline user"
-                width={40} height={40}
-                loading="lazy"
-              />
-              <Image
-                className="border-background z-[20] h-10 w-10 rounded-full border-2 object-cover"
-                src="/images/avatars/diverse/hero_casual_5.webp"
-                alt="AstroKline user"
-                width={40} height={40}
-                loading="lazy"
-              />
-              <div className="border-background relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 bg-emerald-500/10 shadow-inner backdrop-blur-sm">
-                <span className="h-2.5 w-2.5 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center gap-1 sm:items-start">
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, index) => (
-                  <Star key={index} className="h-4 w-4 fill-primary text-primary" />
-                ))}
-              </div>
-              <span className="text-foreground/80 text-sm font-medium md:text-base">
-                <span className="font-bold tracking-tight text-emerald-400">
-                  Live
-                </span>{' '}
-                — Powered by Swiss Ephemeris
-              </span>
-            </div>
+          <div className="mb-8 flex items-center justify-center gap-3">
+            <span className="h-2.5 w-2.5 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+            <span className="text-foreground/80 text-sm font-medium md:text-base">
+              <span className="font-bold tracking-tight text-emerald-400">
+                Live
+              </span>{' '}
+              — Powered by Swiss Ephemeris
+            </span>
           </div>
 
           <div className="group relative mt-4 w-full max-w-xl">
