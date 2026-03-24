@@ -6,11 +6,11 @@ import { getUserInfo } from '@/shared/models/user';
 import { KlineClient } from './page-client';
 
 export const generateMetadata = getMetadata({
-  title: 'K-Line Generator — Personal Timing Map',
+  title: 'Free Birth Chart K-Line Reading | AI Natal Chart Timing Map — AstroKline',
   description:
-    'Generate a personal K-Line from your birth chart and see stronger years, weaker years, and turning points.',
+    'Get your free personalized birth chart K-Line reading powered by AI and Swiss Ephemeris. Discover career turning points, relationship timing, and life cycle analysis from your natal chart.',
   keywords:
-    'astrology tracker, destiny k-line, birth chart map, natal chart reading, life turning points, astrology AI',
+    'birth chart reading, natal chart analysis, astrology K-Line, AI astrology reading, free birth chart, astrology timing chart, destiny chart, life turning points, career astrology, relationship timing',
   canonicalUrl: '/kline',
 });
 

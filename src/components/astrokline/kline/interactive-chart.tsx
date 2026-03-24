@@ -398,7 +398,7 @@ export function InteractiveChart({
 
         {tier === 'GUEST' && (
           <div className="pointer-events-none absolute inset-0 z-[100] mt-32 flex flex-col items-center justify-center">
-            <div className="absolute top-[20%] h-full w-[120%] bg-gradient-to-b from-transparent via-[#111015]/90 to-[#111015] backdrop-blur-[3px]" />
+            <div className="absolute top-[20%] bottom-0 w-[120%] -left-[10%] rounded-b-[3rem] bg-gradient-to-b from-transparent via-[#111015]/95 to-[#111015] backdrop-blur-[3px]" />
             <div className="border-primary/20 pointer-events-auto relative z-10 mt-20 flex flex-col items-center rounded-2xl border bg-black/60 p-6 shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl">
               <Lock className="text-primary mb-3 h-8 w-8" />
               <h3 className="mb-2 text-xl font-bold text-white">

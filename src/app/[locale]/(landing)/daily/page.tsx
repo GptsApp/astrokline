@@ -6,11 +6,11 @@ import { getUserInfo } from '@/shared/models/user';
 import { DailyClient } from './page-client';
 
 export const generateMetadata = getMetadata({
-  title: 'Daily Astrology Forecast — Real-Time Transit Energy Map',
+  title: 'Free Daily Horoscope & Personalized Astrology Forecast — AstroKline',
   description:
-    'Stop reading vague horoscopes. Discover your personalized daily planetary transits influencing your Love, Career, Wealth, and Health dimensions.',
+    'Your personalized daily astrology forecast based on real-time planetary transits. Get AI-powered insights on Love, Career, Wealth, and Health from your exact birth chart — not generic sun sign horoscopes.',
   keywords:
-    'daily horoscope, astrology forecast, daily astrology, real-time transits, planetary aspects today, astrology AI reading',
+    'daily horoscope, personalized daily astrology, free horoscope today, daily planetary transits, astrology forecast, AI horoscope reading, birth chart daily forecast, today astrology',
   canonicalUrl: '/daily',
 });
 

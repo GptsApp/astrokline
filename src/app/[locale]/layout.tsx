@@ -34,23 +34,53 @@ export default async function LocaleLayout({
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'SoftwareApplication',
-                name: 'Astrokline',
-                applicationCategory: 'LifestyleApplication',
-                operatingSystem: 'Web',
-                offers: {
-                  '@type': 'Offer',
-                  price: '0',
-                  priceCurrency: 'USD',
+              __html: JSON.stringify([
+                {
+                  '@context': 'https://schema.org',
+                  '@type': 'WebSite',
+                  name: 'AstroKline',
+                  url: 'https://astrokline.com',
+                  description: 'AI-powered astrology timing tool that turns birth chart data into a visual K-Line forecast for career, relationships, and life decisions.',
+                  potentialAction: {
+                    '@type': 'SearchAction',
+                    target: {
+                      '@type': 'EntryPoint',
+                      urlTemplate: 'https://astrokline.com/kline?name={search_term_string}',
+                    },
+                    'query-input': 'required name=search_term_string',
+                  },
+                  inLanguage: ['en', 'es', 'ja'],
                 },
-                aggregateRating: {
-                  '@type': 'AggregateRating',
-                  ratingValue: '4.9',
-                  ratingCount: '2847',
+                {
+                  '@context': 'https://schema.org',
+                  '@type': 'SoftwareApplication',
+                  name: 'AstroKline',
+                  applicationCategory: 'LifestyleApplication',
+                  operatingSystem: 'Web',
+                  url: 'https://astrokline.com',
+                  description: 'Free AI birth chart reading and astrology K-Line timing map. Discover your career, love, and wealth turning points with Swiss Ephemeris precision.',
+                  offers: {
+                    '@type': 'Offer',
+                    price: '0',
+                    priceCurrency: 'USD',
+                  },
+                  aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: '4.9',
+                    ratingCount: '2847',
+                  },
                 },
-              }),
+                {
+                  '@context': 'https://schema.org',
+                  '@type': 'Organization',
+                  name: 'AstroKline',
+                  url: 'https://astrokline.com',
+                  logo: 'https://astrokline.com/imgs/logo.png',
+                  sameAs: [
+                    'https://astrokline.com',
+                  ],
+                },
+              ]),
             }}
           />
         </AppContextProvider>
