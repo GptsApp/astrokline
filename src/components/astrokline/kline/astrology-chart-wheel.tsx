@@ -116,7 +116,12 @@ export function AstrologyChartWheel({
   }, [planets, ascLongitude, innerRadius]);
 
   return (
-    <div className={cn('relative flex items-center justify-center', className)}>
+    <div
+      className={cn('relative flex items-center justify-center', className)}
+      role="img"
+      aria-label="Natal birth chart wheel showing planetary positions across zodiac signs"
+      data-testid="astrology-chart-wheel"
+    >
       {/* Glow behind the chart */}
       <div className="bg-primary/5 pointer-events-none absolute inset-0 rounded-full blur-[100px]" />
 
@@ -124,6 +129,7 @@ export function AstrologyChartWheel({
         viewBox={`0 0 ${size} ${size}`}
         className="h-auto w-full drop-shadow-[0_0_30px_rgba(212,175,55,0.1)]"
         style={{ maxWidth: size, aspectRatio: '1 / 1' }}
+        aria-hidden="true"
       >
         <defs>
           <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">

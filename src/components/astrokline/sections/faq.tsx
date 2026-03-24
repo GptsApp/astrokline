@@ -55,7 +55,7 @@ export function FAQ() {
   };
 
   return (
-    <section id="faq" className="py-24 bg-background relative overflow-hidden">
+    <section id="faq" aria-labelledby="faq-heading" data-testid="faq-section" className="py-24 bg-background relative overflow-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -67,7 +67,7 @@ export function FAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            <h2 id="faq-heading" className="text-3xl md:text-5xl font-bold mb-4">
               Frequently Asked <span className="text-primary">Questions</span>.
             </h2>
             <p className="text-muted-foreground text-lg">
@@ -85,7 +85,7 @@ export function FAQ() {
         >
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="border-b border-white/10 last:border-0">
+              <AccordionItem key={i} value={`item-${i}`} data-testid={`faq-item-${i}`} className="border-b border-white/10 last:border-0">
                 <AccordionTrigger className="text-left text-base md:text-lg font-semibold hover:text-primary transition-colors py-6">
                   {faq.question}
                 </AccordionTrigger>

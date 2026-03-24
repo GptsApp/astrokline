@@ -24,7 +24,7 @@ export function Hero() {
   const t = useTranslations('page.sections.hero');
 
   return (
-    <div className="bg-background relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
+    <section aria-label="Birth chart K-Line generator" className="bg-background relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
       {/* Background Glow & Particles */}
       <div className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-[120px]" />
 
@@ -158,6 +158,8 @@ export function Hero() {
             {/* Form Content (Unmasked to allow autocomplete dropdown overflow) */}
             <div className="relative z-30 overflow-visible p-6 md:p-8">
               <form
+                aria-label="Generate your birth chart K-Line"
+                data-testid="hero-kline-form"
                 className="grid grid-cols-1 items-end gap-4 overflow-visible md:grid-cols-5"
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -196,6 +198,10 @@ export function Hero() {
                     <User className="text-muted-foreground absolute top-2.5 left-3 h-4 w-4" />
                     <Input
                       id="name"
+                      name="name"
+                      autoComplete="given-name"
+                      aria-label="Your first name"
+                      data-testid="hero-input-name"
                       placeholder="E.g. Elon"
                       className="focus-visible:ring-primary/50 h-11 rounded-xl border-white/10 bg-black/50 pl-9 text-white"
                     />
@@ -213,7 +219,11 @@ export function Hero() {
                     <Calendar className="text-muted-foreground absolute top-2.5 left-3 h-4 w-4" />
                     <Input
                       id="dob"
+                      name="dob"
                       type="date"
+                      autoComplete="bday"
+                      aria-label="Date of birth"
+                      data-testid="hero-input-dob"
                       className="focus-visible:ring-primary/50 h-11 rounded-xl border-white/10 bg-black/50 pl-9 text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:filter"
                     />
                   </div>
@@ -230,7 +240,10 @@ export function Hero() {
                     <Clock className="text-muted-foreground absolute top-2.5 left-3 h-4 w-4" />
                     <Input
                       id="time"
+                      name="time"
                       type="time"
+                      aria-label="Birth time, optional"
+                      data-testid="hero-input-time"
                       className="focus-visible:ring-primary/50 h-11 rounded-xl border-white/10 bg-black/50 pl-9 text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:filter"
                     />
                   </div>
@@ -251,10 +264,12 @@ export function Hero() {
                 <div className="h-[44px] md:col-span-1">
                   <Button
                     type="submit"
+                    data-testid="hero-submit-kline"
+                    data-ai-action="generate-kline"
                     className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 w-full rounded-xl px-4 font-bold whitespace-nowrap shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
                   >
                     Generate My K-Line
-                    <ArrowRight className="ml-2 h-4 w-4 shrink-0" />
+                    <ArrowRight className="ml-2 h-4 w-4 shrink-0" aria-hidden="true" />
                   </Button>
                 </div>
               </form>
@@ -262,6 +277,6 @@ export function Hero() {
           </div>
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 }

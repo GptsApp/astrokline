@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 export function Features() {
   const t = useTranslations("pages.index.page.sections.features");
   return (
-    <section id="features" className="py-32 bg-[#0A0A0A] relative overflow-hidden">
+    <section id="features" aria-labelledby="features-heading" data-testid="features-section" className="py-32 bg-[#0A0A0A] relative overflow-hidden">
       {/* Deep Background Ambience */}
       <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-primary/10 rounded-full blur-[180px] pointer-events-none translate-x-1/4 -translate-y-1/4" />
       <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
@@ -30,6 +30,7 @@ export function Features() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight text-white"
+            id="features-heading"
           >
             {t("title1")} <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FCDD73] to-[#8B7321]">{t("title2")}</span>
@@ -55,6 +56,9 @@ export function Features() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="md:col-span-7 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col"
+            role="article"
+            aria-label={t("card1.title")}        
+            data-testid="feature-card-kline"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
             <div className="p-10 pb-0 relative z-10">
@@ -119,6 +123,9 @@ export function Features() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="md:col-span-5 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col items-center text-center px-8 pt-10"
+            role="article"
+            aria-label={t("card2.title")}
+            data-testid="feature-card-transit"
           >
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
             
@@ -166,6 +173,9 @@ export function Features() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="md:col-span-5 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col p-10 pr-0"
+            role="article"
+            aria-label={t("card3.title")}
+            data-testid="feature-card-ai"
           >
             <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" />
             <div className="relative z-10 pr-10">
@@ -198,6 +208,9 @@ export function Features() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="md:col-span-7 group relative rounded-3xl border border-white/10 bg-[#121115] overflow-hidden flex flex-col p-10 pr-0 pb-0"
+            role="article"
+            aria-label={t("card4.title")}
+            data-testid="feature-card-precision"
           >
             <div className="max-w-[400px] relative z-10 pr-10">
               <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">

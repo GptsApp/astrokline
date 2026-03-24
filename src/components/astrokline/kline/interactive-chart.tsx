@@ -351,7 +351,12 @@ export function InteractiveChart({
   };
 
   return (
-    <div className="relative w-full">
+    <div
+      className="relative w-full"
+      role="img"
+      aria-label="Interactive 100-year K-Line destiny timing chart showing life score trends by age"
+      data-testid="interactive-kline-chart"
+    >
       {/* Mystical Background Glows */}
       <div className="pointer-events-none absolute top-1/2 left-1/4 h-[400px] w-[400px] rounded-full bg-[#D4AF37]/5 blur-[120px]" />
       <div className="pointer-events-none absolute top-1/2 right-1/4 h-[400px] w-[400px] rounded-full bg-purple-600/5 blur-[120px]" />

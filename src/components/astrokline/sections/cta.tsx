@@ -11,7 +11,7 @@ export function CTA() {
   const router = useRouter();
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
+    <section aria-labelledby="cta-heading" data-testid="cta-section" className="py-24 relative overflow-hidden bg-[#0A0A0A]">
       {/* Background glow and texture */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
@@ -25,7 +25,7 @@ export function CTA() {
            className="flex flex-col items-center"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-8">
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4" aria-hidden="true" />
             <span>Your Low-Margin-Of-Error Window Is Approaching</span>
           </div>
 
@@ -34,7 +34,7 @@ export function CTA() {
             <Gift className="w-3.5 h-3.5 inline-block mr-1" /> Initial Risk-Control Map is free — no credit card needed
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
+          <h2 id="cta-heading" className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
             Every decision made without timing data<br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">is a blind gamble.</span>
           </h2>
@@ -46,6 +46,8 @@ export function CTA() {
           <Button
             size="lg"
             className="h-14 px-8 text-lg bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-2xl shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:shadow-[0_0_50px_-5px_var(--primary)] hover:scale-105"
+            data-testid="cta-generate-kline"
+            data-ai-action="open-kline-generator"
             onClick={() => {
               open((birthData) => {
                 router.push('/kline/result');
@@ -53,7 +55,7 @@ export function CTA() {
             }}
           >
             Get My Risk-Control Map
-            <ArrowRight className="ml-2 w-5 h-5 shrink-0" />
+            <ArrowRight className="ml-2 w-5 h-5 shrink-0" aria-hidden="true" />
           </Button>
           
           <p className="mt-6 text-sm text-white/40 font-mono">
