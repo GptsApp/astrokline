@@ -104,6 +104,24 @@ export function MethodologyBadge() {
           ))}
         </motion.div>
 
+        {/* Brand Stance Statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mt-10 mx-auto max-w-2xl rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center"
+        >
+          <p className="text-sm leading-relaxed text-white/50 italic">
+            &quot;We don&apos;t manufacture fortune anxiety. We don&apos;t tell you Mercury retrograde
+            will ruin your week. We show you the actual geometry of your chart —
+            and let you decide what it means for your life.&quot;
+          </p>
+          <p className="mt-3 font-mono text-[10px] tracking-widest text-primary/40 uppercase">
+            The AstroKline Philosophy
+          </p>
+        </motion.div>
+
         {/* Authority Quote */}
         <motion.div
           initial={{ opacity: 0 }}

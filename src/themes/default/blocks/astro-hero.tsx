@@ -13,11 +13,11 @@ import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 
 const SOCIAL_PROOFS = [
-  { name: 'Sarah', city: 'NYC', time: '2 min ago' },
-  { name: 'Alex', city: 'London', time: '5 min ago' },
-  { name: 'Yuki', city: 'Tokyo', time: '8 min ago' },
-  { name: 'Maria', city: 'São Paulo', time: '12 min ago' },
-  { name: 'David', city: 'Sydney', time: '15 min ago' },
+  { label: 'Swiss Ephemeris DE431' },
+  { label: '100-Year Trajectory Map' },
+  { label: 'NASA JPL Planetary Data' },
+  { label: 'Tropical Zodiac · Placidus' },
+  { label: 'Arcsecond Precision' },
 ];
 
 export function AstroHero({
@@ -75,9 +75,7 @@ export function AstroHero({
                 transition={{ duration: 0.25 }}
                 className="whitespace-nowrap"
               >
-                {SOCIAL_PROOFS[proofIndex].name} in{' '}
-                {SOCIAL_PROOFS[proofIndex].city} generated their K-Line{' '}
-                {SOCIAL_PROOFS[proofIndex].time}
+                {SOCIAL_PROOFS[proofIndex].label}
               </motion.span>
             </AnimatePresence>
           </div>
@@ -148,7 +146,7 @@ export function AstroHero({
                 <span className="font-bold tracking-tight text-emerald-400">
                   Live
                 </span>{' '}
-                — 2,847 charts generated this week
+                — Powered by Swiss Ephemeris
               </span>
             </div>
           </div>
@@ -221,21 +219,10 @@ export function AstroHero({
 
               {/* Added Micro-Testimonial for Social Proof / Conversion Drop */}
               {(section as any).social_proof && (
-                <div className="mt-8 flex max-w-sm items-start gap-4 rounded-2xl bg-white/5 p-4 text-left shadow-inner transition-colors hover:bg-white/10">
-                  <Image src={(section as any).social_proof.avatar} alt="User review" width={40} height={40} className="shrink-0 rounded-full object-cover" />
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-0.5 text-amber-400">
-                      <Star className="h-3.5 w-3.5 fill-current" />
-                      <Star className="h-3.5 w-3.5 fill-current" />
-                      <Star className="h-3.5 w-3.5 fill-current" />
-                      <Star className="h-3.5 w-3.5 fill-current" />
-                      <Star className="h-3.5 w-3.5 fill-current" />
-                    </div>
-                    <p className="font-serif mt-1.5 text-xs italic leading-relaxed text-white/90">
-                      {(section as any).social_proof.quote}
-                    </p>
-                    <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-white/40">
-                      {(section as any).social_proof.author}
+                <div className="mt-8 flex max-w-sm items-center gap-3 rounded-2xl bg-white/5 p-4 text-center shadow-inner">
+                  <div className="flex flex-col items-center gap-1">
+                    <p className="font-mono text-xs leading-relaxed text-white/50">
+                      Every calculation is transparent, precise, and verifiable.
                     </p>
                   </div>
                 </div>

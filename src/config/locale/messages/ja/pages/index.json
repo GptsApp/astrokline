@@ -25,12 +25,12 @@
           "url": "/daily",
           "subtitle": "最初のチャートを無料で始める"
         },
-        "tip": "26,000人以上がキャリアの移動、投資、人間関係のタイミングを計るために使用しています",
+        "tip": "Swiss EphemerisとNASA JPLデータによる高精度バースチャート分析",
         "social_proof": {
-           "quote": "\"このマップのおかげでキャリアの大きなミスを避けられました。驚くほど正確です。\"",
-           "author": "- サラ・J.（サンフランシスコ）",
+           "quote": "\"すべての計算は透明で正確、検証可能 — 世界中のプロの占星術師が使用するエンジンで構築されています。\"",
+           "author": "— AstroKlineチーム",
            "avatar": "/images/avatars/diverse/hero_casual_1.webp",
-           "readers": "ユーザー数 <strong className=\"font-bold text-white\">26,000+</strong> 人"
+           "readers": "<strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431搭載"
         },
         "questions": {
           "q1": "彼に出会える時期を知る",

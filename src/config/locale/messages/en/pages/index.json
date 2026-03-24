@@ -14,28 +14,28 @@
       "hero": {
         "id": "hero",
         "block": "astro-hero",
-        "title1": "Is this your turning point",
-        "title2": "or your lowest valley?",
+        "title1": "Your birth chart hides a timing map.",
+        "title2": "We made it visible.",
         "highlight_text": "K-Line",
-        "description": "Stop guessing your future. Turn your birth chart into a clear timing map to see exactly when to push in career, and when to protect in love.",
-        "badge": "Personal timing map",
+        "description": "Most people make career moves, relationship decisions, and financial bets without knowing their cosmic weather. AstroKline turns your exact birth data into a K-Line — so you see the peaks, valleys, and turning points before they hit.",
+        "badge": "Swiss Ephemeris · Precision Astrology",
         "announcement": {
           "badge": "V2.0",
           "title": "Live K-Line readings today",
           "url": "/daily",
           "subtitle": "Start with your first chart for free"
         },
-        "tip": "Used by 26,000+ people to time career moves, investments, and relationships",
+        "tip": "Precision birth chart analysis powered by Swiss Ephemeris and NASA JPL data",
         "social_proof": {
-           "quote": "\"I avoided a major career mistake thanks to this map. Astoundingly accurate.\"",
-           "author": "- Sarah J., San Francisco",
+           "quote": "\"Every calculation is transparent, precise, and verifiable — built on the same engine used by professional astrologers worldwide.\"",
+           "author": "— AstroKline Team",
            "avatar": "/images/avatars/diverse/hero_casual_1.webp",
-           "readers": "Used by <strong className=\"font-bold text-white\">26,000+</strong> readers"
+           "readers": "Powered by <strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431"
         },
         "questions": {
-          "q1": "Find out when you will meet him",
-          "q2": "Should I switch jobs this year?",
-          "q3": "Am I in a low-energy cycle?"
+          "q1": "Is 2026 the right year to quit?",
+          "q2": "Why do I feel stuck since turning 29?",
+          "q3": "When does the pressure finally lift?"
         }
       },
       "kline-preview": {

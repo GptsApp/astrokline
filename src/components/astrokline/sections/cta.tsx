@@ -26,21 +26,21 @@ export function CTA() {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-8">
             <Sparkles className="w-4 h-4" aria-hidden="true" />
-            <span>Your Low-Margin-Of-Error Window Is Approaching</span>
+            <span>Your next turning point is already calculated</span>
           </div>
 
           {/* Limited offer badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-4">
-            <Gift className="w-3.5 h-3.5 inline-block mr-1" /> Initial Risk-Control Map is free — no credit card needed
+            <Gift className="w-3.5 h-3.5 inline-block mr-1" /> Your first K-Line is completely free — no credit card needed
           </div>
           
           <h2 id="cta-heading" className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-            Every decision made without timing data<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">is a blind gamble.</span>
+            Your next turning point is<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FCDD73]">already in your birth chart.</span>
           </h2>
           
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            26,000+ decision makers already use K-Line to identify their strongest windows, weakest years, and strategic turning points. Your initial mapping takes 30 seconds.
+            The question is: will you see it before it arrives, or only recognize it in hindsight? Enter your birth details and find out — it takes 30 seconds.
           </p>
           
           <Button
@@ -54,12 +54,12 @@ export function CTA() {
               });
             }}
           >
-            Get My Risk-Control Map
+            Get My Timing Map — Free
             <ArrowRight className="ml-2 w-5 h-5 shrink-0" aria-hidden="true" />
           </Button>
           
           <p className="mt-6 text-sm text-white/40 font-mono">
-            Enter your birth date, time, and place. That's all we need.
+            30 seconds. No credit card. Your data stays private.
           </p>
 
           {/* Trust microcopy */}

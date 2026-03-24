@@ -25,12 +25,12 @@
           "url": "/daily",
           "subtitle": "Start with your first chart for free"
         },
-        "tip": "Used by 26,000+ people to time career moves, investments, and relationships",
+        "tip": "基于Swiss Ephemeris和NASA JPL数据的精确星盘分析",
         "social_proof": {
-           "quote": "\"I avoided a major career mistake thanks to this map. Astoundingly accurate.\"",
-           "author": "- Sarah J., San Francisco",
+           "quote": "\"每一次计算都是透明、精确、可验证的 — 基于全球专业占星师信赖的同款天文引擎。\"",
+           "author": "— AstroKline 团队",
            "avatar": "/images/avatars/diverse/hero_casual_1.webp",
-           "readers": "Used by <strong className=\"font-bold text-white\">26,000+</strong> readers"
+           "readers": "驱动引擎 <strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431"
         },
         "questions": {
           "q1": "Find out when you will meet him",

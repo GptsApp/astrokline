@@ -8,58 +8,58 @@ import { Marquee } from "@/shared/components/ui/marquee";
 export function Testimonials() {
   const testimonials = [
     {
-      name: "Sarah Jenkins",
-      title: "Freelance Writer",
+      name: "Career changer, 29",
+      title: "Saturn Return survivor",
       avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Sarah&backgroundColor=b6e3f4",
-      content: "After my breakup I felt completely paralyzed — should I move cities? Change careers? My K-Line showed the emotional pressure would lift in exactly 8 months and a strong creative window was opening. I waited, launched my newsletter at the right time, and it took off. That timing wasn't luck, it was mapped in my chart from day one.",
+      content: "I was about to accept a job offer that felt wrong. My K-Line showed I was 3 months away from a major expansion window. I waited. The right offer came in February. The salary was 40% higher.",
       score: 5,
       duration: "14 months",
     },
     {
-      name: "David Chen",
-      title: "Tech Lead",
+      name: "Software engineer, skeptic",
+      title: "Now checks his chart quarterly",
       avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=David_robot&backgroundColor=ffdfbf",
-      content: "As a software engineer, I used to roll my eyes at horoscopes. But mapping my life trajectory as a literal K-Line curve? That made sense. When I saw it correctly identified the exact year I burned out at my previous job, I was sold.",
+      content: "As an engineer I thought this was nonsense. Then I saw it correctly identified the exact year I burned out at my last job — and the year I recovered. The pattern recognition is undeniable when you see your own data.",
       score: 4,
       duration: "3 months",
     },
     {
-      name: "Elena Rodriguez",
-      title: "Small Business Owner",
+      name: "Small business owner, 34",
+      title: "Avoided a bad lease",
       avatar: "/images/avatars/diverse/hero_casual_1.webp",
-      content: "Best $39.9 I ever spent. Saved me from signing a terrible commercial lease right before a major financial dip.",
+      content: "Was about to sign a 3-year commercial lease. K-Line showed a major financial dip starting in 5 months. I negotiated a short-term deal instead. Best $39.9 I ever spent.",
       score: 5,
       duration: "1 year",
     },
     {
-      name: "Marcus Thorne",
-      title: "Consultant",
+      name: "Management consultant",
+      title: "Uses it for annual planning",
       avatar: "https://api.dicebear.com/7.x/micah/svg?seed=Marcus&backgroundColor=d1d4f9",
-      content: "Scarily accurate.",
+      content: "I overlay my K-Line with my annual goals. It's not magic — it's just another lens. But it caught 2 timing patterns my spreadsheets completely missed.",
       score: 5,
       duration: "2 months",
     },
     {
-      name: "Aisha Patel",
-      title: "Yoga Instructor",
+      name: "Yoga teacher, 31",
+      title: "Uses it for peace of mind",
       avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=Aisha&backgroundColor=c0aede",
-      content: "I check my K-Line whenever anxiety creeps in. Seeing my current 'low period' is actually a known restructuring phase gives me real peace of mind.",
+      content: "I check my K-Line whenever anxiety creeps in. Seeing that my current low period is actually a known restructuring phase — not random chaos — gives me real peace of mind.",
       score: 4,
       duration: "4 months",
     },
     {
-      name: "James W.",
-      title: "Accountant",
+      name: "Accountant, numbers person",
+      title: "Prepared for Saturn Return",
       avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=James&backgroundColor=ffb4e6",
-      content: "I'm a numbers person. The dimensional breakdown into Career, Wealth, and Love actually makes sense. My Saturn Return was brutal, but I saw it coming on my K-Line 6 months early and prepared for it. That preparation changed everything for me.",
+      content: "The dimensional breakdown into Career, Wealth, and Love actually makes sense. I saw my Saturn Return coming on my K-Line 6 months early and prepared for it. That preparation changed everything.",
       score: 5,
       duration: "11 months",
     },
     {
-      name: "Riley Cooper",
-      title: "Product Manager",
+      name: "Product manager, 28",
+      title: "Timed a career move",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Riley&style=circle&backgroundColor=cddc39",
-      content: "Literally a cheat code for timing big life decisions. If you're on the fence about quitting your job, check your chart first.",
+      content: "Was on the fence about leaving my job for months. My K-Line showed a clear expansion window opening in Q3. I gave my notice in June. Three months in, I know the timing was right.",
       score: 5,
       duration: "6 months",
     }
@@ -87,13 +87,13 @@ export function Testimonials() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             These people used their K-Line to dodge setbacks, seize the right moments, and make decisions with confidence — not guesswork.
           </p>
-          {/* Stats bar */}
+          {/* Product facts bar */}
           <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm text-muted-foreground/70 font-mono">
-            <span className="inline-flex items-center gap-1">4.9 <Star className="w-3 h-3 fill-primary text-primary" /> from 26,000+ users</span>
+            <span>Swiss Ephemeris DE431 precision</span>
             <span className="hidden sm:inline">·</span>
-            <span>94% say it matched their past</span>
+            <span>100-year trajectory mapping</span>
             <span className="hidden sm:inline">·</span>
-            <span>87% made better decisions</span>
+            <span>Free tier available</span>
           </div>
         </div>
 

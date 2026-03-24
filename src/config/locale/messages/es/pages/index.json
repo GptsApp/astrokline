@@ -25,12 +25,12 @@
           "url": "/daily",
           "subtitle": "Empieza con tu primera carta gratis"
         },
-        "tip": "Utilizado por más de 26,000 personas para programar movimientos profesionales, inversiones y relaciones",
+        "tip": "Análisis de carta natal de precisión impulsado por Swiss Ephemeris y datos NASA JPL",
         "social_proof": {
-           "quote": "\"Evité un gran error profesional gracias a este mapa. Asombrosamente preciso.\"",
-           "author": "- Sarah J., San Francisco",
+           "quote": "\"Cada cálculo es transparente, preciso y verificable — construido con el mismo motor utilizado por astrólogos profesionales en todo el mundo.\"",
+           "author": "— Equipo AstroKline",
            "avatar": "/images/avatars/diverse/hero_casual_1.webp",
-           "readers": "Utilizado por <strong className=\"font-bold text-white\">26,000+</strong> lectores"
+           "readers": "Impulsado por <strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431"
         },
         "questions": {
           "q1": "Descubre cuándo lo conocerás",
