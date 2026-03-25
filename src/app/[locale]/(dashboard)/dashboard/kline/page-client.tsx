@@ -1,14 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { SharedKlineResult } from '@/components/astrokline/kline/shared-kline-result';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
-import { CurrentEnergy } from '@/components/astrokline/kline/current-energy';
 import { ExportPdfButton } from '@/components/astrokline/kline/export-pdf-button';
-import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
-import { LifeRadar } from '@/components/astrokline/kline/life-radar';
-import { Next30Days } from '@/components/astrokline/kline/next-30-days';
 import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
-import { ReadingSummary } from '@/components/astrokline/kline/reading-summary';
 import { ReferralCard } from '@/components/astrokline/kline/referral-card';
 import { ReportFooter } from '@/components/astrokline/kline/report-footer';
 import {
@@ -24,7 +20,6 @@ import {
   type TransitEvent,
   type UserProfile,
 } from '@/lib/astrokline/mock-astrology-data';
-import type { CurrentEnergyData } from '@/lib/astrokline/personalized-report';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 import {
   ArrowLeft,
@@ -48,39 +43,6 @@ interface KlineItem {
   birthPlace: string;
   klineResult: any;
   createdAt: string;
-}
-
-function PremiumGate({
-  label,
-  isPremium,
-  children,
-}: {
-  label: string;
-  isPremium: boolean;
-  children: React.ReactNode;
-}) {
-  if (isPremium) return <>{children}</>;
-  return (
-    <div className="group relative overflow-hidden">
-      <div className="pointer-events-none opacity-40 blur-[10px] select-none">
-        {children}
-      </div>
-      <div className="bg-background/20 absolute inset-0 z-20 flex flex-col items-center justify-center backdrop-blur-[1px]">
-        <div className="bg-background/90 border-primary/20 flex max-w-sm flex-col items-center gap-4 rounded-3xl border px-8 py-6 text-center shadow-[0_0_40px_rgba(212,175,55,0.15)]">
-          <div className="bg-primary/10 border-primary/30 flex h-12 w-12 items-center justify-center rounded-full border">
-            <Lock className="text-primary h-5 w-5" />
-          </div>
-          <h4 className="text-lg font-bold">{label}</h4>
-          <a
-            href="/settings/billing"
-            className="bg-primary/10 border-primary/40 text-primary hover:bg-primary/20 flex w-full items-center justify-center gap-2 rounded-full border py-3 text-sm font-bold transition-all"
-          >
-            Upgrade Now
-          </a>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 // ──────────────────────────────────────
@@ -209,13 +171,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
     undefined
   );
   const [klineData, setKlineData] = useState<DestinyScorePoint[]>([]);
-  const [destinyReading, setDestinyReading] = useState<any>(null);
-  const [radarData, setRadarData] = useState<any>(null);
-  const [next30Days, setNext30Days] = useState<any>(null);
-  const [currentEnergy, setCurrentEnergy] = useState<CurrentEnergyData | null>(
-    null
-  );
-  const [transitDetails, setTransitDetails] = useState<
+          const [transitDetails, setTransitDetails] = useState<
     Record<number, TransitEvent[]>
   >({});
   const [dataReady, setDataReady] = useState(false);
@@ -279,11 +235,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
           : []
       );
       setTransitDetails(kline.klineResult.transitDetails ?? {});
-      setRadarData(kline.klineResult.radarData ?? null);
-      setDestinyReading(kline.klineResult.destinyReading ?? null);
-      setNext30Days(kline.klineResult.next30Days ?? null);
-      setCurrentEnergy(kline.klineResult.currentEnergy ?? null);
-      setSelectedYear(undefined);
+                              setSelectedYear(undefined);
       setView('detail');
     }
   }, []);
@@ -507,56 +459,17 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         )}
       </div>
       <div id="kline-report">
-        {profile && <ChartHero profile={profile} />}
-
-        <section id="kline" className="relative">
-          <InteractiveChart
-            data={klineData}
+        {profile && (
+          <SharedKlineResult
+            profile={profile}
+            klineData={klineData}
             transitDetails={transitDetails}
-            onNodeClick={(year) => setSelectedYear(year)}
-            selectedYear={selectedYear}
             tier={chartTier}
+            onUpgradeClick={() => window.location.href = '/pricing'}
+            hideFloatingNav={true}
           />
-        </section>
-
-        <div className="space-y-16 border-t border-white/5 pt-12">
-          <PremiumGate
-            label="Life Radar (All Dimensions)"
-            isPremium={isPremium}
-          >
-            {radarData ? (
-              <LifeRadar data={radarData} />
-            ) : (
-              <div className="p-8 text-center text-sm text-white/50">
-                Generate AI Reading to see Radar.
-              </div>
-            )}
-          </PremiumGate>
-          <PremiumGate label="AI Destiny Reading" isPremium={isPremium}>
-            {destinyReading ? (
-              <ReadingSummary reading={destinyReading} />
-            ) : (
-              <div className="p-8 text-center text-sm text-white/50">
-                Destiny reading not requested yet. AI Insight overlay highly
-                recommended.
-              </div>
-            )}
-          </PremiumGate>
-          <PremiumGate label="Current Cosmic Energy" isPremium={isPremium}>
-            <CurrentEnergy data={currentEnergy} />
-          </PremiumGate>
-          <PremiumGate label="Next 30 Days Forecast" isPremium={isPremium}>
-            {next30Days ? (
-              <Next30Days data={next30Days} />
-            ) : (
-              <div className="p-8 text-center text-sm text-white/50">
-                Forecast not generated.
-              </div>
-            )}
-          </PremiumGate>
-        </div>
-      </div>{' '}
-      {/* end #kline-report */}
+        )}
+      </div>
       {profile && <ReportFooter profile={profile} />}
     </div>
   );
