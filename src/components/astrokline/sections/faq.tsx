@@ -36,7 +36,7 @@ export function FAQ() {
     },
     {
       question: "Is my destiny fixed according to my birth chart?",
-      answer: "Absolutely not. AstroKline's core philosophy aligns with the world's top astrologers: the birth chart reveals tendencies and potentials, never fixed outcomes. As Rob Hand famously said, \"There are no bad charts — only charts not yet understood.\" Your K-Line shows the cosmic weather — you always choose how to navigate it. We strongly recommend consulting licensed professionals for medical, legal, or financial decisions."
+      answer: "Absolutely not. AstroKline's core philosophy is that the birth chart reveals tendencies and potentials, never fixed outcomes. Your K-Line shows the cosmic weather — you always choose how to navigate it. We strongly recommend consulting licensed professionals for medical, legal, or financial decisions."
     }
   ];
 
