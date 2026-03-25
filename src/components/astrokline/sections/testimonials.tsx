@@ -71,8 +71,8 @@ export function Testimonials() {
         </div>
       </div>
 
-      {/* Professional Authority Quotes Ribbon */}
-      <div className="mt-8 max-w-6xl mx-auto px-6 relative z-10 border-t border-white/5 pt-16">
+      {/* Professional Authority Quotes Ribbon (Temporarily hidden for review) */}
+      {/* <div className="mt-8 max-w-6xl mx-auto px-6 relative z-10 border-t border-white/5 pt-16">
         <div className="text-center mb-10">
           <h3 className="text-sm font-mono tracking-widest text-primary/50 uppercase">
             Aligned with the Masters
@@ -116,7 +116,7 @@ export function Testimonials() {
             </motion.div>
           ))}
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }
