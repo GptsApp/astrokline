@@ -82,7 +82,7 @@ export function ImageUploader({
   const dragCounterRef = useRef(0);
   const [isDragActive, setIsDragActive] = useState(false);
 
-  // 使用 defaultPreviews 初始化 items，只在组件挂载时执行一次
+  // Initialize items with defaultPreviews, only run once on mount
   const [items, setItems] = useState<UploadItem[]>(() => {
     if (defaultPreviews?.length) {
       return defaultPreviews.map((url, index) => ({
@@ -98,19 +98,19 @@ export function ImageUploader({
   const maxCount = allowMultiple ? maxImages : 1;
   const maxBytes = maxSizeMB * 1024 * 1024;
 
-  // 更新 onChange ref
+  // Update onChange ref
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
 
-  // 同步 defaultPreviews 的变化（只在外部变化时同步，避免循环）
+  // Sync defaultPreviews changes (only on external changes to avoid loops)
   useEffect(() => {
-    // 跳过初始化
+    // Skip initialization
     if (!isInitializedRef.current) {
       return;
     }
 
-    // 如果是内部变化触发的，跳过
+    // Skip if triggered by internal changes
     if (isInternalChangeRef.current) {
       isInternalChangeRef.current = false;
       return;
@@ -118,18 +118,18 @@ export function ImageUploader({
 
     const defaultUrls = defaultPreviews || [];
 
-    // 使用函数式更新来访问最新的 items
+    // Use functional update to access latest items
     setItems((currentItems) => {
       const currentUrls = currentItems
         .filter((item) => item.status === 'uploaded' && item.url)
         .map((item) => item.url as string);
 
-      // 比较当前 items 和 defaultPreviews 是否一致
+      // Check if current items and defaultPreviews are consistent
       const isSame =
         defaultUrls.length === currentUrls.length &&
         defaultUrls.every((url, index) => url === currentUrls[index]);
 
-      // 只有当不一致时才返回新的 items
+      // Return new items only when inconsistent
       if (!isSame) {
         return defaultUrls.map((url, index) => ({
           id: `preset-${url}-${index}`,
@@ -143,7 +143,7 @@ export function ImageUploader({
     });
   }, [defaultPreviews]);
 
-  // 清理 blob URLs
+  // Cleanup blob URLs
   useEffect(() => {
     return () => {
       items.forEach((item) => {
@@ -154,14 +154,14 @@ export function ImageUploader({
     };
   }, [items]);
 
-  // 当 items 变化时触发 onChange，但跳过初始化时的调用
+  // Trigger onChange when items change, skip during init
   useEffect(() => {
     if (!isInitializedRef.current) {
       isInitializedRef.current = true;
       return;
     }
 
-    // 标记这是内部变化
+    // Mark as internal change
     isInternalChangeRef.current = true;
 
     onChangeRef.current?.(

@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from 'next/server';
 function isSafeUrl(urlString: string): boolean {
   try {
     const url = new URL(urlString);
-    // 仅允许 https (防范 file:/// 等本地协议)
+    // Only allow https (prevent file:/// and local protocols)
     if (url.protocol !== 'https:') return false;
 
-    // 拦截内网/本地地址过滤
+    // Block internal/local network addresses
     const isLocal = ['localhost', '127.0.0.1', '::1'].includes(url.hostname);
     const isPrivateIP =
       url.hostname.startsWith('10.') ||

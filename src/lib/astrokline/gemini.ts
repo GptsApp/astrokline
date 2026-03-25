@@ -139,7 +139,7 @@ You MUST STRICTLY output a valid JSON object. Do not include markdown code block
   }
 }
 
-// ─── Generate Synergy Reading (合盘) ───
+// ─── Generate Synergy Reading ───
 export async function generateSynergyReading(
   profileA: UserProfile,
   profileB: UserProfile

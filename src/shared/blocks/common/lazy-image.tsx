@@ -33,8 +33,8 @@ export function LazyImage({
       alt={alt}
       width={width}
       height={height}
-      effect="blur" // 支持 blur、opacity 等
-      placeholderSrc={placeholderSrc} // 可选
+      effect="blur" // Supports blur, opacity, etc.
+      placeholderSrc={placeholderSrc} // Optional
       className={className}
     />
   );

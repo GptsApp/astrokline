@@ -31,13 +31,9 @@ export function BlogDetail({ post }: { post: PostType }) {
   // Check if TOC should be shown
   const showToc = post.toc && post.toc.length > 0;
 
-  // Check if Author info should be shown
-  const showAuthor = post.author_name || post.author_image || post.author_role;
-
   // Calculate main content column span based on what sidebars are shown
   const getMainColSpan = () => {
-    if (showToc && showAuthor) return 'lg:col-span-6';
-    if (showToc || showAuthor) return 'lg:col-span-9';
+    if (showToc) return 'lg:col-span-9';
     return 'lg:col-span-12';
   };
 
@@ -53,9 +49,21 @@ export function BlogDetail({ post }: { post: PostType }) {
               <h1 className="text-foreground mx-auto mb-4 w-full text-3xl font-bold md:max-w-4xl md:text-4xl">
                 {post.title}
               </h1>
-              <div className="text-muted-foreground text-md mb-8 flex items-center justify-center gap-4">
+              <div className="text-muted-foreground text-md mb-8 flex flex-wrap items-center justify-center gap-6">
+                {post.author_name && (
+                  <div className="flex items-center gap-2">
+                    {post.author_image && (
+                      <img
+                        src={post.author_image}
+                        alt={post.author_name}
+                        className="size-6 rounded-full object-cover"
+                      />
+                    )}
+                    <span>{post.author_name}</span>
+                  </div>
+                )}
                 {post.created_at && (
-                  <div className="text-muted-foreground text-md mb-8 flex items-center justify-center gap-2">
+                  <div className="flex items-center gap-2">
                     <CalendarIcon className="size-4" /> {post.created_at}
                   </div>
                 )}
@@ -95,36 +103,6 @@ export function BlogDetail({ post }: { post: PostType }) {
                 </article>
               </div>
 
-              {/* Author Info - Right Sidebar */}
-              {showAuthor && (
-                <div className="lg:col-span-3">
-                  <div className="sticky top-24">
-                    <div className="bg-muted/30 rounded-lg p-6">
-                      <div className="text-center">
-                        {post.author_image && (
-                          <div className="ring-foreground/10 mx-auto mb-4 aspect-square size-20 overflow-hidden rounded-xl border border-transparent shadow-md ring-1 shadow-black/15">
-                            <img
-                              src={post.author_image}
-                              alt={post.author_name}
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                        )}
-                        {post.author_name && (
-                          <p className="text-foreground mb-1 text-lg font-semibold">
-                            {post.author_name}
-                          </p>
-                        )}
-                        {post.author_role && (
-                          <p className="text-muted-foreground mb-4 text-sm">
-                            {post.author_role}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>

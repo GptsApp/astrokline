@@ -14,11 +14,11 @@
       "hero": {
         "id": "hero",
         "block": "astro-hero",
-        "title1": "¿Es este tu punto de inflexión",
-        "title2": "o tu valle más bajo?",
+        "title1": "Tu carta natal esconde un mapa de tiempo.",
+        "title2": "Lo hemos hecho visible.",
         "highlight_text": "K-Line",
-        "description": "Deja de adivinar tu futuro. Convierte tu carta natal en un mapa de tiempo claro para ver exactamente cuándo avanzar en tu carrera y cuándo protegerte en el amor.",
-        "badge": "Mapa de tiempo personal",
+        "description": "La mayoría de las personas toman decisiones profesionales, de relaciones y financieras sin conocer su clima cósmico. AstroKline convierte tus datos de nacimiento exactos en una K-Line — para que veas los picos, valles y puntos de inflexión antes de que lleguen.",
+        "badge": "Swiss Ephemeris · Astrología de Precisión",
         "announcement": {
           "badge": "V2.0",
           "title": "Lecturas diarias de K-Line hoy",
@@ -33,9 +33,9 @@
            "readers": "Impulsado por <strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431"
         },
         "questions": {
-          "q1": "Descubre cuándo lo conocerás",
-          "q2": "¿Debería cambiar de trabajo este año?",
-          "q3": "¿Estoy en un ciclo de baja energía?"
+          "q1": "¿Es 2026 el año adecuado para renunciar?",
+          "q2": "¿Por qué me siento estancado desde que cumplí 29?",
+          "q3": "¿Cuándo desaparece finalmente la presión?"
         }
       },
       "kline-preview": {
