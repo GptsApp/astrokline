@@ -36,11 +36,6 @@
           "icon": "LayoutDashboard"
         },
         {
-          "title": "Daily Forecast",
-          "url": "/dashboard/daily",
-          "icon": "Sun"
-        },
-        {
           "title": "K-Line",
           "url": "/dashboard/kline",
           "icon": "Activity"

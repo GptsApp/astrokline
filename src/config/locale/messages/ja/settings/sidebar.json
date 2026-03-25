@@ -11,11 +11,6 @@
         "title": "K-Line",
         "url": "/dashboard/kline",
         "icon": "Activity"
-      },
-      {
-        "title": "Daily Forecast",
-        "url": "/dashboard/daily",
-        "icon": "Sun"
       }
     ]
   },

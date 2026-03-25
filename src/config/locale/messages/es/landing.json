@@ -10,18 +10,41 @@
     },
     "nav": {
       "items": [
-        { "title": "Características", "url": "/#features" },
-        { "title": "K-Line", "url": "/kline" },
-        { "title": "Precios", "url": "/pricing" },
-        { "title": "FAQ", "url": "/#faq" }
+        {
+          "title": "Características",
+          "url": "/#features"
+        },
+        {
+          "title": "K-Line",
+          "url": "/kline"
+        },
+        {
+          "title": "Precios",
+          "url": "/pricing"
+        },
+        {
+          "title": "FAQ",
+          "url": "/#faq"
+        }
       ]
     },
     "user_nav": {
       "items": [
-        { "title": "Panel", "url": "/dashboard", "icon": "LayoutDashboard" },
-        { "title": "Pronóstico Diario", "url": "/dashboard/daily", "icon": "Sun" },
-        { "title": "K-Line", "url": "/dashboard/kline", "icon": "Activity" },
-        { "title": "Configuración", "url": "/settings", "icon": "Settings" }
+        {
+          "title": "Panel",
+          "url": "/dashboard",
+          "icon": "LayoutDashboard"
+        },
+        {
+          "title": "K-Line",
+          "url": "/dashboard/kline",
+          "icon": "Activity"
+        },
+        {
+          "title": "Configuración",
+          "url": "/settings",
+          "icon": "Settings"
+        }
       ]
     }
   },
@@ -39,31 +62,60 @@
         {
           "title": "Producto",
           "children": [
-            { "title": "Características", "url": "/#features" },
-            { "title": "K-Line", "url": "/kline" },
-            { "title": "Precios", "url": "/pricing" }
+            {
+              "title": "Características",
+              "url": "/#features"
+            },
+            {
+              "title": "K-Line",
+              "url": "/kline"
+            },
+            {
+              "title": "Precios",
+              "url": "/pricing"
+            }
           ]
         },
         {
           "title": "Recursos",
           "children": [
-            { "title": "FAQ", "url": "/#faq" },
-            { "title": "Blog", "url": "/blog" }
+            {
+              "title": "FAQ",
+              "url": "/#faq"
+            },
+            {
+              "title": "Blog",
+              "url": "/blog"
+            }
           ]
         },
         {
           "title": "Legal",
           "children": [
-            { "title": "Política de Privacidad", "url": "/privacy-policy" },
-            { "title": "Términos de Servicio", "url": "/terms-of-service" }
+            {
+              "title": "Política de Privacidad",
+              "url": "/privacy-policy"
+            },
+            {
+              "title": "Términos de Servicio",
+              "url": "/terms-of-service"
+            }
           ]
         }
       ]
     },
     "social": {
       "items": [
-        { "title": "Soporte por Correo", "url": "mailto:support@astrokline.com", "icon": "Mail" },
-        { "title": "X (Twitter)", "url": "", "icon": "Twitter" }
+        {
+          "title": "Soporte por Correo",
+          "url": "mailto:support@astrokline.com",
+          "icon": "Mail"
+        },
+        {
+          "title": "X (Twitter)",
+          "url": "",
+          "icon": "Twitter"
+        }
       ]
     },
     "copyright": "© 2026 AstroKline. Astrología impulsada por IA combinada con la precisión de K-Line. Todos los derechos reservados.",
