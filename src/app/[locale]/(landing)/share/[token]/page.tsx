@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps) {
       keywords: 'shared astrology chart, natal chart, K-Line, cosmic blueprint',
       canonicalUrl: `/share/${token}`,
     })
-  )({});
+  )({ params });
 }
 
 export default async function SharedKlinePage({ params }: PageProps) {

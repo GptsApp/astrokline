@@ -68,9 +68,9 @@ export function ResultClient({
       if (!savedResult?.profile || !Array.isArray(savedResult.klineData) || savedResult.klineData.length === 0) {
         return false;
       }
-      setProfile(savedResult.profile);
-      setKlineData(savedResult.klineData);
-      setTransitDetails(savedResult.transitDetails ?? {});
+      setProfile(savedResult.profile as UserProfile);
+      setKlineData(savedResult.klineData as DestinyScorePoint[]);
+      setTransitDetails((savedResult.transitDetails as Record<number, TransitEvent[]>) ?? {});
       setIsInitializing(false);
       if (!isLoggedIn) setTimeout(() => setShowNudge(true), 3500);
       return true;
