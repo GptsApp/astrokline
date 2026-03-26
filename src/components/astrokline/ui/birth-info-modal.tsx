@@ -436,6 +436,15 @@ export function BirthInfoModal() {
           )}
         </div>
 
+        {/* ─── Legal Disclaimer (Step 1) ─── */}
+        {step === 1 && (
+          <div className="px-6 pb-3 sm:px-8">
+            <p className="text-center text-[10px] leading-tight text-muted-foreground/60">
+              * For entertainment purposes only. We do not provide medical, psychological diagnosis, or financial investment advice. By continuing, you agree to our Terms and Privacy Policy.
+            </p>
+          </div>
+        )}
+
         {/* ─── Error Message ─── */}
         {errorMsg && (
           <div className="px-8 pb-3">

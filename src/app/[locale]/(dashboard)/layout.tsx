@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
+import { headers } from 'next/headers';
 import { ReferralClaim } from '@/components/astrokline/shared/referral-claim';
 import { BirthInfoWrapper } from '@/components/astrokline/ui/birth-info-wrapper';
 import { getTranslations } from 'next-intl/server';
 
 import { redirect } from '@/core/i18n/navigation';
+import { defaultLocale } from '@/config/locale';
 import { getThemeLayout } from '@/core/theme';
 import { LocaleDetector, TopBanner } from '@/shared/blocks/common';
 import { ConsoleLayout } from '@/shared/blocks/console/layout';
@@ -21,7 +23,33 @@ export default async function DashboardLayout({
   const user = await getUserInfo();
 
   if (!user) {
-    redirect({ href: '/sign-in', locale });
+    const requestHeaders = await headers();
+    const requestUrl = requestHeaders.get('x-url');
+    const fallbackPath =
+      locale === defaultLocale ? '/dashboard' : `/${locale}/dashboard`;
+    let callbackUrl = fallbackPath;
+
+    if (requestUrl) {
+      try {
+        const url = new URL(requestUrl);
+        callbackUrl = `${url.pathname}${url.search}`;
+      } catch {
+        callbackUrl = fallbackPath;
+      }
+    }
+
+    if (locale !== defaultLocale) {
+      if (callbackUrl === `/${locale}`) {
+        callbackUrl = '/';
+      } else if (callbackUrl.startsWith(`/${locale}/`)) {
+        callbackUrl = callbackUrl.slice(locale.length + 1) || '/';
+      }
+    }
+
+    redirect({
+      href: `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`,
+      locale,
+    });
   }
 
   const tDashboard = await getTranslations('dashboard.sidebar');

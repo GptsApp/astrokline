@@ -1,5 +1,6 @@
 import { getMetadata } from '@/shared/lib/seo';
 import { getKlineByShareToken } from '@/shared/models/kline';
+import { Link } from '@/core/i18n/navigation';
 
 import { SharedKlineClient } from './page-client';
 
@@ -9,7 +10,9 @@ export async function generateMetadata({ params }: PageProps) {
   const { token } = await params;
   const kline = await getKlineByShareToken(token);
   const label = kline?.label || 'Someone';
-  const result = kline?.klineResult as any;
+  const result = kline?.klineResult as {
+    profile?: { sun?: { sign?: string } };
+  };
   const sunSign = result?.profile?.sun?.sign || 'Unknown';
 
   return (
@@ -19,7 +22,7 @@ export async function generateMetadata({ params }: PageProps) {
       keywords: 'shared astrology chart, natal chart, K-Line, cosmic blueprint',
       canonicalUrl: `/share/${token}`,
     })
-  )({} as any);
+  )({});
 }
 
 export default async function SharedKlinePage({ params }: PageProps) {
@@ -39,12 +42,12 @@ export default async function SharedKlinePage({ params }: PageProps) {
           <p className="text-muted-foreground mb-6">
             This chart has been removed or is no longer shared.
           </p>
-          <a
+          <Link
             href="/kline"
             className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 py-2.5 text-sm font-bold transition-all"
           >
             Create Your Own K-Line
-          </a>
+          </Link>
         </div>
       </div>
     );

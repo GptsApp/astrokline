@@ -19,6 +19,7 @@ import {
   Sparkles,
   X,
 } from 'lucide-react';
+import { Link } from '@/core/i18n/navigation';
 
 interface InsightData {
   nickname: string;
@@ -474,12 +475,12 @@ export function AiReadingFullscreen({
                       Discover your hidden karmic ties, holistic energy, and
                       shadow behaviors.
                     </p>
-                    <a
+                    <Link
                       href="/pricing"
                       className="bg-primary hover:bg-primary/90 mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-bold text-white transition-all"
                     >
                       View Premium Plans <ChevronRight className="h-4 w-4" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
 
@@ -644,13 +645,13 @@ export function AiReadingFullscreen({
                 )}
 
                 <div className="pt-12 pb-8 text-center">
-                  <a
+                  <Link
                     href="/pricing"
                     className="bg-primary/20 border-primary/50 hover:bg-primary/30 inline-flex w-full items-center justify-center gap-2 rounded-full border px-8 py-3 text-sm font-bold text-white transition-all sm:w-auto"
                   >
                     Book 1-on-1 Consultation{' '}
                     <ChevronRight className="h-4 w-4" />
-                  </a>
+                  </Link>
                 </div>
                 {/* End of Premium conditional */}
               </>

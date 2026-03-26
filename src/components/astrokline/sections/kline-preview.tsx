@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Activity, LockOpen, Sparkles } from 'lucide-react';
+import { Link } from '@/core/i18n/navigation';
 
 export function InteractiveKLineFake() {
   const years = ['2021', '2022', '2023', '2024', '2025', '2026'];
@@ -215,13 +216,13 @@ export function InteractiveKLineFake() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-10 flex flex-col items-center gap-4"
         >
-          <a
+          <Link
             href="/sign-in"
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 items-center gap-2 rounded-2xl px-8 text-lg font-bold shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-105 hover:shadow-[0_0_50px_-5px_var(--primary)]"
           >
             <LockOpen className="h-5 w-5" />
             Unlock Your Full K-Line — Free
-          </a>
+          </Link>
           <p className="font-mono text-xs text-white/30">
             No credit card required · Takes 30 seconds
           </p>

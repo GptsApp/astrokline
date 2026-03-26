@@ -2,6 +2,7 @@
 
 import { trackEvent } from '@/lib/astrokline/track-event';
 import { Lock, Zap } from 'lucide-react';
+import { Link } from '@/core/i18n/navigation';
 
 interface QuotaLimitModalProps {
   isOpen: boolean;
@@ -106,12 +107,12 @@ export function QuotaLimitModal({
               Upgrade Now
             </button>
           ) : (
-            <a
+            <Link
               href="/pricing"
               className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-full py-2.5 text-center text-sm font-bold transition-all"
             >
               Upgrade Now
-            </a>
+            </Link>
           )}
         </div>
 

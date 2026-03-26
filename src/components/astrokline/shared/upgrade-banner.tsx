@@ -4,6 +4,7 @@ import { trackEvent } from '@/lib/astrokline/track-event';
 import { motion } from 'framer-motion';
 import { Lock, Shield, Sparkles, TrendingUp } from 'lucide-react';
 
+import { Link } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 
 interface UpgradeBannerProps {
@@ -119,7 +120,7 @@ export function UpgradeBanner({
                 Compare Plans →
               </Button>
             ) : (
-              <a href="/pricing">
+              <Link href="/pricing">
                 <Button
                   type="button"
                   size="lg"
@@ -127,7 +128,7 @@ export function UpgradeBanner({
                 >
                   Compare Plans →
                 </Button>
-              </a>
+              </Link>
             )}
 
             <p className="text-muted-foreground/50 mt-4 font-mono text-xs">

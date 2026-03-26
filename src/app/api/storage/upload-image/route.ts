@@ -6,6 +6,19 @@ import { respData, respErr } from '@/shared/lib/resp';
 import { getAllConfigs } from '@/shared/models/config';
 import { getStorageService } from '@/shared/services/storage';
 
+const MAX_UPLOAD_FILES = 4;
+const MAX_UPLOAD_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_MIME_TYPES = new Set([
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/avif',
+  'image/heic',
+  'image/heif',
+]);
+
 const extFromMime = (mimeType: string) => {
   const map: Record<string, string> = {
     'image/jpeg': 'jpg',
@@ -13,7 +26,6 @@ const extFromMime = (mimeType: string) => {
     'image/png': 'png',
     'image/webp': 'webp',
     'image/gif': 'gif',
-    'image/svg+xml': 'svg',
     'image/avif': 'avif',
     'image/heic': 'heic',
     'image/heif': 'heif',
@@ -22,10 +34,26 @@ const extFromMime = (mimeType: string) => {
 };
 
 const R2_UPLOAD_PREFIX = 'avatars';
+type UploadsBucket = {
+  head(key: string): Promise<unknown>;
+  put(
+    key: string,
+    value: Uint8Array,
+    options?: {
+      httpMetadata?: {
+        contentType?: string;
+        contentDisposition?: string;
+        cacheControl?: string;
+      };
+    }
+  ): Promise<void>;
+};
 
-function getUploadsBucket(): any | null {
+function getUploadsBucket(): UploadsBucket | null {
   try {
-    const { env }: { env: any } = getCloudflareContext();
+    const { env } = getCloudflareContext() as {
+      env: { USER_UPLOADS?: UploadsBucket };
+    };
     return env.USER_UPLOADS || null;
   } catch {
     return null;
@@ -59,15 +87,26 @@ export async function POST(req: Request) {
       return respErr('No files provided');
     }
 
+    if (files.length > MAX_UPLOAD_FILES) {
+      return respErr(`You can upload up to ${MAX_UPLOAD_FILES} files at a time`);
+    }
+
     const configs = await getAllConfigs();
     const storageService = await getStorageService(configs);
     const uploadsBucket = getUploadsBucket();
     const uploadResults = [];
 
     for (const file of files) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        return respErr(`File ${file.name} is not an image`);
+      if (!ALLOWED_IMAGE_MIME_TYPES.has(file.type)) {
+        return respErr(
+          `File ${file.name} must be a JPG, PNG, WEBP, GIF, AVIF, HEIC, or HEIF image`
+        );
+      }
+
+      if (file.size <= 0 || file.size > MAX_UPLOAD_FILE_SIZE_BYTES) {
+        return respErr(
+          `File ${file.name} exceeds the ${Math.floor(MAX_UPLOAD_FILE_SIZE_BYTES / (1024 * 1024))} MB upload limit`
+        );
       }
 
       // Convert file to buffer

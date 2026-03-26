@@ -67,7 +67,11 @@ function saveBirthData(data: BirthData) {
   }
 }
 
-export function saveKlineResult(result: any) {
+export function persistBirthData(data: BirthData) {
+  saveBirthData(data);
+}
+
+export function saveKlineResult(result: Record<string, unknown>) {
   try {
     saveJsonToStorage(KLINE_RESULT_KEY, result);
   } catch {
@@ -75,10 +79,10 @@ export function saveKlineResult(result: any) {
   }
 }
 
-export function getSavedKlineResult(): any | null {
+export function getSavedKlineResult(): Record<string, unknown> | null {
   if (typeof window === 'undefined') return null;
   try {
-    return readJsonFromStorage(KLINE_RESULT_KEY);
+    return readJsonFromStorage<Record<string, unknown>>(KLINE_RESULT_KEY);
   } catch {
     return null;
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { LocationAutocomplete } from '@/components/astrokline/ui/location-autocomplete';
 import { motion } from 'framer-motion';
 import {
@@ -13,15 +13,35 @@ import {
 } from 'lucide-react';
 
 import { useSession } from '@/core/auth/client';
+import { useRouter } from '@/core/i18n/navigation';
+import { persistBirthData } from '@/components/astrokline/ui/birth-info-context';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { useTranslations } from 'next-intl';
 
+function toTimeSlot(rawTime?: string) {
+  if (!rawTime) return 'unknown';
+  const [hours] = rawTime.split(':').map(Number);
+  if (Number.isNaN(hours)) return 'unknown';
+
+  const start = hours.toString().padStart(2, '0');
+  const end = (hours + 1).toString().padStart(2, '0');
+  return `${start}:00-${end}:00`;
+}
+
 export function Hero() {
   const { data: session } = useSession();
   const router = useRouter();
   const t = useTranslations('page.sections.hero');
+  const [location, setLocation] = useState('');
+  const [coordinates, setCoordinates] = useState<{
+    lat: number | null;
+    lon: number | null;
+  }>({
+    lat: null,
+    lon: null,
+  });
 
   return (
     <section aria-label="Birth chart K-Line generator" className="bg-background relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
@@ -173,17 +193,31 @@ export function Hero() {
                   const time = (
                     form.elements.namedItem('time') as HTMLInputElement
                   )?.value;
-                  const params = new URLSearchParams();
-                  if (name) params.set('name', name);
-                  if (dob) params.set('dob', dob);
-                  if (time) params.set('time', time);
-                  const query = params.toString()
-                    ? `?${params.toString()}`
-                    : '';
+
+                  if (
+                    name &&
+                    dob &&
+                    location &&
+                    coordinates.lat !== null &&
+                    coordinates.lon !== null
+                  ) {
+                    persistBirthData({
+                      name,
+                      gender: '',
+                      date: dob,
+                      timeSlot: toTimeSlot(time),
+                      location,
+                      lat: coordinates.lat,
+                      lon: coordinates.lon,
+                    });
+                  }
+
                   if (!session) {
-                    router.push(`/sign-in${query}`);
+                    router.push(
+                      `/sign-in?callbackUrl=${encodeURIComponent('/kline')}`
+                    );
                   } else {
-                    router.push(`/kline${query}`);
+                    router.push('/kline');
                   }
                 }}
               >
@@ -257,7 +291,13 @@ export function Hero() {
                     City of Birth
                   </Label>
                   <div className="relative">
-                    <LocationAutocomplete />
+                    <LocationAutocomplete
+                      value={location}
+                      onChange={(displayName, lat, lon) => {
+                        setLocation(displayName);
+                        setCoordinates({ lat, lon });
+                      }}
+                    />
                   </div>
                 </div>
 

@@ -4,13 +4,17 @@ import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { LifeRadar } from '@/components/astrokline/kline/life-radar';
 import { TrustBadge } from '@/components/astrokline/ui/trust-badge';
 import { Share2, Sparkles } from 'lucide-react';
+import { Link } from '@/core/i18n/navigation';
 
 interface SharedKlineClientProps {
   kline: {
     label: string;
     birthDate: string;
     birthPlace: string;
-    klineResult: any;
+    klineResult: {
+      profile?: Parameters<typeof ChartHero>[0]['profile'];
+      radarData?: Parameters<typeof LifeRadar>[0]['data'];
+    };
     createdAt: Date;
   };
 }
@@ -41,12 +45,12 @@ export function SharedKlineClient({ kline }: SharedKlineClientProps) {
               &apos;s cosmic blueprint
             </p>
           </div>
-          <a
+          <Link
             href="/kline"
             className="bg-primary text-primary-foreground hover:bg-primary/90 flex shrink-0 items-center gap-2 rounded-full px-5 py-2 text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all"
           >
             <Sparkles className="h-4 w-4" /> Get Your Own K-Line
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -75,12 +79,12 @@ export function SharedKlineClient({ kline }: SharedKlineClientProps) {
             Enter your birth details to discover your unique cosmic DNA, life
             trajectory, and hidden potentials.
           </p>
-          <a
+          <Link
             href="/kline"
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center gap-2 rounded-full px-8 py-3 font-bold shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all hover:scale-105"
           >
             <Sparkles className="h-5 w-5" /> Create My K-Line — Free
-          </a>
+          </Link>
         </div>
       </section>
     </div>

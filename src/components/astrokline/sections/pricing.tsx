@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Check,
@@ -14,6 +13,7 @@ import { useLocale } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useSession } from '@/core/auth/client';
+import { usePathname, useRouter } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 
 /* ─── Plan Data ─── */

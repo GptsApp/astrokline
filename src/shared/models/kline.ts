@@ -1,4 +1,4 @@
-import { createHash } from 'crypto';
+import { createHash, randomUUID } from 'crypto';
 import { and, desc, eq } from 'drizzle-orm';
 
 import { db } from '@/core/db';
@@ -34,7 +34,7 @@ export async function saveKline(
     birthPlace: string;
     birthLat?: string;
     birthLng?: string;
-    klineResult?: any;
+    klineResult?: unknown;
   }
 ): Promise<UserKline> {
   const birthHash = generateBirthHash(
@@ -225,11 +225,7 @@ export async function generateShareToken(
     return kline.shareToken;
   }
 
-  // Generate new token (8 chars, URL-safe)
-  const token = createHash('sha256')
-    .update(`${klineId}-${Date.now()}-${Math.random()}`)
-    .digest('hex')
-    .substring(0, 12);
+  const token = randomUUID().replace(/-/g, '');
 
   await db()
     .update(userKlines)

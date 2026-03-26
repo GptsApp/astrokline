@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { ArrowRight, LogOut, Menu, Sparkles, User, X } from 'lucide-react';
 
 import { signOut, useSession } from '@/core/auth/client';
-import { useRouter } from '@/core/i18n/navigation';
+import { Link, useRouter } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 
 export function Navbar() {
@@ -28,24 +27,24 @@ export function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 md:flex">
-          <Link
+          <a
             href="#features"
             className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
           >
             Features
-          </Link>
-          <Link
+          </a>
+          <a
             href="#pricing"
             className="text-primary hover:text-primary/80 bg-primary/10 border-primary/20 rounded-full border px-3 py-1 text-sm font-medium transition-colors"
           >
             Pricing
-          </Link>
-          <Link
+          </a>
+          <a
             href="#faq"
             className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
           >
             FAQ
-          </Link>
+          </a>
         </nav>
 
         {/* Auth & CTA */}
@@ -126,34 +125,34 @@ export function Navbar() {
       {mobileOpen && (
         <div className="bg-background/95 animate-in slide-in-from-top absolute top-16 right-0 left-0 z-40 border-b border-white/10 shadow-2xl backdrop-blur-xl duration-200 md:hidden">
           <nav className="flex flex-col gap-4 px-6 py-6">
-            <Link
+            <a
               href="#features"
               onClick={() => setMobileOpen(false)}
               className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
             >
               Features
-            </Link>
-            <Link
+            </a>
+            <a
               href="#pricing"
               onClick={() => setMobileOpen(false)}
               className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
             >
               Pricing
-            </Link>
-            <Link
+            </a>
+            <a
               href="#testimonials"
               onClick={() => setMobileOpen(false)}
               className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
             >
               Testimonials
-            </Link>
-            <Link
+            </a>
+            <a
               href="#faq"
               onClick={() => setMobileOpen(false)}
               className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
             >
               FAQ
-            </Link>
+            </a>
 
             <div className="flex flex-col gap-3 pt-4">
               {!session ? (

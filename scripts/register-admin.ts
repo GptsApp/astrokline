@@ -1,19 +1,24 @@
-import { Headers } from 'node-fetch'; // or use native Headers
-
-import { user } from '../src/config/db/schema'; // adjust if needed
 import { getAuth } from '../src/core/auth';
-import { db } from '../src/core/db';
 
 async function main() {
   try {
+    const email = process.env.ADMIN_BOOTSTRAP_EMAIL;
+    const password = process.env.ADMIN_BOOTSTRAP_PASSWORD;
+    const name = process.env.ADMIN_BOOTSTRAP_NAME || 'Admin';
+
+    if (!email || !password) {
+      throw new Error(
+        'ADMIN_BOOTSTRAP_EMAIL and ADMIN_BOOTSTRAP_PASSWORD must be set'
+      );
+    }
+
     const auth = await getAuth();
     console.log('Checking if user exists...');
-    // better-auth uses its own API, but we can also use drizzle
     const res = await auth.api.signUpEmail({
       body: {
-        email: 'support@astrokline.com',
-        password: 'ak141516oo',
-        name: 'Admin',
+        email,
+        password,
+        name,
       },
     });
     console.log('Registration result:', res);

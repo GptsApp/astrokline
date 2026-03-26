@@ -10,6 +10,7 @@ import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
+import { PremiumDownloadButton } from '@/components/astrokline/kline/premium-download-button';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { TrustEvidenceBar } from '@/components/astrokline/kline/trust-evidence-bar';
 import { cn } from '@/shared/lib/utils';
@@ -349,6 +350,23 @@ export function SharedKlineResult({
           selectedYear={selectedYear}
           yearFocusEvent={selectedYearFocus}
         />
+
+        {/* ── PREMIUM PDF UPSELL ── */}
+        <div className="mt-16 flex flex-col items-center justify-center rounded-[3rem] border border-[#D4AF37]/20 bg-gradient-to-b from-[#15131a] to-[#0A0A0F] py-16 px-6 text-center shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 h-1 w-64 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50 blur-sm" />
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] text-[#D4AF37] uppercase">
+            <Star className="h-3 w-3" /> Exclusive VIP Access
+          </div>
+          <h3 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
+            Download Your <span className="text-[#D4AF37]">Complete 25-Page</span> Map
+          </h3>
+          <p className="mb-8 max-w-2xl text-base leading-relaxed text-white/50">
+            Stop guessing your future. Get your uncompromising, highly detailed psychological transit blueprint as a beautifully formatted, printer-ready PDF. Keep it forever, study your cycles, and master your destiny timeline.
+          </p>
+          <div className="w-full max-w-sm">
+            <PremiumDownloadButton profile={profile} klineData={klineData} transitDetails={transitDetails} />
+          </div>
+        </div>
       </ReportSection>
 
       {/* -- 6. ADVANCED RAW DATA -- */}
