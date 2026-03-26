@@ -183,7 +183,7 @@ export function Hero() {
                   if (!session) {
                     router.push(`/sign-in${query}`);
                   } else {
-                    router.push(`/daily${query}`);
+                    router.push(`/kline${query}`);
                   }
                 }}
               >

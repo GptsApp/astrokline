@@ -16,7 +16,7 @@ interface SocialShareModalProps {
   profile: UserProfile;
   trigger?: React.ReactNode;
   className?: string;
-  source?: 'kline' | 'daily';
+  source?: 'kline';
 }
 
 export function SocialShareModal({
@@ -43,19 +43,12 @@ export function SocialShareModal({
             ? 'Air'
             : 'Water';
 
-    if (source === 'kline') {
-      return `[ AstroKline ]
+    return `[ AstroKline ]
 Sun ${profile.sun?.sign} · Moon ${profile.moon?.sign} · Rising ${profile.rising?.sign}
 Dominant element: ${dominantElement}
 
 I just generated my K-Line and 100-year timing map.
 See yours at astrokline.com`;
-    } else {
-      return `[ AstroKline ]
-Today’s transit snapshot is live.
-
-See your current planetary pressure, focus area, and next move at astrokline.com`;
-    }
   };
 
   const viralText = generateShareText();

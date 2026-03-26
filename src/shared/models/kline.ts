@@ -53,6 +53,18 @@ export async function saveKline(
     .limit(1);
 
   if (existing) {
+    if (data.isSelf) {
+      await db()
+        .update(userKlines)
+        .set({ isSelf: false })
+        .where(
+          and(
+            eq(userKlines.userId, userId),
+            eq(userKlines.isSelf, true)
+          )
+        );
+    }
+
     // Update existing
     const [updated] = await db()
       .update(userKlines)

@@ -7,18 +7,16 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/lib/utils';
 
 interface CrossLinkCardProps {
-  /** "daily" or "kline" */
-  target: 'daily' | 'kline';
+  target: 'kline';
   className?: string;
 }
 
 export function CrossLinkCard({ target, className }: CrossLinkCardProps) {
-  const isDaily = target === 'daily';
   const tc = useTranslations('common.crossLinkCard');
 
   return (
     <motion.a
-      href={isDaily ? '/daily' : '/kline'}
+      href="/kline"
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -32,35 +30,28 @@ export function CrossLinkCard({ target, className }: CrossLinkCardProps) {
           {isDaily ? (
             <Calendar className="text-primary h-4 w-4" />
           ) : (
-            <TrendingUp className="text-primary h-4 w-4" />
-          )}
+          <TrendingUp className="text-primary h-4 w-4" />
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-white/80 transition-colors group-hover:text-white">
-            {isDaily
-              ? 'Your daily cosmic weather is ready'
-              : 'Want the full 10-year picture?'}
+            Want the full 10-year picture?
           </h4>
           <p className="mt-0.5 text-xs text-white/40">
-            {isDaily
-              ? "See today's energy alignment for Love, Career, Wealth & Health."
-              : 'Map your destiny peaks, valleys, and turning points with your K-Line.'}
+            Map your destiny peaks, valleys, and turning points with your K-Line.
           </p>
         </div>
         <ArrowRight className="text-primary/50 group-hover:text-primary h-4 w-4 shrink-0 transition-all group-hover:translate-x-1" />
       </div>
 
       {/* Blurred "Locked Graph" Visual (Growth Funnel Tactic) */}
-      {!isDaily && (
-        <div className="mt-4 relative h-16 w-full overflow-hidden rounded-lg border border-white/5 bg-black/50">
-          <div className="absolute inset-x-0 bottom-0 h-10 opacity-30 blur-sm pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100%25\' height=\'100%25\' preserveAspectRatio=\'none\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 90 Q 25 20, 50 60 T 100 30 L100 100 L0 100 Z\' fill=\'none\' stroke=\'%23D4AF37\' stroke-width=\'3\'/%3E%3C/svg%3E")' }} />
-            <div className="absolute inset-0 flex items-center justify-center bg-background/20 backdrop-blur-[2px]">
-             <div className="flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 font-mono text-[10px] text-white/70 border border-white/10">
-                <Lock className="h-3 w-3 text-amber-400" /> {tc('lockedText')}
-             </div>
-          </div>
-        </div>
-      )}
+      <div className="mt-4 relative h-16 w-full overflow-hidden rounded-lg border border-white/5 bg-black/50">
+        <div className="absolute inset-x-0 bottom-0 h-10 opacity-30 blur-sm pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100%25\' height=\'100%25\' preserveAspectRatio=\'none\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 90 Q 25 20, 50 60 T 100 30 L100 100 L0 100 Z\' fill=\'none\' stroke=\'%23D4AF37\' stroke-width=\'3\'/%3E%3C/svg%3E")' }} />
+        <div className="absolute inset-0 flex items-center justify-center bg-background/20 backdrop-blur-[2px]">
+         <div className="flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 font-mono text-[10px] text-white/70 border border-white/10">
+            <Lock className="h-3 w-3 text-amber-400" /> {tc('lockedText')}
+         </div>
+      </div>
+      </div>
     </motion.a>
   );
 }

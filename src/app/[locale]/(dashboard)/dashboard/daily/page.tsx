@@ -1,12 +1,11 @@
-import { getAstroUserTier } from '@/lib/astrokline/user-tier';
+import { redirect } from '@/core/i18n/navigation';
 
-import { getUserInfo } from '@/shared/models/user';
+export default async function DashboardDailyServerPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
 
-import { DashboardDailyClient } from './page-client';
-
-export default async function DashboardDailyServerPage() {
-  const user = await getUserInfo();
-  const userTier = await getAstroUserTier(user);
-
-  return <DashboardDailyClient userTier={userTier} />;
+  redirect({ href: '/dashboard/kline', locale });
 }

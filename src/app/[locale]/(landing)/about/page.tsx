@@ -8,7 +8,7 @@ const aboutUrl = `${envConfigs.app_url}/about`;
 export const metadata: Metadata = {
   title: 'About AstroKline | AI Astrology, Birth Chart Timing, and K-Line Forecasts',
   description:
-    'Learn how AstroKline turns birth chart data, Swiss Ephemeris calculations, and AI interpretation into a practical astrology timing map for career, money, relationships, and daily decisions.',
+    'Learn how AstroKline turns birth chart data, Swiss Ephemeris calculations, and AI interpretation into a practical astrology timing map for career, money, and relationships.',
   keywords: [
     'about astrokline',
     'ai astrology',
@@ -136,7 +136,7 @@ export default function AboutPage() {
               periods that deserve patience instead of force. That is why users
               come to AstroKline for far more than entertainment. They use it
               for career planning, relationship timing, self-reflection, and
-              daily risk calibration.
+              timing calibration.
             </p>
 
             <h2>Why We Use Swiss Ephemeris</h2>
@@ -227,10 +227,6 @@ export default function AboutPage() {
               is to view a sample{' '}
               <Link href="/kline" className="text-primary no-underline">
                 K-Line reading
-              </Link>
-              , explore the{' '}
-              <Link href="/daily" className="text-primary no-underline">
-                daily forecast
               </Link>
               , and compare plan depth on the{' '}
               <Link href="/pricing" className="text-primary no-underline">

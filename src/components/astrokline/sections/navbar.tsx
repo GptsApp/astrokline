@@ -68,7 +68,7 @@ export function Navbar() {
           ) : (
             <>
               <Link
-                href="/daily"
+                href="/dashboard/kline"
                 className="text-primary hover:text-primary/80 mr-2 text-sm font-medium transition-colors"
               >
                 Go to Dashboard
@@ -180,7 +180,7 @@ export function Navbar() {
                 </>
               ) : (
                 <Link
-                  href="/daily"
+                  href="/dashboard/kline"
                   onClick={() => setMobileOpen(false)}
                   className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-full items-center justify-center rounded-xl font-bold shadow-[0_0_20px_-5px_var(--primary)]"
                 >

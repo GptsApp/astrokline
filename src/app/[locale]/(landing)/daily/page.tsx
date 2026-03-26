@@ -1,22 +1,20 @@
-import { getAstroUserTier } from '@/lib/astrokline/user-tier';
+import { redirect } from '@/core/i18n/navigation';
 
 import { getMetadata } from '@/shared/lib/seo';
-import { getUserInfo } from '@/shared/models/user';
-
-import { DailyClient } from './page-client';
 
 export const generateMetadata = getMetadata({
-  title: 'Free Daily Horoscope & Personalized Astrology Forecast — AstroKline',
+  title: 'AstroKline K-Line Forecast — AstroKline',
   description:
-    'Your personalized daily astrology forecast based on real-time planetary transits. Get AI-powered insights on Love, Career, Wealth, and Health from your exact birth chart — not generic sun sign horoscopes.',
-  keywords:
-    'daily horoscope, personalized daily astrology, free horoscope today, daily planetary transits, astrology forecast, AI horoscope reading, birth chart daily forecast, today astrology',
-  canonicalUrl: '/daily',
+    'Generate your AstroKline timing map from your exact birth chart and explore long-cycle timing, turning points, and AI interpretation.',
+  canonicalUrl: '/kline',
 });
 
-export default async function DailyServerPage() {
-  const user = await getUserInfo();
-  const userTier = await getAstroUserTier(user);
+export default async function DailyServerPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
 
-  return <DailyClient userTier={userTier} />;
+  redirect({ href: '/kline', locale });
 }

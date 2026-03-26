@@ -22,7 +22,7 @@
         "announcement": {
           "badge": "V2.0",
           "title": "今日のK-Lineリーディング",
-          "url": "/daily",
+          "url": "/kline",
           "subtitle": "最初のチャートを無料で始める"
         },
         "tip": "Swiss EphemerisとNASA JPLデータによる高精度バースチャート分析",

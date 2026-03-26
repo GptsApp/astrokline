@@ -76,6 +76,10 @@ const nextConfig = {
 
 export default withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
 
-if (process.env.NODE_ENV === 'development') {
+const useCloudflareDevBindings =
+  process.env.ENABLE_CLOUDFLARE_DEV === 'true' ||
+  Boolean(process.env.CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE);
+
+if (process.env.NODE_ENV === 'development' && useCloudflareDevBindings) {
   initOpenNextCloudflareForDev();
 }

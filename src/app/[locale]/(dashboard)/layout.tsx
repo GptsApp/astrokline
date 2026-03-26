@@ -12,13 +12,16 @@ import { Footer, Header } from '@/shared/types/blocks/landing';
 
 export default async function DashboardLayout({
   children,
+  params,
 }: {
   children: ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const user = await getUserInfo();
 
   if (!user) {
-    redirect({ href: '/sign-in', locale: 'en' });
+    redirect({ href: '/sign-in', locale });
   }
 
   const tDashboard = await getTranslations('dashboard.sidebar');

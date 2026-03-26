@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Heart, LineChart, Sparkles } from 'lucide-react';
+import { ArrowRight, LineChart } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
@@ -24,16 +24,6 @@ export function ToolCrossLinks({
       href: '/kline',
       color: 'from-blue-500/20 to-cyan-500/20',
       iconColor: 'text-cyan-400',
-    },
-    {
-      id: 'daily',
-      title: 'Daily Horoscope',
-      description:
-        'AI-powered daily cosmic guidance based on exact planetary transits.',
-      icon: Sparkles,
-      href: '/daily',
-      color: 'from-amber-500/20 to-orange-500/20',
-      iconColor: 'text-amber-400',
     },
     // Ideal Partner hidden until Phase 2 launch
     // {
@@ -69,7 +59,7 @@ export function ToolCrossLinks({
             </h2>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
               {section?.description ||
-                'Use focused tools for timing, daily guidance, and deeper personal insight.'}
+                'Use focused tools for timing, deeper interpretation, and personal insight.'}
             </p>
           </motion.div>
         </div>

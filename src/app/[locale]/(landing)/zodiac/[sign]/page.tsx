@@ -139,10 +139,10 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
               Generate My K-Line Free →
             </Link>
             <Link
-              href="/daily"
+              href="/kline"
               className="inline-flex h-12 items-center rounded-xl border border-white/10 px-6 text-sm font-semibold text-white/80 hover:bg-white/5"
             >
-              Try Daily Forecast
+              Explore the Full K-Line
             </Link>
           </div>
         </div>

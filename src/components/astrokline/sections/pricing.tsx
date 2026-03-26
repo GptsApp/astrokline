@@ -49,7 +49,7 @@ const plans: Plan[] = [
       { text: 'Past K-Line preview (future blurred)' },
       { text: '1 basic natal chart read' },
       { text: 'Overall destiny score only' },
-      { text: 'Basic daily horoscope' },
+      { text: 'Core K-Line reading' },
       { text: 'Sun, Moon & Rising analysis' },
       { text: 'Community access' },
       { text: 'Email support' },
@@ -72,7 +72,7 @@ const plans: Plan[] = [
       { text: 'Unlimited natal chart calculations', highlight: 'Unlimited' },
       { text: 'Past + 1-2 Year Future K-Line', highlight: '1-2 Year' },
       { text: 'AI-powered chart interpretation' },
-      { text: 'Personalized daily horoscope' },
+      { text: 'Expanded K-Line interpretation' },
       { text: 'Sun, Moon & Rising deep analysis' },
       { text: 'Overall destiny score + sub-scores' },
       { text: 'Community access' },
@@ -101,7 +101,7 @@ const plans: Plan[] = [
       { text: 'Priority AI + deep analysis reports' },
       { text: "HD PDF 'Life Book' export (50+ pages)", highlight: '50+ pages' },
       { text: 'Exclusive transit survival guides' },
-      { text: 'Personalized daily horoscope' },
+      { text: 'Full premium K-Line interpretation' },
       { text: 'VIP priority support' },
     ],
     cta: 'Choose Pro',
@@ -406,7 +406,7 @@ export function Pricing() {
                         if (!session) {
                           router.push(signInHref);
                         } else {
-                          router.push('/daily');
+                          router.push('/kline');
                         }
                       }}
                       className="text-foreground mb-8 h-12 w-full rounded-xl border border-white/[0.08] bg-white/[0.08] font-semibold transition-all hover:bg-white/[0.14]"

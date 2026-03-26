@@ -7,7 +7,7 @@ import { Lock, Shield, Sparkles, TrendingUp } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 
 interface UpgradeBannerProps {
-  context?: 'kline' | 'daily' | 'ideal-partner' | 'general';
+  context?: 'kline' | 'ideal-partner' | 'general';
   className?: string;
   onUpgradeClick?: () => void;
 }
@@ -17,11 +17,6 @@ const contextMessages: Record<string, { headline: string; subtext: string }> = {
     headline: 'Unlock Your Full 10+ Year K-Line',
     subtext:
       'See longer-range timing across career, love, money, and health.',
-  },
-  daily: {
-    headline: 'Unlock All 4 Life Dimensions',
-    subtext:
-      'Upgrade to see Wealth & Health forecasts alongside Love & Career — powered by real-time planetary transits.',
   },
   'ideal-partner': {
     headline: 'Generate Unlimited Partner Readings',
