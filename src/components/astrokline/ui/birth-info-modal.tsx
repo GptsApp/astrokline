@@ -18,6 +18,7 @@ import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { Input } from '@/shared/components/ui/input';
@@ -198,6 +199,9 @@ export function BirthInfoModal() {
       >
         {/* Accessibility: hidden title for screen readers */}
         <DialogTitle className="sr-only">Birth Info Wizard</DialogTitle>
+        <DialogDescription className="sr-only">
+          Enter your birth details in two steps to generate your AstroKline timing map.
+        </DialogDescription>
 
         {/* ─── Header ─── */}
         <div className="relative overflow-hidden rounded-t-lg px-6 pt-6 pb-4 sm:px-8 sm:pt-8 sm:pb-6">

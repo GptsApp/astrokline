@@ -24,7 +24,7 @@ export default function MyPDFDownloadLink({ profile, klineData, transitDetails }
         loading ? (
           <>
             <Loader2 className="h-5 w-5 animate-spin text-[#D4AF37]" />
-            RENDERING 25-PAGE REPORT...
+            RENDERING PDF MASTER PLAN...
           </>
         ) : (
           <>

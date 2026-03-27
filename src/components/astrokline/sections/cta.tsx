@@ -14,7 +14,7 @@ export function CTA() {
     <section aria-labelledby="cta-heading" data-testid="cta-section" className="py-24 relative overflow-hidden bg-[#0A0A0A]">
       {/* Background glow and texture */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
+      <div className="absolute inset-0 bg-[url('/textures/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
 
       <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
         <motion.div

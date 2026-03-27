@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrokline/mock-astrology-data';
 
@@ -25,9 +25,11 @@ interface PremiumDownloadButtonProps {
   profile: UserProfile;
   klineData?: DestinyScorePoint[];
   transitDetails?: Record<number, TransitEvent[]>;
+  tier?: string;
+  onUpgradeClick?: () => void;
 }
 
-export function PremiumDownloadButton({ profile, klineData, transitDetails }: PremiumDownloadButtonProps) {
+export function PremiumDownloadButton({ profile, klineData, transitDetails, tier = 'free', onUpgradeClick }: PremiumDownloadButtonProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -35,6 +37,18 @@ export function PremiumDownloadButton({ profile, klineData, transitDetails }: Pr
   }, []);
 
   if (!isMounted) return <DownloadLoadingButton />;
+
+  if (tier !== 'PRO' && tier !== 'premium' && tier !== 'PREMIUM') {
+    return (
+      <Button 
+        onClick={onUpgradeClick}
+        className="relative flex h-14 w-full sm:w-auto items-center justify-center gap-2 rounded-2xl bg-gradient-to-br from-[#1A1713] to-[#0A0A0F] px-8 text-sm font-bold text-[#F4E1A1] shadow-[0_0_20px_rgba(212,175,55,0.15)] ring-1 ring-[#D4AF37]/30 transition-all hover:ring-[#D4AF37]/60 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)]"
+      >
+        <Sparkles className="h-4 w-4 text-[#D4AF37]" />
+        UNLOCK 5-YEAR MASTER PLAN ($19.99 VALUE)
+      </Button>
+    );
+  }
 
   return (
     <motion.div

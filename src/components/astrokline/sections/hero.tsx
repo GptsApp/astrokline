@@ -49,7 +49,7 @@ export function Hero() {
       <div className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-[120px]" />
 
       {/* Grid Pattern */}
-      <div className="pointer-events-none absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+      <div className="pointer-events-none absolute inset-0 bg-[url('/textures/noise.svg')] opacity-20 mix-blend-overlay" />
       <div
         className="pointer-events-none absolute inset-0 opacity-10"
         style={{
@@ -147,7 +147,7 @@ export function Hero() {
             {/* Ambient Noise and Inner Glow */}
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-2xl">
               <div className="from-primary/10 to-primary/10 absolute inset-0 bg-gradient-to-r via-transparent opacity-30" />
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+              <div className="absolute inset-0 bg-[url('/textures/noise.svg')] opacity-[0.03] mix-blend-overlay" />
             </div>
 
             {/* Static Border (Visible when light is not passing) */}

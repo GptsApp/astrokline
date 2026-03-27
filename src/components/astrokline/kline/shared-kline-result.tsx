@@ -363,13 +363,19 @@ export function SharedKlineResult({
             <Star className="h-3 w-3" /> Exclusive VIP Access
           </div>
           <h3 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
-            Download Your <span className="text-[#D4AF37]">Complete 25-Page</span> Map
+            Download Your <span className="text-[#D4AF37]">5-Year Strategic</span> Master Plan
           </h3>
           <p className="mb-8 max-w-2xl text-base leading-relaxed text-white/50">
-            Stop guessing your future. Get your uncompromising, highly detailed psychological transit blueprint as a beautifully formatted, printer-ready PDF. Keep it forever, study your cycles, and master your destiny timeline.
+            Stop guessing your future. Get your uncompromising, highly curated psychological transit blueprint. No daily noise—just your Top 3 epoch-defining karmic transits per year. Keep it forever, study your cycles, and master your destiny timeline.
           </p>
           <div className="w-full max-w-sm">
-            <PremiumDownloadButton profile={profile} klineData={klineData} transitDetails={transitDetails} />
+            <PremiumDownloadButton 
+              profile={profile} 
+              klineData={klineData} 
+              transitDetails={transitDetails} 
+              tier={tier}
+              onUpgradeClick={onUpgradeClick}
+            />
           </div>
         </div>
       </ReportSection>

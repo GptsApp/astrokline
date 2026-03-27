@@ -44,7 +44,7 @@ export function DashboardWelcomeBanner({
   if (!hasData) {
     return (
       <div className="to-primary/5 border-primary/20 group relative overflow-hidden rounded-3xl border bg-gradient-to-br from-[#15131a]/80 p-8 backdrop-blur-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+        <div className="pointer-events-none absolute inset-0 bg-[url('/textures/noise.svg')] opacity-20 mix-blend-overlay" />
         <div className="bg-primary/10 group-hover:bg-primary/20 pointer-events-none absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px] transition-all duration-700" />
 
         <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center justify-center py-6 text-center">

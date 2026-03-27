@@ -10,7 +10,7 @@ export function InteractiveKLineFake() {
 
   return (
     <section className="relative border-y border-white/5 bg-[#050505] py-24">
-      <div className="pointer-events-none absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
+      <div className="pointer-events-none absolute inset-0 bg-[url('/textures/noise.svg')] opacity-10 mix-blend-overlay" />
 
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-6">
         <div className="mb-12 text-center">

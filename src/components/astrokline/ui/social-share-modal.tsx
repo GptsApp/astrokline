@@ -8,6 +8,8 @@ import { Check, Copy, Share2, Twitter } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
 import { cn } from '@/shared/lib/utils';
@@ -100,12 +102,12 @@ See yours at astrokline.com`;
           <div className="bg-primary/10 border-primary/20 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border shadow-[0_0_15px_rgba(212,175,55,0.2)]">
             <Share2 className="text-primary h-5 w-5" />
           </div>
-          <h2 className="font-serif text-2xl tracking-tight text-white">
+          <DialogTitle className="font-serif text-2xl tracking-tight text-white">
             Share Your Result
-          </h2>
-          <p className="text-sm text-white/50">
+          </DialogTitle>
+          <DialogDescription className="text-sm text-white/50">
             Copy a short summary or post it directly to your socials.
-          </p>
+          </DialogDescription>
         </div>
 
         <div className="space-y-6 px-8 pb-8">

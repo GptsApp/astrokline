@@ -85,7 +85,11 @@ export function ScrollPicker({
       if (!el) return;
       const target = idx * itemHeight;
       isProgrammaticScrolling.current = true;
-      el.scrollTo({ top: target, behavior: smooth ? 'smooth' : 'auto' });
+      if (typeof el.scrollTo === 'function') {
+        el.scrollTo({ top: target, behavior: smooth ? 'smooth' : 'auto' });
+      } else {
+        el.scrollTop = target;
+      }
       window.setTimeout(
         () => {
           isProgrammaticScrolling.current = false;

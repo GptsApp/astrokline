@@ -233,42 +233,63 @@ export const PremiumPDFDocument = ({ profile, klineData, transitDetails, insight
         </Page>
       )}
 
-      {/* --- MODULE V: CHRONOLOGICAL TRANSITS --- */}
-      {transitDetails && Object.entries(transitDetails).filter(([_, transits]) => transits.length > 0).map(([year, transits]) => (
-        <Page key={`t-${year}`} size="A4" style={styles.page}>
-          <HeaderInfo title={`V. ${year} Almanac`} subtitle="Micro-Transits & Exact Daily Directives" />
-
-          {transits.map((transit, idx) => (
-            <View key={idx} style={{...styles.section, borderLeft: transit.impactScore < 0 ? '3px solid #EF4444' : '3px solid #10B981' }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-                <Text style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1 }}>{transit.theme} Sector</Text>
-                <Text style={{ fontSize: 12, color: transit.impactScore > 0 ? '#10B981' : '#EF4444', fontWeight: 'bold' }}>
-                  FORCE VECTOR: {transit.impactScore > 0 ? '+' : ''}{transit.impactScore}
-                </Text>
-              </View>
-              
-              <Text style={{ fontSize: 15, color: '#D4AF37', marginBottom: 8, letterSpacing: 1 }}>{transit.title}</Text>
-              
-              <Text style={{ fontSize: 10, color: '#888', marginBottom: 8 }}>
-                [Exact Geometry: {transit.planet} {transit.aspect} | Phase: {transit.phase || 'Exact'}]
-              </Text>
-              
-              <Text style={{ ...styles.text, marginTop: 5, fontSize: 11 }}>{transit.description}</Text>
-
-              <View style={styles.protocolBox}>
-                <Text style={{ fontSize: 10, color: '#fff', fontWeight: 'bold', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>
-                  Authority Directive / Action Plan
-                </Text>
-                <Text style={{ fontSize: 10, color: '#bbb', lineHeight: 1.6 }}>
-                  {transit.advice || "Execute structural overhaul based on the above angular velocity."}
-                </Text>
-              </View>
-            </View>
-          ))}
+      {/* --- MODULE V: THE 5-YEAR STRATEGIC HORIZON --- */}
+      {transitDetails && (function() {
+        const currentYear = new Date().getFullYear();
+        // Exclusively output the next 5 critical years to prevent information overload
+        const relevantYears = [currentYear, currentYear + 1, currentYear + 2, currentYear + 3, currentYear + 4];
+        
+        return relevantYears.map(year => {
+          const transits = transitDetails[year] || [];
+          if (transits.length === 0) return null;
           
-          <FooterInfo />
-        </Page>
-      ))}
+          // Sort by absolute structural impact to find the most intense karmic events
+          // Discard the daily noise, keep ONLY the Top 3 epoch-defining vectors
+          const topTransits = [...transits]
+            .sort((a, b) => Math.abs(b.impactScore) - Math.abs(a.impactScore))
+            .slice(0, 3);
+            
+          return (
+            <Page key={`t-${year}`} size="A4" style={styles.page}>
+              <HeaderInfo title={`V. ${year} Strategic Almanac`} subtitle="The Top 3 Dominant Cosmic Vectors" />
+
+              <Text style={{...styles.text, marginBottom: 20, fontSize: 10, color: '#aaa', borderBottom: '1px solid #333', paddingBottom: 10}}>
+                The following tactical analysis filters out irrelevant daily astrological noise to focus exclusively on the {year} deep-structure karmic events. These are the non-negotiable architectural shifts you must prepare for.
+              </Text>
+
+              {topTransits.map((transit, idx) => (
+                <View key={idx} style={{...styles.section, borderLeft: transit.impactScore < 0 ? '3px solid #EF4444' : '3px solid #10B981', padding: 15 }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <Text style={{ fontSize: 11, color: '#fff', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1 }}>{transit.theme} Sector</Text>
+                    <Text style={{ fontSize: 11, color: transit.impactScore > 0 ? '#10B981' : '#EF4444', fontWeight: 'bold' }}>
+                      FORCE VECTOR: {transit.impactScore > 0 ? '+' : ''}{transit.impactScore}
+                    </Text>
+                  </View>
+                  
+                  <Text style={{ fontSize: 14, color: '#D4AF37', marginBottom: 6, letterSpacing: 1 }}>{transit.title}</Text>
+                  
+                  <Text style={{ fontSize: 9, color: '#888', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
+                    [Geometry: {transit.planet} {transit.aspect} | Phase: {transit.phase || 'Exact'}]
+                  </Text>
+                  
+                  <Text style={{ ...styles.text, marginTop: 5, fontSize: 11, lineHeight: 1.6 }}>{transit.description}</Text>
+
+                  <View style={{...styles.protocolBox, padding: 12, marginTop: 12}}>
+                    <Text style={{ fontSize: 9, color: '#fff', fontWeight: 'bold', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      Authority Directive
+                    </Text>
+                    <Text style={{ fontSize: 10, color: '#bbb', lineHeight: 1.5 }}>
+                      {transit.advice || "Execute structural overhaul based on the above angular velocity."}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+              
+              <FooterInfo />
+            </Page>
+          );
+        });
+      })()}
 
       {/* --- BACK COVER --- */}
       <Page size="A4" style={{...styles.coverPage, backgroundColor: '#07060A', justifyContent: 'center'}}>

@@ -11,7 +11,7 @@ export function Features() {
       {/* Deep Background Ambience */}
       <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-primary/10 rounded-full blur-[180px] pointer-events-none translate-x-1/4 -translate-y-1/4" />
       <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
+      <div className="absolute inset-0 bg-[url('/textures/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
@@ -127,7 +127,7 @@ export function Features() {
             aria-label={t("card2.title")}
             data-testid="feature-card-transit"
           >
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
+            <div className="absolute inset-0 bg-[url('/textures/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
             
             <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
                <Clock className="w-5 h-5 text-white/80 group-hover:text-primary transition-colors" />
