@@ -59,7 +59,7 @@ export function LocaleSelector({
         ) : (
           <>
             <Globe size={16} />
-            {localeNames[currentLocale]}
+            <span translate="no">{localeNames[currentLocale]}</span>
           </>
         )}
       </Button>
@@ -76,7 +76,7 @@ export function LocaleSelector({
         ) : (
           <Button variant="outline" size="sm" className="hover:bg-primary/10">
             <Globe size={16} />
-            {localeNames[currentLocale]}
+            <span translate="no">{localeNames[currentLocale]}</span>
           </Button>
         )}
       </DropdownMenuTrigger>
@@ -86,7 +86,7 @@ export function LocaleSelector({
             key={locale}
             onClick={() => handleSwitchLanguage(locale)}
           >
-            <span>{localeNames[locale]}</span>
+            <span translate="no">{localeNames[locale]}</span>
             {locale === currentLocale && (
               <Check size={16} className="text-primary" />
             )}
