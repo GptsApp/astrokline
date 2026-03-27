@@ -30,12 +30,7 @@
   "observability": {
     "enabled": true,
   },
-  "hyperdrive": [
-    {
-      "binding": "HYPERDRIVE",
-      "id": "d8b09da463394b4f89329b16fb10f8e0",
-    },
-  ],
+
   "d1_databases": [
     {
       "binding": "DB",
@@ -49,7 +44,7 @@
     "NEXT_PUBLIC_APP_NAME": "AstroKline",
     "NEXT_PUBLIC_THEME": "default",
     "NEXT_PUBLIC_APPEARANCE": "dark",
-    "DATABASE_PROVIDER": "postgresql",
+    "DATABASE_PROVIDER": "d1",
     "DB_SINGLETON_ENABLED": "false",
     "DB_MAX_CONNECTIONS": "1",
     "AUTH_URL": "https://astrokline.com",

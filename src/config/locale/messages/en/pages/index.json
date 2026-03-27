@@ -329,7 +329,7 @@
           "markers_desc1": "The gold line is your overarching momentum trajectory. When it rises, external forces are generally supportive of expansion.",
           "markers_desc2": "Nodes along the curve indicate exact transit hits. Clicking a bright node provides AI-driven analysis of that specific year's astrological weather.",
           "reading_title": "K-Line Reading",
-          "teaser_hook": "System detects a major turning point in <strong class=\"text-rose-400\">{year}</strong>. This could be your most important decision window in the next 3 years.",
+          "teaser_hook": "System detects a major turning point in <strong>{year}</strong>. This could be your most important decision window in the next 3 years.",
           "bands": {
             "expansion": { "label": "Expansion Phase", "summary": "Push visible moves, ask for leverage, and turn momentum into concrete outcomes." },
             "protection": { "label": "Protection Phase", "summary": "Reduce risk, protect cash flow, and stabilize your position before expanding again." },

@@ -34,9 +34,9 @@
     "rbac:init": "tsx scripts/with-env.ts npx tsx scripts/init-rbac.ts",
     "rbac:assign": "tsx scripts/with-env.ts npx tsx scripts/assign-role.ts",
     "postinstall": "fumadocs-mdx",
-    "cf:preview": "dotenv -e .env.production -- bash -lc 'export WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE=\"$DIRECT_URL\"; opennextjs-cloudflare build && opennextjs-cloudflare preview --config wrangler.toml'",
-    "cf:deploy": "dotenv -e .env.production -- bash -lc 'export WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE=\"$DIRECT_URL\"; opennextjs-cloudflare build && opennextjs-cloudflare deploy --config wrangler.toml'",
-    "cf:upload": "dotenv -e .env.production -- bash -lc 'export WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE=\"$DIRECT_URL\"; opennextjs-cloudflare build && opennextjs-cloudflare upload --config wrangler.toml'",
+    "cf:preview": "dotenv -e .env.production -- bash -lc 'opennextjs-cloudflare build && opennextjs-cloudflare preview --config wrangler.toml'",
+    "cf:deploy": "dotenv -e .env.production -- bash -lc 'opennextjs-cloudflare build && opennextjs-cloudflare deploy --config wrangler.toml'",
+    "cf:upload": "dotenv -e .env.production -- bash -lc 'opennextjs-cloudflare build && opennextjs-cloudflare upload --config wrangler.toml'",
     "cf:typegen": "wrangler types --config wrangler.toml --env-interface CloudflareEnv src/shared/types/cloudflare.d.ts"
   },
   "dependencies": {

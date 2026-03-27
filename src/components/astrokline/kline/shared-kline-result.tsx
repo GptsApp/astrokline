@@ -191,7 +191,12 @@ export function SharedKlineResult({
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500/20 text-rose-400">
                 <Brain className="h-3 w-3" />
               </span>
-              <span className="text-sm font-semibold text-rose-200" dangerouslySetInnerHTML={{ __html: t("teaser_hook", { year: highestPoint.year }) }} />
+              <span className="text-sm font-semibold text-rose-200">
+                {t.rich("teaser_hook", { 
+                  year: highestPoint.year, 
+                  strong: (chunks) => <strong className="text-rose-400">{chunks}</strong> 
+                })}
+              </span>
             </div>
           </motion.div>
         )}

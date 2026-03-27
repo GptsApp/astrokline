@@ -329,7 +329,7 @@
           "markers_desc1": "La línea dorada es tu trayectoria de impulso global. Cuando sube, las fuerzas externas generalmente apoyan la expansión.",
           "markers_desc2": "Los nodos a lo largo de la curva indican impactos de tránsito exactos. Hacer clic en un nodo brillante proporciona un análisis impulsado por IA del clima astrológico de ese año específico.",
           "reading_title": "Lectura de K-Line",
-          "teaser_hook": "El sistema detecta un punto de inflexión importante en <strong class=\"text-rose-400\">{year}</strong>. Esta podría ser tu ventana de decisión más importante en los próximos 3 años.",
+          "teaser_hook": "El sistema detecta un punto de inflexión importante en <strong>{year}</strong>. Esta podría ser tu ventana de decisión más importante en los próximos 3 años.",
           "bands": {
             "expansion": { "label": "Fase de Expansión", "summary": "Avanza, pide influencia y convierte el impulso en resultados concretos." },
             "protection": { "label": "Fase de Protección", "summary": "Reduce riesgos, protege tu capital y estabiliza tu posición antes de expandirte de nuevo." },
