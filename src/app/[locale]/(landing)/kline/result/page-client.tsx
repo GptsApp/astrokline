@@ -10,6 +10,7 @@ import {
   getSavedBirthData,
   getSavedKlineResult,
   saveKlineResult,
+  clearSavedKlineResult,
 } from '@/components/astrokline/ui/birth-info-context';
 import { PageBreadcrumb } from '@/components/astrokline/ui/page-breadcrumb';
 import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
@@ -67,6 +68,14 @@ export function ResultClient({
     const hydrateFromSavedResult = () => {
       const savedResult = getSavedKlineResult();
       if (!savedResult?.profile || !Array.isArray(savedResult.klineData) || savedResult.klineData.length === 0) {
+        return false;
+      }
+      // Validate cache matches current birth data
+      const currentBirth = getSavedBirthData();
+      const cachedBirth = savedResult.birthData as { name?: string; date?: string } | undefined;
+      if (currentBirth && cachedBirth && (currentBirth.name !== cachedBirth.name || currentBirth.date !== cachedBirth.date)) {
+        // Birth data changed, invalidate stale cache
+        clearSavedKlineResult();
         return false;
       }
       setProfile(savedResult.profile as UserProfile);

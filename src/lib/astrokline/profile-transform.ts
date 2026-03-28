@@ -112,8 +112,8 @@ export function apiToProfile(
 
   const time =
     birthData.timeSlot === 'unknown'
-      ? '12:00'
-      : birthData.timeSlot.split('-')[0];
+      ? ''
+      : birthData.timeSlot;
 
   const PLANET_SYMBOLS: Record<string, string> = {
     Sun: '☉',

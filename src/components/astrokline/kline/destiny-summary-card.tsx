@@ -142,7 +142,7 @@ export function DestinySummaryCard({
               <Calendar className="h-3 w-3" />
               {profile.birthDate || '--'}
             </span>
-            {profile.birthTime && profile.birthTime !== '12:00' && (
+            {profile.birthTime && (
               <span className="flex items-center gap-1.5 text-sm text-white/40">
                 <Clock className="h-3 w-3" />
                 {profile.birthTime}
