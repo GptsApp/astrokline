@@ -134,18 +134,18 @@ export function LifeStageScores({ data, birthYear }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-10">
-      <div className="-[3rem] border border-white/5 bg-[#0A0A0F]/60 p-6 shadow-2xl backdrop-blur-xl md:p-10">
-        <div className="mb-10 text-center">
+      <div className="border border-white/[0.04] bg-[#0A0A0F]/80 p-6 backdrop-blur-sm md:p-10">
+        <div className="mb-10 text-center flex flex-col items-center">
           <motion.div 
             initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="mb-4 inline-flex items-center gap-2 border border-primary/20 bg-primary/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-primary/90 uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+            className="mb-5 inline-flex w-fit items-center gap-1.5 rounded-sm bg-[#D4AF37]/10 px-3 py-1 font-mono text-[10px] font-bold tracking-widest text-[#D4AF37] uppercase"
           >
-            <Sparkles className="h-3.5 w-3.5" />
+            <Sparkles className="h-3 w-3" />
             {t("engine")}
           </motion.div>
           <motion.h2 
             initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="font-serif text-2xl md:text-4xl font-bold tracking-tight text-white leading-[1.2]"
+            className="font-serif text-3xl md:text-5xl text-white/90 leading-[1.15]"
           >
             {t("title")}
           </motion.h2>
@@ -165,23 +165,26 @@ export function LifeStageScores({ data, birthYear }: Props) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className={cn(
-                  'group relative flex flex-col items-center justify-center overflow-hidden -[2rem] border p-6 transition-all duration-300 hover:scale-105',
+                  'group relative flex flex-col items-center justify-center overflow-hidden border p-6 transition-colors duration-500',
                   isCurrentStage
-                    ? 'border-[#D4AF37]/50 bg-[#D4AF37]/10 shadow-[0_0_30px_rgba(212,175,55,0.2)]'
-                    : 'border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
+                    ? 'border-[#D4AF37]/20 bg-[#D4AF37]/[0.05]'
+                    : 'border-white/[0.04] bg-white/[0.01] hover:border-white/[0.08] hover:bg-white/[0.03]'
                 )}
               >
-                {isCurrentStage && (
-                  <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#D4AF37]/20 to-transparent opacity-50" />
+                {isCurrentStage ? (
+                  <div className="absolute -right-8 -top-8 z-0 h-28 w-28 bg-[#D4AF37]/10 blur-[40px] transition-opacity duration-700 group-hover:opacity-100" />
+                ) : (
+                  <div className={"absolute -right-8 -top-8 z-0 h-28 w-28 bg-white/10 opacity-0 blur-[40px] transition-opacity duration-500 group-hover:opacity-10"} />
                 )}
-                <div className={cn("relative z-10 mb-2 mt-1 text-[10px] font-bold tracking-[0.2em] uppercase", isCurrentStage ? "text-[#F4E1A1]" : "text-white/40")}>
+                
+                <div className={cn("relative z-10 mb-2 mt-1 text-[10px] font-bold tracking-[0.2em] uppercase", isCurrentStage ? "text-[#D4AF37]" : "text-white/40")}>
                   {/* @ts-ignore - dynamic key */}
                   {t(`stages.${stage.key}`)}
                 </div>
-                <div className={cn("relative z-10 font-mono text-3xl font-black tracking-tighter sm:text-4xl", getScoreColor(stage.score).split(' ')[0])}>
+                <div className={cn("relative z-10 font-mono text-3xl font-medium tracking-tighter md:text-4xl", getScoreColor(stage.score).split(' ')[0])}>
                   {stage.score}
                 </div>
-                {isCurrentStage && <div className="mt-3 relative z-10 bg-[#D4AF37]/20 px-2 py-0.5 text-[9px] font-bold text-[#F4E1A1] uppercase">{t('current')}</div>}
+                {isCurrentStage && <div className="mt-3 relative z-10 rounded-sm bg-[#D4AF37]/10 px-2 py-0.5 text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">{t('current')}</div>}
               </motion.div>
             );
           })}
@@ -189,29 +192,29 @@ export function LifeStageScores({ data, birthYear }: Props) {
 
         {/* Summary Stats */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 -[2rem] border border-white/5 bg-black/20 px-8 py-5 text-sm backdrop-blur-md"
+          initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 border-t border-white/[0.04] pt-8 pb-2"
         >
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.historical_avg")}</span>
-            <span className="font-mono text-lg font-bold text-white/90">{stats.historicalAvg}</span>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-[9px] font-bold tracking-widest text-white/30 uppercase">{t("stats.historical_avg")}</span>
+            <span className="font-mono text-xl text-white/90">{stats.historicalAvg}</span>
           </div>
-          <div className="hidden h-6 w-px bg-white/10 sm:block" />
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.future_avg")}</span>
-            <span className="font-mono text-lg font-bold text-white/90">{stats.futureAvg}</span>
+          
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-[9px] font-bold tracking-widest text-white/30 uppercase">{t("stats.future_avg")}</span>
+            <span className="font-mono text-xl text-white/90">{stats.futureAvg}</span>
           </div>
-          <div className="hidden h-6 w-px bg-white/10 sm:block" />
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.peak_age")}</span>
-            <span className="font-mono text-lg font-bold text-[#D4AF37]">{stats.peakAge}</span>
+          
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-[9px] font-bold tracking-widest text-white/30 uppercase">{t("stats.peak_age")}</span>
+            <span className="font-mono text-xl text-[#D4AF37]">{stats.peakAge}</span>
           </div>
-          <div className="hidden h-6 w-px bg-white/10 sm:block" />
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.trend")}</span>
+          
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-[9px] font-bold tracking-widest text-white/30 uppercase">{t("stats.trend")}</span>
             <span
               className={cn(
-                'font-mono text-lg font-bold',
+                'font-mono text-xl',
                 stats.trend > 3
                   ? 'text-emerald-400'
                   : stats.trend < -3

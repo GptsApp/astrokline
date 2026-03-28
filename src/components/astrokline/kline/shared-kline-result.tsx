@@ -290,75 +290,35 @@ export function SharedKlineResult({
             />
           </div>
 
-          <div className="mt-5 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="group relative overflow-hidden  border border-white/10 bg-[#050505] p-8 transition-colors duration-300 hover:border-[#D4AF37]/30 hover:bg-[#0A0A0A]"
-            >
-              <div className="relative z-10 mb-8 inline-flex items-center gap-2  border border-white/20 bg-white/5 px-3 py-1.5 text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase">
-                <Brain className="h-4 w-4" />
-                {t("how_it_is_calculated")}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.04] px-2 pt-6 pb-2"
+          >
+            <div className="flex items-center gap-2">
+              <Brain className="h-3.5 w-3.5 text-white/30" />
+              <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
+                Algorithm powered by planetary transits & progressed timeline
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-5 text-[10px] font-bold tracking-widest uppercase">
+              <div className="flex items-center gap-1.5 text-emerald-400/80">
+                <Star className="h-3 w-3" />
+                <span>Peak Year</span>
               </div>
-              
-              <div className="relative z-10 grid gap-4 md:grid-cols-3">
-                {[
-                  { title: 'Life direction', desc: 'Shows which decades naturally support growth and which call for patience and restructuring.' },
-                  { title: 'Year-by-year pacing', desc: 'Some years stack momentum. Others are better for consolidating wins and preparing for the next push.' },
-                  { title: 'Turning points', desc: 'Pinpoints the exact years where your trajectory shifts — so you can adjust before the change arrives.' },
-                ].map((item, i) => (
-                  <div key={i} className=" border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.05] hover:shadow-xl">
-                    <div className="text-base font-bold text-white/90">{item.title}</div>
-                    <p className="mt-3 text-sm leading-relaxed text-white/50">{item.desc}</p>
-                  </div>
-                ))}
+              <div className="flex items-center gap-1.5 text-sky-400/80">
+                <Star className="h-3 w-3" />
+                <span>Challenge Year</span>
               </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="group relative overflow-hidden  border border-white/10 bg-[#050505] p-8 transition-colors duration-300 hover:border-[#D4AF37]/30 hover:bg-[#0A0A0A]"
-            >
-              <div className="relative z-10 mb-8 inline-flex items-center gap-2  border border-white/20 bg-white/5 px-3 py-1.5 text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase">
-                <Target className="h-4 w-4" />
-                {t("how_to_read")}
+              <div className="flex items-center gap-1.5 text-[#D4AF37]/80">
+                <div className="h-px w-3 bg-[#D4AF37]" />
+                <span>Current Age</span>
               </div>
-              
-              <div className="relative z-10 space-y-4">
-                <div className="flex items-center gap-5  border border-emerald-400/10 bg-emerald-500/5 p-5 transition-all duration-300 hover:bg-emerald-500/10 hover:shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center  bg-emerald-500/20 text-emerald-300 shadow-inner">
-                    <Star className="h-5 w-5" />
-                  </div>
-                  <div className="text-sm leading-relaxed text-white/60">
-                    <span className="font-bold text-emerald-200">Green star</span> — your strongest year. This is when momentum peaks and big moves pay off.
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-5  border border-sky-400/10 bg-sky-500/5 p-5 transition-all duration-300 hover:bg-sky-500/10 hover:shadow-[0_0_20px_rgba(14,165,233,0.1)]">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center  bg-sky-500/20 text-sky-300 shadow-inner">
-                    <Star className="h-5 w-5" />
-                  </div>
-                  <div className="text-sm leading-relaxed text-white/60">
-                    <span className="font-bold text-sky-200">Blue star</span> — your most challenging year. Slow down, protect what you have, and build resilience.
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-5  border border-[#D4AF37]/10 bg-[#D4AF37]/5 p-5 transition-all duration-300 hover:bg-[#D4AF37]/10 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#D4AF37]/20 text-[#D4AF37] shadow-inner">
-                    <div className="h-0.5 w-5 bg-[#D4AF37] opacity-80 mix-blend-screen" />
-                  </div>
-                  <div className="text-sm leading-relaxed text-white/60">
-                    <span className="font-bold text-[#F4E1A1]">Gold line</span> — your current age. See how close you are to your next peak or shift.
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </ReportSection>
 
