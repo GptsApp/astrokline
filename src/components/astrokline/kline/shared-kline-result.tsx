@@ -170,33 +170,8 @@ export function SharedKlineResult({
         <DestinySummaryCard profile={profile} klineData={klineData} />
       </ReportSection>
 
-      {/* ── 1.5 TRUST BACKING ── */}
-      <ReportSection id="trust-evidence" divider={false} className="mx-auto relative z-[55] max-w-4xl py-2">
-        <TrustEvidenceBar birthLocation={profile.birthLocation || "Global Coordinates"} />
-      </ReportSection>
-
-      {/* ── 2. THE KARMIC K-LINE ── */}
-      <ReportSection id="kline-hero" divider={false} className="relative z-[50] overflow-visible pt-4 pb-4">
-        {highestPoint && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="mx-auto mb-6 max-w-2xl text-center"
-          >
-            <div className="inline-flex animate-pulse items-center gap-2  border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 shadow-[0_0_20px_rgba(244,63,94,0.15)]">
-              <span className="flex h-5 w-5 items-center justify-center bg-rose-500/20 text-rose-400">
-                <Brain className="h-3 w-3" />
-              </span>
-              <span className="text-sm font-semibold text-rose-200">
-                {t.rich("teaser_hook", { 
-                  year: highestPoint.year, 
-                  strong: (chunks) => <strong className="text-rose-400">{chunks}</strong> 
-                })}
-              </span>
-            </div>
-          </motion.div>
-        )}
+      {/* ── 2. THE LIFE CURVE ── */}
+      <ReportSection id="kline-hero" divider={false} className="relative z-[50] overflow-visible pt-2 pb-4">
         <InteractiveChart
           data={klineData}
           transitDetails={transitDetails}

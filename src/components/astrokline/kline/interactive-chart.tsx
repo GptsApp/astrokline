@@ -367,35 +367,19 @@ export function InteractiveChart({
         className="relative  border border-white/5 bg-[#111015]/80 p-6 shadow-2xl backdrop-blur-md"
         style={{ overflow: 'visible' }}
       >
-        {/* Header - Centered */}
-        <div className="mb-8 flex flex-col items-center justify-center text-center">
-          <div className="mb-3 inline-flex items-center gap-2 border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#F4E1A1] uppercase">
-            <Sparkles className="h-3.5 w-3.5" />
-            Your Life Curve
-          </div>
-          <Heading level={2} className="text-xl font-semibold text-white/90 md:text-2xl">
-            100-Year Timing Curve {(tier === 'GUEST' || isSimulation) && '(Preview)'}
+        {/* Header - Minimal */}
+        <div className="mb-4 flex flex-col items-center gap-1 text-center md:flex-row md:justify-between md:text-left">
+          <Heading level={2} className="text-base font-semibold text-white/80 md:text-lg">
+            Your Life Curve {(tier === 'GUEST' || isSimulation) && <span className="text-white/30 text-sm font-normal">(Preview)</span>}
           </Heading>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55">
-            This curve maps your natural momentum across your entire life. Peaks show your strongest years for big moves. Valleys show when to recharge. The markers highlight key moments.
-          </p>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2 text-xs text-white/55">
-          <div className="-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-1.5 text-emerald-200">
-            ★ Best year — peak momentum
+          <div className="flex flex-wrap items-center gap-3 text-[10px] text-white/30">
+            <span className="flex items-center gap-1"><span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />Peak</span>
+            <span className="flex items-center gap-1"><span className="inline-block h-1.5 w-1.5 rounded-full bg-sky-400" />Valley</span>
+            <span className="flex items-center gap-1"><span className="inline-block h-1.5 w-3 border-t border-dashed border-white/40" />Now</span>
+            {currentPoint && (
+              <span>Score: {currentPoint.close} · Avg: {avgScore}</span>
+            )}
           </div>
-          <div className="-full border border-sky-400/20 bg-sky-500/10 px-3 py-1.5 text-sky-200">
-            ★ Toughest year — time to recharge
-          </div>
-          <div className="-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1.5 text-[#F4E1A1]">
-            Dashed line — you are here
-          </div>
-          {currentPoint && (
-            <div className="-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-              Your score: {currentPoint.close} · Lifetime avg: {avgScore}
-            </div>
-          )}
         </div>
 
         {tier === 'GUEST' && (

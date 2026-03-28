@@ -138,6 +138,13 @@ export function DestinySummaryCard({
           </div>
         </div>
       </div>
+
+      {/* Trust micro-line */}
+      <div className="border-t border-white/[0.04] px-5 py-2 md:px-8">
+        <p className="text-center font-mono text-[9px] tracking-wider text-white/15">
+          NASA JPL Ephemeris · Western Tropical System · {profile.birthLocation || 'Global'}
+        </p>
+      </div>
     </motion.div>
   );
 }
