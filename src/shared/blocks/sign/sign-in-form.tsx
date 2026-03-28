@@ -29,7 +29,7 @@ export function SignInForm({
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { configs } = useAppContext();
+  const { configs, isShowSignModal } = useAppContext();
 
   const isGoogleAuthEnabled = configs.google_auth_enabled === 'true';
   const isGithubAuthEnabled = configs.github_auth_enabled === 'true';
@@ -194,14 +194,28 @@ export function SignInForm({
         />
       </div>
       {isEmailAuthEnabled && (
-        <div className="flex w-full justify-center border-t py-4">
-          <p className="text-center text-xs text-neutral-500">
+        <div className="flex w-full justify-center border-t border-white/10 pt-4 pb-2">
+          <p className="text-center text-xs text-muted-foreground/60">
             {t('no_account')}
-            <Link href={signUpHref} className="underline">
-              <span className="cursor-pointer dark:text-white/70">
+            {isShowSignModal ? (
+              <button
+                type="button"
+                className="ml-1 cursor-pointer underline hover:text-primary transition-colors text-white/70"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+                    (window as any).setAuthModalType('sign-up');
+                  }
+                }}
+              >
                 {t('sign_up_title')}
-              </span>
-            </Link>
+              </button>
+            ) : (
+              <Link href={signUpHref} className="ml-1 underline">
+                <span className="cursor-pointer hover:text-primary transition-colors text-white/70">
+                  {t('sign_up_title')}
+                </span>
+              </Link>
+            )}
           </p>
         </div>
       )}

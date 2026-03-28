@@ -24,6 +24,8 @@ export interface ContextValue {
   setIsCheckSign: (isCheckSign: boolean) => void;
   isShowSignModal: boolean;
   setIsShowSignModal: (show: boolean) => void;
+  authModalType: 'sign-in' | 'sign-up';
+  setAuthModalType: (type: 'sign-in' | 'sign-up') => void;
   isShowPaymentModal: boolean;
   setIsShowPaymentModal: (show: boolean) => void;
   configs: Record<string, string>;
@@ -49,6 +51,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   // show sign modal
   const [isShowSignModal, setIsShowSignModal] = useState(false);
+  const [authModalType, setAuthModalType] = useState<'sign-in' | 'sign-up'>('sign-in');
 
   // show payment modal
   const [isShowPaymentModal, setIsShowPaymentModal] = useState(false);
@@ -157,6 +160,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setIsCheckSign,
       isShowSignModal,
       setIsShowSignModal,
+      authModalType,
+      setAuthModalType,
       isShowPaymentModal,
       setIsShowPaymentModal,
       configs,
@@ -169,6 +174,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       user,
       isCheckSign,
       isShowSignModal,
+      authModalType,
       isShowPaymentModal,
       configs,
       fetchConfigs,

@@ -6,6 +6,7 @@ import { Sparkles, X } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { Heading } from "@/components/astrokline/ui/heading";
+import { useAppContext } from '@/shared/contexts/app';
 
 interface RegistrationNudgeProps {
   isVisible: boolean;
@@ -17,6 +18,7 @@ export function RegistrationNudge({
   onClose,
 }: RegistrationNudgeProps) {
   const [show, setShow] = useState(false);
+  const { setAuthModalType, setIsShowSignModal } = useAppContext();
   const authCallbackUrl = '/dashboard/kline';
 
   useEffect(() => {
@@ -79,25 +81,27 @@ export function RegistrationNudge({
 
           {/* CTA buttons */}
           <div className="flex gap-3 mt-2">
-            <Link
-              href={{
-                pathname: '/sign-up',
-                query: { callbackUrl: authCallbackUrl },
+            <button
+              type="button"
+              onClick={() => {
+                trackEvent('registration_nudge_signup_click');
+                setAuthModalType('sign-up');
+                setIsShowSignModal(true);
               }}
-              onClick={() => trackEvent('registration_nudge_signup_click')}
               className="bg-[#D4AF37] text-black hover:bg-[#FCDD73] flex-1 py-2.5 text-center text-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all"
             >
               Save My Reading
-            </Link>
-            <Link
-              href={{
-                pathname: '/sign-in',
-                query: { callbackUrl: authCallbackUrl },
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthModalType('sign-in');
+                setIsShowSignModal(true);
               }}
               className="border-border text-muted-foreground hover:text-foreground hover:border-primary/40 border px-6 py-2.5 text-center text-sm transition-all"
             >
               Sign In
-            </Link>
+            </button>
           </div>
         </div>
       </div>

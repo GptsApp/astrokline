@@ -6,11 +6,13 @@ import { ArrowRight, LogOut, Menu, Sparkles, User, X } from 'lucide-react';
 import { signOut, useSession } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
+import { useAppContext } from '@/shared/contexts/app';
 
 export function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { setAuthModalType, setIsShowSignModal } = useAppContext();
 
   return (
     <header className="bg-background/60 fixed top-0 right-0 left-0 z-50 border-b border-white/5 backdrop-blur-xl">
@@ -51,12 +53,16 @@ export function Navbar() {
         <div className="hidden items-center gap-4 md:flex">
           {!session ? (
             <>
-              <Link
-                href="/sign-in"
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthModalType('sign-in');
+                  setIsShowSignModal(true);
+                }}
                 className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
               >
                 Sign In
-              </Link>
+              </button>
               <Button
                 asChild
                 className="h-9 bg-white px-4 font-semibold text-black shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:bg-white/90"
@@ -169,13 +175,17 @@ export function Navbar() {
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                  <Link
-                    href="/sign-in"
-                    onClick={() => setMobileOpen(false)}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setAuthModalType('sign-in');
+                      setIsShowSignModal(true);
+                    }}
                     className="text-muted-foreground hover:text-foreground block w-full py-2 text-center text-sm transition-colors"
                   >
                     Already have an account? Sign In
-                  </Link>
+                  </button>
                 </>
               ) : (
                 <Link

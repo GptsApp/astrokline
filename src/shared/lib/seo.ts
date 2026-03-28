@@ -52,9 +52,9 @@ export function getMetadata(
       locale || ''
     );
 
-    const title =
+    let finalTitle =
       passedMetadata.title || translatedMetadata.title || defaultMetadata.title;
-    const description =
+    const finalDescription =
       passedMetadata.description ||
       translatedMetadata.description ||
       defaultMetadata.description;
@@ -68,18 +68,16 @@ export function getMetadata(
     // app name
     let appName = options.appName;
     if (!appName) {
-      appName = envConfigs.app_name || '';
+      appName = envConfigs.app_name || 'AstroKline';
+    }
+
+    if (finalTitle && finalTitle.length < 25 && !finalTitle.includes(appName)) {
+      finalTitle = `${finalTitle} | ${appName}`;
     }
 
     return {
-      title:
-        passedMetadata.title ||
-        translatedMetadata.title ||
-        defaultMetadata.title,
-      description:
-        passedMetadata.description ||
-        translatedMetadata.description ||
-        defaultMetadata.description,
+      title: finalTitle,
+      description: finalDescription,
       keywords:
         passedMetadata.keywords ||
         translatedMetadata.keywords ||
@@ -90,6 +88,11 @@ export function getMetadata(
           const path = options.canonicalUrl || '';
           const prefix = l === defaultLocale ? '' : `/${l}`;
           acc[l] = `${envConfigs.app_url}${prefix}${path.startsWith('/') ? path : `/${path}`}`.replace(/\/$/, '') || '/';
+          
+          // x-default should point to default language equivalent
+          if (l === defaultLocale) {
+             acc['x-default'] = acc[l];
+          }
           return acc;
         }, {}),
       },
@@ -98,16 +101,16 @@ export function getMetadata(
         type: 'website',
         locale: locale,
         url: canonicalUrl,
-        title,
-        description,
+        title: finalTitle,
+        description: finalDescription,
         siteName: appName,
         images: [imageUrl.toString()],
       },
 
       twitter: {
         card: 'summary_large_image',
-        title,
-        description,
+        title: finalTitle,
+        description: finalDescription,
         images: [imageUrl.toString()],
         site: envConfigs.app_url,
       },

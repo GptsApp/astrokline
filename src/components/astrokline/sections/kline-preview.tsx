@@ -218,7 +218,7 @@ export function InteractiveKLineFake() {
           className="mt-10 flex flex-col items-center gap-4"
         >
           <Link
-            href="/sign-in"
+            href="/kline"
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 items-center gap-2  px-8 text-lg font-bold shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-105 hover:shadow-[0_0_50px_-5px_var(--primary)]"
           >
             <LockOpen className="h-5 w-5" />

@@ -78,7 +78,7 @@ export function ShowcasesFlow({
         }}
       >
         {section.sr_only_title && (
-          <h1 className="sr-only">{section.sr_only_title}</h1>
+          <h2 className="sr-only">{section.sr_only_title}</h2>
         )}
         <h2 className="mx-auto mb-6 max-w-full text-3xl font-bold text-pretty md:max-w-5xl lg:text-4xl">
           {section.title}

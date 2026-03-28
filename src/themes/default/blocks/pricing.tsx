@@ -295,11 +295,27 @@ export function Pricing({
 
   const paymentStatus = searchParams.get('payment');
   const paymentOrderNo = searchParams.get('order_no');
-  const canStartCheckout = hasMounted && !isCheckSign;
+
+  // Robust timeout: independently track mount time to force-unlock buttons
+  // even if auth session check never resolves
+  const [canStartCheckout, setCanStartCheckout] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
+    // If auth check resolves quickly, this will be overridden
+    // If it hangs, force-unlock after 2 seconds
+    const timer = setTimeout(() => {
+      setCanStartCheckout(true);
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
+
+  // Also unlock immediately when auth check completes
+  useEffect(() => {
+    if (hasMounted && !isCheckSign) {
+      setCanStartCheckout(true);
+    }
+  }, [hasMounted, isCheckSign]);
 
   const resolveSignedInUser = useCallback(async () => {
     if (user?.id) {
@@ -767,7 +783,7 @@ export function Pricing({
         ) : null}
 
         {section.sr_only_title && (
-          <h1 className="sr-only">{section.sr_only_title}</h1>
+          <h2 className="sr-only">{section.sr_only_title}</h2>
         )}
 
         {section.title && (

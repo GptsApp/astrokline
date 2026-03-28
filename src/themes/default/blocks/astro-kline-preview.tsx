@@ -57,7 +57,7 @@ export function AstroKlinePreview({
           transition={{ duration: 0.6, ease: [0.19, 1.0, 0.22, 1.0] }}
           className="w-full bg-card border border-foreground/5 p-4 sm:p-6"
         >
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto min-h-[550px]">
             <InteractiveChart
               data={MOCK_KLINE_DATA}
               transitDetails={MOCK_TRANSIT_DETAILS}

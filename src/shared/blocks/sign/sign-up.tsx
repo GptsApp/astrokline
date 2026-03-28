@@ -20,6 +20,7 @@ import {
 } from '@/shared/components/ui/card';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
+import { useAppContext } from '@/shared/contexts/app';
 
 import { SocialProviders } from './social-providers';
 
@@ -33,6 +34,7 @@ export function SignUp({
   const router = useRouter();
   const t = useTranslations('common.sign');
   const locale = useLocale();
+  const { isShowSignModal } = useAppContext();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -170,7 +172,7 @@ export function SignUp({
   const showPasswordHint = passwordTouched && password.length > 0;
 
   return (
-    <Card className="mx-auto w-full md:max-w-md">
+    <Card className={isShowSignModal ? "border-0 shadow-none bg-transparent" : "mx-auto w-full md:max-w-md"}>
       <CardHeader>
         <CardTitle className="text-lg md:text-xl">
           <h1>{t('sign_up_title')}</h1>
@@ -266,14 +268,28 @@ export function SignUp({
       </CardContent>
       {isEmailAuthEnabled && (
         <CardFooter>
-          <div className="flex w-full justify-center border-t py-4">
-            <p className="text-center text-xs text-neutral-500">
+          <div className="flex w-full justify-center border-t border-white/10 pt-4 pb-2">
+            <p className="text-center text-xs text-muted-foreground/60">
               {t('already_have_account')}
-              <Link href={signInHref} className="underline">
-                <span className="cursor-pointer dark:text-white/70">
+              {isShowSignModal ? (
+                <button
+                  type="button"
+                  className="ml-1 cursor-pointer underline hover:text-primary transition-colors text-white/70"
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+                      (window as any).setAuthModalType('sign-in');
+                    }
+                  }}
+                >
                   {t('sign_in_title')}
-                </span>
-              </Link>
+                </button>
+              ) : (
+                <Link href={signInHref} className="ml-1 underline">
+                  <span className="cursor-pointer hover:text-primary transition-colors text-white/70">
+                    {t('sign_in_title')}
+                  </span>
+                </Link>
+              )}
             </p>
           </div>
         </CardFooter>

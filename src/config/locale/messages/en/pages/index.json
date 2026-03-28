@@ -3,6 +3,7 @@
     "show_sections": [
       "hero",
       "kline-preview",
+      "features",
       "testimonials",
       "how-it-works",
       "pricing",

@@ -109,7 +109,7 @@ export function AstroHero({
               <span className="block opacity-95">
                 Master
               </span>
-              <span className="block text-primary mt-0 md:mt-1 pt-1 pr-6 lg:pr-12 lg:text-right">
+              <span className="block text-primary italic font-medium mt-0 md:mt-1 pt-1 pr-6 lg:pr-12 lg:text-right">
                 your timeline.
               </span>
             </Heading>

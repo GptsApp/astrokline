@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/core/i18n/navigation';
 import { FlaskConical, Lock, Sparkles } from 'lucide-react';
 import { Heading } from "@/components/astrokline/ui/heading";
 

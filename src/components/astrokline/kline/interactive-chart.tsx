@@ -593,6 +593,7 @@ export function InteractiveChart({
                     'Emotional or personal struggle'
                   ].map((theme) => (
                     <button
+                      type="button"
                       key={theme}
                       onClick={() => handleValidationSelect(theme)}
                       className="group flex flex-col items-center justify-center  border border-white/10 bg-white/5 p-4 text-center transition-all hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10"
@@ -638,8 +639,14 @@ export function InteractiveChart({
                     <ArrowRight className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>
                       Based on your curve, your next strong period arrives around age {pastLowPoint.age + 7}. 
-                      <button onClick={() => {
-                        document.getElementById('ai-insight')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      <button type="button" onClick={() => {
+                        if (onNodeClick) {
+                          onNodeClick(pastLowPoint.year + 7);
+                        }
+                        const target = document.getElementById('ai-insight');
+                        if (target) {
+                          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                       }} className="ml-1 font-bold underline transition-colors hover:text-white">
                         Read your personalized guidance
                       </button> to make the most of it.

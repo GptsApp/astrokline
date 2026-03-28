@@ -75,7 +75,7 @@ export function Hero() {
           <Heading level={1} className="mb-6 bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-4xl leading-tight font-bold tracking-tight text-transparent md:text-6xl">
             {t('title1')}
             <br />
-            <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent italic font-serif font-medium">
               {t('title2')}
             </span>
           </Heading>
@@ -212,14 +212,8 @@ export function Hero() {
                       lat: coordinates.lat,
                       lon: coordinates.lon,
                     });
-                  }
-
-                  if (!session) {
-                    router.push(
-                      `/sign-in?callbackUrl=${encodeURIComponent('/kline')}`
-                    );
-                  } else {
-                    router.push('/kline');
+                    
+                    router.push('/kline/result');
                   }
                 }}
               >
