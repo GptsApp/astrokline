@@ -3,10 +3,13 @@ import { cn } from "@/shared/lib/utils"
 
 export type HeadingVariant = "section" | "card" | "label";
 
-export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
+export interface HeadingProps {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   as?: React.ElementType;
   variant?: HeadingVariant;
+  className?: string;
+  id?: string;
+  children?: React.ReactNode;
 }
 
 const levelStyles: Record<number, string> = {
@@ -25,13 +28,14 @@ const variantStyles: Record<HeadingVariant, string> = {
   label:   "text-xs font-semibold tracking-widest uppercase text-muted-foreground",
 };
 
-export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps & Record<string, any>>(
   ({ className, level = 2, as, variant, children, ...props }, ref) => {
     const Component = as || (`h${level}` as React.ElementType);
 
     const baseStyles = "font-serif text-foreground font-bold";
-    const sizeStyles = variant
-      ? variantStyles[variant]
+    const sizeStyles = (variant && variant in variantStyles)
+      ? variantStyles[variant as HeadingVariant]
       : (levelStyles[level] ?? levelStyles[2]);
 
     return (
@@ -46,3 +50,4 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
   }
 )
 Heading.displayName = "Heading"
+
