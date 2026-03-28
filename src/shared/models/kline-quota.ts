@@ -7,9 +7,9 @@ export type UserKlineQuota = typeof userKlineQuota.$inferSelect;
 
 // Quota limits per user tier
 const QUOTA_LIMITS: Record<string, { total: number; isLifetime: boolean }> = {
-  FREE: { total: 2, isLifetime: true },
-  STANDARD: { total: 10, isLifetime: false },
-  PREMIUM: { total: 30, isLifetime: false },
+  FREE: { total: 1, isLifetime: true },
+  STANDARD: { total: 5, isLifetime: false },
+  PREMIUM: { total: 999, isLifetime: false },
 };
 
 /**

@@ -471,7 +471,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
           />
         )}
       </div>
-      {profile && <ReportFooter profile={profile} />}
+      {profile && <ReportFooter profile={profile} tier={chartTier} onUpgradeClick={() => window.location.href = '/pricing'} />}
     </div>
   );
 }

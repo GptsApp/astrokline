@@ -167,7 +167,7 @@ export function ResultClient({
       />
 
       <ReportSection id="report-footer" className="pb-12">
-        <ReportFooter profile={profile} />
+        <ReportFooter profile={profile} tier={tier} onUpgradeClick={openPricing} />
       </ReportSection>
 
       {!isLoggedIn && <RegistrationNudge isVisible={showNudge} onClose={() => setShowNudge(false)} />}
@@ -186,8 +186,8 @@ export function ResultClient({
             </div>
             <div className="space-y-4">
               {[
-                { name: 'Lite', price: '$39.9', desc: '10 saved K-Lines / month + career, wealth, love, health AI modules', id: 'standard' },
-                { name: 'Pro', price: '$79.9', desc: '30 saved K-Lines / month + exact transit detail + premium dashboard tools', id: 'premium', featured: true },
+                { name: 'Lite', price: '$39.9', desc: 'Full tooltip details + Career, Wealth, Love & Health AI reading + 5 charts/mo', id: 'standard' },
+                { name: 'Pro', price: '$79.9', desc: 'Transit details + 5-Year Strategic Plan + Unlimited charts + PDF export', id: 'premium', featured: true },
               ].map((plan) => (
                 <a key={plan.id} href={`/pricing`} onClick={() => trackEvent('pricing_plan_click', { plan: plan.id, source: 'inline_modal' })} className={cn('block  border p-5 transition-all hover:scale-[1.02]', plan.featured ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-white/10 bg-white/[0.02] hover:border-white/20')}>
                   <div className="mb-2 flex items-center justify-between"><Heading level={4} className="text-foreground font-bold">{plan.name}</Heading><span className="text-primary text-lg font-bold">{plan.price}</span></div>

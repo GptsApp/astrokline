@@ -122,10 +122,9 @@
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
-              "AI-powered core reading",
-              "Yearly momentum insights",
-              "Raw natal chart data",
-              "2 saved charts for life"
+              "Overall destiny score & trend direction",
+              "1 chart generation for life",
+              "Year details blurred — upgrade to reveal"
             ],
             "interval": "month",
             "amount": 0,
@@ -146,11 +145,12 @@
             "description": "See how each year affects your career, wealth, love, and health. Less than $1.30/day for timing you can’t get anywhere else.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines per month",
-              "Career, Wealth, Love & Health breakdowns",
-              "Yearly energy forecasts",
-              "Personal dashboard with saved reports",
-              "Upgrade to Pro anytime"
+              "Click any year for full tooltip details",
+              "Career, Wealth, Love & Health AI reading",
+              "5 chart generations per month",
+              "Save & download reports",
+              "Personal dashboard + history",
+              "Yearly energy forecasts & life stages"
             ],
             "interval": "month",
             "amount": 3990,
@@ -172,13 +172,13 @@
             "label": "Most Popular",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines per month",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
-              "Exact transit detail for every turning year",
-              "Priority access to every new release",
-              "Unlock 5-Year Strategic Master Plan",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "Exact planetary transit details & advice",
+              "5-Year Strategic Master Plan",
+              "Strengths & Blindspots deep analysis",
+              "Unlimited chart generations",
+              "HD PDF Life Book export (50+ pages)",
+              "Life Radar, Destiny Reading, Next 30 Days",
+              "Priority access to every new release"
             ],
             "interval": "month",
             "amount": 7990,
@@ -200,10 +200,9 @@
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
-              "AI-powered core reading",
-              "Yearly momentum insights",
-              "Raw natal chart data",
-              "2 saved charts for life"
+              "Overall destiny score & trend direction",
+              "1 chart generation for life",
+              "Year details blurred — upgrade to reveal"
             ],
             "interval": "year",
             "amount": 0,
@@ -224,11 +223,12 @@
             "description": "See how each year affects your career, wealth, love, and health — so every big decision has timing on its side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines per month",
-              "Career, Wealth, Love & Health breakdowns",
-              "Yearly energy forecasts",
-              "Personal dashboard with saved reports",
-              "Upgrade to Pro anytime"
+              "Click any year for full tooltip details",
+              "Career, Wealth, Love & Health AI reading",
+              "5 chart generations per month",
+              "Save & download reports",
+              "Personal dashboard + history",
+              "Yearly energy forecasts & life stages"
             ],
             "interval": "year",
             "amount": 23880,
@@ -251,13 +251,13 @@
             "label": "Most Popular",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines per month",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
-              "Exact transit detail for every turning year",
-              "Priority access to every new release",
-              "Unlock 5-Year Strategic Master Plan",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "Exact planetary transit details & advice",
+              "5-Year Strategic Master Plan",
+              "Strengths & Blindspots deep analysis",
+              "Unlimited chart generations",
+              "HD PDF Life Book export (50+ pages)",
+              "Life Radar, Destiny Reading, Next 30 Days",
+              "Priority access to every new release"
             ],
             "interval": "year",
             "amount": 47880,

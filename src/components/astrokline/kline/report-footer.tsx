@@ -6,8 +6,9 @@ import { trackEvent } from '@/lib/astrokline/track-event';
 import { Download, Share2, Sparkles } from 'lucide-react';
 import { Heading } from "@/components/astrokline/ui/heading";
 
-export function ReportFooter({ profile }: { profile: UserProfile }) {
+export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profile: UserProfile; tier?: string; onUpgradeClick?: () => void }) {
   const [showSharePrompt, setShowSharePrompt] = useState(false);
+  const canSave = tier === 'LITE' || tier === 'PRO' || tier === 'PREMIUM' || tier === 'STANDARD';
 
   // Auto-prompt share after 30 seconds on page
   useEffect(() => {
@@ -50,13 +51,18 @@ export function ReportFooter({ profile }: { profile: UserProfile }) {
             <button
               type="button"
               onClick={() => {
+                if (!canSave) {
+                  if (onUpgradeClick) onUpgradeClick();
+                  else alert('Upgrade to Lite or Pro to save your report.');
+                  return;
+                }
                 trackEvent('share_button_click', { action: 'download' });
                 window.print();
               }}
               className="flex w-full items-center justify-center gap-2  bg-[#D4AF37] py-3.5 text-sm font-bold text-black transition-colors hover:bg-[#FCDD73]"
             >
               <Download className="h-4 w-4" />
-              <span>Save My Report</span>
+              <span>{canSave ? 'Save My Report' : '🔒 Upgrade to Save'}</span>
             </button>
             <button
               type="button"

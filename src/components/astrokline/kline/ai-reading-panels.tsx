@@ -45,8 +45,9 @@ const MODULES: ModuleConfig[] = [
     id: 'summary',
     title: 'Who You Are',
     icon: '🌌',
-    requiredTier: 'FREE',
+    requiredTier: 'LITE',
     shortDesc: 'Your personality at a glance.',
+    lockedTeaser: 'Your birth chart reveals a unique personality blueprint. Upgrade to discover your core traits, natural talents, and life themes.',
   },
   {
     id: 'career',
@@ -127,7 +128,7 @@ export function AiReadingPanels({
 
   // Fetch the massive AI Reading payload silently if FREE+
   useEffect(() => {
-    if (tier === 'GUEST') return; // Guests don't get AI hits to save costs
+    if (tier === 'GUEST' || tier === 'FREE') return; // Guests and Free users don't get AI hits to save costs
     let isMounted = true;
     setIsLoading(true);
 
