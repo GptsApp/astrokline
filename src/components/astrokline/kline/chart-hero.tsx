@@ -32,11 +32,10 @@ export function ChartHero({ profile }: Props) {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden  border border-white/5 bg-[#111015]/80 shadow-2xl backdrop-blur-md"
+          className="relative overflow-hidden border border-white/[0.04] bg-[#0A0A0F]/80 backdrop-blur-sm"
         >
-          {/* Background glows */}
-          <div className="pointer-events-none absolute top-0 right-1/4 h-[200px] w-[200px] bg-purple-500/10 blur-[80px]" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-[150px] w-[150px] bg-[#D4AF37]/5 blur-[60px]" />
+          {/* Background glows - unified single muted gold source */}
+          <div className="pointer-events-none absolute top-0 right-1/4 h-[250px] w-[250px] bg-[#D4AF37]/[0.05] blur-[80px]" />
 
           {/* Header */}
           <div className="relative z-20 flex justify-center pt-6 pb-2">
@@ -62,36 +61,36 @@ export function ChartHero({ profile }: Props) {
             {/* Right: Planetary Positions — two groups */}
             <div className="flex flex-col gap-4">
               {/* Personal Planets */}
-              <div className=" border border-white/5 bg-white/[0.03] p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <Orbit className="text-primary/60 h-3.5 w-3.5" />
-                  <span className="text-primary/50 text-[10px] font-bold tracking-[0.2em] uppercase">
-                    Personal Planets
+              <div className="border border-white/[0.02] bg-white/[0.01] p-5 md:p-6">
+                <div className="mb-4 flex items-center gap-2">
+                  <Orbit className="text-[#D4AF37]/60 h-3.5 w-3.5" />
+                  <span className="text-white/40 text-[9px] font-bold tracking-widest uppercase">
+                    Personal Positions
                   </span>
                 </div>
                 <div className="space-y-0">
                   {personal.map((planet, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between border-b border-white/[0.04] py-2 last:border-b-0"
+                      className="flex items-center justify-between border-b border-white/[0.02] py-2.5 last:border-b-0"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className="bg-primary/10 text-primary/80 flex h-5 w-7 items-center justify-center  font-mono text-[9px] font-bold">
-                          {(planet.name || '').slice(0, 2).toUpperCase()}
+                      <div className="flex items-center gap-3">
+                        <span className="text-white/30 font-mono text-[9px] w-6">
+                          {(planet.name || '').slice(0, 3).toUpperCase()}
                         </span>
-                        <span className="text-sm font-medium text-white/80">
+                        <span className="text-[13px] font-medium text-white/80">
                           {planet.name}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-primary w-[80px] text-sm font-medium">
-                          {planet.sign}
+                      <div className="flex items-center justify-end gap-4 font-mono">
+                        <span className="text-[#D4AF37]/90 w-10 text-right text-xs font-semibold">
+                          {planet.sign.substring(0, 3).toUpperCase()}
                         </span>
-                        <span className="w-[50px] text-right font-mono text-xs text-white/50">
+                        <span className="w-12 text-right text-[11px] text-white/40">
                           {planet.degree}°
                           {planet.minute.toString().padStart(2, '0')}'
                         </span>
-                        <span className="w-6 text-right font-mono text-[10px] text-white/25">
+                        <span className="w-6 text-right text-[9px] text-white/20">
                           H{planet.house}
                         </span>
                       </div>
@@ -101,36 +100,36 @@ export function ChartHero({ profile }: Props) {
               </div>
 
               {/* Outer Planets */}
-              <div className=" border border-white/5 bg-white/[0.03] p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <Globe className="h-3.5 w-3.5 text-indigo-400/60" />
-                  <span className="text-[10px] font-bold tracking-[0.2em] text-indigo-400/50 uppercase">
-                    Outer Planets
+              <div className="border border-white/[0.02] bg-white/[0.01] p-5 md:p-6">
+                <div className="mb-4 flex items-center gap-2">
+                  <Globe className="h-3.5 w-3.5 text-white/30" />
+                  <span className="text-[9px] font-bold tracking-widest text-white/40 uppercase">
+                    Outer & Generational
                   </span>
                 </div>
                 <div className="space-y-0">
                   {outer.map((planet, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between border-b border-white/[0.04] py-2 last:border-b-0"
+                      className="flex items-center justify-between border-b border-white/[0.02] py-2.5 last:border-b-0"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className="flex h-5 w-7 items-center justify-center  bg-indigo-500/10 font-mono text-[9px] font-bold text-indigo-400/80">
-                          {(planet.name || '').slice(0, 2).toUpperCase()}
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-[9px] text-white/30 w-6">
+                          {(planet.name || '').slice(0, 3).toUpperCase()}
                         </span>
-                        <span className="text-sm font-medium text-white/80">
+                        <span className="text-[13px] font-medium text-white/80">
                           {planet.name}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <span className="w-[80px] text-sm font-medium text-indigo-300/80">
-                          {planet.sign}
+                      <div className="flex items-center justify-end gap-4 font-mono">
+                        <span className="w-10 text-right text-xs font-semibold text-white/60">
+                          {planet.sign.substring(0, 3).toUpperCase()}
                         </span>
-                        <span className="w-[50px] text-right font-mono text-xs text-white/50">
+                        <span className="w-12 text-right text-[11px] text-white/40">
                           {planet.degree}°
                           {planet.minute.toString().padStart(2, '0')}'
                         </span>
-                        <span className="w-6 text-right font-mono text-[10px] text-white/25">
+                        <span className="w-6 text-right text-[9px] text-white/20">
                           H{planet.house}
                         </span>
                       </div>
@@ -142,11 +141,11 @@ export function ChartHero({ profile }: Props) {
           </div>
 
           {/* ── Advanced Analysis Toggle ── */}
-          <div className="relative z-20 border-t border-white/5">
+          <div className="relative z-20 border-t border-white/[0.04]">
             <button
               type="button"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex w-full items-center justify-center gap-2 py-3.5 text-xs font-bold tracking-[0.2em] text-white/30 uppercase transition-colors hover:text-white/50"
+              className="flex w-full items-center justify-center gap-2 py-4 text-[9px] font-bold tracking-widest text-white/30 uppercase transition-colors hover:text-white/50"
             >
               Advanced Analysis
               <ChevronDown

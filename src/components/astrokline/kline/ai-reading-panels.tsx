@@ -233,18 +233,18 @@ export function AiReadingPanels({
 
       <div className="mx-auto w-full max-w-4xl space-y-4">
         {tier === 'PRO' && selectedYear && yearFocusEvent && (
-          <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/5 p-6">
-            <div className="mb-2 flex items-center gap-2 text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
-              <Sparkles className="h-3.5 w-3.5" />
+          <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/[0.03] p-6 lg:p-8">
+            <div className="mb-3 flex items-center gap-2 font-mono text-[9px] font-bold tracking-[0.2em] text-[#D4AF37] uppercase">
+              <Sparkles className="h-3 w-3" />
               Year Focus {selectedYear}
             </div>
-            <Heading level={4} className="text-base font-bold text-white">
+            <Heading level={4} className="font-serif text-2xl text-white/90">
               {yearFocusEvent.title}
             </Heading>
-            <p className="mt-2 text-sm leading-7 text-white/70">
+            <p className="mt-3 text-sm leading-relaxed text-white/60">
               {yearFocusEvent.description}
             </p>
-            <p className="mt-3  border border-white/8 bg-white/[0.03] px-4 py-3 text-sm leading-7 text-white/82">
+            <p className="mt-5 border-l-2 border-[#D4AF37]/40 bg-white/[0.02] px-5 py-4 text-[13px] leading-relaxed text-white/80">
               {yearFocusEvent.advice}
             </p>
           </div>
@@ -258,10 +258,12 @@ export function AiReadingPanels({
             <div
               key={mod.id}
               className={cn(
-                'overflow-hidden  border transition-all duration-300',
+                'overflow-hidden border backdrop-blur-sm transition-all duration-500',
                 unlocked
-                  ? 'hover:border-white/20 border-white/10 bg-[#050505]'
-                  : 'cursor-not-allowed border-white/5 bg-[#000000] opacity-80'
+                  ? isOpen 
+                    ? 'border-[#D4AF37]/20 bg-[#D4AF37]/[0.02]' 
+                    : 'border-white/[0.04] bg-[#0A0A0F]/80 hover:bg-[#0A0A0F] hover:border-white/[0.08]'
+                  : 'cursor-not-allowed border-white/[0.02] bg-[#050505]/50 opacity-60'
               )}
             >
               {/* Header Box (Trigger) */}
@@ -276,10 +278,10 @@ export function AiReadingPanels({
                       {mod.icon}
                     </span>
                     <div>
-                      <Heading level={4} className="mb-0.5 text-sm font-bold text-white md:text-base">
+                      <Heading level={4} className="mb-0.5 text-sm font-bold text-white/90 md:text-base">
                         {mod.title}
                       </Heading>
-                      <p className="text-[10px] text-white/40 md:text-xs">
+                      <p className="font-mono tracking-wide text-[10px] text-white/30 md:text-[11px] uppercase mt-1">
                         {mod.shortDesc}
                       </p>
                     </div>
@@ -287,17 +289,17 @@ export function AiReadingPanels({
 
                   <div className="flex items-center gap-3">
                     {!unlocked ? (
-                      <div className="group-hover:bg-primary/10 group-hover:border-primary/30 flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1.5 transition-colors">
-                        <Lock className="group-hover:text-primary h-3.5 w-3.5 text-white/50 transition-colors" />
-                        <span className="group-hover:text-primary hidden text-[10px] font-bold tracking-wider text-white/50 uppercase transition-colors md:block">
+                      <div className="group-hover:bg-[#D4AF37]/10 group-hover:border-[#D4AF37]/30 flex items-center gap-2 border border-white/[0.04] bg-white/[0.02] px-3 py-1.5 transition-colors">
+                        <Lock className="group-hover:text-[#D4AF37] h-3.5 w-3.5 text-white/40 transition-colors" />
+                        <span className="group-hover:text-[#D4AF37] hidden text-[9px] font-bold tracking-widest text-white/40 uppercase transition-colors md:block">
                           Unlock
                         </span>
                       </div>
                     ) : (
                       <ChevronDown
                         className={cn(
-                          'h-5 w-5 text-white/30 transition-transform duration-300',
-                          isOpen && 'rotate-180'
+                          'h-5 w-5 text-white/30 transition-transform duration-500',
+                          isOpen && 'rotate-180 text-[#D4AF37]'
                         )}
                       />
                     )}
@@ -342,16 +344,19 @@ export function AiReadingPanels({
                       : 'grid-rows-[0fr] opacity-0'
                   )}
                 >
-                  <div className="overflow-hidden">
-                    <div className="border-t border-white/5 px-6 pt-2 pb-6">
+                  <div className="relative overflow-hidden">
+                    {/* Active ambient glow */}
+                    <div className="absolute -top-20 -left-20 h-40 w-40 bg-[#D4AF37]/10 blur-[60px]" />
+                    
+                    <div className="relative z-10 border-t border-white/[0.04] px-6 pt-2 pb-8">
                       {isLoading ? (
                         <div className="flex animate-pulse flex-col gap-3">
-                          <div className="h-4 w-3/4  bg-white/10" />
-                          <div className="h-4 w-5/6  bg-white/10" />
-                          <div className="h-4 w-1/2  bg-white/10" />
+                          <div className="h-4 w-3/4 bg-white/[0.04]" />
+                          <div className="h-4 w-5/6 bg-white/[0.04]" />
+                          <div className="h-4 w-1/2 bg-white/[0.04]" />
                         </div>
                       ) : (
-                        <div className="prose prose-invert prose-sm prose-p:leading-relaxed prose-p:text-white/70 prose-strong:text-white/90 prose-h3:text-primary prose-h3:font-bold prose-h3:text-sm prose-h3:tracking-widest prose-h3:uppercase prose-h3:mt-8 prose-h3:mb-4 max-w-none">
+                        <div className="prose prose-invert prose-sm prose-p:leading-relaxed prose-p:text-white/60 prose-strong:text-white/90 prose-h3:text-[#D4AF37] prose-h3:font-normal prose-h3:text-xs prose-h3:tracking-widest prose-h3:uppercase prose-h3:mt-8 prose-h3:mb-4 max-w-none">
                           {insight?.[mod.id] ? (
                             <AstroTextParser text={insight[mod.id]} />
                           ) : (

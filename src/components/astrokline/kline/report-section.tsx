@@ -27,7 +27,7 @@ export function ReportSection({
     return (
       <section
         id={id}
-        className={cn(divider && 'border-t border-white/5', className)}
+        className={cn(divider && 'border-t border-white/[0.04]', className)}
       >
         {children}
       </section>
@@ -39,7 +39,7 @@ export function ReportSection({
       id={id}
       className={cn(
         'mx-auto max-w-5xl px-4 py-8 md:px-6',
-        divider && 'border-t border-white/5',
+        divider && 'border-t border-white/[0.04]',
         className
       )}
     >
