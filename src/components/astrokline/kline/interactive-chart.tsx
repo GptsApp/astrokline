@@ -371,34 +371,29 @@ export function InteractiveChart({
         <div className="mb-8 flex flex-col items-center justify-center text-center">
           <div className="mb-3 inline-flex items-center gap-2 border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#F4E1A1] uppercase">
             <Sparkles className="h-3.5 w-3.5" />
-            K-Line
+            Your Life Curve
           </div>
-          <Heading level={3} className="mb-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
-            100-Year Chart
-          </Heading>
           <Heading level={2} className="text-xl font-semibold text-white/90 md:text-2xl">
-            100-Year Timing Curve {(tier === 'GUEST' || isSimulation) && '(Preview Mode)'}
+            100-Year Timing Curve {(tier === 'GUEST' || isSimulation) && '(Preview)'}
           </Heading>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55">
-            Read the full curve first, then use the summary below to understand
-            the highest point, lowest point, and your current position. Markers
-            are offset from the candles so the chart stays readable.
+            This curve maps your natural momentum across your entire life. Peaks show your strongest years for big moves. Valleys show when to recharge. The markers highlight key moments.
           </p>
         </div>
 
         <div className="mb-5 flex flex-wrap items-center gap-2 text-xs text-white/55">
           <div className="-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-1.5 text-emerald-200">
-            ★ Gold/green star = best expansion window
+            ★ Best year — peak momentum
           </div>
           <div className="-full border border-sky-400/20 bg-sky-500/10 px-3 py-1.5 text-sky-200">
-            ★ Blue star = deepest protection window
+            ★ Toughest year — time to recharge
           </div>
           <div className="-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1.5 text-[#F4E1A1]">
-            Dashed line = your current age
+            Dashed line — you are here
           </div>
           {currentPoint && (
             <div className="-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-              Current score {currentPoint.close} · Avg {avgScore}
+              Your score: {currentPoint.close} · Lifetime avg: {avgScore}
             </div>
           )}
         </div>
@@ -409,11 +404,10 @@ export function InteractiveChart({
             <div className="border-primary/20 pointer-events-auto relative z-10 mt-20 flex flex-col items-center  border bg-black/60 p-6 shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl">
               <Lock className="text-primary mb-3 h-8 w-8" />
               <Heading level={3} className="mb-2 text-xl font-bold text-white">
-                Unlock Your Lifetime Blueprint
+                See Your Full Life Curve
               </Heading>
               <p className="mb-6 max-w-sm text-center text-sm text-white/60">
-                Create a free account to reveal your entire 80-year karmic
-                trajectory and discover your destined turning points.
+                Create a free account to unlock your complete timing curve and discover your strongest years ahead.
               </p>
               <button
                 type="button"
@@ -422,7 +416,7 @@ export function InteractiveChart({
                 }
                 className="bg-primary hover:bg-primary/90 flex items-center gap-2 px-8 py-3 font-bold text-black transition-all hover:scale-105"
               >
-                <Sparkles className="h-4 w-4" /> Sign Up For Free
+                <Sparkles className="h-4 w-4" /> Get Started Free
               </button>
             </div>
           </div>
@@ -595,24 +589,24 @@ export function InteractiveChart({
             <div className="mb-4 flex items-center gap-2">
               <History className="h-4 w-4 text-[#D4AF37]" />
               <Heading level={4} className="font-mono text-[10px] font-bold tracking-widest text-[#D4AF37] uppercase">
-                Cosmic Traceback: {pastLowPoint.year}
+                Look Back: {pastLowPoint.year}
               </Heading>
             </div>
             
             <Heading level={3} className="mb-2 text-base font-bold text-white">
-              System detects {pastLowPoint.year} as a major historical valley.
+              Your curve shows {pastLowPoint.year} was a particularly difficult year.
             </Heading>
             
             {validationState === 'idle' && (
               <div className="animate-in fade-in duration-500">
                 <p className="mb-5 text-sm leading-relaxed text-white/60">
-                  During this Saturn-heavy cycle, your margin for error was extremely low. What was the primary theme of your struggle that year?
+                  People who went through a difficult period around this time often experienced one of these themes. Which one resonates most with you?
                 </p>
                 <div className="grid gap-3 sm:grid-cols-3">
                   {[
-                    'Relationship / Emotional Disconnection',
-                    'Career / Directional Stagnation',
-                    'Intense Internal / Mental Friction'
+                    'A relationship challenge',
+                    'A career setback or change',
+                    'Emotional or personal struggle'
                   ].map((theme) => (
                     <button
                       key={theme}
@@ -633,7 +627,7 @@ export function InteractiveChart({
                 <div className="flex flex-col items-center justify-center gap-3">
                   <div className="h-5 w-5 animate-spin border-2 border-[#D4AF37] border-t-transparent" />
                   <span className="animate-pulse font-mono text-[10px] tracking-widest text-[#D4AF37] uppercase">
-                    Analyzing Chronos Matrix...
+                    Checking your timeline...
                   </span>
                 </div>
               </div>
@@ -644,22 +638,27 @@ export function InteractiveChart({
                 <div className="mb-3 flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                   <span className="text-sm font-semibold text-emerald-400">
-                    Resonance Confirmed
+                    That matches your chart
                   </span>
                 </div>
                 <p className="mb-4 text-sm leading-relaxed text-white/80">
-                  You survived the cosmic bottleneck of {pastLowPoint.year} regarding <strong>{selectedTheme?.split('/')[0].trim().toLowerCase()}</strong>. The friction you felt wasn't a punishment, but a pruning to realign you. Because you endured that valley, your baseline resilience is permanently elevated.
+                  {selectedTheme?.includes('relationship') 
+                    ? <>Your chart shows heightened emotional sensitivity around {pastLowPoint.year}, which often surfaces as <strong>relationship tension</strong>. That period of friction helped clarify what you truly need from the people around you.</>
+                    : selectedTheme?.includes('career')
+                    ? <>Around {pastLowPoint.year}, your chart indicates a period of <strong>career restructuring</strong>. Many people with similar patterns experienced direction changes that ultimately led to better-fitting paths.</>
+                    : <>Your chart highlights {pastLowPoint.year} as a period of deep <strong>personal transformation</strong>. The internal challenges you faced were building emotional resilience that serves you in the years ahead.</>
+                  }
                 </p>
                 <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-4">
                   <p className="flex items-start gap-2 text-sm font-medium text-[#F4E1A1]">
                     <ArrowRight className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>
-                      Your next major peak is calculated to arrive around {pastLowPoint.year + 7} (7-year cycle). But a critical <em>low-margin-of-error</em> window precedes it. 
+                      Based on your curve, your next strong period arrives around age {pastLowPoint.age + 7}. 
                       <button onClick={() => {
                         document.getElementById('ai-insight')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }} className="ml-1 font-bold underline transition-colors hover:text-white">
-                        Unlock your strategy guide
-                      </button> below to ensure you don't miscalculate.
+                        Read your personalized guidance
+                      </button> to make the most of it.
                     </span>
                   </p>
                 </div>
@@ -682,41 +681,41 @@ function getFortuneLevel(
 ): { label: string; color: string; bgColor: string; glyph: string } {
   if (score >= 90 && change >= 0)
     return {
-      label: 'Grand Fortune',
+      label: 'Excellent Year',
       color: 'text-yellow-300',
       bgColor: 'bg-yellow-500/15 border-yellow-500/30',
       glyph: '++',
     };
   if (score >= 75 && change >= 0)
     return {
-      label: 'Auspicious',
+      label: 'Great Year',
       color: 'text-emerald-400',
       bgColor: 'bg-emerald-500/15 border-emerald-500/30',
       glyph: '+',
     };
   if (score >= 60)
     return {
-      label: 'Favorable',
+      label: 'Good Year',
       color: 'text-green-400',
       bgColor: 'bg-green-500/10 border-green-500/20',
       glyph: '+',
     };
   if (score >= 45)
     return {
-      label: 'Neutral',
+      label: 'Steady Year',
       color: 'text-white/50',
       bgColor: 'bg-white/5 border-white/10',
       glyph: '~',
     };
   if (score >= 30)
     return {
-      label: 'Challenging',
+      label: 'Challenging Year',
       color: 'text-orange-400',
       bgColor: 'bg-orange-500/10 border-orange-500/20',
       glyph: '-',
     };
   return {
-    label: 'Adversity',
+    label: 'Difficult Year',
     color: 'text-rose-400',
     bgColor: 'bg-rose-500/15 border-rose-500/30',
     glyph: '--',
@@ -744,20 +743,20 @@ function getComprehensiveReading(
   change: number
 ): string {
   if (score >= 85 && change > 0)
-    return 'Stellar alignment creates a rare window of peak opportunity. Cosmic wind is at your back — bold action rewards tenfold.';
+    return 'This is one of your strongest years. Momentum is building naturally — a great time for big decisions, new projects, and stepping into the spotlight.';
   if (score >= 85)
-    return 'Powerful planetary positions sustain high energy, though momentum may plateau. Consolidate gains wisely.';
+    return 'A powerful year with strong energy, though growth may feel more gradual. Focus on refining what\'s already working.';
   if (score >= 70 && change > 0)
-    return 'Favorable transits are building momentum. Inner planets support growth — lean into emerging opportunities.';
+    return 'Things are picking up. You\'re entering a period where effort pays off more than usual. Lean into the opportunities you see.';
   if (score >= 70)
-    return 'Strong foundational energy persists. Minor retrograde influences may cause temporary friction — patience is your ally.';
+    return 'A solid year overall. Some minor friction may slow things down temporarily, but the foundation is strong.';
   if (score >= 55 && change > 0)
-    return 'Energy is shifting upward through cardinal sign influence. Small wins compound into significant breakthroughs.';
+    return 'Energy is shifting in your favor. Small wins are starting to add up. Stay consistent and watch for emerging opportunities.';
   if (score >= 55)
-    return 'A transitional period where mutable signs dominate. Stay flexible and avoid rigid commitments.';
+    return 'A transitional year. Stay flexible and avoid overcommitting. Adaptability is your biggest asset right now.';
   if (score >= 40)
-    return "Saturn's discipline tests your resolve. This is a pruning year — release what no longer serves your trajectory.";
-  return "Deep transformation through Pluto's influence. The darkest hour precedes dawn. Inner work now plants seeds for future harvest.";
+    return 'A year that asks for patience and discipline. Focus on what truly matters and let go of what isn\'t serving you.';
+  return 'A tough but transformative year. The challenges you face now are building the foundation for something better ahead.';
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -854,7 +853,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
           <div className="mt-2 flex items-center gap-2  border border-white/10 bg-white/5 px-3 py-2">
             <Lock className="h-3.5 w-3.5 text-white/40" />
             <span className="text-xs text-white/60">
-              Upgrade to unlock event details for {d.year}
+              Upgrade to see career, money & relationship forecasts for {d.year}
             </span>
           </div>
         ) : (
@@ -868,9 +867,6 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
             <span className={`text-xs font-bold ${fortune.color}`}>
               {fortune.label}
             </span>
-            <span className="ml-auto font-mono text-[9px] text-white/25">
-              Ruler: {ruler.glyph} {ruler.planet}
-            </span>
           </div>
         )}
       </div>
@@ -881,11 +877,11 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
           {/* OHLC in Astrology Terms */}
           <div className="grid grid-cols-4 gap-1 border-b border-white/5 px-4 py-2 text-center">
             {[
-              { label: 'Open', value: typeof d.open === 'number' ? d.open.toFixed(2) : d.open, color: 'text-white/50' },
-              { label: 'Peak', value: typeof d.high === 'number' ? d.high.toFixed(2) : d.high, color: 'text-purple-400' },
-              { label: 'Nadir', value: typeof d.low === 'number' ? d.low.toFixed(2) : d.low, color: 'text-blue-400' },
+              { label: 'Start', value: typeof d.open === 'number' ? d.open.toFixed(2) : d.open, color: 'text-white/50' },
+              { label: 'High', value: typeof d.high === 'number' ? d.high.toFixed(2) : d.high, color: 'text-purple-400' },
+              { label: 'Low', value: typeof d.low === 'number' ? d.low.toFixed(2) : d.low, color: 'text-blue-400' },
               {
-                label: 'Close',
+                label: 'End',
                 value: typeof d.close === 'number' ? d.close.toFixed(2) : d.close,
                 color: isUp ? 'text-emerald-400' : 'text-rose-400',
               },
@@ -904,7 +900,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
           {/* 4 Palace Analysis */}
           <div className="border-b border-white/5 px-4 py-2.5">
             <p className="mb-1.5 font-mono text-[8px] tracking-widest text-white/20 uppercase">
-              Four Palace Analysis
+              Life Areas
             </p>
             <div className="grid grid-cols-2 gap-2">
               {[
@@ -957,7 +953,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
           {/* Comprehensive Reading */}
           <div className="border-b border-white/5 bg-[#D4AF37]/[0.02] px-4 py-2.5">
             <p className="mb-1 font-mono text-[8px] tracking-widest text-[#D4AF37]/40 uppercase">
-              Comprehensive Reading
+              Year Summary
             </p>
             <p className="text-[11px] leading-relaxed text-white/60">
               {reading}
@@ -987,9 +983,9 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
               {/* LITE gets summary, PRO gets deep Swiss Ephemeris transit block */}
               {tier === 'LITE' ? (
                 <p className=" bg-white/5 p-2 text-[11px] text-white/70 italic">
-                  Upgrade to PRO for exact geometric alignments and orbital
-                  insight.
-                </p>
+                Upgrade to PRO to see exact planetary alignments, personalized
+                advice, and year-by-year action plans.
+              </p>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
                   <div className=" border border-white/5 bg-white/5 p-2">
@@ -1003,7 +999,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
                       {mainTransit.planet} {mainTransit.aspect}
                     </p>
                     <p className="mt-0.5 flex items-center gap-0.5 font-mono text-[8px] text-emerald-400/50">
-                      <ShieldCheck className="h-2.5 w-2.5" /> Swiss Ephemeris
+                      <ShieldCheck className="h-2.5 w-2.5" /> Verified Data
                     </p>
                   </div>
                   <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-2">

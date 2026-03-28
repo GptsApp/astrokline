@@ -45,7 +45,7 @@ export function PremiumDownloadButton({ profile, klineData, transitDetails, tier
         className="flex h-14 w-full sm:w-auto items-center justify-center gap-2  bg-[#D4AF37] px-8 text-sm font-bold text-black transition-all hover:bg-[#F5EBBA]"
       >
         <Sparkles className="h-4 w-4" />
-        UNLOCK 5-YEAR MASTER PLAN ($19.99 VALUE)
+        Upgrade to Download Your 5-Year Outlook
       </Button>
     );
   }

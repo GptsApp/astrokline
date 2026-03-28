@@ -83,10 +83,10 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
                 className="h-4 w-4 text-black md:h-5 md:w-5"
                 fill="currentColor"
               />
-              AI Deep Reading — Decode Your Cosmic Blueprint
+              Get Your AI Personality Reading
             </Heading>
             <p className="text-[11px] font-medium text-black/80 md:text-xs">
-              Personalized analysis powered by Gemini AI
+              Personalized insights powered by Gemini AI
             </p>
           </div>
         </button>
@@ -184,7 +184,7 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
           <div className="space-y-3  border border-white/5 bg-white/[0.02] p-5">
             <Heading level={4} className="mb-3 flex items-center gap-2 border-b border-white/10 pb-2 text-sm font-bold tracking-widest text-white/80 uppercase">
               <Brain className="text-primary h-4 w-4" />
-              Core Identity
+              Your Personality
             </Heading>
             <p className="text-sm leading-[1.8] whitespace-pre-line text-white/70 md:text-[15px]">
               {insight.summary}
@@ -269,7 +269,7 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
                 <div className="text-primary flex items-center gap-2">
                   <Shield className="h-4 w-4" />
                   <span className="text-xs font-bold tracking-wider uppercase">
-                    Superpowers
+                    Key Strengths
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
@@ -283,7 +283,7 @@ export function AiPersonalityInsight({ profile, isPremium = false }: Props) {
                 <div className="flex items-center gap-2 text-amber-400">
                   <AlertTriangle className="h-4 w-4" />
                   <span className="text-xs font-bold tracking-wider uppercase">
-                    Shadow Work
+                    Growth Areas
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
