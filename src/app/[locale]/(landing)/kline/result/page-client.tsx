@@ -173,7 +173,7 @@ export function ResultClient({
               <div className="bg-[#D4AF37]/10 border-[#D4AF37]/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center border">
                 <ShieldCheck className="text-[#D4AF37] h-5 w-5" />
               </div>
-              <Heading level={3} className="text-2xl font-bold tracking-tight">Strategic Realignment Required</Heading>
+              <Heading level={3} className="text-2xl font-bold tracking-tight">Upgrade Your Reading</Heading>
             </div>
             <div className="space-y-4">
               {[

@@ -412,7 +412,7 @@ export function InteractiveChart({
               <button
                 type="button"
                 onClick={() =>
-                  document.getElementById('sign-up-button')?.click()
+                  window.location.href = '/sign-up'
                 }
                 className="bg-primary hover:bg-primary/90 flex items-center gap-2 px-8 py-3 font-bold text-black transition-all hover:scale-105"
               >

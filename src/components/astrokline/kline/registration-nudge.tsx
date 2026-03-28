@@ -57,7 +57,7 @@ export function RegistrationNudge({
           <div className="mb-3 flex items-center gap-2">
             <Sparkles className="text-[#D4AF37] h-5 w-5" />
             <Heading level={3} className="text-foreground text-lg font-bold">
-              Secure Your Risk-Control Strategy
+              Save Your Reading
             </Heading>
           </div>
 
@@ -65,15 +65,15 @@ export function RegistrationNudge({
           <ul className="text-muted-foreground mb-4 space-y-2 text-sm">
             <li className="flex items-center gap-2">
               <span className="bg-[#D4AF37] h-1.5 w-1.5 shrink-0" />
-              Save this K-Line architectural blueprint permanently.
+              Keep your timing curve saved permanently.
             </li>
             <li className="flex items-center gap-2">
               <span className="bg-[#D4AF37] h-1.5 w-1.5 shrink-0" />
-              Receive proactive alerts before major cycle shifts.
+              Get notified before major shifts in your path.
             </li>
             <li className="flex items-center gap-2">
               <span className="bg-[#D4AF37] h-1.5 w-1.5 shrink-0" />
-              Compare orbital alignments with a key partner (1 free).
+              Compare your chart with a partner (1 free reading).
             </li>
           </ul>
 
@@ -87,7 +87,7 @@ export function RegistrationNudge({
               onClick={() => trackEvent('registration_nudge_signup_click')}
               className="bg-[#D4AF37] text-black hover:bg-[#FCDD73] flex-1 py-2.5 text-center text-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all"
             >
-              Archive My Dossier
+              Save My Reading
             </Link>
             <Link
               href={{

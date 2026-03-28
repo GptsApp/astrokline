@@ -49,9 +49,10 @@ export function ReportFooter({ profile }: { profile: UserProfile }) {
           <div className="flex flex-col gap-3">
             <button
               type="button"
-              onClick={() =>
-                trackEvent('share_button_click', { action: 'download' })
-              }
+              onClick={() => {
+                trackEvent('share_button_click', { action: 'download' });
+                window.print();
+              }}
               className="flex w-full items-center justify-center gap-2  bg-[#D4AF37] py-3.5 text-sm font-bold text-black transition-colors hover:bg-[#FCDD73]"
             >
               <Download className="h-4 w-4" />
@@ -59,9 +60,22 @@ export function ReportFooter({ profile }: { profile: UserProfile }) {
             </button>
             <button
               type="button"
-              onClick={() =>
-                trackEvent('share_button_click', { action: 'share' })
-              }
+              onClick={async () => {
+                trackEvent('share_button_click', { action: 'share' });
+                const shareData = {
+                  title: 'My AstroKline Reading',
+                  text: 'Check out my personalized timing curve on AstroKline!',
+                  url: window.location.href,
+                };
+                try {
+                  if (navigator.share) {
+                    await navigator.share(shareData);
+                  } else {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert('Link copied to clipboard!');
+                  }
+                } catch { /* user cancelled */ }
+              }}
               className={`flex w-full items-center justify-center gap-2  border border-white/10 bg-white/5 py-3.5 text-sm font-medium text-white transition-colors hover:border-[#D4AF37]/50 hover:bg-[#111015]/80 ${
                 showSharePrompt ? 'ring-[#D4AF37]/40 animate-pulse ring-2' : ''
               }`}
