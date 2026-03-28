@@ -129,7 +129,7 @@ export function DestinySummaryCard({
         {/* Name & birth year */}
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <span className="mb-1.5 text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase">
-            Destiny Profile
+            Your Reading
           </span>
           <Heading level={2} className="mb-1 font-serif text-2xl text-white/90 md:text-3xl">
             {profile.name}
@@ -169,6 +169,9 @@ export function DestinySummaryCard({
               <TrendIcon className="h-3.5 w-3.5" />
               {trendLabel}
             </div>
+            <span className="mt-1 text-[10px] text-white/25">
+              {score >= 80 ? 'Strong momentum' : score >= 60 ? 'Steady growth' : score >= 45 ? 'Building phase' : score >= 30 ? 'Recovery ahead' : 'Patience pays off'}
+            </span>
           </div>
           <div className="relative flex h-20 w-20 shrink-0 items-center justify-center md:h-24 md:w-24">
             <svg className="absolute inset-0 h-full w-full -rotate-90">

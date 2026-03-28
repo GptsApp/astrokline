@@ -43,8 +43,8 @@ function getScoreLabel(score: number): string {
   if (score >= 80) return 'Excellent';
   if (score >= 65) return 'Good';
   if (score >= 50) return 'Average';
-  if (score >= 35) return 'Weak';
-  return 'Poor';
+  if (score >= 35) return 'Below Average';
+  return 'Challenging';
 }
 
 function getTrendIcon(trend: number) {

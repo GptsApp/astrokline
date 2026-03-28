@@ -27,7 +27,7 @@ export function TrustEvidenceBar({
     <div className="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-2  border border-white/5 bg-white/[0.02] px-4 py-3 font-mono text-[11px] tracking-wide text-white/40">
       <span className="flex items-center gap-1.5">
         <Database className="text-primary/50 h-3 w-3" />
-        Swiss Ephemeris Engine
+        NASA JPL Ephemeris
       </span>
       <span className="flex items-center gap-1.5">
         <MapPin className="text-primary/50 h-3 w-3" />
@@ -35,7 +35,7 @@ export function TrustEvidenceBar({
       </span>
       <span className="flex items-center gap-1.5">
         <Compass className="text-primary/50 h-3 w-3" />
-        Geocentric · Tropical
+        Western Tropical System
       </span>
       <span className="flex items-center gap-1.5">
         <Clock className="text-primary/50 h-3 w-3" />

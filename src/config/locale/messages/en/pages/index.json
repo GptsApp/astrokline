@@ -289,7 +289,7 @@
       },
       "kline_result": {
         "scores": {
-          "title": "Your Baseline Across Eras",
+          "title": "Your Life at a Glance",
           "engine": "Decade Averages",
           "stages": {
             "childhood": "Childhood",
@@ -303,7 +303,7 @@
             "good": "Good",
             "average": "Average",
             "weak": "Weak",
-            "poor": "Poor"
+            "poor": "Challenging"
           },
           "trends": {
             "rising_fast": "Rising Fast",
@@ -321,34 +321,34 @@
           "current": "Current"
         },
         "page_client": {
-          "how_it_is_calculated": "How The Curve Is Calculated",
+          "how_it_is_calculated": "How This Works",
           "calculation_desc1": "We use the Swiss Ephemeris DE431 dataset to compute the precise coordinates of major planetary bodies at any given point in your life.",
           "calculation_desc2": "Instead of general horoscopes, the algorithm plots the geometric angles (aspects) between transiting planets and your natal chart. High-synchronicity transits (trines, sextiles) plot a rising score, while friction transits (squares, oppositions) plot a dip.",
           "how_to_read": "How To Read The Markers",
           "markers_desc1": "The gold line is your overarching momentum trajectory. When it rises, external forces are generally supportive of expansion.",
           "markers_desc2": "Nodes along the curve indicate exact transit hits. Clicking a bright node provides AI-driven analysis of that specific year's astrological weather.",
-          "reading_title": "K-Line Reading",
-          "teaser_hook": "System detects a major turning point in <strong>{year}</strong>. This could be your most important decision window in the next 3 years.",
+          "reading_title": "Your Timing Curve",
+          "teaser_hook": "Your curve highlights a major shift around <strong>{year}</strong>. Tap the chart to explore what's coming.",
           "bands": {
-            "expansion": { "label": "Expansion Phase", "summary": "Push visible moves, ask for leverage, and turn momentum into concrete outcomes." },
-            "protection": { "label": "Protection Phase", "summary": "Reduce risk, protect cash flow, and stabilize your position before expanding again." },
-            "build": { "label": "Build Phase", "summary": "Build capability, improve positioning, and prepare for the next stronger window." }
+            "expansion": { "label": "Growth Window", "summary": "Momentum is on your side. This is a great time to start new projects, take visible action, and build on what's working." },
+            "protection": { "label": "Recharge Window", "summary": "The timeline favors consolidation. Protect your resources, refine your approach, and prepare for the next growth phase." },
+            "build": { "label": "Preparation Window", "summary": "A steady period for learning, planning, and building the foundation for your next big move." }
           },
           "cards": {
             "highest_point": {
-              "title": "Highest Point",
+              "title": "Best Year",
               "stat": "Age {age}",
-              "desc": "Peak momentum year. The trajectory favors expansion, visibility, and capitalizing on established foundations."
+              "desc": "This is your peak momentum year — the best window for launching new ventures, going public with ideas, and making bold moves."
             },
             "lowest_point": {
-              "title": "Lowest Point",
+              "title": "Toughest Year",
               "stat": "Age {age}",
-              "desc": "Key friction year. Structural re-evaluation. A time for building internal resilience rather than external force."
+              "desc": "A year that tests resilience. Focus on inner growth, protect what matters, and trust that easier years are ahead."
             },
             "current_status": {
-              "title": "Current Status",
+              "title": "Where You Are Now",
               "stat": "Age {age}",
-              "desc": "You are currently entering a {trend} phase. Time to align your actions with the upcoming cycle."
+              "desc": "You're currently in a {trend} period. Align your next steps with the energy of this phase for the best results."
             }
           }
         }

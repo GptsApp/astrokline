@@ -43,58 +43,58 @@ interface ModuleConfig {
 const MODULES: ModuleConfig[] = [
   {
     id: 'summary',
-    title: 'Core Identity',
+    title: 'Who You Are',
     icon: '🌌',
     requiredTier: 'FREE',
-    shortDesc: 'Your core personality pattern.',
+    shortDesc: 'Your personality at a glance.',
   },
   {
     id: 'career',
-    title: 'Career & Leverage',
+    title: 'Career & Direction',
     icon: '💼',
     requiredTier: 'LITE',
-    shortDesc: 'Work direction, leverage, and timing.',
-    lockedTeaser: 'K-Line indicates your upcoming career window possesses a strictly limited margin of error. Miscalculating your next move could lead to a stagnation cycle. Unlock your risk-control strategy.',
+    shortDesc: 'Best timing for job changes and big projects.',
+    lockedTeaser: 'Your chart shows a specific career window opening soon. See which years favor bold moves and which favor staying put.',
   },
   {
     id: 'wealth',
-    title: 'Wealth & Asset Flow',
+    title: 'Money & Finances',
     icon: '💎',
     requiredTier: 'LITE',
-    shortDesc: 'Money patterns and financial decisions.',
-    lockedTeaser: 'System detects an imminent, high-volatility wealth expansion window. Ordinary saving won\'t suffice; you need to know exactly when to aggressively allocate. Unlock exact timing.',
+    shortDesc: 'Spending patterns and financial timing.',
+    lockedTeaser: 'Your financial rhythm has clear peaks and valleys. Discover the best years for investing, saving, and taking calculated risks.',
   },
   {
     id: 'love',
-    title: 'Relationships & Alignment',
+    title: 'Relationships & Love',
     icon: '❤️',
     requiredTier: 'LITE',
-    shortDesc: 'Emotional patterns and relationship pressure points.',
-    lockedTeaser: 'A major relationship inflection point is forming in your chart. This transit typically forces either a dramatic separation or a profound commitment. Unlock to navigate this safely.',
+    shortDesc: 'Connection patterns and compatibility insights.',
+    lockedTeaser: 'A meaningful relationship shift is forming in your timeline. Learn when to deepen commitment and when to focus on yourself.',
   },
   {
     id: 'health',
-    title: 'Vitality & Burnout',
+    title: 'Energy & Wellness',
     icon: '⚕️',
     requiredTier: 'LITE',
-    shortDesc: 'Energy management and burnout risks.',
-    lockedTeaser: 'A harsh planetary square is currently draining your baseline vitality. Your body is entering a metabolic protection phase. Unlock your energy conservation protocol.',
+    shortDesc: 'When to push hard and when to rest.',
+    lockedTeaser: 'Your vitality follows a natural rhythm. See which years support peak performance and which call for extra rest and recovery.',
   },
   {
     id: 'strengths',
-    title: 'Innate Leverage (Strengths)',
+    title: 'Natural Strengths',
     icon: '🔥',
     requiredTier: 'PRO',
-    shortDesc: 'Your strongest natural advantages.',
-    lockedTeaser: 'You possess a rare cosmic advantage perfectly suited for the upcoming astrological era, but you are likely suppressing it to fit in. Unlock to reclaim your leverage.',
+    shortDesc: 'The advantages you were born with.',
+    lockedTeaser: 'You have a unique combination of traits that gives you an edge in specific areas. Discover what they are and how to use them.',
   },
   {
     id: 'shadow',
-    title: 'Karmic Blindspots',
+    title: 'Patterns to Watch',
     icon: '🌑',
     requiredTier: 'PRO',
-    shortDesc: 'Recurring mistakes and pressure patterns.',
-    lockedTeaser: 'Your chart reveals a critical, repeating blindspot that has consistently sabotaged your highest peaks in the past. Identify and neutralize it before the next cycle begins.',
+    shortDesc: 'Recurring habits that hold you back.',
+    lockedTeaser: 'Everyone has blind spots. Your chart reveals a recurring pattern that may be quietly limiting your growth. Awareness is the first step.',
   },
 ];
 
@@ -222,12 +222,12 @@ export function AiReadingPanels({
           AI Reading
         </Heading>
         <Heading level={2} className="mb-3 font-serif text-2xl font-bold text-white md:text-3xl">
-          Direct Guidance By Life Area
+          What Your Chart Says About You
         </Heading>
         <p className="mx-auto max-w-xl text-sm text-white/50">
           {tier === 'GUEST'
-            ? 'Sign up to unlock your personalized AI reading.'
-            : 'Open a section below to get practical guidance for that part of life.'}
+            ? 'Create a free account to unlock your personalized reading.'
+            : 'Tap any section below for practical, personalized advice.'}
         </p>
       </div>
 
@@ -290,7 +290,7 @@ export function AiReadingPanels({
                       <div className="group-hover:bg-primary/10 group-hover:border-primary/30 flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1.5 transition-colors">
                         <Lock className="group-hover:text-primary h-3.5 w-3.5 text-white/50 transition-colors" />
                         <span className="group-hover:text-primary hidden text-[10px] font-bold tracking-wider text-white/50 uppercase transition-colors md:block">
-                          {mod.requiredTier === 'LITE' ? 'Lite+' : 'Pro Only'}
+                          Unlock
                         </span>
                       </div>
                     ) : (
@@ -308,14 +308,14 @@ export function AiReadingPanels({
                   <div className="mt-5 w-full z-10">
                      <div className="relative overflow-hidden  border border-[#D4AF37]/30 bg-[#050505] p-6 transition-colors duration-300 group-hover:border-[#D4AF37]/50">
                        <div className="mb-3 flex items-center justify-between opacity-50">
-                          <span className="font-mono text-[9px] tracking-widest text-[#D4AF37] uppercase">Strategic Dossier</span>
+                          <span className="font-mono text-[9px] tracking-widest text-[#D4AF37] uppercase">Preview</span>
                           <Lock className="h-3 w-3 text-[#D4AF37]" />
                        </div>
                        
                        <p className="blur-[3px] text-[11px] leading-relaxed text-white/20 select-none font-mono">
-                         [CLASSIFIED]<br/> 
-                         The upcoming transit configurations present a low-tolerance window for error.<br/> 
-                         Based on orbital decay mappings against natal geometry, immediate strategic realignment is recommended. Execution without these parameters may result in suboptimal phase transitions.
+                         Your personalized analysis for this life area has been generated.<br/> 
+                         It includes specific timing recommendations, key years to watch,<br/> 
+                         and practical guidance based on your unique birth chart data.
                        </p>
                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505]/80 p-6 text-center backdrop-blur-[2px]">
                          <span className="text-[13px] leading-relaxed font-semibold text-white/90 drop-shadow-lg max-w-[95%] mx-auto">

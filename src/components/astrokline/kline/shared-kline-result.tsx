@@ -94,12 +94,12 @@ function FloatingNav() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   const items = [
-    { id: 'destiny-summary', icon: ArrowUp, label: 'Profile' },
-    { id: 'kline-hero', icon: BarChart3, label: 'K-Line' },
-    { id: 'kline-reading', icon: Target, label: 'Reading' },
-    { id: 'life-stages', icon: Layers, label: 'Stages' },
-    { id: 'natal-chart', icon: Star, label: 'Natal' },
-    { id: 'ai-insight', icon: Brain, label: 'AI Reading' },
+    { id: 'destiny-summary', icon: ArrowUp, label: 'You' },
+    { id: 'kline-hero', icon: BarChart3, label: 'Curve' },
+    { id: 'kline-reading', icon: Target, label: 'Insights' },
+    { id: 'life-stages', icon: Layers, label: 'Decades' },
+    { id: 'natal-chart', icon: Star, label: 'Chart' },
+    { id: 'ai-insight', icon: Brain, label: 'Guidance' },
   ];
   return (
     <div className="fixed top-1/2 right-3 z-50 hidden -translate-y-1/2 flex-col gap-2 lg:flex">
@@ -205,6 +205,7 @@ export function SharedKlineResult({
           birthYear={birthYear}
           tier={tier as any}
         />
+        <p className="mt-4 text-center text-xs text-white/30 tracking-wide">Tap any point on the curve to explore that year in detail</p>
       </ReportSection>
 
       {/* ── 3. K-LINE READING ── */}
@@ -223,9 +224,9 @@ export function SharedKlineResult({
                 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
                 className="text-3xl md:text-5xl lg:text-6xl leading-[1.1]"
               >
-                Read the position.
+                See the big picture.
                 <br />
-                Then move.
+                Then decide.
               </Heading>
             </div>
             <div className="flex items-end lg:pb-4">
@@ -233,7 +234,7 @@ export function SharedKlineResult({
                 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
                 className="text-base leading-relaxed text-muted-foreground md:text-lg border-l border-foreground/10 pl-6"
               >
-                This chart answers the questions users actually care about: are you in an expansion phase or a protection phase, which years are strongest for aggressive action, and which years require tighter risk control.
+                Your curve shows which years carry natural momentum and which carry friction. Use it to time career moves, financial decisions, and life changes with confidence.
               </motion.p>
             </div>
           </div>
@@ -283,9 +284,9 @@ export function SharedKlineResult({
               
               <div className="relative z-10 grid gap-4 md:grid-cols-3">
                 {[
-                  { title: 'Long cycle', desc: 'Sets the broad direction of the life curve and shows which periods naturally support expansion versus restructuring.' },
-                  { title: 'Medium cycle', desc: 'Controls pacing. Some years stack momentum, while others are better for consolidation and cleanup.' },
-                  { title: 'Turning points', desc: 'Highlights inflection years so users can change strategy before pressure becomes obvious.' },
+                  { title: 'Life direction', desc: 'Shows which decades naturally support growth and which call for patience and restructuring.' },
+                  { title: 'Year-by-year pacing', desc: 'Some years stack momentum. Others are better for consolidating wins and preparing for the next push.' },
+                  { title: 'Turning points', desc: 'Pinpoints the exact years where your trajectory shifts — so you can adjust before the change arrives.' },
                 ].map((item, i) => (
                   <div key={i} className=" border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.05] hover:shadow-xl">
                     <div className="text-base font-bold text-white/90">{item.title}</div>
@@ -313,7 +314,7 @@ export function SharedKlineResult({
                     <Star className="h-5 w-5" />
                   </div>
                   <div className="text-sm leading-relaxed text-white/60">
-                    <span className="font-bold text-emerald-200">Green star</span> marks the strongest expansion window across the full curve.
+                    <span className="font-bold text-emerald-200">Green star</span> — your strongest year. This is when momentum peaks and big moves pay off.
                   </div>
                 </div>
                 
@@ -322,7 +323,7 @@ export function SharedKlineResult({
                     <Star className="h-5 w-5" />
                   </div>
                   <div className="text-sm leading-relaxed text-white/60">
-                    <span className="font-bold text-sky-200">Blue star</span> marks the deepest protection window where structure matters more than speed.
+                    <span className="font-bold text-sky-200">Blue star</span> — your most challenging year. Slow down, protect what you have, and build resilience.
                   </div>
                 </div>
                 
@@ -331,7 +332,7 @@ export function SharedKlineResult({
                     <div className="h-0.5 w-5 bg-[#D4AF37] opacity-80 mix-blend-screen" />
                   </div>
                   <div className="text-sm leading-relaxed text-white/60">
-                    <span className="font-bold text-[#F4E1A1]">Dashed line</span> shows your current age to judge distance to a peak, low, or reversal zone.
+                    <span className="font-bold text-[#F4E1A1]">Gold line</span> — your current age. See how close you are to your next peak or shift.
                   </div>
                 </div>
               </div>
@@ -359,14 +360,14 @@ export function SharedKlineResult({
         <div className="mt-24 grid grid-cols-1 lg:grid-cols-2 border border-foreground/10 bg-muted/30 relative">
           <div className="p-10 md:p-16 flex flex-col justify-center">
             <div className="mb-8 inline-flex items-center gap-4 text-[10px] font-bold tracking-[0.2em] text-primary uppercase">
-              <span className="h-px w-6 bg-primary" /> Exclusive VIP Access
+              <span className="h-px w-6 bg-primary" /> Keep Your Full Reading
             </div>
             <Heading level={3} variant="section" className="mb-6 text-4xl md:text-5xl leading-[1.1]">
-               Unlock Your <br/>
-               <span className="text-primary italic">5-Year Master Plan.</span>
+               Download Your <br/>
+               <span className="text-primary italic">5-Year Outlook.</span>
              </Heading>
             <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-              Stop guessing your future. Get your uncompromising, highly curated psychological transit blueprint. No daily noise—just your Top 3 epoch-defining karmic transits per year.
+              Get a beautiful PDF with your complete timing curve, decade scores, and the top 3 turning points for each of the next 5 years. Refer back anytime — no login needed.
             </p>
           </div>
           <div className="bg-background border-l border-foreground/10 p-10 md:p-16 flex flex-col items-center justify-center">
@@ -378,7 +379,7 @@ export function SharedKlineResult({
                 tier={tier}
                 onUpgradeClick={onUpgradeClick}
               />
-              <p className="text-xs text-center text-muted-foreground font-mono">Keep it forever, study your cycles, and master your destiny timeline.</p>
+              <p className="text-xs text-center text-muted-foreground font-mono">Keep it forever. Revisit before every big decision.</p>
             </div>
           </div>
         </div>
@@ -389,7 +390,7 @@ export function SharedKlineResult({
         <details className="group mx-auto w-full max-w-4xl overflow-hidden  border border-white/5 bg-black/40 backdrop-blur-sm transition-all duration-300 open:bg-[#111015]/80">
           <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-white/50 transition-colors hover:text-white">
             <span className="text-[11px] font-bold tracking-widest uppercase">
-              Advanced Raw Data (For Astrologers)
+              Full Birth Chart Data
             </span>
             <div className="text-white/30 transition-transform duration-300 group-open:rotate-180">
               ▼
