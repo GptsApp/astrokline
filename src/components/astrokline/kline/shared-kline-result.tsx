@@ -118,7 +118,7 @@ function FloatingNav() {
       { rootMargin: '-30% 0px -70% 0px' }
     );
 
-    const sections = ['destiny-summary', 'kline-hero', 'kline-reading', 'life-stages', 'natal-chart', 'ai-insight'];
+    const sections = ['destiny-summary', 'kline-hero', 'kline-reading', 'life-stages', 'ai-insight', 'natal-chart'];
     sections.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -135,8 +135,8 @@ function FloatingNav() {
     { id: 'kline-hero', icon: BarChart3, label: 'Curve' },
     { id: 'kline-reading', icon: Target, label: 'Insights' },
     { id: 'life-stages', icon: Layers, label: 'Decades' },
-    { id: 'natal-chart', icon: Star, label: 'Chart' },
     { id: 'ai-insight', icon: Brain, label: 'Guidance' },
+    { id: 'natal-chart', icon: Star, label: 'Chart' },
   ];
   return (
     <div className="fixed top-1/2 right-3 z-50 hidden -translate-y-1/2 flex-col gap-2 lg:flex">

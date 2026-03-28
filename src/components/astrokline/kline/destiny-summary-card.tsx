@@ -67,7 +67,7 @@ export function DestinySummaryCard({
             <span className="text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
               Subject
             </span>
-            <Heading level={2} className="truncate font-serif text-3xl text-white/90">
+            <Heading level={2} className="break-words font-serif text-xl md:text-2xl leading-tight text-white/90">
               {profile.name}
             </Heading>
           </div>
@@ -91,7 +91,29 @@ export function DestinySummaryCard({
           </div>
         </div>
 
-        {/* Col 2: Big Three */}
+        {/* Col 2: Score Circle */}
+        <div className="flex flex-col items-center justify-center gap-3 md:pr-6 md:border-r md:border-white/[0.04]">
+           <span className="text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
+              Vitality Index
+           </span>
+           <div className="relative flex h-16 w-16 items-center justify-center">
+              <svg className="absolute inset-0 h-full w-full -rotate-90">
+                <circle cx="50%" cy="50%" r="42%" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="2" />
+                <circle
+                  cx="50%" cy="50%" r="42%" fill="none"
+                  strokeWidth="2" pathLength="100"
+                  style={{ strokeDasharray: '100', strokeDashoffset: 100 - score }}
+                  className={cn('transition-all duration-700', scoreRingColor)}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className={cn('z-10 font-mono text-2xl font-bold leading-none tracking-tight', scoreColor)}>
+                {score}
+              </span>
+           </div>
+        </div>
+
+        {/* Col 3: Big Three */}
         <div className="flex flex-col justify-center gap-3">
            <span className="text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
               Primary Trine
@@ -110,7 +132,7 @@ export function DestinySummaryCard({
            </div>
         </div>
 
-        {/* Col 3: Snapshot Year */}
+        {/* Col 4: Snapshot Year */}
         <div className="flex flex-col justify-center gap-3 md:pl-6 md:border-l md:border-white/[0.04]">
           <span className="text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
              Analysis Year
@@ -130,28 +152,6 @@ export function DestinySummaryCard({
               </span>
             </div>
           </div>
-        </div>
-
-        {/* Col 4: Score Circle */}
-        <div className="flex flex-col items-center justify-center gap-3 border-t border-white/[0.04] pt-6 md:border-t-0 md:pt-0 md:pl-6 md:border-l">
-           <span className="text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
-              Vitality Index
-           </span>
-           <div className="relative flex h-16 w-16 items-center justify-center">
-              <svg className="absolute inset-0 h-full w-full -rotate-90">
-                <circle cx="50%" cy="50%" r="42%" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="2" />
-                <circle
-                  cx="50%" cy="50%" r="42%" fill="none"
-                  strokeWidth="2" pathLength="100"
-                  style={{ strokeDasharray: '100', strokeDashoffset: 100 - score }}
-                  className={cn('transition-all duration-700', scoreRingColor)}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className={cn('z-10 font-mono text-2xl font-bold leading-none tracking-tight', scoreColor)}>
-                {score}
-              </span>
-           </div>
         </div>
       </div>
 
