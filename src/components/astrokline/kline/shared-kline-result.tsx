@@ -27,39 +27,76 @@ function getScoreBand(score: number, t: any) {
 function InsightCard({
   icon: Icon,
   label,
-  title,
+  ageStr,
+  yearStr,
+  scoreStr,
   detail,
-  accentClass,
+  fallback,
+  accentColorClass,
+  accentBgClass,
   delay = 0,
 }: {
   icon: typeof TrendingUp;
   label: string;
-  title: string;
+  ageStr?: string;
+  yearStr?: string | number;
+  scoreStr?: string | number;
   detail: string;
-  accentClass: string;
-  glowClass?: string;
+  fallback?: string;
+  accentColorClass: string;
+  accentBgClass: string;
   delay?: number;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.6, delay }}
-      className="group relative flex flex-col pt-6 border-t border-foreground/10"
+      className="group relative flex flex-col overflow-hidden border border-white/[0.04] bg-[#0A0A0F]/80 p-6 transition-colors hover:border-white/[0.08] hover:bg-white/[0.02] md:p-8"
     >
+      {/* Subtle corner glow effect */}
+      <div className={cn("absolute -right-12 -top-12 h-40 w-40 blur-[60px] opacity-[0.03] transition-opacity group-hover:opacity-[0.08]", accentBgClass.replace('/10', ''))} />
+
       <div className="relative z-10 flex h-full flex-col">
+        {/* Label Badge */}
         <div
           className={cn(
-            'mb-4 w-fit inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase',
-            accentClass
+            'mb-6 w-fit inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-[9px] font-bold tracking-widest uppercase',
+            accentBgClass,
+            accentColorClass
           )}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-3 w-3" />
           {label}
         </div>
-        <div className="text-xl font-bold tracking-tight text-foreground md:text-2xl">{title}</div>
-        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{detail}</p>
+
+        {ageStr && yearStr && scoreStr ? (
+          <>
+            {/* Main Metric: Age & Year */}
+            <div className="mb-1 flex items-baseline gap-2.5">
+              <span className="font-serif text-3xl text-white/90 md:text-4xl">
+                 {ageStr}
+              </span>
+              <span className="font-mono text-sm tracking-widest text-white/30">
+                 {yearStr}
+              </span>
+            </div>
+            
+            {/* Score */}
+            <div className="mb-5 flex items-center gap-2 text-xs">
+               <span className="text-white/40">Score</span>
+               <span className={cn("font-mono font-bold text-sm", accentColorClass)}>{scoreStr}</span>
+            </div>
+          </>
+        ) : (
+          <div className="mb-5 text-lg font-serif text-white/50">{fallback}</div>
+        )}
+
+        <div className="mb-5 h-px w-8 bg-white/10" />
+        
+        {/* Description */}
+        <p className="text-sm leading-relaxed text-white/50">{detail}</p>
       </div>
     </motion.div>
   );
@@ -190,56 +227,65 @@ export function SharedKlineResult({
             <div>
               <motion.div 
                 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                className="mb-8 inline-flex items-center gap-3 text-[10px] font-bold tracking-[0.22em] text-primary uppercase"
+                className="mb-6 inline-flex items-center gap-3 text-[10px] font-bold tracking-[0.22em] text-[#D4AF37]/80 uppercase"
               >
-                <div className="h-px w-6 bg-primary" />
+                <div className="h-px w-6 bg-[#D4AF37]/50" />
                 {t("reading_title")}
               </motion.div>
               <Heading level={2} as={motion.h2}
                 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                className="text-3xl md:text-5xl lg:text-6xl leading-[1.1]"
+                className="text-3xl font-serif text-white/90 md:text-4xl lg:text-5xl lg:leading-[1.15]"
               >
                 See the big picture.
                 <br />
                 Then decide.
               </Heading>
             </div>
-            <div className="flex items-end lg:pb-4">
+            <div className="flex items-end lg:pb-2">
               <motion.p 
                 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                className="text-base leading-relaxed text-muted-foreground md:text-lg border-l border-foreground/10 pl-6"
+                className="pl-6 border-l border-white/10 text-sm leading-relaxed text-white/50 md:text-base"
               >
                 Your curve shows which years carry natural momentum and which carry friction. Use it to time career moves, financial decisions, and life changes with confidence.
               </motion.p>
             </div>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-4 lg:grid-cols-3">
             <InsightCard
               icon={TrendingUp}
               label={t("cards.highest_point.title")}
-              title={highestPoint ? `${t("cards.highest_point.stat", { age: highestPoint.year - birthYear })} · ${highestPoint.year} · Score ${highestPoint.score}` : 'Highest point unavailable'}
+              ageStr={highestPoint ? t("cards.highest_point.stat", { age: highestPoint.year - birthYear }) : undefined}
+              yearStr={highestPoint?.year}
+              scoreStr={highestPoint?.score}
+              fallback="Highest point unavailable"
               detail={t("cards.highest_point.desc")}
-              accentClass="border-emerald-400/20 bg-emerald-500/10 text-emerald-300"
-              glowClass="bg-emerald-500"
+              accentColorClass="text-emerald-400"
+              accentBgClass="bg-emerald-400/10"
               delay={0.1}
             />
             <InsightCard
               icon={TrendingDown}
               label={t("cards.lowest_point.title")}
-              title={lowestPoint ? `${t("cards.lowest_point.stat", { age: lowestPoint.year - birthYear })} · ${lowestPoint.year} · Score ${lowestPoint.score}` : 'Lowest point unavailable'}
+              ageStr={lowestPoint ? t("cards.lowest_point.stat", { age: lowestPoint.year - birthYear }) : undefined}
+              yearStr={lowestPoint?.year}
+              scoreStr={lowestPoint?.score}
+              fallback="Lowest point unavailable"
               detail={t("cards.lowest_point.desc")}
-              accentClass="border-sky-400/20 bg-sky-500/10 text-sky-300"
-              glowClass="bg-sky-500"
+              accentColorClass="text-sky-400"
+              accentBgClass="bg-sky-400/10"
               delay={0.2}
             />
             <InsightCard
               icon={Target}
               label={t("cards.current_status.title")}
-              title={currentPoint ? `${t("cards.current_status.stat", { age: currentPoint.year - birthYear })} · ${currentPoint.year} · Score ${currentPoint.score}` : 'Current year is outside the chart'}
+              ageStr={currentPoint ? t("cards.current_status.stat", { age: currentPoint.year - birthYear }) : undefined}
+              yearStr={currentPoint?.year}
+              scoreStr={currentPoint?.score}
+              fallback="Your current age is outside the visible range."
               detail={currentPoint ? t("cards.current_status.desc", { trend: currentPoint.score > 50 ? 'expansion' : 'protection' }) : 'Your current age is outside the visible range.'}
-              accentClass="border-[#D4AF37]/20 bg-[#D4AF37]/10 text-[#F4E1A1]"
-              glowClass="bg-[#D4AF37]"
+              accentColorClass="text-[#D4AF37]"
+              accentBgClass="bg-[#D4AF37]/10"
               delay={0.3}
             />
           </div>
