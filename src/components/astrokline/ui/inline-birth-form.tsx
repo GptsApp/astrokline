@@ -136,7 +136,7 @@ export function InlineBirthForm() {
             <Heading level={3} variant="card" className="pr-24">Input Coordinates</Heading>
             <div className="flex items-center gap-3 mt-2">
               <p className="text-[10px] tracking-[0.2em] text-primary uppercase font-mono">
-                {step === 0 ? 'Temporal Origin' : 'Spatial Fix'} // 0{step + 1}.02
+                {step === 0 ? 'Temporal Origin' : 'Spatial Fix'} {"//"} 0{step + 1}.02
               </p>
               <div className="flex gap-1.5">
                 {STEP_META.map(s => (

@@ -179,7 +179,7 @@ export function AstroHero({
                  <span className="text-foreground font-bold">{LIVE_ACTIONS[actionIndex].user}</span> 
                  <span className="text-muted-foreground/60 mx-2">[{LIVE_ACTIONS[actionIndex].loc}]</span> 
                  <span className="text-primary/90">{LIVE_ACTIONS[actionIndex].action}</span>
-                 <span className="ml-4 opacity-30">///</span>
+                 <span className="ml-4 opacity-30">{"///"}</span>
                  <span className="text-muted-foreground/40 text-[9px] ml-4 hidden sm:inline-block">LIVE LATENCY: 14ms</span>
                </motion.div>
              </AnimatePresence>
