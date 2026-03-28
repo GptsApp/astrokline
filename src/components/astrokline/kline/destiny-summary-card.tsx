@@ -59,11 +59,11 @@ export function DestinySummaryCard({
       transition={{ duration: 0.5 }}
       className="relative w-full border border-white/[0.06] bg-[#0A0A0F]/80 backdrop-blur-sm"
     >
-      <div className="flex flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:gap-6 md:px-8 md:py-5">
+      <div className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-3 px-5 py-4 md:flex md:flex-row md:items-center md:gap-6 md:px-8 md:py-5">
         
-        {/* ── Left: Name + Meta ── */}
-        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-          <div className="flex items-baseline gap-3">
+        {/* ── 1. Name & Meta ── */}
+        <div className="flex flex-col justify-center md:min-w-0 md:flex-1">
+          <div className="flex items-baseline gap-2.5 md:gap-3">
             <Heading level={2} className="truncate font-serif text-xl text-white/90 md:text-2xl">
               {profile.name}
             </Heading>
@@ -72,8 +72,8 @@ export function DestinySummaryCard({
             </span>
           </div>
           
-          {/* Birth details — inline, muted */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-white/30">
+          {/* Desktop Birth Meta */}
+          <div className="mt-1.5 hidden flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-white/30 md:flex">
             <span className="flex items-center gap-1">
               <Calendar className="h-3 w-3" />
               {profile.birthDate}
@@ -93,23 +93,8 @@ export function DestinySummaryCard({
           </div>
         </div>
 
-        {/* ── Center: Big Three — the star info ── */}
-        <div className="flex items-center gap-1 md:gap-2">
-          {[
-            { glyph: '☉', label: 'Sun', sign: sunSign },
-            { glyph: '☽', label: 'Moon', sign: moonSign },
-            { glyph: '↑', label: 'Asc', sign: risingSign },
-          ].map((item, i) => (
-            <div key={item.label} className="flex items-center gap-1 md:gap-1.5">
-              {i > 0 && <span className="text-white/10 mx-0.5 md:mx-1">·</span>}
-              <span className="text-sm text-white/40 md:text-base">{item.glyph}</span>
-              <span className="text-sm font-semibold text-white/80 md:text-base">{item.sign}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* ── Right: Score ── */}
-        <div className="flex shrink-0 items-center gap-3">
+        {/* ── 2. Score (Mobile Top Right, Desktop Right) ── */}
+        <div className="flex shrink-0 items-center justify-end gap-2.5 md:order-3 md:gap-3">
           <div className="flex flex-col items-end">
             <span className="font-mono text-[9px] tracking-widest text-white/20 uppercase">
               {currentYear}
@@ -117,11 +102,11 @@ export function DestinySummaryCard({
             <div className={cn('flex items-center gap-0.5 text-xs font-medium', 
               scoreDiff > 3 ? 'text-emerald-400/70' : scoreDiff < -3 ? 'text-rose-400/70' : 'text-white/30'
             )}>
-              <TrendIcon className="h-3 w-3" />
+              <TrendIcon className="h-3.5 w-3.5" />
               {trendLabel}
             </div>
           </div>
-          <div className="relative flex h-12 w-12 items-center justify-center md:h-14 md:w-14">
+          <div className="relative flex h-11 w-11 items-center justify-center md:h-14 md:w-14">
             <svg className="absolute inset-0 h-full w-full -rotate-90">
               <circle cx="50%" cy="50%" r="42%" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="3" />
               <circle
@@ -136,6 +121,41 @@ export function DestinySummaryCard({
               {score}
             </span>
           </div>
+        </div>
+
+        {/* ── 3. Big Three (Mobile Middle Row, Desktop Center) ── */}
+        <div className="col-span-2 flex items-center gap-1.5 md:order-2 md:col-auto md:gap-2">
+          {[
+            { glyph: '☉', label: 'Sun', sign: sunSign },
+            { glyph: '☽', label: 'Moon', sign: moonSign },
+            { glyph: '↑', label: 'Asc', sign: risingSign },
+          ].map((item, i) => (
+            <div key={item.label} className="flex items-center gap-1 rounded bg-white/[0.03] px-1.5 py-0.5 md:gap-1.5 md:bg-transparent md:px-0 md:py-0">
+              {i > 0 && <span className="hidden text-white/10 mx-0.5 md:inline-block md:mx-1">·</span>}
+              <span className="text-sm text-white/40 text-center md:text-base">{item.glyph}</span>
+              <span className="text-[13px] font-medium text-white/70 md:text-base md:font-semibold md:text-white/80">{item.sign}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* ── 4. Mobile Birth Meta (Mobile Bottom Row, Desktop Hidden) ── */}
+        <div className="col-span-2 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-white/[0.04] pt-3 text-[11px] text-white/30 md:hidden">
+          <span className="flex items-center gap-1">
+            <Calendar className="h-3 w-3" />
+            {profile.birthDate}
+          </span>
+          {profile.birthTime && (
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {profile.birthTime}
+            </span>
+          )}
+          {profile.birthLocation && (
+            <span className="flex items-center gap-1">
+              <MapPin className="h-3 w-3" />
+              {profile.birthLocation}
+            </span>
+          )}
         </div>
       </div>
 
