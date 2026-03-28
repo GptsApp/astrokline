@@ -14,7 +14,7 @@ import {
 
 import { useSession } from '@/core/auth/client';
 import { useRouter } from '@/core/i18n/navigation';
-import { persistBirthData } from '@/components/astrokline/ui/birth-info-context';
+import { persistBirthData, clearSavedKlineResult } from '@/components/astrokline/ui/birth-info-context';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
@@ -202,6 +202,7 @@ export function Hero() {
                     coordinates.lat !== null &&
                     coordinates.lon !== null
                   ) {
+                    clearSavedKlineResult();
                     persistBirthData({
                       name,
                       gender: '',

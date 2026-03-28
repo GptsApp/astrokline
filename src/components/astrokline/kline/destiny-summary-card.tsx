@@ -6,9 +6,12 @@ import type {
 } from '@/lib/astrokline/mock-astrology-data';
 import { motion } from 'framer-motion';
 import {
+  Calendar,
+  Clock,
   Compass,
   Droplets,
   Flame,
+  MapPin,
   Minus,
   Moon,
   Mountain,
@@ -126,17 +129,33 @@ export function DestinySummaryCard({
 
       {/* Top section: Name + Score */}
       <div className="relative z-10 flex flex-col items-center justify-between gap-4 px-6 py-5 md:flex-row md:px-8 md:py-6">
-        {/* Name & birth year */}
+        {/* Name & birth info */}
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <span className="mb-1.5 text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase">
             Your Reading
           </span>
-          <Heading level={2} className="mb-1 font-serif text-2xl text-white/90 md:text-3xl">
+          <Heading level={2} className="mb-2 font-serif text-2xl text-white/90 md:text-3xl">
             {profile.name}
           </Heading>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-white/40">Born {birthYear}</span>
-            <span className="text-white/10">|</span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="flex items-center gap-1.5 text-sm text-white/40">
+              <Calendar className="h-3 w-3" />
+              {profile.birthDate || '--'}
+            </span>
+            {profile.birthTime && profile.birthTime !== '12:00' && (
+              <span className="flex items-center gap-1.5 text-sm text-white/40">
+                <Clock className="h-3 w-3" />
+                {profile.birthTime}
+              </span>
+            )}
+            {profile.birthLocation && (
+              <span className="flex items-center gap-1.5 text-sm text-white/40">
+                <MapPin className="h-3 w-3" />
+                {profile.birthLocation}
+              </span>
+            )}
+          </div>
+          <div className="mt-2 flex items-center gap-2">
             <span
               className={cn(
                 'inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold',
