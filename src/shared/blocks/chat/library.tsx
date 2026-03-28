@@ -107,14 +107,14 @@ export function ChatLibrary({}) {
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuAction
                     showOnHover
-                    className="data-[state=open]:bg-accent rounded-sm"
+                    className="data-[state=open]:bg-accent "
                   >
                     <IconDots />
                     <span className="sr-only">{t('more')}</span>
                   </SidebarMenuAction>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-24 rounded-lg"
+                  className="w-24 "
                   side={isMobile ? 'bottom' : 'right'}
                   align={isMobile ? 'end' : 'start'}
                 >

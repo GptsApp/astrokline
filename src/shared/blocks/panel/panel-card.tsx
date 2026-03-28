@@ -42,7 +42,7 @@ export function PanelCard({
             {label && (
               <Badge
                 variant="outline"
-                className="float-right rounded-md px-2 py-1 text-xs"
+                className="float-right  px-2 py-1 text-xs"
               >
                 {label}
               </Badge>

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Activity, LockOpen, Sparkles } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 export function InteractiveKLineFake() {
   const years = ['2021', '2022', '2023', '2024', '2025', '2026'];
@@ -14,13 +15,13 @@ export function InteractiveKLineFake() {
 
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-6">
         <div className="mb-12 text-center">
-          <div className="bg-primary/10 border-primary/20 text-primary mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium">
+          <div className="bg-primary/10 border-primary/20 text-primary mb-4 inline-flex items-center gap-2 border px-3 py-1 text-sm font-medium">
             <Sparkles className="h-4 w-4" />
             <span>Interactive K-Line Preview</span>
           </div>
-          <h2 className="mb-4 text-3xl font-bold md:text-5xl">
+          <Heading level={2} className="mb-4">
             Your chart, visualized as a K-Line.
-          </h2>
+          </Heading>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
             See your long-term timing curve in a format that is easy to read,
             compare, and act on.
@@ -33,7 +34,7 @@ export function InteractiveKLineFake() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="group relative h-[500px] w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A0A] pr-4 pb-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] md:h-[600px] md:rounded-3xl"
+          className="group relative h-[500px] w-full max-w-5xl overflow-hidden  border border-white/10 bg-[#0A0A0A] pr-4 pb-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] md:h-[600px] md:"
         >
           {/* Top Info Bar */}
           <div className="absolute top-0 right-0 left-0 z-20 flex h-14 items-center justify-between border-b border-white/10 bg-white/[0.02] px-6">
@@ -42,7 +43,7 @@ export function InteractiveKLineFake() {
                 <Activity className="text-primary h-3 w-3" /> PLANETARY ENERGY:
                 UPLIFTING
               </span>
-              <span className="text-primary bg-primary/10 border-primary/20 rounded border px-3 py-1 text-xs font-bold">
+              <span className="text-primary bg-primary/10 border-primary/20  border px-3 py-1 text-xs font-bold">
                 ASTRO K-LINE SCORE: 88
               </span>
             </div>
@@ -169,12 +170,12 @@ export function InteractiveKLineFake() {
 
               {/* Aha Moment Tooltip (Positioned over the lowest dip at x=400) */}
               <div className="absolute top-[50%] left-[40%] hidden -translate-x-1/2 -translate-y-[120%] flex-col items-center opacity-0 transition-opacity delay-300 duration-500 group-hover:opacity-100 md:flex">
-                <div className="pointer-events-none relative z-10 w-48 rounded-xl border border-white/10 bg-[#111] px-4 py-3 shadow-2xl backdrop-blur-xl">
+                <div className="pointer-events-none relative z-10 w-48  border border-white/10 bg-[#111] px-4 py-3 shadow-2xl backdrop-blur-xl">
                   <div className="mb-1 flex items-center justify-between">
                     <span className="font-mono text-xs text-white/50">
                       2023 Q3
                     </span>
-                    <span className="rounded bg-red-400/10 px-1 py-0.5 text-[10px] font-bold text-red-400">
+                    <span className=" bg-red-400/10 px-1 py-0.5 text-[10px] font-bold text-red-400">
                       CROSSROADS
                     </span>
                   </div>
@@ -189,7 +190,7 @@ export function InteractiveKLineFake() {
 
               {/* Current Peak Tooltip (Positioned over the highest peak at x=800) */}
               <div className="absolute top-[8%] left-[80%] -translate-x-1/2 -translate-y-full flex-col items-center md:flex">
-                <div className="bg-primary/10 border-primary/30 relative z-10 rounded-xl border px-4 py-2 whitespace-nowrap shadow-[0_0_30px_rgba(212,175,55,0.2)] backdrop-blur-xl">
+                <div className="bg-primary/10 border-primary/30 relative z-10  border px-4 py-2 whitespace-nowrap shadow-[0_0_30px_rgba(212,175,55,0.2)] backdrop-blur-xl">
                   <span className="text-primary inline-flex items-center gap-1 text-xs font-bold">
                     <Sparkles className="h-3 w-3" /> You are here: Cosmic peak
                     energy
@@ -218,7 +219,7 @@ export function InteractiveKLineFake() {
         >
           <Link
             href="/sign-in"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 items-center gap-2 rounded-2xl px-8 text-lg font-bold shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-105 hover:shadow-[0_0_50px_-5px_var(--primary)]"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 items-center gap-2  px-8 text-lg font-bold shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-105 hover:shadow-[0_0_50px_-5px_var(--primary)]"
           >
             <LockOpen className="h-5 w-5" />
             Unlock Your Full K-Line — Free

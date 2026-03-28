@@ -72,7 +72,7 @@ export function Blog({
                 target={item.target || '_self'}
                 className="w-full p-4 md:w-1/3"
               >
-                <div className="border-border flex flex-col overflow-clip rounded-xl border">
+                <div className="border-border flex flex-col overflow-clip  border">
                   {item.image && (
                     <div>
                       <img
@@ -105,7 +105,7 @@ export function Blog({
                               <AvatarImage
                                 src={item.author_image || ''}
                                 alt={item.author_name || ''}
-                                className="size-6 rounded-full"
+                                className="size-6"
                               />
                               <AvatarFallback>
                                 {item.author_name?.charAt(0) || 'U'}

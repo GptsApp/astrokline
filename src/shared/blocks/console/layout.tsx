@@ -44,7 +44,7 @@ export function ConsoleLayout({
         <Link
           key={idx}
           href={item.url || ''}
-          className={`flex items-center space-x-3 rounded-md px-3 py-2 text-sm transition-colors ${
+          className={`flex items-center space-x-3  px-3 py-2 text-sm transition-colors ${
             item.is_active ||
             pathname.endsWith(item.url as string) ||
             item.url?.endsWith(pathname)

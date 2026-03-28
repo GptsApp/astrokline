@@ -277,7 +277,7 @@ export function TopBanner({
               {closable ? (
                 <button
                   onClick={handleDismiss}
-                  className="bg-primary/10 flex-shrink-0 rounded p-1 transition-colors"
+                  className="bg-primary/10 flex-shrink-0  p-1 transition-colors"
                   aria-label="Close"
                 >
                   <X className="h-4 w-4" />

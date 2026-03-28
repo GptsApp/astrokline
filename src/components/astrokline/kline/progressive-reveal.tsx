@@ -38,7 +38,7 @@ export function ProgressiveReveal({
 
       {/* CTA overlay at the bottom */}
       <div className="from-background via-background/90 relative z-10 -mt-16 flex flex-col items-center gap-4 bg-gradient-to-t to-transparent pt-20 pb-8">
-        <div className="bg-primary/10 border-primary/20 flex h-12 w-12 items-center justify-center rounded-full border">
+        <div className="bg-primary/10 border-primary/20 flex h-12 w-12 items-center justify-center border">
           <Sparkles className="text-primary h-5 w-5" />
         </div>
         <p className="max-w-sm text-center text-sm text-white/60">
@@ -47,7 +47,7 @@ export function ProgressiveReveal({
         <button
           type="button"
           onClick={onUpgrade}
-          className="bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 rounded-full border px-6 py-2.5 text-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.1)] transition-all hover:scale-105"
+          className="bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 border px-6 py-2.5 text-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.1)] transition-all hover:scale-105"
         >
           Unlock Full Report
         </button>

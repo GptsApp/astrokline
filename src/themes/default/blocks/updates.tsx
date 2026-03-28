@@ -35,7 +35,7 @@ export function Updates({
                   <div className="flex-shrink-0 md:w-48">
                     <div className="pb-10 md:sticky md:top-8">
                       {post.version && (
-                        <div className="text-foreground border-primary text-primary relative z-10 inline-flex items-center justify-center rounded-lg border px-2 py-1 text-xs font-bold">
+                        <div className="text-foreground border-primary text-primary relative z-10 inline-flex items-center justify-center  border px-2 py-1 text-xs font-bold">
                           v{post.version}
                         </div>
                       )}
@@ -52,7 +52,7 @@ export function Updates({
                     {/* Vertical timeline line */}
                     <div className="bg-border absolute top-2 left-0 hidden h-full w-px md:block">
                       {/* Timeline dot */}
-                      <div className="bg-primary absolute z-10 hidden size-3 -translate-x-1/2 rounded-full md:block" />
+                      <div className="bg-primary absolute z-10 hidden size-3 -translate-x-1/2 md:block" />
                     </div>
 
                     <div className="space-y-6">
@@ -67,7 +67,7 @@ export function Updates({
                             {post.tags.map((tag: string) => (
                               <span
                                 key={tag}
-                                className="bg-muted text-muted-foreground flex h-6 w-fit items-center justify-center rounded-full border px-2 text-xs font-medium"
+                                className="bg-muted text-muted-foreground flex h-6 w-fit items-center justify-center border px-2 text-xs font-medium"
                               >
                                 {tag}
                               </span>

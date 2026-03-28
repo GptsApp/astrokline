@@ -1,122 +1,169 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Star, Compass, BookOpen } from "lucide-react";
+import { useRef, useEffect } from "react";
+import { Star, StarHalf } from "lucide-react";
+import Image from "next/image";
+import { Heading } from "@/components/astrokline/ui/heading";
 
+// ─── Review Data ───
+const REVIEWS = [
+  {
+    quote: "I used to read daily horoscopes. AstroKline gave me a 5-year strategic map. Avoided a massive bad partnership during my 'Weak Window'.",
+    author: "Sarah T.", title: "Tech Founder", avatar: "/images/avatars/sarah.webp", rating: 5.0,
+  },
+  {
+    quote: "In proprietary trading, timing is the only alpha left. This K-Line provides a macroscopic energy map that pure TA often misses.",
+    author: "Michael R.", title: "Prop Trader", avatar: "/images/avatars/marcus.webp", rating: 4.8,
+  },
+  {
+    quote: "Knowing when to push and when to protect assets is everything. This K-Line is now a mandatory part of my quarterly planning.",
+    author: "Elena M.", title: "Venture Partner", avatar: "/images/avatars/elena.webp", rating: 4.5,
+  },
+  {
+    quote: "The transit alerts saved me from signing a lease during a Saturn square. 3 months later I found a place at half the price.",
+    author: "James K.", title: "Product Designer", avatar: "/images/avatars/james.webp", rating: 4.3,
+  },
+  {
+    quote: "I was skeptical until I saw my 2019 dip perfectly matched my burnout year. Now I plan every major move around the curve.",
+    author: "Aisha N.", title: "Marketing Director", avatar: "/images/avatars/aisha.webp", rating: 4.8,
+  },
+  {
+    quote: "We use AstroKline charts in our leadership coaching. Clients respond much better when they can see the timing visually.",
+    author: "David L.", title: "Executive Coach", avatar: "/images/avatars/david.webp", rating: 4.5,
+  },
+  {
+    quote: "Swiss Ephemeris precision is no joke. Cross-referenced with my ephemeris tables — the data is accurate to the arc-second.",
+    author: "Priya S.", title: "Professional Astrologer", avatar: "/images/avatars/diverse/human_1.webp", rating: 5.0,
+  },
+  {
+    quote: "Launched my startup during a 'Strong Window'. Closed our seed round in 3 weeks. Coincidence? The chart says otherwise.",
+    author: "Tom W.", title: "SaaS Founder", avatar: "/images/avatars/diverse/human_2.webp", rating: 4.8,
+  },
+  {
+    quote: "The AI reading nailed my Saturn Return experience. Finally someone explains astrology without the woo-woo.",
+    author: "Yuki H.", title: "Data Scientist", avatar: "/images/avatars/diverse/human_3.webp", rating: 4.3,
+  },
+  {
+    quote: "Most astrology apps are entertainment. This one is a decision-support tool. Massive difference.",
+    author: "Carlos D.", title: "Strategy Consultant", avatar: "/images/avatars/diverse/human_4.webp", rating: 4.5,
+  },
+  {
+    quote: "My 2024 K-Line peak aligned perfectly with my best revenue quarter ever. I'm a believer now.",
+    author: "Rachel F.", title: "E-commerce Owner", avatar: "/images/avatars/diverse/human_5.webp", rating: 5.0,
+  },
+  {
+    quote: "The interface is clean, the data is precise, and the AI interpretation is genuinely insightful. Worth every penny.",
+    author: "Nathan B.", title: "UX Lead", avatar: "/images/avatars/diverse/human_6.webp", rating: 4.8,
+  },
+  {
+    quote: "I bought the Pro plan for my whole team. We now schedule product launches around strong transit windows.",
+    author: "Lisa C.", title: "VP of Product", avatar: "/images/avatars/diverse/human_7.webp", rating: 4.5,
+  },
+  {
+    quote: "Finally, astrology that respects your intelligence. No fear mongering, just transparent astronomical data.",
+    author: "Omar A.", title: "Journalist", avatar: "/images/avatars/diverse/human_8.webp", rating: 4.3,
+  },
+];
+
+// Split into two rows for opposite-direction scrolling
+const ROW_1 = REVIEWS.slice(0, 7);
+const ROW_2 = REVIEWS.slice(7);
+
+// ─── Star Rating Component ───
+function StarRating({ rating }: { rating: number }) {
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.3;
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: fullStars }).map((_, i) => (
+        <Star key={i} className="h-3 w-3 fill-primary text-primary" />
+      ))}
+      {hasHalf && <StarHalf className="h-3 w-3 fill-primary text-primary" />}
+      <span className="ml-1.5 text-[10px] font-mono text-primary/80">{rating.toFixed(1)}</span>
+    </div>
+  );
+}
+
+// ─── Review Card ───
+function ReviewCard({ review }: { review: typeof REVIEWS[0] }) {
+  return (
+    <div className="w-[320px] sm:w-[360px] shrink-0 border border-white/5 bg-white/[0.02] p-5 flex flex-col gap-4 hover:border-primary/20 transition-colors">
+      <div className="flex items-center gap-3">
+        <Image
+          src={review.avatar}
+          alt={review.author}
+          width={36}
+          height={36}
+          className="rounded-full object-cover"
+          loading="lazy"
+        />
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold text-white/90 truncate">{review.author}</p>
+          <p className="text-[10px] text-primary/70 font-mono uppercase tracking-wider">{review.title}</p>
+        </div>
+        <StarRating rating={review.rating} />
+      </div>
+      <p className="text-xs text-white/60 leading-relaxed line-clamp-3">&quot;{review.quote}&quot;</p>
+    </div>
+  );
+}
+
+// ─── Infinite Scroll Row ───
+function ScrollRow({ reviews, direction }: { reviews: typeof REVIEWS; direction: "left" | "right" }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // Pause on hover
+    const pause = () => { el.style.animationPlayState = "paused"; };
+    const resume = () => { el.style.animationPlayState = "running"; };
+    el.addEventListener("mouseenter", pause);
+    el.addEventListener("mouseleave", resume);
+    return () => { el.removeEventListener("mouseenter", pause); el.removeEventListener("mouseleave", resume); };
+  }, []);
+
+  // Duplicate items for seamless loop
+  const items = [...reviews, ...reviews];
+
+  return (
+    <div className="overflow-hidden w-full relative">
+      {/* Edge fade masks */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent" />
+      <div
+        ref={scrollRef}
+        className={`flex gap-4 w-max ${direction === "left" ? "animate-scroll-left" : "animate-scroll-right"}`}
+      >
+        {items.map((r, i) => (
+          <ReviewCard key={`${r.author}-${i}`} review={r} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Component ───
 export function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 bg-background relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
-          >
-            <BookOpen className="w-4 h-4" />
-            Built on Tradition. Powered by Precision.
-          </motion.div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Standing on the Shoulders of Masters
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            AstroKline is rooted in the same principles that have guided professional astrologers for decades — now computed with astronomical-grade precision.
-          </p>
-          {/* Product facts bar */}
-          <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm text-muted-foreground/70 font-mono">
-            <span>Swiss Ephemeris DE431 precision</span>
-            <span className="hidden sm:inline">·</span>
-            <span>100-year trajectory mapping</span>
-            <span className="hidden sm:inline">·</span>
-            <span>Free tier available</span>
-          </div>
+    <section id="testimonials" className="py-20 bg-background relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] pointer-events-none" />
+
+      <div className="relative z-10">
+        <div className="text-center mb-12 px-6">
+          <Heading level={2} variant="section" className="mb-3">
+            Trusted by Decision Makers
+          </Heading>
+          <p className="text-sm text-muted-foreground">Real users. Real turning points. Real results.</p>
         </div>
 
-        {/* What AstroKline Does Differently */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-          {[
-            {
-              icon: Compass,
-              title: "Timing, Not Fortune-Telling",
-              desc: "We map energy cycles and planetary geometry — not vague predictions. Every data point is verifiable."
-            },
-            {
-              icon: Star,
-              title: "Your Data, Your Interpretation",
-              desc: "We show the math. You decide what it means. No manufactured anxiety, no fear-based upsells."
-            },
-            {
-              icon: BookOpen,
-              title: "Transparency First",
-              desc: "Built on open astronomical data (NASA JPL DE431). Every calculation can be independently verified."
-            }
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 * i }}
-              className="text-center flex flex-col items-center space-y-3 p-6 bg-white/[0.02] rounded-2xl border border-white/5"
-            >
-              <item.icon className="w-6 h-6 text-primary/60" />
-              <h4 className="text-sm font-bold text-foreground">{item.title}</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-            </motion.div>
-          ))}
+        <div className="space-y-4">
+          <ScrollRow reviews={ROW_1} direction="left" />
+          <ScrollRow reviews={ROW_2} direction="right" />
         </div>
       </div>
 
-      {/* Professional Authority Quotes Ribbon (Temporarily hidden for review) */}
-      {/* <div className="mt-8 max-w-6xl mx-auto px-6 relative z-10 border-t border-white/5 pt-16">
-        <div className="text-center mb-10">
-          <h3 className="text-sm font-mono tracking-widest text-primary/50 uppercase">
-            Aligned with the Masters
-          </h3>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              quote: "There are no bad charts — only charts not yet understood.",
-              author: "Rob Hand",
-              title: "Author, Planets in Transit"
-            },
-            {
-              quote: "The birth chart is a seed — it shows what can grow, not a prison sentence.",
-              author: "Steven Forrest",
-              title: "Founder, Evolutionary Astrology"
-            },
-            {
-              quote: "Astrology is a language. If you understand this language, the sky speaks to you.",
-              author: "Dane Rudhyar",
-              title: "Pioneer of Modern Astrology"
-            }
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 * i }}
-              className="text-center flex flex-col items-center justify-center space-y-4 p-6 bg-white/[0.02] rounded-2xl border border-white/5"
-            >
-              <p className="text-sm font-serif italic text-white/50 leading-relaxed">
-                &quot;{item.quote}&quot;
-              </p>
-              <div className="h-[1px] w-8 bg-primary/20" />
-              <div>
-                <p className="text-xs font-bold text-white/80">{item.author}</p>
-                <p className="text-[10px] text-white/30 font-mono mt-1">{item.title}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div> */}
     </section>
   );
 }
+

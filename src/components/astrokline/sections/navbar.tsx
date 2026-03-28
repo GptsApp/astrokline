@@ -17,7 +17,7 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link href="/" className="group flex items-center gap-2">
-          <div className="bg-primary/10 border-primary/20 group-hover:bg-primary/20 flex h-8 w-8 items-center justify-center rounded-lg border transition-colors">
+          <div className="bg-primary/10 border-primary/20 group-hover:bg-primary/20 flex h-8 w-8 items-center justify-center  border transition-colors">
             <Sparkles className="text-primary h-4 w-4" />
           </div>
           <span className="text-foreground text-lg font-bold tracking-wide">
@@ -35,7 +35,7 @@ export function Navbar() {
           </a>
           <a
             href="#pricing"
-            className="text-primary hover:text-primary/80 bg-primary/10 border-primary/20 rounded-full border px-3 py-1 text-sm font-medium transition-colors"
+            className="text-primary hover:text-primary/80 bg-primary/10 border-primary/20 border px-3 py-1 text-sm font-medium transition-colors"
           >
             Pricing
           </a>
@@ -59,7 +59,7 @@ export function Navbar() {
               </Link>
               <Button
                 asChild
-                className="h-9 rounded-full bg-white px-4 font-semibold text-black shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:bg-white/90"
+                className="h-9 bg-white px-4 font-semibold text-black shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:bg-white/90"
               >
                 <Link href="/kline">Get Started</Link>
               </Button>
@@ -73,7 +73,7 @@ export function Navbar() {
                 Go to Dashboard
               </Link>
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-800">
+                <div className="flex h-9 w-9 items-center justify-center overflow-hidden border border-white/10 bg-zinc-800">
                   {session.user.image ? (
                     <img
                       src={session.user.image}
@@ -159,7 +159,7 @@ export function Navbar() {
                 <>
                   <Button
                     asChild
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 w-full rounded-xl font-bold shadow-[0_0_20px_-5px_var(--primary)]"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 w-full  font-bold shadow-[0_0_20px_-5px_var(--primary)]"
                   >
                     <Link
                       href="/kline"
@@ -181,7 +181,7 @@ export function Navbar() {
                 <Link
                   href="/dashboard/kline"
                   onClick={() => setMobileOpen(false)}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-full items-center justify-center rounded-xl font-bold shadow-[0_0_20px_-5px_var(--primary)]"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 w-full items-center justify-center  font-bold shadow-[0_0_20px_-5px_var(--primary)]"
                 >
                   Go to Dashboard
                   <ArrowRight className="ml-2 h-4 w-4" />

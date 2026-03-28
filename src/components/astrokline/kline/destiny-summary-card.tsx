@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 interface Props {
   profile: UserProfile;
@@ -120,11 +121,8 @@ export function DestinySummaryCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
-      className="relative w-full overflow-hidden rounded-2xl border border-white/5 bg-[#111015]/80 shadow-2xl backdrop-blur-md"
+      className="relative w-full overflow-hidden  border border-white/10 bg-[#050505]"
     >
-      {/* Background Glow */}
-      <div className="pointer-events-none absolute top-0 left-0 h-[200px] w-[200px] rounded-full bg-[#D4AF37]/5 blur-[80px]" />
-      <div className="pointer-events-none absolute right-1/2 bottom-0 h-[200px] w-[200px] rounded-full bg-purple-500/5 blur-[80px]" />
 
       {/* Top section: Name + Score */}
       <div className="relative z-10 flex flex-col items-center justify-between gap-4 px-6 py-5 md:flex-row md:px-8 md:py-6">
@@ -133,15 +131,15 @@ export function DestinySummaryCard({
           <span className="mb-1.5 text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase">
             Destiny Profile
           </span>
-          <h2 className="mb-1 font-serif text-2xl text-white/90 md:text-3xl">
+          <Heading level={2} className="mb-1 font-serif text-2xl text-white/90 md:text-3xl">
             {profile.name}
-          </h2>
+          </Heading>
           <div className="flex items-center gap-2">
             <span className="text-sm text-white/40">Born {birthYear}</span>
             <span className="text-white/10">|</span>
             <span
               className={cn(
-                'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                'inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold',
                 elConf.color,
                 elConf.bg,
                 'border',
@@ -235,11 +233,10 @@ export function DestinySummaryCard({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.3 }}
               className={cn(
-                'flex flex-col items-center gap-2 rounded-xl border border-white/5 bg-gradient-to-b px-2 py-4',
-                item.gradient
+                'flex flex-col items-center gap-2  border border-white/10 bg-white/[0.02] px-2 py-4',
               )}
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5">
+              <div className="flex h-9 w-9 items-center justify-center  border border-white/10 bg-white/5">
                 <Icon className="h-4.5 w-4.5 text-white/60" />
               </div>
               <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase">
@@ -255,7 +252,7 @@ export function DestinySummaryCard({
 
       {/* Element Distribution Bar */}
       <div className="relative z-10 px-6 pb-5 md:px-8 md:pb-6">
-        <div className="flex h-2 items-center gap-1 overflow-hidden rounded-full bg-white/5">
+        <div className="flex h-2 items-center gap-1 overflow-hidden bg-white/5">
           {Object.entries(elements).map(([el, pct]) => {
             const conf = ELEMENT_CONFIG[el] || ELEMENT_CONFIG.fire;
             const colors: Record<string, string> = {
@@ -268,7 +265,7 @@ export function DestinySummaryCard({
               <div
                 key={el}
                 className={cn(
-                  'h-full rounded-full transition-all duration-500',
+                  'h-full transition-all duration-500',
                   colors[el]
                 )}
                 style={{

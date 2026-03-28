@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import {
   JetBrains_Mono,
   Playfair_Display,
-  Plus_Jakarta_Sans,
+  Inter,
 } from 'next/font/google';
 import { getLocale, setRequestLocale } from 'next-intl/server';
 
@@ -17,7 +17,7 @@ import { getAffiliateService } from '@/shared/services/affiliate';
 import { getAnalyticsService } from '@/shared/services/analytics';
 import { getCustomerService } from '@/shared/services/customer_service';
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
@@ -151,9 +151,9 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`dark ${plusJakartaSans.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable}`}
+      className={`dark ${inter.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
-      style={{ colorScheme: 'dark', backgroundColor: '#0A0A0A' }}
+      style={{ colorScheme: 'dark' }}
     >
       <head>
         <link rel="icon" href={envConfigs.app_favicon} />
@@ -196,8 +196,7 @@ export default async function RootLayout({
       </head>
       <body
         suppressHydrationWarning
-        className="overflow-x-hidden"
-        style={{ backgroundColor: '#0A0A0A', color: '#FFFFFF' }}
+        className="overflow-x-hidden bg-background text-foreground"
       >
         <UtmCapture />
 

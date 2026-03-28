@@ -95,7 +95,7 @@ export function ExportPdfButton({
       disabled={isExporting}
       className={
         className ||
-        'text-muted-foreground hover:text-foreground hover:border-primary/30 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm transition-all disabled:opacity-50'
+        'text-muted-foreground hover:text-foreground hover:border-primary/30 flex items-center gap-2 border border-white/10 bg-white/5 px-4 py-2 text-sm transition-all disabled:opacity-50'
       }
     >
       {isExporting ? (

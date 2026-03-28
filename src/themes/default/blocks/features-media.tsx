@@ -48,7 +48,7 @@ export function FeaturesMedia({ section }: { section: Section }) {
           >
             <LazyImage
               src={section.image?.src ?? ''}
-              className="rounded-2xl"
+              className=""
               alt={section.image?.alt ?? ''}
             />
           </motion.div>

@@ -2,12 +2,19 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Sparkles } from 'lucide-react';
+import { Sparkles, BarChart3 } from 'lucide-react';
 
-import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
+import dynamic from 'next/dynamic';
+
+const InteractiveChart = dynamic(
+  () => import('@/components/astrokline/kline/interactive-chart').then(m => m.InteractiveChart),
+  { ssr: false, loading: () => <div className="h-[400px] w-full bg-foreground/5" /> }
+);
 import { MOCK_KLINE_DATA, MOCK_TRANSIT_DETAILS } from '@/lib/astrokline/mock-astrology-data';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
+
+import { Heading } from '@/components/astrokline/ui/heading';
 
 export function AstroKlinePreview({
   section,
@@ -22,32 +29,33 @@ export function AstroKlinePreview({
     <section
       id={section.id || 'kline-preview'}
       className={cn(
-        'py-24 relative border-y border-foreground/5',
+        'py-24 md:py-32 relative bg-background border-t border-foreground/10',
         section.className,
         className
       )}
     >
-      <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
-            <Sparkles className="w-4 h-4" />
-            <span>{section.label || 'Interactive Destiny Tracker'}</span>
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12 flex flex-col items-center">
+        
+        {/* Minimal Header */}
+        <div className="text-center mb-12 space-y-5">
+          <div className="inline-flex items-center gap-3 text-xs uppercase tracking-widest text-primary font-mono">
+            <span className="h-px w-8 bg-primary"></span>
+            <span>Live Preview</span>
+            <span className="h-px w-8 bg-primary"></span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            {section.title}
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            {section.description}
-          </p>
+          
+          <Heading level={2} variant="section" className="text-4xl md:text-5xl leading-[1.1]">
+            {section.title || 'Your 100-Year Timing Curve.'}
+          </Heading>
         </div>
 
-        {/* Professional Chart Simulation */}
+        {/* Full-Width Chart — the hero of this section */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-5xl rounded-2xl md:rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] relative overflow-hidden group pb-8 bg-transparent"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: [0.19, 1.0, 0.22, 1.0] }}
+          className="w-full bg-card border border-foreground/5 p-4 sm:p-6"
         >
           <div className="pointer-events-auto">
             <InteractiveChart
@@ -62,10 +70,12 @@ export function AstroKlinePreview({
           </div>
         </motion.div>
 
-        {/* Below-chart CTA */}
-        <p className="text-center text-sm text-muted-foreground/50 font-mono mt-6">
-          Your past is validated. <a href="#pricing" className="text-primary font-semibold hover:underline">Unlock your future K-Line →</a>
-        </p>
+        {/* Single CTA */}
+        <a href="#pricing" className="mt-8 text-primary hover:text-foreground transition-colors inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider relative group">
+          Unlock the Live Engine
+          <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full"></span>
+        </a>
+
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { BirthInfoWrapper } from '@/components/astrokline/ui/birth-info-wrapper';
 import { MobileStickyCta } from '@/components/astrokline/ui/mobile-sticky-cta';
+import { LiveFomoToast } from '@/components/astrokline/ui/live-fomo-toast';
 import { getTranslations } from 'next-intl/server';
 
 import { envConfigs } from '@/config';
@@ -47,6 +48,7 @@ export default async function LandingLayout({
         )}
         {children}
         <MobileStickyCta />
+        <LiveFomoToast />
       </Layout>
     </BirthInfoWrapper>
   );

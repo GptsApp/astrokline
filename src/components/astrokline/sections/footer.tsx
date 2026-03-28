@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FlaskConical, Lock, Sparkles } from 'lucide-react';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 export function Footer() {
   return (
@@ -8,9 +9,9 @@ export function Footer() {
         <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-4">
           <div className="md:col-span-1">
             <div className="text-center md:text-left">
-              <h3 className="mb-2 bg-gradient-to-r from-[#D4AF37] to-[#FCDD73] bg-clip-text text-xl font-bold text-transparent">
+              <Heading level={3} className="mb-2 bg-gradient-to-r from-[#D4AF37] to-[#FCDD73] bg-clip-text text-xl font-bold text-transparent">
                 AstroKline
-              </h3>
+              </Heading>
               <p className="text-muted-foreground mt-4 max-w-xs text-sm">
                 Turn birth-chart data into a clear timing map for stronger
                 periods, slower periods, and turning points.
@@ -19,7 +20,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-foreground mb-4 font-semibold">Product</h4>
+            <Heading level={4} className="text-foreground mb-4 font-semibold">Product</Heading>
             <ul className="text-muted-foreground space-y-3 text-sm">
               <li>
                 <Link
@@ -41,7 +42,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-foreground mb-4 font-semibold">Company</h4>
+            <Heading level={4} className="text-foreground mb-4 font-semibold">Company</Heading>
             <ul className="text-muted-foreground space-y-3 text-sm">
               <li>
                 <Link
@@ -71,9 +72,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-foreground mb-4 font-semibold">
+            <Heading level={4} className="text-foreground mb-4 font-semibold">
               Science & API
-            </h4>
+            </Heading>
             <ul className="text-muted-foreground space-y-3 text-sm">
               <li>
                 <Link href="#" className="hover:text-primary transition-colors">

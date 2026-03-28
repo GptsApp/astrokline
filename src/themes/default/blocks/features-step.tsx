@@ -19,7 +19,7 @@ export function FeaturesStep({
       id={section.id}
       className={cn('py-16 md:py-24', section.className, className)}
     >
-      <div className="m-4 rounded-[2rem]">
+      <div className="m-4 -[2rem]">
         <div className="@container relative container">
           <ScrollAnimation>
             <div className="mx-auto max-w-2xl text-center">
@@ -38,7 +38,7 @@ export function FeaturesStep({
               {section.items?.map((item, idx) => (
                 <div className="space-y-6" key={idx}>
                   <div className="text-center">
-                    <span className="mx-auto flex size-6 items-center justify-center rounded-full bg-zinc-500/15 text-sm font-medium">
+                    <span className="mx-auto flex size-6 items-center justify-center bg-zinc-500/15 text-sm font-medium">
                       {idx + 1}
                     </span>
                     <div className="relative">

@@ -230,7 +230,7 @@ export function ScrollPicker({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-xl border border-white/10 bg-black/40',
+        'relative overflow-hidden  border border-white/10 bg-black/40',
         className
       )}
       style={{ height: totalHeight }}
@@ -241,7 +241,7 @@ export function ScrollPicker({
 
       {/* Center highlight band */}
       <div
-        className="border-primary/30 bg-primary/[0.07] pointer-events-none absolute inset-x-2 z-[5] rounded-lg border"
+        className="border-primary/30 bg-primary/[0.07] pointer-events-none absolute inset-x-2 z-[5]  border"
         style={{
           top: padCount * itemHeight,
           height: itemHeight,

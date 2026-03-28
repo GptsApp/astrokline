@@ -269,7 +269,7 @@ export function AdvancedAstrologyData({ profile }: Props) {
   );
 
   return (
-    <div className="w-full rounded-b-2xl bg-[#0a0a0d] pb-4">
+    <div className="w-full bg-[#0a0a0d] pb-4">
       {/* Tabs Header */}
       <div className="flex items-center justify-center gap-1 border-b border-white/5 bg-black/40 p-2">
         {[
@@ -282,7 +282,7 @@ export function AdvancedAstrologyData({ profile }: Props) {
             key={tab.id}
             onClick={() => setActiveTab(tab.id as TabType)}
             className={cn(
-              'rounded-md px-4 py-1.5 text-[11px] font-bold tracking-widest uppercase transition-all',
+              ' px-4 py-1.5 text-[11px] font-bold tracking-widest uppercase transition-all',
               activeTab === tab.id
                 ? 'bg-white/10 text-white'
                 : 'text-white/40 hover:bg-white/5 hover:text-white/70'
@@ -304,7 +304,7 @@ export function AdvancedAstrologyData({ profile }: Props) {
             {houseData.map((house, idx) => (
               <div
                 key={idx}
-                className="flex flex-col rounded-lg border border-white/[0.04] bg-white/[0.02] p-2.5"
+                className="flex flex-col  border border-white/[0.04] bg-white/[0.02] p-2.5"
               >
                 <div className="mb-1 flex items-center justify-between">
                   <span className="text-[11px] font-bold text-white/50">
@@ -332,7 +332,7 @@ export function AdvancedAstrologyData({ profile }: Props) {
               aspectData.map((asp, idx) => (
                 <div
                   key={idx}
-                  className="group flex items-center justify-between rounded-lg border border-transparent p-2 transition-colors hover:border-white/[0.04] hover:bg-white/[0.02]"
+                  className="group flex items-center justify-between  border border-transparent p-2 transition-colors hover:border-white/[0.04] hover:bg-white/[0.02]"
                 >
                   <div className="flex items-center gap-2">
                     <span className="w-[60px] text-xs font-medium text-white/80">
@@ -340,7 +340,7 @@ export function AdvancedAstrologyData({ profile }: Props) {
                     </span>
                     <span
                       className={cn(
-                        'rounded px-1.5 py-0.5 text-[9px] font-bold tracking-widest uppercase',
+                        ' px-1.5 py-0.5 text-[9px] font-bold tracking-widest uppercase',
                         asp.isHard
                           ? 'bg-rose-500/10 text-rose-400'
                           : 'bg-blue-500/10 text-blue-400',
@@ -374,7 +374,7 @@ export function AdvancedAstrologyData({ profile }: Props) {
               patternData.map((pat, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col gap-1 rounded-lg border border-white/[0.04] bg-white/[0.02] p-3"
+                  className="flex flex-col gap-1  border border-white/[0.04] bg-white/[0.02] p-3"
                 >
                   <span className="text-primary text-[10px] font-bold tracking-widest uppercase">
                     {pat.type}

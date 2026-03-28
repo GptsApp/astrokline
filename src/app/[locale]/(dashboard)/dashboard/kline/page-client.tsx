@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 interface KlineItem {
   id: string;
@@ -86,24 +87,24 @@ function KlineCard({
 
   return (
     <div
-      className="group hover:border-primary/30 relative cursor-pointer rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all hover:bg-white/8 hover:shadow-[0_0_30px_rgba(212,175,55,0.08)]"
+      className="group hover:border-primary/30 relative cursor-pointer  border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all hover:bg-white/8 hover:shadow-[0_0_30px_rgba(212,175,55,0.08)]"
       onClick={onView}
     >
       {kline.isSelf && (
-        <div className="bg-primary/20 border-primary/40 text-primary absolute -top-2.5 left-4 flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase">
+        <div className="bg-primary/20 border-primary/40 text-primary absolute -top-2.5 left-4 flex items-center gap-1 border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase">
           <Star className="h-3 w-3" /> My Chart
         </div>
       )}
 
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="bg-primary/10 border-primary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
+          <div className="bg-primary/10 border-primary/20 flex h-10 w-10 shrink-0 items-center justify-center border">
             <User className="text-primary/70 h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <h3 className="text-foreground truncate text-base font-bold">
+            <Heading level={3} className="text-foreground truncate text-base font-bold">
               {kline.label || 'Unnamed'}
-            </h3>
+            </Heading>
             <p className="text-muted-foreground mt-0.5 text-xs">
               {sunSign} ☉ · {moonSign} ☽ · {kline.birthDate}
             </p>
@@ -115,7 +116,7 @@ function KlineCard({
           <button
             onClick={handleShare}
             className={cn(
-              'rounded-lg p-2 transition-all',
+              ' p-2 transition-all',
               shareStatus === 'copied'
                 ? 'bg-green-500/10 text-green-400'
                 : 'text-muted-foreground hover:bg-purple-500/10 hover:text-purple-400'
@@ -130,7 +131,7 @@ function KlineCard({
                 e.stopPropagation();
                 onDelete();
               }}
-              className="text-muted-foreground rounded-lg p-2 transition-all hover:bg-red-500/10 hover:text-red-400"
+              className="text-muted-foreground  p-2 transition-all hover:bg-red-500/10 hover:text-red-400"
               title="Delete"
             >
               <Trash2 className="h-4 w-4" />
@@ -362,11 +363,11 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         )}
 
         {/* Header */}
-        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4  border border-white/10 bg-white/5 p-5 backdrop-blur-md sm:flex-row">
           <div>
-            <h2 className="flex items-center gap-2 text-xl font-bold text-white">
+            <Heading level={2} className="flex items-center gap-2 text-xl font-bold text-white">
               <Sparkles className="text-primary h-5 w-5" /> My K-Line Collection
-            </h2>
+            </Heading>
             <p className="text-muted-foreground mt-1 text-sm">
               {klines.length === 0
                 ? 'No charts yet. Create your first one!'
@@ -375,7 +376,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
           </div>
           <button
             onClick={handleNewQuery}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 flex shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all hover:scale-105"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 flex shrink-0 items-center gap-2 px-5 py-2.5 text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all hover:scale-105"
           >
             <Plus className="h-4 w-4" /> New Query
           </button>
@@ -384,23 +385,23 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         {/* List */}
         {isLoadingList ? (
           <div className="flex items-center justify-center py-20">
-            <div className="border-primary/30 border-t-primary h-8 w-8 animate-spin rounded-full border-2" />
+            <div className="border-primary/30 border-t-primary h-8 w-8 animate-spin border-2" />
           </div>
         ) : klines.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="bg-primary/10 border-primary/20 mb-4 flex h-16 w-16 items-center justify-center rounded-full border">
+            <div className="bg-primary/10 border-primary/20 mb-4 flex h-16 w-16 items-center justify-center border">
               <Sparkles className="text-primary/50 h-7 w-7" />
             </div>
-            <h3 className="text-foreground mb-2 text-lg font-bold">
+            <Heading level={3} className="text-foreground mb-2 text-lg font-bold">
               No Charts Yet
-            </h3>
+            </Heading>
             <p className="text-muted-foreground mb-6 max-w-sm text-sm">
               Enter your birth details to generate your personal K-Line, or
               query a friend&apos;s chart.
             </p>
             <button
               onClick={handleNewQuery}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold transition-all"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 px-6 py-2.5 text-sm font-bold transition-all"
             >
               <Plus className="h-4 w-4" /> Create First Chart
             </button>
@@ -452,7 +453,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         ) : (
           <a
             href="/settings/billing"
-            className="text-primary hover:border-primary/30 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm transition-all"
+            className="text-primary hover:border-primary/30 flex items-center gap-2 border border-white/10 bg-white/5 px-4 py-2 text-sm transition-all"
           >
             Upgrade to export PDF
           </a>

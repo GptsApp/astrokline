@@ -95,14 +95,14 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
         <img
           {...props}
           src={imageSrc}
-          className={cn('rounded-lg border', props.className)}
+          className={cn(' border', props.className)}
           style={{ maxWidth: '100%', height: 'auto' }}
         />
       );
     },
     Video: ({ className, ...props }: React.ComponentProps<'video'>) => (
       <video
-        className={cn('rounded-md border', className)}
+        className={cn(' border', className)}
         controls
         loop
         {...props}

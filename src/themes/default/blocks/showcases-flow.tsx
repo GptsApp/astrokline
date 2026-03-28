@@ -126,7 +126,7 @@ export function ShowcasesFlow({
                   key={group.name}
                   onClick={() => setSelectedGroup(group.name)}
                   className={cn(
-                    'relative rounded-lg px-3 py-1.5 text-sm font-medium transition-all',
+                    'relative  px-3 py-1.5 text-sm font-medium transition-all',
                     isSelected
                       ? ''
                       : 'border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground border'
@@ -144,8 +144,8 @@ export function ShowcasesFlow({
                 >
                   {isSelected ? (
                     <>
-                      <span className="bg-primary absolute inset-0 rounded-lg p-[2px]">
-                        <span className="bg-background block h-full w-full rounded-[calc(0.5rem-2px)]" />
+                      <span className="bg-primary absolute inset-0  p-[2px]">
+                        <span className="bg-background block h-full w-full -[calc(0.5rem-2px)]" />
                       </span>
                       <span className="bg-primary relative z-10 bg-clip-text text-transparent">
                         {group.title}
@@ -166,7 +166,7 @@ export function ShowcasesFlow({
           {filteredItems.map((item, index) => (
             <motion.div
               key={index}
-              className="group relative cursor-zoom-in break-inside-avoid overflow-hidden rounded-xl"
+              className="group relative cursor-zoom-in break-inside-avoid overflow-hidden "
               onClick={() => setSelectedIndex(index)}
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -256,7 +256,7 @@ export function ShowcasesFlow({
 
               <button
                 type="button"
-                className="absolute top-1/2 left-4 z-50 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white/70 transition-colors hover:bg-black/40 hover:text-white"
+                className="absolute top-1/2 left-4 z-50 -translate-y-1/2 bg-black/20 p-2 text-white/70 transition-colors hover:bg-black/40 hover:text-white"
                 onClick={(e) => {
                   e.stopPropagation();
                   handlePrevious();
@@ -267,7 +267,7 @@ export function ShowcasesFlow({
 
               <button
                 type="button"
-                className="absolute top-1/2 right-4 z-50 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white/70 transition-colors hover:bg-black/40 hover:text-white"
+                className="absolute top-1/2 right-4 z-50 -translate-y-1/2 bg-black/20 p-2 text-white/70 transition-colors hover:bg-black/40 hover:text-white"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleNext();
@@ -285,7 +285,7 @@ export function ShowcasesFlow({
                 className="relative flex h-full w-full items-center justify-center"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="relative max-h-full max-w-full overflow-hidden rounded-lg">
+                <div className="relative max-h-full max-w-full overflow-hidden ">
                   <LazyImage
                     src={filteredItems[selectedIndex].image?.src ?? ''}
                     alt={filteredItems[selectedIndex].image?.alt ?? ''}

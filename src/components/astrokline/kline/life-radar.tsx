@@ -1,5 +1,7 @@
 'use client';
 
+import { Heading } from "@/components/astrokline/ui/heading";
+
 import { useRef, useState } from 'react';
 import { RadarData } from '@/lib/astrokline/mock-astrology-data';
 import { motion } from 'framer-motion';
@@ -172,13 +174,13 @@ export function LifeRadar({ data }: { data: RadarData[] }) {
   return (
     <div className="w-full space-y-8">
       <div className="mb-10 flex items-center gap-3">
-        <h2 className="font-serif text-3xl tracking-tight text-white/90">
+        <Heading level={2} className="font-serif text-3xl tracking-tight text-white/90">
           Cosmic Dimension Radar
-        </h2>
+        </Heading>
         <div className="ml-4 h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
       </div>
 
-      <div className="grid grid-cols-1 items-center gap-8 rounded-[2.5rem] border border-white/5 bg-[#111015] p-6 shadow-2xl md:p-10 lg:grid-cols-2">
+      <div className="grid grid-cols-1 items-center gap-8 -[2.5rem] border border-white/5 bg-[#111015] p-6 shadow-2xl md:p-10 lg:grid-cols-2">
         {/* Left Side: The Radar Chart */}
         <div
           ref={radarContainerRef}
@@ -186,8 +188,8 @@ export function LifeRadar({ data }: { data: RadarData[] }) {
           className="relative flex h-[350px] w-full cursor-crosshair items-center justify-center md:h-[450px]"
         >
           {/* Deep glow background */}
-          <div className="pointer-events-none absolute top-1/2 left-1/2 h-3/4 w-3/4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4AF37]/5 blur-[80px]" />
-          <div className="pointer-events-none absolute top-1/2 left-1/2 h-1/2 w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-600/5 blur-[60px]" />
+          <div className="pointer-events-none absolute top-1/2 left-1/2 h-3/4 w-3/4 -translate-x-1/2 -translate-y-1/2 bg-[#D4AF37]/5 blur-[80px]" />
+          <div className="pointer-events-none absolute top-1/2 left-1/2 h-1/2 w-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-600/5 blur-[60px]" />
 
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart
@@ -264,9 +266,9 @@ export function LifeRadar({ data }: { data: RadarData[] }) {
                   Active Dimension
                 </span>
               </div>
-              <h3 className="font-serif text-4xl tracking-tight text-white md:text-5xl">
+              <Heading level={3} className="font-serif text-4xl tracking-tight text-white md:text-5xl">
                 {activeData.dimension}
-              </h3>
+              </Heading>
             </div>
 
             <div className="mb-8 flex items-end gap-5">
@@ -284,7 +286,7 @@ export function LifeRadar({ data }: { data: RadarData[] }) {
             </div>
 
             {/* Progress Bar */}
-            <div className="relative mb-8 h-1.5 w-full overflow-hidden rounded-full bg-white/5 shadow-inner">
+            <div className="relative mb-8 h-1.5 w-full overflow-hidden bg-white/5 shadow-inner">
               <motion.div
                 animate={{
                   width: `${activeData.score}%`,
@@ -294,7 +296,7 @@ export function LifeRadar({ data }: { data: RadarData[] }) {
               />
             </div>
 
-            <div className="relative flex min-h-[120px] items-center overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+            <div className="relative flex min-h-[120px] items-center overflow-hidden  border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
               <div
                 className={`absolute top-0 left-0 h-full w-1 ${activeData.score >= 90 ? 'bg-[#D4AF37]' : 'bg-emerald-500'}`}
               />
@@ -305,7 +307,7 @@ export function LifeRadar({ data }: { data: RadarData[] }) {
           </div>
 
           <div className="mt-8 flex items-center justify-center gap-2 opacity-40">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+            <span className="h-1.5 w-1.5 animate-pulse bg-white" />
             <p className="text-center font-mono text-xs tracking-widest uppercase">
               Hover chart to decode dimensions
             </p>

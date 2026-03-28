@@ -6,6 +6,7 @@ import { Link } from '@/core/i18n/navigation';
 import { getUserInfo } from '@/shared/models/user';
 
 import { DashboardWelcomeBanner } from './welcome-banner.client';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 export const revalidate = 0; // Prevent caching for the dashboard
 
@@ -31,14 +32,14 @@ export default async function DashboardOverviewPage({
       {/* Quick Access Grid with Glassmorphism */}
       <div className="group/cards relative grid grid-cols-1 gap-6 md:grid-cols-2">
         <Link href="/dashboard/kline" className="group block h-full">
-          <div className="hover:border-primary/20 relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/5 bg-[#15131A]/40 p-8 backdrop-blur-2xl transition-all duration-500 hover:bg-[#15131A]/60 hover:shadow-[0_0_40px_rgba(212,175,55,0.05)]">
+          <div className="hover:border-primary/20 relative flex h-full flex-col overflow-hidden -[2rem] border border-white/5 bg-[#15131A]/40 p-8 backdrop-blur-2xl transition-all duration-500 hover:bg-[#15131A]/60 hover:shadow-[0_0_40px_rgba(212,175,55,0.05)]">
             {/* Inner Glow */}
             <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            <div className="bg-primary/5 group-hover:bg-primary/10 pointer-events-none absolute bottom-0 left-0 h-32 w-32 rounded-full blur-[50px] transition-colors" />
+            <div className="bg-primary/5 group-hover:bg-primary/10 pointer-events-none absolute bottom-0 left-0 h-32 w-32 blur-[50px] transition-colors" />
 
-            <h3 className="mb-3 font-serif text-2xl text-white">
+            <Heading level={3} className="mb-3 font-serif text-2xl text-white">
               Destiny K-Line
-            </h3>
+            </Heading>
             <p className="text-muted-foreground mb-6 flex-grow leading-relaxed">
               Dive deep into your life's trajectory. See the planetary highs and
               lows mapped out like financial charts to time your biggest
@@ -50,14 +51,14 @@ export default async function DashboardOverviewPage({
           </div>
         </Link>
         <Link href="/settings" className="group block h-full">
-          <div className="hover:border-primary/20 relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/5 bg-[#15131A]/40 p-8 backdrop-blur-2xl transition-all duration-500 hover:bg-[#15131A]/60 hover:shadow-[0_0_40px_rgba(212,175,55,0.05)]">
+          <div className="hover:border-primary/20 relative flex h-full flex-col overflow-hidden -[2rem] border border-white/5 bg-[#15131A]/40 p-8 backdrop-blur-2xl transition-all duration-500 hover:bg-[#15131A]/60 hover:shadow-[0_0_40px_rgba(212,175,55,0.05)]">
             {/* Inner Glow */}
             <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            <div className="bg-primary/5 group-hover:bg-primary/10 pointer-events-none absolute bottom-0 right-0 h-32 w-32 rounded-full blur-[50px] transition-colors" />
+            <div className="bg-primary/5 group-hover:bg-primary/10 pointer-events-none absolute bottom-0 right-0 h-32 w-32 blur-[50px] transition-colors" />
 
-            <h3 className="mb-3 font-serif text-2xl text-white">
+            <Heading level={3} className="mb-3 font-serif text-2xl text-white">
               Account Settings
-            </h3>
+            </Heading>
             <p className="text-muted-foreground mb-6 flex-grow leading-relaxed">
               Manage your personal profile details, active subscriptions, and view API usage metrics.
             </p>

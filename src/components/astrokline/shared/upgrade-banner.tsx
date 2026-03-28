@@ -68,14 +68,14 @@ export function UpgradeBanner({
       className={`px-6 py-16 ${className || ''}`}
     >
       <div className="mx-auto max-w-4xl">
-        <div className="border-primary/20 from-primary/5 via-background to-primary/5 relative overflow-hidden rounded-2xl border bg-gradient-to-br p-8 md:p-12">
+        <div className="border-primary/20 from-primary/5 via-background to-primary/5 relative overflow-hidden  border bg-gradient-to-br p-8 md:p-12">
           {/* Glow effect */}
-          <div className="bg-primary/10 pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full blur-3xl" />
-          <div className="bg-primary/5 pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full blur-3xl" />
+          <div className="bg-primary/10 pointer-events-none absolute -top-20 -right-20 h-60 w-60 blur-3xl" />
+          <div className="bg-primary/5 pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 blur-3xl" />
 
           <div className="relative z-10 text-center">
             {/* Lock icon */}
-            <div className="bg-primary/10 border-primary/20 mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full border">
+            <div className="bg-primary/10 border-primary/20 mb-6 inline-flex h-12 w-12 items-center justify-center border">
               <Lock className="text-primary h-5 w-5" />
             </div>
 
@@ -115,7 +115,7 @@ export function UpgradeBanner({
                   });
                   onUpgradeClick();
                 }}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
+                className="bg-primary text-primary-foreground hover:bg-primary/90  font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
               >
                 Compare Plans →
               </Button>
@@ -124,7 +124,7 @@ export function UpgradeBanner({
                 <Button
                   type="button"
                   size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90  font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
                 >
                   Compare Plans →
                 </Button>

@@ -257,7 +257,7 @@ export default async function BillingPage({
         }
       />
       {payment === 'success' ? (
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-5">
+        <div className=" border border-emerald-500/20 bg-emerald-500/10 p-5">
           <div className="text-sm font-semibold text-emerald-200">
             Payment received.
           </div>

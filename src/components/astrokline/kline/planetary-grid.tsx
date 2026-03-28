@@ -5,6 +5,7 @@ import { PlanetPlacement } from '@/lib/astrokline/mock-astrology-data';
 import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 interface Props {
   planets: PlanetPlacement[];
@@ -104,7 +105,7 @@ export function PlanetaryGrid({ planets, className, compact = false }: Props) {
   return (
     <div
       className={cn(
-        'relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A0A]/80 shadow-2xl backdrop-blur-md',
+        'relative w-full overflow-hidden  border border-white/10 bg-[#0A0A0A]/80 shadow-2xl backdrop-blur-md',
         className
       )}
     >
@@ -116,15 +117,15 @@ export function PlanetaryGrid({ planets, className, compact = false }: Props) {
           compact ? 'px-4 py-2' : 'p-4'
         )}
       >
-        <h3
+        <Heading level={3}
           className={cn(
             'flex items-center gap-2 font-mono font-bold tracking-widest text-white/90 uppercase',
             compact ? 'text-xs' : 'text-sm'
           )}
         >
-          <span className="bg-primary h-1.5 w-1.5 animate-pulse rounded-full" />
+          <span className="bg-primary h-1.5 w-1.5 animate-pulse" />
           Natal Coordinates
-        </h3>
+        </Heading>
         <span className="font-mono text-[9px] tracking-widest text-white/30 uppercase">
           Geocentric / Tropical
         </span>
@@ -242,7 +243,7 @@ export function PlanetaryGrid({ planets, className, compact = false }: Props) {
                   <td className={cellPad}>
                     <span
                       className={cn(
-                        'inline-flex items-center justify-center rounded border border-white/10 bg-white/5 font-bold text-white/70',
+                        'inline-flex items-center justify-center  border border-white/10 bg-white/5 font-bold text-white/70',
                         compact ? 'h-5 w-5 text-[10px]' : 'h-6 w-6 text-xs'
                       )}
                     >

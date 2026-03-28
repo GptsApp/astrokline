@@ -123,7 +123,7 @@ export function AstrologyChartWheel({
       data-testid="astrology-chart-wheel"
     >
       {/* Glow behind the chart */}
-      <div className="bg-primary/5 pointer-events-none absolute inset-0 rounded-full blur-[100px]" />
+      <div className="bg-primary/5 pointer-events-none absolute inset-0 blur-[100px]" />
 
       <svg
         viewBox={`0 0 ${size} ${size}`}

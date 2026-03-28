@@ -3,6 +3,7 @@ import { getKlineByShareToken } from '@/shared/models/kline';
 import { Link } from '@/core/i18n/navigation';
 
 import { SharedKlineClient } from './page-client';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 type PageProps = { params: Promise<{ token: string; locale: string }> };
 
@@ -33,18 +34,18 @@ export default async function SharedKlinePage({ params }: PageProps) {
     return (
       <div className="bg-background flex min-h-screen items-center justify-center">
         <div className="px-6 text-center">
-          <div className="bg-primary/10 border-primary/20 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border">
+          <div className="bg-primary/10 border-primary/20 mx-auto mb-4 flex h-16 w-16 items-center justify-center border">
             <span className="text-2xl">🔒</span>
           </div>
-          <h1 className="text-foreground mb-2 text-2xl font-bold">
+          <Heading level={1} className="text-foreground mb-2 text-2xl font-bold">
             Chart Not Found
-          </h1>
+          </Heading>
           <p className="text-muted-foreground mb-6">
             This chart has been removed or is no longer shared.
           </p>
           <Link
             href="/kline"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 py-2.5 text-sm font-bold transition-all"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 text-sm font-bold transition-all"
           >
             Create Your Own K-Line
           </Link>

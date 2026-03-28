@@ -29,7 +29,7 @@ export function Image({
       alt={value}
       width={width}
       height={height}
-      className={cn('shrink-0 rounded-md object-cover', className)}
+      className={cn('shrink-0  object-cover', className)}
     />
   );
 }

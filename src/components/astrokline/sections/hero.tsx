@@ -19,6 +19,7 @@ import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { useTranslations } from 'next-intl';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 function toTimeSlot(rawTime?: string) {
   if (!rawTime) return 'unknown';
@@ -46,7 +47,7 @@ export function Hero() {
   return (
     <section aria-label="Birth chart K-Line generator" className="bg-background relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
       {/* Background Glow & Particles */}
-      <div className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-[120px]" />
+      <div className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 opacity-60 blur-[120px]" />
 
       {/* Grid Pattern */}
       <div className="pointer-events-none absolute inset-0 bg-[url('/textures/noise.svg')] opacity-20 mix-blend-overlay" />
@@ -66,18 +67,18 @@ export function Hero() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="flex flex-col items-center"
         >
-          <div className="bg-primary/10 border-primary/20 text-primary mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium">
+          <div className="bg-primary/10 border-primary/20 text-primary mb-6 inline-flex items-center gap-2 border px-3 py-1 text-sm font-medium">
             <Sparkles className="h-4 w-4" />
             <span>{t('badge')}</span>
           </div>
 
-          <h1 className="mb-6 bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-4xl leading-tight font-bold tracking-tight text-transparent md:text-6xl">
+          <Heading level={1} className="mb-6 bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-4xl leading-tight font-bold tracking-tight text-transparent md:text-6xl">
             {t('title1')}
             <br />
             <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent">
               {t('title2')}
             </span>
-          </h1>
+          </Heading>
 
           <p className="text-muted-foreground mb-8 max-w-xl text-base leading-relaxed md:text-lg">
             {t('description')}
@@ -85,11 +86,11 @@ export function Hero() {
 
           {/* Dynamic Social Proof & Urgency */}
           <div className="mb-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <div className="inline-flex animate-pulse items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400">
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+            <div className="inline-flex animate-pulse items-center gap-2 border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400">
+              <span className="inline-block h-2 w-2 bg-emerald-400" />
               <span>{t('announcement.title')}</span>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-400">
+            <div className="inline-flex items-center gap-2 border border-red-500/20 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-400">
               🔥 <span>{t('announcement.subtitle')}</span>
             </div>
           </div>
@@ -98,17 +99,17 @@ export function Hero() {
           <div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <div className="flex -space-x-4">
               <img
-                className="border-background z-30 h-10 w-10 rounded-full border-2"
+                className="border-background z-30 h-10 w-10 border-2"
                 src="https://i.pravatar.cc/100?img=11"
                 alt="User 1"
               />
               <img
-                className="border-background z-20 h-10 w-10 rounded-full border-2"
+                className="border-background z-20 h-10 w-10 border-2"
                 src="https://i.pravatar.cc/100?img=32"
                 alt="User 2"
               />
               <img
-                className="border-background z-10 h-10 w-10 rounded-full border-2"
+                className="border-background z-10 h-10 w-10 border-2"
                 src="https://i.pravatar.cc/100?img=53"
                 alt="User 3"
               />
@@ -133,7 +134,7 @@ export function Hero() {
               t('questions.q2'),
               t('questions.q3'),
             ].map((q, i) => (
-              <span key={i} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/60">
+              <span key={i} className="-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/60">
                 {q}
               </span>
             ))}
@@ -142,20 +143,20 @@ export function Hero() {
           {/* Quick Trial Module (Google AI Studio Style Glassmorphism Form) */}
           <div className="group relative mt-4 w-full max-w-5xl">
             {/* Base Glass Backdrop */}
-            <div className="absolute inset-0 z-0 rounded-2xl bg-[#0A0A0A]/40 shadow-2xl backdrop-blur-2xl" />
+            <div className="absolute inset-0 z-0  bg-[#0A0A0A]/40 shadow-2xl backdrop-blur-2xl" />
 
             {/* Ambient Noise and Inner Glow */}
-            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-2xl">
+            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden ">
               <div className="from-primary/10 to-primary/10 absolute inset-0 bg-gradient-to-r via-transparent opacity-30" />
               <div className="absolute inset-0 bg-[url('/textures/noise.svg')] opacity-[0.03] mix-blend-overlay" />
             </div>
 
             {/* Static Border (Visible when light is not passing) */}
-            <div className="pointer-events-none absolute inset-0 z-10 rounded-2xl border border-white/5" />
+            <div className="pointer-events-none absolute inset-0 z-10  border border-white/5" />
 
             {/* The Animated AI Studio Edge Light (Masked specifically to the border) */}
             <div
-              className="pointer-events-none absolute inset-[-1px] z-20 overflow-hidden rounded-[17px]"
+              className="pointer-events-none absolute inset-[-1px] z-20 overflow-hidden -[17px]"
               style={{
                 padding: '1.5px', // Defines the thickness of the glow border
                 WebkitMask:
@@ -237,7 +238,7 @@ export function Hero() {
                       aria-label="Your first name"
                       data-testid="hero-input-name"
                       placeholder="E.g. Elon"
-                      className="focus-visible:ring-primary/50 h-11 rounded-xl border-white/10 bg-black/50 pl-9 text-white"
+                      className="focus-visible:ring-primary/50 h-11  border-white/10 bg-black/50 pl-9 text-white"
                     />
                   </div>
                 </div>
@@ -258,7 +259,7 @@ export function Hero() {
                       autoComplete="bday"
                       aria-label="Date of birth"
                       data-testid="hero-input-dob"
-                      className="focus-visible:ring-primary/50 h-11 rounded-xl border-white/10 bg-black/50 pl-9 text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:filter"
+                      className="focus-visible:ring-primary/50 h-11  border-white/10 bg-black/50 pl-9 text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:filter"
                     />
                   </div>
                 </div>
@@ -278,7 +279,7 @@ export function Hero() {
                       type="time"
                       aria-label="Birth time, optional"
                       data-testid="hero-input-time"
-                      className="focus-visible:ring-primary/50 h-11 rounded-xl border-white/10 bg-black/50 pl-9 text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:filter"
+                      className="focus-visible:ring-primary/50 h-11  border-white/10 bg-black/50 pl-9 text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:filter"
                     />
                   </div>
                 </div>
@@ -306,7 +307,7 @@ export function Hero() {
                     type="submit"
                     data-testid="hero-submit-kline"
                     data-ai-action="generate-kline"
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 w-full rounded-xl px-4 font-bold whitespace-nowrap shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 w-full  px-4 font-bold whitespace-nowrap shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
                   >
                     Generate My K-Line
                     <ArrowRight className="ml-2 h-4 w-4 shrink-0" aria-hidden="true" />

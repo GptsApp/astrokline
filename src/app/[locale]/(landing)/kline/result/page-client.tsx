@@ -24,6 +24,7 @@ import { ShieldCheck } from 'lucide-react';
 import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';
 
@@ -142,8 +143,10 @@ export function ResultClient({
 
   return (
     <div className="bg-background astro-starfield min-h-screen">
-      <div className="relative z-50 mx-auto w-full max-w-7xl px-4 pt-24 md:px-8">
-        <PageBreadcrumb className="mb-0" />
+      <div className="relative z-40 mx-auto w-full max-w-7xl px-4 pt-24 md:px-8 pointer-events-none">
+        <div className="pointer-events-auto inline-block">
+          <PageBreadcrumb className="mb-0" />
+        </div>
       </div>
 
       <SharedKlineResult 
@@ -164,21 +167,21 @@ export function ResultClient({
       {showPricingInline && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={() => setShowPricingInline(false)}>
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-          <div className="border-primary/20 bg-background/95 relative mx-4 max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl border p-8 shadow-[0_0_60px_rgba(212,175,55,0.15)] backdrop-blur-xl" onClick={(e) => e.stopPropagation()}>
+          <div className="border-primary/20 bg-background/95 relative mx-4 max-h-[80vh] w-full max-w-lg overflow-y-auto  border p-8 shadow-[0_0_60px_rgba(212,175,55,0.15)] backdrop-blur-xl" onClick={(e) => e.stopPropagation()}>
             <button onClick={() => setShowPricingInline(false)} className="text-muted-foreground hover:text-foreground absolute top-4 right-4 text-lg transition-colors">✕</button>
             <div className="mb-6 text-center">
-              <div className="bg-[#D4AF37]/10 border-[#D4AF37]/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border">
+              <div className="bg-[#D4AF37]/10 border-[#D4AF37]/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center border">
                 <ShieldCheck className="text-[#D4AF37] h-5 w-5" />
               </div>
-              <h3 className="text-2xl font-bold tracking-tight">Strategic Realignment Required</h3>
+              <Heading level={3} className="text-2xl font-bold tracking-tight">Strategic Realignment Required</Heading>
             </div>
             <div className="space-y-4">
               {[
                 { name: 'Lite', price: '$39.9', desc: '10 saved K-Lines / month + career, wealth, love, health AI modules', id: 'standard' },
                 { name: 'Pro', price: '$79.9', desc: '30 saved K-Lines / month + exact transit detail + premium dashboard tools', id: 'premium', featured: true },
               ].map((plan) => (
-                <a key={plan.id} href={`/pricing`} onClick={() => trackEvent('pricing_plan_click', { plan: plan.id, source: 'inline_modal' })} className={cn('block rounded-xl border p-5 transition-all hover:scale-[1.02]', plan.featured ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-white/10 bg-white/[0.02] hover:border-white/20')}>
-                  <div className="mb-2 flex items-center justify-between"><h4 className="text-foreground font-bold">{plan.name}</h4><span className="text-primary text-lg font-bold">{plan.price}</span></div>
+                <a key={plan.id} href={`/pricing`} onClick={() => trackEvent('pricing_plan_click', { plan: plan.id, source: 'inline_modal' })} className={cn('block  border p-5 transition-all hover:scale-[1.02]', plan.featured ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-white/10 bg-white/[0.02] hover:border-white/20')}>
+                  <div className="mb-2 flex items-center justify-between"><Heading level={4} className="text-foreground font-bold">{plan.name}</Heading><span className="text-primary text-lg font-bold">{plan.price}</span></div>
                   <p className="text-muted-foreground text-xs">{plan.desc}</p>
                 </a>
               ))}

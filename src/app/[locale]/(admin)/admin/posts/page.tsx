@@ -58,7 +58,7 @@ export default async function PostsPage({
           width: 100,
           height: 80,
         },
-        className: 'rounded-md',
+        className: '',
       },
       {
         name: 'categories',

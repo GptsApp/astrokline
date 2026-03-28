@@ -116,12 +116,12 @@ export function AstroWheel({
       )}
     >
       {!isLoaded && !hasError && (
-        <div className="bg-background/50 absolute inset-0 z-10 flex items-center justify-center rounded-full backdrop-blur-sm">
+        <div className="bg-background/50 absolute inset-0 z-10 flex items-center justify-center backdrop-blur-sm">
           <Loader2 className="text-primary h-8 w-8 animate-spin" />
         </div>
       )}
       {hasError ? (
-        <div className="text-muted-foreground bg-primary/5 border-primary/20 absolute inset-0 flex items-center justify-center rounded-full border">
+        <div className="text-muted-foreground bg-primary/5 border-primary/20 absolute inset-0 flex items-center justify-center border">
           <p className="text-sm">Chart rendering unavailable</p>
         </div>
       ) : (

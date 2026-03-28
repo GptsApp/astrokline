@@ -95,7 +95,7 @@ export function Footer({ footer }: { footer: FooterType }) {
                     key={index}
                     href={item.url || ''}
                     target={item.target || ''}
-                    className="text-muted-foreground hover:text-primary bg-background block cursor-pointer rounded-full p-2 duration-150"
+                    className="text-muted-foreground hover:text-primary bg-background block cursor-pointer p-2 duration-150"
                     aria-label={item.title || 'Social media link'}
                   >
                     {item.icon && (

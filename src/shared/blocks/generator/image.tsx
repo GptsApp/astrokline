@@ -794,7 +794,7 @@ export function ImageGenerator({
                 )}
 
                 {isGenerating && (
-                  <div className="space-y-2 rounded-lg border p-4">
+                  <div className="space-y-2  border p-4">
                     <div className="flex items-center justify-between text-sm">
                       <span>{t('progress')}</span>
                       <span>{progress}%</span>
@@ -831,8 +831,8 @@ export function ImageGenerator({
                         <div
                           className={
                             generatedImages.length === 1
-                              ? 'relative overflow-hidden rounded-lg border'
-                              : 'relative aspect-square overflow-hidden rounded-lg border'
+                              ? 'relative overflow-hidden  border'
+                              : 'relative aspect-square overflow-hidden  border'
                           }
                         >
                           <LazyImage
@@ -870,7 +870,7 @@ export function ImageGenerator({
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-16 text-center">
-                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center">
                       <ImageIcon className="text-muted-foreground h-10 w-10" />
                     </div>
                     <p className="text-muted-foreground">

@@ -56,7 +56,7 @@ export function BlogDetail({ post }: { post: PostType }) {
                       <img
                         src={post.author_image}
                         alt={post.author_name}
-                        className="size-6 rounded-full object-cover"
+                        className="size-6 object-cover"
                       />
                     )}
                     <span>{post.author_name}</span>
@@ -76,7 +76,7 @@ export function BlogDetail({ post }: { post: PostType }) {
               {showToc && (
                 <div className="lg:col-span-3">
                   <div className="sticky top-24 hidden md:block">
-                    <div className="bg-muted/30 rounded-lg p-4">
+                    <div className="bg-muted/30  p-4">
                       <h2 className="text-foreground mb-4 flex items-center gap-2 font-semibold">
                         <ListIcon className="size-4" /> {t('toc')}
                       </h2>

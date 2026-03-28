@@ -3,9 +3,8 @@
     "show_sections": [
       "hero",
       "kline-preview",
-      "how-it-works",
-      "features",
       "testimonials",
+      "how-it-works",
       "pricing",
       "faq",
       "cta"
@@ -14,43 +13,43 @@
       "hero": {
         "id": "hero",
         "block": "astro-hero",
-        "title1": "Your birth chart hides a timing map.",
-        "title2": "We made it visible.",
+        "title1": "Know when to push.",
+        "title2": "Know when to wait.",
         "highlight_text": "K-Line",
-        "description": "Most people make career moves, relationship decisions, and financial bets without knowing their cosmic weather. AstroKline turns your exact birth data into a K-Line — so you see the peaks, valleys, and turning points before they hit.",
-        "badge": "Swiss Ephemeris · Precision Astrology",
+        "description": "Career moves, relationship decisions, financial bets — most people guess the timing. AstroKline turns your birth chart into a simple curve so you know which years to bet big, and which to lay low.",
+        "badge": "Birth Chart Timing Tool · Powered by NASA JPL Data",
         "announcement": {
-          "badge": "V2.0",
-          "title": "Live K-Line readings today",
+          "badge": "FREE",
+          "title": "See your 100-year timing curve",
           "url": "/kline",
-          "subtitle": "Start with your first chart for free"
+          "subtitle": "No credit card required"
         },
-        "tip": "Precision birth chart analysis powered by Swiss Ephemeris and NASA JPL data",
+        "tip": "Powered by the same astronomical data used by NASA and professional astrologers worldwide",
         "social_proof": {
-           "quote": "\"Every calculation is transparent, precise, and verifiable — built on the same engine used by professional astrologers worldwide.\"",
-           "author": "— AstroKline Team",
+           "quote": "\"I saw my 2019 burnout on the chart before I even told them about it. The data is eerily accurate.\"",
+           "author": "— Verified User",
            "avatar": "/images/avatars/diverse/hero_casual_1.webp",
-           "readers": "Powered by <strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431"
+           "readers": "Trusted by <strong className=\"font-bold text-white\">12,000+</strong> users worldwide"
         },
         "questions": {
-          "q1": "Is 2026 the right year to quit?",
-          "q2": "Why do I feel stuck since turning 29?",
-          "q3": "When does the pressure finally lift?"
+          "q1": "Is 2026 the right year to make my move?",
+          "q2": "Why have I felt stuck since turning 29?",
+          "q3": "When does this tough phase finally end?"
         }
       },
       "kline-preview": {
         "id": "kline-preview",
         "block": "astro-kline-preview",
-        "title": "Your Birth Chart, Turned Into a K-Line.",
-        "label": "100-Year Destiny Trajectory",
-        "description": "See where your long-term highs, lows, and reversals are likely to happen.",
+        "title": "Your Next 100 Years, One Curve.",
+        "label": "Interactive Demo",
+        "description": "A K-Line maps your life energy — peaks mean momentum, dips mean friction. See exactly when your turning points are likely to happen.",
         "className": "astro-starfield"
       },
       "how-it-works": {
         "id": "how-it-works",
         "block": "astro-how-it-works",
-        "title": "Ready in 30 Seconds",
-        "description": "No astrology knowledge needed. Just your birth details."
+        "title": "Your Chart in 30 Seconds",
+        "description": "No astrology knowledge needed. Enter your birth details — we do the rest."
       },
       "features": {
         "id": "features",
@@ -102,8 +101,8 @@
       "pricing": {
         "id": "pricing",
         "block": "astro-pricing",
-        "title": "Unlock Your Timing Advantage",
-        "description": "The right decision at the wrong time is still the wrong decision. Choose the depth you need.",
+        "title": "Pick Your Depth",
+        "description": "Start free. Upgrade only when you want deeper insights into your career, relationships, and finances.",
         "groups": [
           {
             "name": "monthly",
@@ -118,7 +117,7 @@
         "items": [
           {
             "title": "Free",
-            "description": "Instantly unlock 1 critical turning point in your 2026 chart and see your 100-year trajectory.",
+            "description": "See your full 100-year timing curve and find out what's ahead — completely free, forever.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
@@ -135,7 +134,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "See My K-Line Free",
+              "title": "Generate My Chart — Free",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -143,12 +142,12 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
+            "description": "See how each year affects your career, wealth, love, and health. Less than $1.30/day for timing you can’t get anywhere else.",
             "features_title": "Everything in Free, plus",
             "features": [
               "10 saved K-Lines per month",
               "Career, Wealth, Love & Health breakdowns",
-              "Annual transit summaries per year",
+              "Yearly energy forecasts",
               "Personal dashboard with saved reports",
               "Upgrade to Pro anytime"
             ],
@@ -158,9 +157,9 @@
             "price": "$39.9",
             "unit": "/ month",
             "is_featured": false,
-            "tip": "Billed Monthly",
+            "tip": "Billed Monthly · Cancel anytime",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "Start Lite Plan",
               "url": "/pricing"
             },
             "product_id": "standard-monthly",
@@ -168,8 +167,8 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
+            "description": "Click any year for an instant deep reading. Full access to every tool, every dimension, every turning point.",
+            "label": "Most Popular",
             "features_title": "Everything in Lite, plus",
             "features": [
               "30 saved K-Lines per month",
@@ -186,9 +185,9 @@
             "price": "$79.9",
             "unit": "/ month",
             "is_featured": true,
-            "tip": "Billed Monthly",
+            "tip": "Billed Monthly · Cancel anytime",
             "button": {
-              "title": "Get Full Access",
+              "title": "Start Pro Plan",
               "url": "/pricing"
             },
             "product_id": "premium-monthly",
@@ -196,7 +195,7 @@
           },
           {
             "title": "Free",
-            "description": "Instantly unlock 1 critical turning point in your 2026 chart and see your 100-year trajectory.",
+            "description": "See your full 100-year timing curve and find out what's ahead — completely free, forever.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
@@ -213,7 +212,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "See My K-Line Free",
+              "title": "Generate My Chart — Free",
               "url": "/pricing"
             },
             "product_id": "free-yearly",
@@ -221,12 +220,12 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
+            "description": "See how each year affects your career, wealth, love, and health — so every big decision has timing on its side.",
             "features_title": "Everything in Free, plus",
             "features": [
               "10 saved K-Lines per month",
               "Career, Wealth, Love & Health breakdowns",
-              "Annual transit summaries per year",
+              "Yearly energy forecasts",
               "Personal dashboard with saved reports",
               "Upgrade to Pro anytime"
             ],
@@ -237,9 +236,9 @@
             "original_price": "$39.9",
             "unit": "/ month",
             "is_featured": false,
-            "tip": "Billed yearly at $238.8",
+            "tip": "Billed yearly at $238.8 · Cancel anytime",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "Start Lite Plan",
               "url": "/pricing"
             },
             "product_id": "standard-yearly",
@@ -247,8 +246,8 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
+            "description": "Click any year for an instant deep reading. Full access to every tool, every dimension, every turning point.",
+            "label": "Most Popular",
             "features_title": "Everything in Lite, plus",
             "features": [
               "30 saved K-Lines per month",
@@ -266,9 +265,9 @@
             "original_price": "$79.9",
             "unit": "/ month",
             "is_featured": true,
-            "tip": "Billed yearly at $478.8",
+            "tip": "Billed yearly at $478.8 · Cancel anytime",
             "button": {
-              "title": "Get Full Access",
+              "title": "Start Pro Plan",
               "url": "/pricing"
             },
             "product_id": "premium-yearly",
@@ -285,8 +284,8 @@
       "cta": {
         "id": "cta",
         "block": "astro-cta",
-        "title": "Your Turning Point Is Coming.",
-        "description": "The question is: will you see it before it hits, or after?"
+        "title": "Your Next Turning Point Is Already on the Map.",
+        "description": "Will you see it coming, or only recognize it in hindsight? Generate your chart for free — no credit card, no commitment."
       },
       "kline_result": {
         "scores": {

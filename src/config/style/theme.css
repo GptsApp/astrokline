@@ -1,115 +1,81 @@
 @layer base {
-  :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.141 0.005 285.823);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.141 0.005 285.823);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.141 0.005 285.823);
-    --primary: oklch(0.781 0.134 88.086);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.141 0.005 285.823);
-    --muted: oklch(0.967 0.001 286.375);
-    --muted-foreground: oklch(0.552 0.016 285.938);
-    --accent: oklch(0.967 0.001 286.375);
-    --accent-foreground: oklch(0.141 0.005 285.823);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.92 0.004 286.32);
-    --input: oklch(0.92 0.004 286.32);
-    --ring: oklch(0.781 0.134 88.086);
-    --chart-1: oklch(0.781 0.134 88.086);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.141 0.005 285.823);
-    --sidebar-primary: oklch(0.781 0.134 88.086);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.967 0.001 286.375);
-    --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-    --sidebar-border: oklch(0.92 0.004 286.32);
-    --sidebar-ring: oklch(0.781 0.134 88.086);
-    --radius: 0.5rem;
+  :root,
+  .dark {
+    /* Impeccable.style - Gold-Tinted Dark Mode */
+    /* Hue 85 = Gold. We add 0.005 - 0.01 chroma to neutrals to eliminate "dead grays" */
+    
+    --background: oklch(16% 0.008 85);
+    --foreground: oklch(95% 0.01 85);
+    
+    --card: oklch(18% 0.01 85);
+    --card-foreground: oklch(95% 0.01 85);
+    
+    --popover: oklch(16% 0.008 85);
+    --popover-foreground: oklch(95% 0.01 85);
+    
+    --primary: oklch(78% 0.13 85);
+    --primary-foreground: oklch(16% 0.008 85);
+    
+    --secondary: oklch(24% 0.01 85);
+    --secondary-foreground: oklch(95% 0.01 85);
+    
+    --muted: oklch(24% 0.01 85);
+    --muted-foreground: oklch(65% 0.02 85);
+    
+    --accent: oklch(24% 0.01 85);
+    --accent-foreground: oklch(95% 0.01 85);
+    
+    --destructive: oklch(55% 0.15 25);
+    --destructive-foreground: oklch(95% 0.01 25);
+    
+    --border: oklch(27% 0.01 85);
+    --input: oklch(27% 0.01 85);
+    --ring: oklch(78% 0.13 85);
+    
+    --chart-1: oklch(78% 0.13 85);
+    --chart-2: oklch(70% 0.1 140);
+    --chart-3: oklch(55% 0.1 220);
+    --chart-4: oklch(65% 0.12 45);
+    --chart-5: oklch(85% 0.05 90);
+    
+    --sidebar: oklch(16% 0.008 85);
+    --sidebar-foreground: oklch(95% 0.01 85);
+    --sidebar-primary: oklch(78% 0.13 85);
+    --sidebar-primary-foreground: oklch(16% 0.008 85);
+    --sidebar-accent: oklch(24% 0.01 85);
+    --sidebar-accent-foreground: oklch(95% 0.01 85);
+    --sidebar-border: oklch(27% 0.01 85);
+    --sidebar-ring: oklch(78% 0.13 85);
+    
+    /* Impeccable: Sharp, non-generic borders */
+    --radius: 0rem;
+    
+    /* Reduced, more elegant shadows since dark mode uses surface colors for depth, not shadows */
     --shadow-x: 0px;
-    --shadow-y: 4px;
-    --shadow-blur: 8px;
-    --shadow-spread: -1px;
+    --shadow-y: 2px;
+    --shadow-blur: 4px;
+    --shadow-spread: 0px;
     --shadow-opacity: 0.1;
-    --shadow-color: hsl(0 0% 0%);
-    --shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
-    --shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
-    --shadow-sm:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 1px 2px -2px hsl(0 0% 0% / 0.1);
-    --shadow:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 1px 2px -2px hsl(0 0% 0% / 0.1);
-    --shadow-md:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 2px 4px -2px hsl(0 0% 0% / 0.1);
-    --shadow-lg:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 4px 6px -2px hsl(0 0% 0% / 0.1);
-    --shadow-xl:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 8px 10px -2px hsl(0 0% 0% / 0.1);
-    --shadow-2xl: 0px 4px 8px -1px hsl(0 0% 0% / 0.25);
+    --shadow-color: oklch(0 0 0);
+    --shadow-2xs: 0px 1px 2px 0px oklch(0 0 0 / 0.05);
+    --shadow-xs: 0px 1px 2px 0px oklch(0 0 0 / 0.1);
+    --shadow-sm: 0px 2px 4px 0px oklch(0 0 0 / 0.1);
+    --shadow: 0px 4px 8px -1px oklch(0 0 0 / 0.1);
+    --shadow-md: 0px 6px 12px -2px oklch(0 0 0 / 0.15);
+    --shadow-lg: 0px 10px 15px -3px oklch(0 0 0 / 0.2);
+    --shadow-xl: 0px 20px 25px -5px oklch(0 0 0 / 0.2);
+    --shadow-2xl: 0px 25px 50px -12px oklch(0 0 0 / 0.3);
+    
     --tracking-normal: 0em;
     --spacing: 0.25rem;
   }
 
-  .dark {
-    --background: oklch(0.141 0.005 285.823);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.141 0.005 285.823);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.141 0.005 285.823);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.781 0.134 88.086);
-    --primary-foreground: oklch(0.141 0.005 285.823);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.274 0.006 286.033);
-    --muted-foreground: oklch(0.705 0.015 286.067);
-    --accent: oklch(0.274 0.006 286.033);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: oklch(0.274 0.006 286.033);
-    --input: oklch(0.274 0.006 286.033);
-    --ring: oklch(0.781 0.134 88.086);
-    --chart-1: oklch(0.781 0.134 88.086);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.141 0.005 285.823);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.781 0.134 88.086);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.274 0.006 286.033);
-    --sidebar-ring: oklch(0.781 0.134 88.086);
-    --radius: 0.5rem;
-    --shadow-x: 0px;
-    --shadow-y: 4px;
-    --shadow-blur: 8px;
-    --shadow-spread: -1px;
-    --shadow-opacity: 0.1;
-    --shadow-color: hsl(0 0% 0%);
-    --shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
-    --shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
-    --shadow-sm:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 1px 2px -2px hsl(0 0% 0% / 0.1);
-    --shadow:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 1px 2px -2px hsl(0 0% 0% / 0.1);
-    --shadow-md:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 2px 4px -2px hsl(0 0% 0% / 0.1);
-    --shadow-lg:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 4px 6px -2px hsl(0 0% 0% / 0.1);
-    --shadow-xl:
-      0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 8px 10px -2px hsl(0 0% 0% / 0.1);
-    --shadow-2xl: 0px 4px 8px -1px hsl(0 0% 0% / 0.25);
-  }
+  /* ═══════════════════════════════════════════
+     Impeccable Global Typography Overrides Removed
+     Heading styling is now strictly governed by 
+     src/components/astrokline/ui/heading.tsx 
+     to prevent violent cascading overrides.
+     ═══════════════════════════════════════════ */
 }
 
 @theme inline {
@@ -330,4 +296,35 @@
 
 .animate-marquee {
   animation: marquee 35s linear infinite;
+}
+
+/* ═══════════════════════════════════════════
+   Astrokline Typography Utilities
+   Standardized micro-text sizes to replace
+   scattered text-[9px] / text-[10px] / text-[11px]
+   ═══════════════════════════════════════════ */
+.text-micro {
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.text-label-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Testimonials infinite scroll */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-scroll-left {
+  animation: scroll-left 40s linear infinite;
+}
+.animate-scroll-right {
+  animation: scroll-right 40s linear infinite;
 }

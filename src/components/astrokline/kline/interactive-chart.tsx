@@ -1,5 +1,7 @@
 'use client';
 
+import { Heading } from "@/components/astrokline/ui/heading";
+
 import { useCallback, useMemo, useState } from 'react';
 import {
   DestinyScorePoint,
@@ -358,25 +360,25 @@ export function InteractiveChart({
       data-testid="interactive-kline-chart"
     >
       {/* Mystical Background Glows */}
-      <div className="pointer-events-none absolute top-1/2 left-1/4 h-[400px] w-[400px] rounded-full bg-[#D4AF37]/5 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/2 right-1/4 h-[400px] w-[400px] rounded-full bg-purple-600/5 blur-[120px]" />
+      <div className="pointer-events-none absolute top-1/2 left-1/4 h-[400px] w-[400px] bg-[#D4AF37]/5 blur-[120px]" />
+      <div className="pointer-events-none absolute top-1/2 right-1/4 h-[400px] w-[400px] bg-purple-600/5 blur-[120px]" />
 
       <div
-        className="relative rounded-3xl border border-white/5 bg-[#111015]/80 p-6 shadow-2xl backdrop-blur-md"
+        className="relative  border border-white/5 bg-[#111015]/80 p-6 shadow-2xl backdrop-blur-md"
         style={{ overflow: 'visible' }}
       >
         {/* Header - Centered */}
         <div className="mb-8 flex flex-col items-center justify-center text-center">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#F4E1A1] uppercase">
+          <div className="mb-3 inline-flex items-center gap-2 border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#F4E1A1] uppercase">
             <Sparkles className="h-3.5 w-3.5" />
             K-Line
           </div>
-          <h3 className="mb-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
+          <Heading level={3} className="mb-2 text-[10px] font-bold tracking-widest text-white/40 uppercase">
             100-Year Chart
-          </h3>
-          <h2 className="text-xl font-semibold text-white/90 md:text-2xl">
+          </Heading>
+          <Heading level={2} className="text-xl font-semibold text-white/90 md:text-2xl">
             100-Year Timing Curve {(tier === 'GUEST' || isSimulation) && '(Preview Mode)'}
-          </h2>
+          </Heading>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55">
             Read the full curve first, then use the summary below to understand
             the highest point, lowest point, and your current position. Markers
@@ -385,17 +387,17 @@ export function InteractiveChart({
         </div>
 
         <div className="mb-5 flex flex-wrap items-center gap-2 text-xs text-white/55">
-          <div className="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-1.5 text-emerald-200">
+          <div className="-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-1.5 text-emerald-200">
             ★ Gold/green star = best expansion window
           </div>
-          <div className="rounded-full border border-sky-400/20 bg-sky-500/10 px-3 py-1.5 text-sky-200">
+          <div className="-full border border-sky-400/20 bg-sky-500/10 px-3 py-1.5 text-sky-200">
             ★ Blue star = deepest protection window
           </div>
-          <div className="rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1.5 text-[#F4E1A1]">
+          <div className="-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1.5 text-[#F4E1A1]">
             Dashed line = your current age
           </div>
           {currentPoint && (
-            <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
+            <div className="-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
               Current score {currentPoint.close} · Avg {avgScore}
             </div>
           )}
@@ -403,12 +405,12 @@ export function InteractiveChart({
 
         {tier === 'GUEST' && (
           <div className="pointer-events-none absolute inset-0 z-[100] mt-32 flex flex-col items-center justify-center">
-            <div className="absolute top-[20%] bottom-0 w-[120%] -left-[10%] rounded-b-[3rem] bg-gradient-to-b from-transparent via-[#111015]/95 to-[#111015] backdrop-blur-[3px]" />
-            <div className="border-primary/20 pointer-events-auto relative z-10 mt-20 flex flex-col items-center rounded-2xl border bg-black/60 p-6 shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl">
+            <div className="absolute top-[20%] bottom-0 w-[120%] -left-[10%] -b-[3rem] bg-gradient-to-b from-transparent via-[#111015]/95 to-[#111015] backdrop-blur-[3px]" />
+            <div className="border-primary/20 pointer-events-auto relative z-10 mt-20 flex flex-col items-center  border bg-black/60 p-6 shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl">
               <Lock className="text-primary mb-3 h-8 w-8" />
-              <h3 className="mb-2 text-xl font-bold text-white">
+              <Heading level={3} className="mb-2 text-xl font-bold text-white">
                 Unlock Your Lifetime Blueprint
-              </h3>
+              </Heading>
               <p className="mb-6 max-w-sm text-center text-sm text-white/60">
                 Create a free account to reveal your entire 80-year karmic
                 trajectory and discover your destined turning points.
@@ -418,7 +420,7 @@ export function InteractiveChart({
                 onClick={() =>
                   document.getElementById('sign-up-button')?.click()
                 }
-                className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-full px-8 py-3 font-bold text-black transition-all hover:scale-105"
+                className="bg-primary hover:bg-primary/90 flex items-center gap-2 px-8 py-3 font-bold text-black transition-all hover:scale-105"
               >
                 <Sparkles className="h-4 w-4" /> Sign Up For Free
               </button>
@@ -589,17 +591,17 @@ export function InteractiveChart({
 
         {/* --- Phase 1: Interactive Past Validation --- */}
         {pastLowPoint && tier !== 'GUEST' && (
-          <div className="mt-8 relative overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A0F]/60 p-6 shadow-xl backdrop-blur-md">
+          <div className="mt-8 relative overflow-hidden  border border-white/10 bg-[#0A0A0F]/60 p-6 shadow-xl backdrop-blur-md">
             <div className="mb-4 flex items-center gap-2">
               <History className="h-4 w-4 text-[#D4AF37]" />
-              <h4 className="font-mono text-[10px] font-bold tracking-widest text-[#D4AF37] uppercase">
+              <Heading level={4} className="font-mono text-[10px] font-bold tracking-widest text-[#D4AF37] uppercase">
                 Cosmic Traceback: {pastLowPoint.year}
-              </h4>
+              </Heading>
             </div>
             
-            <h3 className="mb-2 text-base font-bold text-white">
+            <Heading level={3} className="mb-2 text-base font-bold text-white">
               System detects {pastLowPoint.year} as a major historical valley.
-            </h3>
+            </Heading>
             
             {validationState === 'idle' && (
               <div className="animate-in fade-in duration-500">
@@ -615,7 +617,7 @@ export function InteractiveChart({
                     <button
                       key={theme}
                       onClick={() => handleValidationSelect(theme)}
-                      className="group flex flex-col items-center justify-center rounded-xl border border-white/10 bg-white/5 p-4 text-center transition-all hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10"
+                      className="group flex flex-col items-center justify-center  border border-white/10 bg-white/5 p-4 text-center transition-all hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10"
                     >
                       <span className="text-xs font-medium text-white/80 group-hover:text-[#D4AF37]">
                         {theme}
@@ -629,7 +631,7 @@ export function InteractiveChart({
             {validationState === 'selected' && (
               <div className="flex h-[120px] items-center justify-center">
                 <div className="flex flex-col items-center justify-center gap-3">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#D4AF37] border-t-transparent" />
+                  <div className="h-5 w-5 animate-spin border-2 border-[#D4AF37] border-t-transparent" />
                   <span className="animate-pulse font-mono text-[10px] tracking-widest text-[#D4AF37] uppercase">
                     Analyzing Chronos Matrix...
                   </span>
@@ -648,7 +650,7 @@ export function InteractiveChart({
                 <p className="mb-4 text-sm leading-relaxed text-white/80">
                   You survived the cosmic bottleneck of {pastLowPoint.year} regarding <strong>{selectedTheme?.split('/')[0].trim().toLowerCase()}</strong>. The friction you felt wasn't a punishment, but a pruning to realign you. Because you endured that valley, your baseline resilience is permanently elevated.
                 </p>
-                <div className="rounded-lg border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-4">
+                <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-4">
                   <p className="flex items-start gap-2 text-sm font-medium text-[#F4E1A1]">
                     <ArrowRight className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>
@@ -825,12 +827,12 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
   };
 
   return (
-    <div className="relative z-[99999] max-w-[calc(100vw-24px)] min-w-[280px] overflow-hidden rounded-2xl border border-white/20 bg-[#0A0A0F]/95 shadow-[0_8px_32px_rgba(0,0,0,0.9)] backdrop-blur-3xl sm:max-w-[420px] sm:min-w-[340px]">
+    <div className="relative z-[99999] max-w-[calc(100vw-24px)] min-w-[280px] overflow-hidden  border border-white/20 bg-[#0A0A0F]/95 shadow-[0_8px_32px_rgba(0,0,0,0.9)] backdrop-blur-3xl sm:max-w-[420px] sm:min-w-[340px]">
       <div className="border-b border-white/10 bg-white/[0.02] px-4 py-3">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="font-serif text-2xl text-white">{d.year}</span>
-            <span className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[9px] font-medium tracking-widest text-white/60 uppercase">
+            <span className=" bg-white/10 px-1.5 py-0.5 font-mono text-[9px] font-medium tracking-widest text-white/60 uppercase">
               {tier === 'FREE' ? '???' : d.stage}
             </span>
             <span className="text-[10px] text-white/30">Age ~{age}</span>
@@ -849,7 +851,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
         </div>
 
         {tier === 'FREE' ? (
-          <div className="mt-2 flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+          <div className="mt-2 flex items-center gap-2  border border-white/10 bg-white/5 px-3 py-2">
             <Lock className="h-3.5 w-3.5 text-white/40" />
             <span className="text-xs text-white/60">
               Upgrade to unlock event details for {d.year}
@@ -858,7 +860,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
         ) : (
           /* Fortune Level Badge */
           <div
-            className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 ${fortune.bgColor}`}
+            className={`flex items-center gap-2  border px-2.5 py-1.5 ${fortune.bgColor}`}
           >
             <span className={`font-mono text-xs font-bold ${fortune.color}`}>
               {fortune.glyph}
@@ -940,9 +942,9 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
                         {dim.value}
                       </span>
                     </div>
-                    <div className="h-1 w-full overflow-hidden rounded-full bg-white/5">
+                    <div className="h-1 w-full overflow-hidden bg-white/5">
                       <div
-                        className={`h-full rounded-full ${dim.color}`}
+                        className={`h-full ${dim.color}`}
                         style={{ width: `${dim.value}%`, opacity: 0.6 }}
                       />
                     </div>
@@ -970,27 +972,27 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
                   Annual Transit
                 </span>
                 {mainTransit.impactScore >= 9 && (
-                  <span className="flex items-center gap-0.5 rounded border border-rose-500/30 bg-rose-500/10 px-1 py-0.5 text-[7px] font-bold text-rose-400 uppercase">
+                  <span className="flex items-center gap-0.5  border border-rose-500/30 bg-rose-500/10 px-1 py-0.5 text-[7px] font-bold text-rose-400 uppercase">
                     <AlertCircle className="h-2 w-2" /> Critical
                   </span>
                 )}
               </div>
-              <h4 className="text-sm font-bold text-white">
+              <Heading level={4} className="text-sm font-bold text-white">
                 {mainTransit.title}
-              </h4>
+              </Heading>
               <p className="text-muted-foreground text-[10px] leading-relaxed">
                 {mainTransit.description}
               </p>
 
               {/* LITE gets summary, PRO gets deep Swiss Ephemeris transit block */}
               {tier === 'LITE' ? (
-                <p className="rounded bg-white/5 p-2 text-[11px] text-white/70 italic">
+                <p className=" bg-white/5 p-2 text-[11px] text-white/70 italic">
                   Upgrade to PRO for exact geometric alignments and orbital
                   insight.
                 </p>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="rounded-lg border border-white/5 bg-white/5 p-2">
+                  <div className=" border border-white/5 bg-white/5 p-2">
                     <div className="mb-0.5 flex items-center gap-1">
                       <Target className="h-3 w-3 text-[#D4AF37]" />
                       <span className="text-[8px] font-bold text-white/40 uppercase">
@@ -1004,7 +1006,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier }: any) => {
                       <ShieldCheck className="h-2.5 w-2.5" /> Swiss Ephemeris
                     </p>
                   </div>
-                  <div className="rounded-lg border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-2">
+                  <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-2">
                     <div className="mb-0.5 flex items-center gap-1">
                       <Compass className="h-3 w-3 text-[#D4AF37]" />
                       <span className="text-[8px] font-bold text-[#D4AF37] uppercase">

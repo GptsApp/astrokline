@@ -92,7 +92,7 @@ export function AudioPlayer({ src, title, className }: AudioPlayerProps) {
   return (
     <div
       className={cn(
-        'bg-card text-card-foreground flex items-center gap-3 rounded-lg border p-3 shadow-sm',
+        'bg-card text-card-foreground flex items-center gap-3  border p-3 shadow-sm',
         className
       )}
     >
@@ -101,7 +101,7 @@ export function AudioPlayer({ src, title, className }: AudioPlayerProps) {
       {/* Play/Pause Button */}
       <button
         onClick={togglePlay}
-        className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+        className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-10 w-10 items-center justify-center transition-colors"
         aria-label={isPlaying ? 'Pause' : 'Play'}
       >
         {isPlaying ? (
@@ -127,7 +127,7 @@ export function AudioPlayer({ src, title, className }: AudioPlayerProps) {
             max={duration || 0}
             value={currentTime}
             onChange={handleSeek}
-            className="bg-secondary [&::-webkit-slider-thumb]:bg-primary [&::-moz-range-thumb]:bg-primary h-1 flex-1 cursor-pointer appearance-none rounded-lg [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
+            className="bg-secondary [&::-webkit-slider-thumb]:bg-primary [&::-moz-range-thumb]:bg-primary h-1 flex-1 cursor-pointer appearance-none  [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:-full [&::-moz-range-thumb]:border-0 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:-full"
           />
           <span className="text-muted-foreground w-10 text-xs">
             {formatTime(duration)}
@@ -155,7 +155,7 @@ export function AudioPlayer({ src, title, className }: AudioPlayerProps) {
           step={0.01}
           value={isMuted ? 0 : volume}
           onChange={handleVolumeChange}
-          className="w-20 h-1 bg-secondary rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-0"
+          className="w-20 h-1 bg-secondary  appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:-full [&::-webkit-slider-thumb]:bg-primary [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-0"
         />
       </div> */}
     </div>

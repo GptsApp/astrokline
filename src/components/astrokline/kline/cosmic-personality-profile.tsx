@@ -1,5 +1,7 @@
 'use client';
 
+import { Heading } from "@/components/astrokline/ui/heading";
+
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { motion } from 'framer-motion';
 import {
@@ -235,9 +237,9 @@ export function CosmicPersonalityProfile({
       {/* Section Header */}
       <div className="flex items-center gap-3">
         <Sparkles className="text-primary h-5 w-5" />
-        <h2 className="font-serif text-2xl tracking-tight text-white/90">
+        <Heading level={2} className="font-serif text-2xl tracking-tight text-white/90">
           Your Cosmic Profile
-        </h2>
+        </Heading>
         <div className="ml-4 h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
       </div>
 
@@ -258,17 +260,17 @@ export function CosmicPersonalityProfile({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.08 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111015] p-5 transition-all hover:border-white/10"
+              className="group relative overflow-hidden  border border-white/5 bg-[#111015] p-5 transition-all hover:border-white/10"
             >
               {/* Subtle glow */}
               <div
-                className={`absolute top-0 right-0 h-24 w-24 ${dim.bgColor} pointer-events-none rounded-full opacity-50 blur-[40px] transition-opacity group-hover:opacity-100`}
+                className={`absolute top-0 right-0 h-24 w-24 ${dim.bgColor} pointer-events-none opacity-50 blur-[40px] transition-opacity group-hover:opacity-100`}
               />
 
               <div className="relative z-10">
                 <div className="mb-3 flex items-center gap-3">
                   <div
-                    className={`h-9 w-9 rounded-full ${dim.bgColor} flex shrink-0 items-center justify-center border border-white/10`}
+                    className={`h-9 w-9 ${dim.bgColor} flex shrink-0 items-center justify-center border border-white/10`}
                   >
                     <Icon className={`h-4 w-4 ${dim.color}`} />
                   </div>
@@ -278,9 +280,9 @@ export function CosmicPersonalityProfile({
                     >
                       {dim.label}
                     </span>
-                    <h4 className="font-serif text-base text-white/90">
+                    <Heading level={4} className="font-serif text-base text-white/90">
                       {dim.title}
-                    </h4>
+                    </Heading>
                   </div>
                 </div>
                 <p className="pl-12 text-sm leading-relaxed text-white/70">

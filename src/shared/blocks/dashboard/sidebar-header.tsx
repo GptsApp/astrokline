@@ -28,7 +28,7 @@ export function SidebarHeader({ header }: { header: SidebarHeaderType }) {
                     <img
                       src={header.brand.logo.src}
                       alt={header.brand.logo.alt || ''}
-                      className="h-auto w-8 shrink-0 rounded-md"
+                      className="h-auto w-8 shrink-0 "
                     />
                   )}
                   <div className="relative text-base font-semibold">

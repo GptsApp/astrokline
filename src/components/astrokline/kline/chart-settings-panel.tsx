@@ -65,14 +65,14 @@ export function ChartSettingsPanel({ className }: ChartSettingsProps) {
                     </label>
                     <Info className="h-3 w-3 cursor-help text-white/30" />
                   </div>
-                  <div className="flex rounded-lg bg-white/5 p-1">
+                  <div className="flex  bg-white/5 p-1">
                     {['Tropical', 'Sidereal'].map((sys) => (
                       <button
                         type="button"
                         key={sys}
                         onClick={() => setZodiac(sys)}
                         className={cn(
-                          'flex-1 rounded-md py-1.5 text-xs font-medium transition-all',
+                          'flex-1  py-1.5 text-xs font-medium transition-all',
                           zodiac === sys
                             ? 'border border-[#D4AF37]/30 bg-[#D4AF37]/20 text-[#D4AF37] shadow-sm'
                             : 'text-white/40 hover:text-white/60'
@@ -95,14 +95,14 @@ export function ChartSettingsPanel({ className }: ChartSettingsProps) {
                     </label>
                     <Info className="h-3 w-3 cursor-help text-white/30" />
                   </div>
-                  <div className="flex rounded-lg bg-white/5 p-1">
+                  <div className="flex  bg-white/5 p-1">
                     {['Placidus', 'Whole Sign', 'Koch'].map((sys) => (
                       <button
                         type="button"
                         key={sys}
                         onClick={() => setHouseSystem(sys)}
                         className={cn(
-                          'flex-1 rounded-md py-1.5 text-xs font-medium transition-all',
+                          'flex-1  py-1.5 text-xs font-medium transition-all',
                           houseSystem === sys
                             ? 'border border-[#D4AF37]/30 bg-[#D4AF37]/20 text-[#D4AF37] shadow-sm'
                             : 'text-white/40 hover:text-white/60'
@@ -125,14 +125,14 @@ export function ChartSettingsPanel({ className }: ChartSettingsProps) {
                     </label>
                     <Info className="h-3 w-3 cursor-help text-white/30" />
                   </div>
-                  <div className="flex rounded-lg bg-white/5 p-1">
+                  <div className="flex  bg-white/5 p-1">
                     {['Strict', 'Default', 'Wide'].map((sys) => (
                       <button
                         type="button"
                         key={sys}
                         onClick={() => setOrbs(sys)}
                         className={cn(
-                          'flex-1 rounded-md py-1.5 text-xs font-medium transition-all',
+                          'flex-1  py-1.5 text-xs font-medium transition-all',
                           orbs === sys
                             ? 'border border-[#D4AF37]/30 bg-[#D4AF37]/20 text-[#D4AF37] shadow-sm'
                             : 'text-white/40 hover:text-white/60'

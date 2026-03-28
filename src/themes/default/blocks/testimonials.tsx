@@ -13,12 +13,12 @@ export function Testimonials({
 }) {
   const TestimonialCard = ({ item }: { item: SectionItem }) => {
     return (
-      <div className="bg-card/25 ring-foreground/[0.07] flex flex-col justify-end gap-6 rounded-(--radius) border border-transparent p-8 ring-1">
+      <div className="bg-card/25 ring-foreground/[0.07] flex flex-col justify-end gap-6 -(--radius) border border-transparent p-8 ring-1">
         <p className='text-foreground self-end text-balance before:mr-1 before:content-["\201C"] after:ml-1 after:content-["\201D"]'>
           {item.quote || item.description}
         </p>
         <div className="flex items-center gap-3">
-          <div className="ring-foreground/10 aspect-square size-9 overflow-hidden rounded-lg border border-transparent shadow-md ring-1 shadow-black/15">
+          <div className="ring-foreground/10 aspect-square size-9 overflow-hidden  border border-transparent shadow-md ring-1 shadow-black/15">
             <LazyImage
               src={item.image?.src || item.avatar?.src || ''}
               alt={item.image?.alt || item.avatar?.alt || item.name || ''}
@@ -56,8 +56,8 @@ export function Testimonials({
           </div>
         </ScrollAnimation>
         <ScrollAnimation delay={0.2}>
-          <div className="border-border/50 relative rounded-(--radius)">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-px lg:*:nth-1:rounded-t-none lg:*:nth-2:rounded-tl-none lg:*:nth-2:rounded-br-none lg:*:nth-3:rounded-l-none lg:*:nth-4:rounded-r-none lg:*:nth-5:rounded-tl-none lg:*:nth-5:rounded-br-none lg:*:nth-6:rounded-b-none">
+          <div className="border-border/50 relative -(--radius)">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-px lg:*:nth-1:-t-none lg:*:nth-2:-tl-none lg:*:nth-2:-br-none lg:*:nth-3:-l-none lg:*:nth-4:-r-none lg:*:nth-5:-tl-none lg:*:nth-5:-br-none lg:*:nth-6:-b-none">
               {section.items?.map((item, index) => (
                 <TestimonialCard key={index} item={item} />
               ))}

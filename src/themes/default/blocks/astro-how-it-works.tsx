@@ -1,4 +1,8 @@
-import { HowItWorks } from '@/components/astrokline/sections/how-it-works';
+import dynamic from 'next/dynamic';
+
+const HowItWorks = dynamic(
+  () => import('@/components/astrokline/sections/how-it-works').then(m => m.HowItWorks)
+);
 
 import { Section } from '@/shared/types/blocks/landing';
 

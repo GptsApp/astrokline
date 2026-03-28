@@ -8,6 +8,7 @@ import type {
 import { ChevronDown, Lock, Sparkles } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';
 
@@ -173,7 +174,7 @@ export function AiReadingPanels({
         'ring-primary',
         'ring-offset-2',
         'ring-offset-background',
-        'rounded-2xl'
+        ''
       );
       setTimeout(() => {
         containerRef.current?.classList.remove(
@@ -181,7 +182,7 @@ export function AiReadingPanels({
           'ring-primary',
           'ring-offset-2',
           'ring-offset-background',
-          'rounded-2xl'
+          ''
         );
       }, 2000);
     }
@@ -217,12 +218,12 @@ export function AiReadingPanels({
   return (
     <div className="mt-8 flex w-full flex-col gap-4" ref={containerRef}>
       <div className="mb-6 text-center">
-        <h3 className="text-primary mb-2 text-[10px] font-bold tracking-[0.2em] uppercase md:text-xs">
+        <Heading level={3} className="text-primary mb-2 text-[10px] font-bold tracking-[0.2em] uppercase md:text-xs">
           AI Reading
-        </h3>
-        <h2 className="mb-3 font-serif text-2xl font-bold text-white md:text-3xl">
+        </Heading>
+        <Heading level={2} className="mb-3 font-serif text-2xl font-bold text-white md:text-3xl">
           Direct Guidance By Life Area
-        </h2>
+        </Heading>
         <p className="mx-auto max-w-xl text-sm text-white/50">
           {tier === 'GUEST'
             ? 'Sign up to unlock your personalized AI reading.'
@@ -232,18 +233,18 @@ export function AiReadingPanels({
 
       <div className="mx-auto w-full max-w-4xl space-y-4">
         {tier === 'PRO' && selectedYear && yearFocusEvent && (
-          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5">
+          <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/5 p-6">
             <div className="mb-2 flex items-center gap-2 text-[11px] font-bold tracking-[0.18em] text-primary uppercase">
               <Sparkles className="h-3.5 w-3.5" />
               Year Focus {selectedYear}
             </div>
-            <h4 className="text-base font-bold text-white">
+            <Heading level={4} className="text-base font-bold text-white">
               {yearFocusEvent.title}
-            </h4>
+            </Heading>
             <p className="mt-2 text-sm leading-7 text-white/70">
               {yearFocusEvent.description}
             </p>
-            <p className="mt-3 rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm leading-7 text-white/82">
+            <p className="mt-3  border border-white/8 bg-white/[0.03] px-4 py-3 text-sm leading-7 text-white/82">
               {yearFocusEvent.advice}
             </p>
           </div>
@@ -257,10 +258,10 @@ export function AiReadingPanels({
             <div
               key={mod.id}
               className={cn(
-                'overflow-hidden rounded-2xl border transition-all duration-300',
+                'overflow-hidden  border transition-all duration-300',
                 unlocked
-                  ? 'hover:border-primary/30 border-white/10 bg-[#15131A]/80'
-                  : 'cursor-not-allowed border-white/5 bg-black/40 opacity-80'
+                  ? 'hover:border-white/20 border-white/10 bg-[#050505]'
+                  : 'cursor-not-allowed border-white/5 bg-[#000000] opacity-80'
               )}
             >
               {/* Header Box (Trigger) */}
@@ -275,9 +276,9 @@ export function AiReadingPanels({
                       {mod.icon}
                     </span>
                     <div>
-                      <h4 className="mb-0.5 text-sm font-bold text-white md:text-base">
+                      <Heading level={4} className="mb-0.5 text-sm font-bold text-white md:text-base">
                         {mod.title}
-                      </h4>
+                      </Heading>
                       <p className="text-[10px] text-white/40 md:text-xs">
                         {mod.shortDesc}
                       </p>
@@ -286,7 +287,7 @@ export function AiReadingPanels({
 
                   <div className="flex items-center gap-3">
                     {!unlocked ? (
-                      <div className="group-hover:bg-primary/10 group-hover:border-primary/30 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 transition-colors">
+                      <div className="group-hover:bg-primary/10 group-hover:border-primary/30 flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1.5 transition-colors">
                         <Lock className="group-hover:text-primary h-3.5 w-3.5 text-white/50 transition-colors" />
                         <span className="group-hover:text-primary hidden text-[10px] font-bold tracking-wider text-white/50 uppercase transition-colors md:block">
                           {mod.requiredTier === 'LITE' ? 'Lite+' : 'Pro Only'}
@@ -304,8 +305,8 @@ export function AiReadingPanels({
                 </div>
 
                 {!unlocked && mod.lockedTeaser && (
-                  <div className="mt-5 w-full z-10 drop-shadow-xl">
-                     <div className="relative overflow-hidden rounded-xl border border-[#D4AF37]/20 bg-[#0A0A0F]/80 p-5 transition-all duration-300 group-hover:border-[#D4AF37]/40">
+                  <div className="mt-5 w-full z-10">
+                     <div className="relative overflow-hidden  border border-[#D4AF37]/30 bg-[#050505] p-6 transition-colors duration-300 group-hover:border-[#D4AF37]/50">
                        <div className="mb-3 flex items-center justify-between opacity-50">
                           <span className="font-mono text-[9px] tracking-widest text-[#D4AF37] uppercase">Strategic Dossier</span>
                           <Lock className="h-3 w-3 text-[#D4AF37]" />
@@ -316,7 +317,7 @@ export function AiReadingPanels({
                          The upcoming transit configurations present a low-tolerance window for error.<br/> 
                          Based on orbital decay mappings against natal geometry, immediate strategic realignment is recommended. Execution without these parameters may result in suboptimal phase transitions.
                        </p>
-                       <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0A0A0F]/60 p-6 text-center backdrop-blur-[2px]">
+                       <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505]/80 p-6 text-center backdrop-blur-[2px]">
                          <span className="text-[13px] leading-relaxed font-semibold text-white/90 drop-shadow-lg max-w-[95%] mx-auto">
                            {mod.lockedTeaser}
                          </span>
@@ -345,9 +346,9 @@ export function AiReadingPanels({
                     <div className="border-t border-white/5 px-6 pt-2 pb-6">
                       {isLoading ? (
                         <div className="flex animate-pulse flex-col gap-3">
-                          <div className="h-4 w-3/4 rounded bg-white/10" />
-                          <div className="h-4 w-5/6 rounded bg-white/10" />
-                          <div className="h-4 w-1/2 rounded bg-white/10" />
+                          <div className="h-4 w-3/4  bg-white/10" />
+                          <div className="h-4 w-5/6  bg-white/10" />
+                          <div className="h-4 w-1/2  bg-white/10" />
                         </div>
                       ) : (
                         <div className="prose prose-invert prose-sm prose-p:leading-relaxed prose-p:text-white/70 prose-strong:text-white/90 prose-h3:text-primary prose-h3:font-bold prose-h3:text-sm prose-h3:tracking-widest prose-h3:uppercase prose-h3:mt-8 prose-h3:mb-4 max-w-none">
@@ -382,7 +383,7 @@ function AstroTextParser({ text }: { text: string }) {
       {paragraphs.map((p, i) => {
         // Detect H3 Action Plan Headers
         if (p.startsWith('### ')) {
-          return <h3 key={i}>{p.replace('### ', '')}</h3>;
+          return <Heading level={3} key={i}>{p.replace('### ', '')}</Heading>;
         }
         // Detect lists
         if (p.includes('\n- ')) {

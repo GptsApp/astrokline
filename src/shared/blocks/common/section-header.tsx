@@ -1,4 +1,5 @@
 import { cn } from '@/shared/lib/utils';
+import { Heading } from '@/components/astrokline/ui/heading';
 
 export function SectionHeader({
   title,
@@ -16,9 +17,9 @@ export function SectionHeader({
         className
       )}
     >
-      <h2 className="text-center text-4xl font-semibold lg:text-5xl">
+      <Heading level={2} variant="section" className="text-center">
         {title}
-      </h2>
+      </Heading>
       <p>{description}</p>
     </div>
   );

@@ -58,7 +58,7 @@ export function ToolAudience({
                 key={index}
                 onClick={() => setActiveTab(index)}
                 className={cn(
-                  'flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium whitespace-nowrap transition-all md:text-base',
+                  'flex items-center gap-2 px-6 py-3 text-sm font-medium whitespace-nowrap transition-all md:text-base',
                   isActive
                     ? 'bg-primary text-primary-foreground shadow-[0_0_20px_rgba(212,175,55,0.3)]'
                     : 'text-muted-foreground hover:text-foreground bg-white/5 hover:bg-white/10'
@@ -83,7 +83,7 @@ export function ToolAudience({
               className="absolute inset-0 grid grid-cols-1 items-center gap-12 md:grid-cols-2"
             >
               <div className="space-y-6">
-                <div className="bg-primary/10 text-primary mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2">
+                <div className="bg-primary/10 text-primary mb-4 inline-flex items-center gap-2 px-4 py-2">
                   <SmartIcon
                     name={tabs[activeTab].icon || 'Star'}
                     className="h-5 w-5"
@@ -118,7 +118,7 @@ export function ToolAudience({
                 )}
               </div>
 
-              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-[#15131A] shadow-2xl md:aspect-[4/3]">
+              <div className="relative flex aspect-square items-center justify-center overflow-hidden  border border-white/10 bg-[#15131A] shadow-2xl md:aspect-[4/3]">
                 {tabs[activeTab].image ? (
                   <img
                     src={tabs[activeTab].image.src}

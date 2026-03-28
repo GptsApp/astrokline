@@ -204,10 +204,10 @@ export function BirthInfoModal() {
         </DialogDescription>
 
         {/* ─── Header ─── */}
-        <div className="relative overflow-hidden rounded-t-lg px-6 pt-6 pb-4 sm:px-8 sm:pt-8 sm:pb-6">
+        <div className="relative overflow-hidden  px-6 pt-6 pb-4 sm:px-8 sm:pt-8 sm:pb-6">
           <div className="from-primary/10 pointer-events-none absolute inset-0 bg-gradient-to-b to-transparent" />
           <div className="relative z-10 text-center">
-            <div className="bg-primary/10 border-primary/20 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+            <div className="bg-primary/10 border-primary/20 mx-auto mb-4 flex h-12 w-12 items-center justify-center border shadow-[0_0_20px_rgba(212,175,55,0.15)]">
               <Sparkles className="text-primary h-6 w-6" />
             </div>
             <h2 className="text-foreground text-xl font-bold">
@@ -234,7 +234,7 @@ export function BirthInfoModal() {
               >
                 <div
                   className={cn(
-                    'flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-bold transition-all duration-300',
+                    'flex h-9 w-9 items-center justify-center border-2 text-sm font-bold transition-all duration-300',
                     active
                       ? 'bg-primary border-primary text-primary-foreground shadow-[0_0_15px_rgba(212,175,55,0.4)]'
                       : done
@@ -285,7 +285,7 @@ export function BirthInfoModal() {
                   }}
                   placeholder="Enter your name"
                   className={cn(
-                    'focus-visible:ring-primary/50 placeholder:text-muted-foreground/50 h-12 rounded-xl border-white/10 bg-black/50 text-white',
+                    'focus-visible:ring-primary/50 placeholder:text-muted-foreground/50 h-12  border-white/10 bg-black/50 text-white',
                     errorMsg && !data.name.trim() && 'border-amber-500/50'
                   )}
                 />
@@ -313,7 +313,7 @@ export function BirthInfoModal() {
                         setErrorMsg('');
                       }}
                       className={cn(
-                        'flex h-10 items-center justify-center rounded-xl border text-sm font-medium whitespace-nowrap transition-all',
+                        'flex h-10 items-center justify-center  border text-sm font-medium whitespace-nowrap transition-all',
                         data.gender === g.value
                           ? 'bg-primary/10 border-primary text-primary shadow-[0_0_10px_rgba(212,175,55,0.2)]'
                           : 'text-muted-foreground border-white/10 bg-black/30 hover:border-white/20'
@@ -413,7 +413,7 @@ export function BirthInfoModal() {
                 />
                 <div className="min-h-[36px] mt-2 transition-all">
                   {data.timeSlot === 'unknown' && (
-                    <div className="animate-in fade-in slide-in-from-top-1 text-xs text-primary/80 bg-primary/10 border border-primary/20 rounded-lg p-2.5">
+                    <div className="animate-in fade-in slide-in-from-top-1 text-xs text-primary/80 bg-primary/10 border border-primary/20  p-2.5">
                       {t('unknownTimeHint')}
                     </div>
                   )}
@@ -452,7 +452,7 @@ export function BirthInfoModal() {
         {/* ─── Error Message ─── */}
         {errorMsg && (
           <div className="px-8 pb-3">
-            <div className="animate-in fade-in flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs text-amber-400 duration-200">
+            <div className="animate-in fade-in flex items-center gap-2  border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs text-amber-400 duration-200">
               <AlertCircle className="h-3.5 w-3.5 shrink-0" />
               <span>{errorMsg}</span>
             </div>
@@ -465,7 +465,7 @@ export function BirthInfoModal() {
             <button
               type="button"
               onClick={onClickBack}
-              className="text-foreground flex h-12 flex-[1] items-center justify-center gap-2 rounded-xl border border-white/10 bg-transparent text-sm font-medium transition-all hover:bg-white/5"
+              className="text-foreground flex h-12 flex-[1] items-center justify-center gap-2  border border-white/10 bg-transparent text-sm font-medium transition-all hover:bg-white/5"
             >
               <ArrowLeft className="h-4 w-4" />
               Back
@@ -475,7 +475,7 @@ export function BirthInfoModal() {
             type="button"
             onClick={onClickNext}
             className={cn(
-              'bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]',
+              'bg-primary text-primary-foreground hover:bg-primary/90 flex h-12 items-center justify-center gap-2  text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]',
               step === 0 ? 'w-full' : 'flex-[2]'
             )}
           >

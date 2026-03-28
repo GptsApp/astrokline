@@ -73,7 +73,7 @@ export function Subscribe({
 
           <ScrollAnimation delay={0.3}>
             <div className="mx-auto mt-10 max-w-xl overflow-hidden lg:mt-12">
-              <div className="bg-background has-[input:focus]:ring-muted relative grid grid-cols-[1fr_auto] items-center overflow-hidden rounded-[calc(var(--radius)+0.75rem)] border pr-3 shadow shadow-zinc-950/5 has-[input:focus]:ring-2">
+              <div className="bg-background has-[input:focus]:ring-muted relative grid grid-cols-[1fr_auto] items-center overflow-hidden -[calc(var(--radius)+0.75rem)] border pr-3 shadow shadow-zinc-950/5 has-[input:focus]:ring-2">
                 <Mail className="text-caption pointer-events-none absolute inset-y-0 left-5 my-auto size-5" />
 
                 <input
@@ -94,7 +94,7 @@ export function Subscribe({
                   <div className="md:pr-1.5 lg:pr-0">
                     <Button
                       aria-label="submit"
-                      className="rounded-(--radius)"
+                      className="-(--radius)"
                       onClick={handleSubscribe}
                       disabled={loading}
                       type="submit"

@@ -34,7 +34,7 @@ export function ToolShowcase({
             viewport={{ once: true }}
           >
             {section.headline && (
-              <div className="bg-primary/10 text-primary mb-6 inline-flex items-center rounded-full px-4 py-2 text-sm font-medium">
+              <div className="bg-primary/10 text-primary mb-6 inline-flex items-center px-4 py-2 text-sm font-medium">
                 <SmartIcon
                   name={(section.icon as string) || 'Sparkles'}
                   className="mr-2 h-4 w-4"
@@ -62,7 +62,7 @@ export function ToolShowcase({
             {[...items, ...items].map((item: any, i: number) => (
               <div
                 key={i}
-                className="group hover:border-primary/30 relative aspect-video w-[300px] flex-shrink-0 cursor-pointer overflow-hidden rounded-3xl border border-white/5 bg-[#15131A] shadow-2xl transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.15)] md:w-[450px]"
+                className="group hover:border-primary/30 relative aspect-video w-[300px] flex-shrink-0 cursor-pointer overflow-hidden  border border-white/5 bg-[#15131A] shadow-2xl transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.15)] md:w-[450px]"
               >
                 {item.image ? (
                   <img

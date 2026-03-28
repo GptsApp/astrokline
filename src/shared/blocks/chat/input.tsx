@@ -138,7 +138,7 @@ export function ChatInput({
                 <TooltipTrigger asChild>
                   <Label
                     htmlFor="prompt-reasoning-switch"
-                    className="text-muted-foreground hover:text-foreground peer-data-[state=checked]:text-primary inline-flex cursor-pointer items-center rounded-md p-2 transition-colors"
+                    className="text-muted-foreground hover:text-foreground peer-data-[state=checked]:text-primary inline-flex cursor-pointer items-center  p-2 transition-colors"
                   >
                     <BrainCircuitIcon size={16} />
                   </Label>

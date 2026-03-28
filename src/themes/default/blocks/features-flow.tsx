@@ -86,7 +86,7 @@ export function FeaturesFlow({ section }: { section: Section }) {
               >
                 <LazyImage
                   src={item.image?.src ?? ''}
-                  className="rounded-2xl"
+                  className=""
                   alt={item.image?.alt ?? ''}
                 />
               </motion.div>

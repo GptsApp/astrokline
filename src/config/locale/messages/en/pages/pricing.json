@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "AstroKline Pricing",
-    "description": "Pick the plan that matches the depth and volume you need."
+    "title": "AstroKline Pricing — Start Free, Upgrade Anytime",
+    "description": "See your 100-year timing curve for free. Upgrade for deeper career, wealth, and relationship insights."
   },
   "page": {
     "title": "AstroKline Pricing",
@@ -9,8 +9,8 @@
       "pricing": {
         "id": "pricing",
         "block": "astro-pricing",
-        "title": "Unlock Your Strategic Advantage",
-        "description": "The right decision at the wrong time is a fatal error. Secure your risk-control dossier to align with your cosmic momentum.",
+        "title": "Pick Your Depth",
+        "description": "Start free. Upgrade only when you want deeper insights into your career, relationships, and finances.",
         "groups": [
           {
             "name": "monthly",
@@ -25,7 +25,7 @@
         "items": [
           {
             "title": "Free",
-            "description": "See your 100-year K-Line and find out what's coming.",
+            "description": "See your full 100-year timing curve and find out what’s ahead — completely free, forever.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
@@ -42,7 +42,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "See My K-Line Free",
+              "title": "Generate My Chart — Free",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -50,13 +50,13 @@
           },
           {
             "title": "Lite",
-            "description": "Identify which years to aggressively push and which to protect. Make tactical decisions with timing on your side.",
+            "description": "See how each year affects your career, wealth, love, and health — so every big decision has timing on its side.",
             "features_title": "Everything in Free, plus",
             "features": [
               "10 saved Risk-Control Maps per month",
               "Career, Wealth, Love & Health risk vectors",
-              "Annual transit summaries per year",
-              "Personal dossier dashboard",
+              "Yearly energy forecasts",
+              "Personal dashboard with saved reports",
               "Upgrade to Pro anytime"
             ],
             "interval": "month",
@@ -65,9 +65,9 @@
             "price": "$39.9",
             "unit": "/ month",
             "is_featured": false,
-            "tip": "Billed Monthly",
+            "tip": "Billed Monthly · Cancel anytime",
             "button": {
-              "title": "Archive My Lite Dossier",
+              "title": "Start Lite Plan",
               "url": "/pricing"
             },
             "product_id": "standard-monthly",
@@ -93,9 +93,9 @@
             "price": "$79.9",
             "unit": "/ month",
             "is_featured": true,
-            "tip": "Billed Monthly",
+            "tip": "Billed Monthly · Cancel anytime",
             "button": {
-              "title": "Secure Full Pro Access",
+              "title": "Start Pro Plan",
               "url": "/pricing"
             },
             "product_id": "premium-monthly",
@@ -103,7 +103,7 @@
           },
           {
             "title": "Free",
-            "description": "See your 100-year K-Line and find out what's coming.",
+            "description": "See your full 100-year timing curve and find out what’s ahead — completely free, forever.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
@@ -120,7 +120,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "See My K-Line Free",
+              "title": "Generate My Chart — Free",
               "url": "/pricing"
             },
             "product_id": "free-yearly",
@@ -128,13 +128,13 @@
           },
           {
             "title": "Lite",
-            "description": "Identify which years to aggressively push and which to protect. Make tactical decisions with timing on your side.",
+            "description": "See how each year affects your career, wealth, love, and health — so every big decision has timing on its side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved Risk-Control Maps per month",
-              "Career, Wealth, Love & Health risk vectors",
-              "Annual transit summaries per year",
-              "Personal dossier dashboard",
+              "10 saved charts per month",
+              "Career, Wealth, Love & Health breakdowns",
+              "Yearly energy forecasts",
+              "Personal dashboard with saved reports",
               "Upgrade to Pro anytime"
             ],
             "interval": "year",
@@ -144,9 +144,9 @@
             "original_price": "$39.9",
             "unit": "/ month",
             "is_featured": false,
-            "tip": "Billed yearly at $238.8",
+            "tip": "Billed yearly at $238.8 · Cancel anytime",
             "button": {
-              "title": "Archive My Lite Dossier",
+              "title": "Start Lite Plan",
               "url": "/pricing"
             },
             "product_id": "standard-yearly",
@@ -154,13 +154,13 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a low-margin-of-error window blind. Full access to your complete strategic dossier, risk vectors, and timing maps.",
-            "label": "Built for Decision Makers",
+            "description": "Click any year for an instant deep reading. Full access to every tool, every dimension, every turning point.",
+            "label": "Most Popular",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved Risk-Control Maps per month",
-              "Click any year for instant deep risk reading",
-              "Innate Leverage & Blindspots analysis",
+              "30 saved charts per month",
+              "Click any year for instant deep reading",
+              "Strengths & Blindspots analysis",
               "Exact transit detail for every turning year",
               "Priority access to every new release",
               "Unlock 5-Year Strategic Master Plan",
@@ -173,9 +173,9 @@
             "original_price": "$79.9",
             "unit": "/ month",
             "is_featured": true,
-            "tip": "Billed yearly at $478.8",
+            "tip": "Billed yearly at $478.8 · Cancel anytime",
             "button": {
-              "title": "Secure Full Pro Access",
+              "title": "Start Pro Plan",
               "url": "/pricing"
             },
             "product_id": "premium-yearly",

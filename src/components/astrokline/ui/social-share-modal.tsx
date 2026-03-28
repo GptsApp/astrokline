@@ -85,7 +85,7 @@ See yours at astrokline.com`;
           <button
             type="button"
             className={cn(
-              'border-primary/30 text-primary hover:bg-primary/10 flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors',
+              'border-primary/30 text-primary hover:bg-primary/10 flex items-center gap-2 border px-4 py-2 text-sm font-medium transition-colors',
               className
             )}
           >
@@ -95,11 +95,11 @@ See yours at astrokline.com`;
         )}
       </DialogTrigger>
 
-      <DialogContent className="overflow-hidden rounded-3xl border border-white/10 bg-[#111015]/95 p-0 shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl sm:max-w-md">
+      <DialogContent className="overflow-hidden  border border-white/10 bg-[#111015]/95 p-0 shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl sm:max-w-md">
         <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50" />
 
         <div className="space-y-2 p-8 pb-6 text-center">
-          <div className="bg-primary/10 border-primary/20 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+          <div className="bg-primary/10 border-primary/20 mx-auto mb-4 flex h-12 w-12 items-center justify-center border shadow-[0_0_15px_rgba(212,175,55,0.2)]">
             <Share2 className="text-primary h-5 w-5" />
           </div>
           <DialogTitle className="font-serif text-2xl tracking-tight text-white">
@@ -112,8 +112,8 @@ See yours at astrokline.com`;
 
         <div className="space-y-6 px-8 pb-8">
           <div className="group relative">
-            <div className="from-primary/30 absolute -inset-0.5 rounded-2xl bg-gradient-to-r to-purple-600/30 opacity-30 blur transition duration-500 group-hover:opacity-60" />
-            <div className="relative rounded-2xl border border-white/10 bg-black/40 p-5 shadow-inner">
+            <div className="from-primary/30 absolute -inset-0.5  bg-gradient-to-r to-purple-600/30 opacity-30 blur transition duration-500 group-hover:opacity-60" />
+            <div className="relative  border border-white/10 bg-black/40 p-5 shadow-inner">
               <pre className="font-sans text-sm leading-relaxed whitespace-pre-wrap text-white/80">
                 {viralText}
               </pre>
@@ -124,7 +124,7 @@ See yours at astrokline.com`;
             type="button"
             onClick={handleCopy}
             className={cn(
-              'flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-bold transition-all duration-300',
+              'flex w-full items-center justify-center gap-2 py-3.5 text-sm font-bold transition-all duration-300',
               copied
                 ? 'border border-green-500/30 bg-green-500/20 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.2)]'
                 : 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:scale-[1.02]'
@@ -153,7 +153,7 @@ See yours at astrokline.com`;
                   `https://twitter.com/intent/tweet?text=${encodeURIComponent(viralText)}&url=${encodeURIComponent(shareUrl)}`
                 )
               }
-              className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 py-2.5 text-xs font-medium text-white/70 transition-all hover:border-white/20 hover:bg-white/10"
+              className="flex flex-1 items-center justify-center gap-2 border border-white/10 bg-white/5 py-2.5 text-xs font-medium text-white/70 transition-all hover:border-white/20 hover:bg-white/10"
             >
               <svg
                 className="h-3.5 w-3.5"
@@ -172,7 +172,7 @@ See yours at astrokline.com`;
                   `https://wa.me/?text=${encodeURIComponent(viralText + '\n' + shareUrl)}`
                 )
               }
-              className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 py-2.5 text-xs font-medium text-white/70 transition-all hover:border-white/20 hover:bg-white/10"
+              className="flex flex-1 items-center justify-center gap-2 border border-white/10 bg-white/5 py-2.5 text-xs font-medium text-white/70 transition-all hover:border-white/20 hover:bg-white/10"
             >
               <svg
                 className="h-3.5 w-3.5"
@@ -191,7 +191,7 @@ See yours at astrokline.com`;
                   `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(viralText)}`
                 )
               }
-              className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 py-2.5 text-xs font-medium text-white/70 transition-all hover:border-white/20 hover:bg-white/10"
+              className="flex flex-1 items-center justify-center gap-2 border border-white/10 bg-white/5 py-2.5 text-xs font-medium text-white/70 transition-all hover:border-white/20 hover:bg-white/10"
             >
               <svg
                 className="h-3.5 w-3.5"

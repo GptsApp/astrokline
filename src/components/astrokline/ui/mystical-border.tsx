@@ -17,7 +17,7 @@ export function MysticalBorder({
 }: MysticalBorderProps) {
   return (
     <div
-      className={cn('group relative overflow-hidden rounded-2xl', className)}
+      className={cn('group relative overflow-hidden ', className)}
     >
       {/* Background and children content */}
       <div className="relative z-10 h-full w-full">{children}</div>

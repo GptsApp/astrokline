@@ -15,6 +15,7 @@ import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { TrustEvidenceBar } from '@/components/astrokline/kline/trust-evidence-bar';
 import { cn } from '@/shared/lib/utils';
 import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 // Helper functions
 function getScoreBand(score: number, t: any) {
@@ -29,7 +30,6 @@ function InsightCard({
   title,
   detail,
   accentClass,
-  glowClass = 'bg-primary/20',
   delay = 0,
 }: {
   icon: typeof TrendingUp;
@@ -42,27 +42,24 @@ function InsightCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: -10 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.6, delay }}
-      className="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-[#0A0A0F]/40 p-8 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:border-white/10 hover:bg-[#0A0A0F]/60"
+      className="group relative flex flex-col pt-6 border-t border-foreground/10"
     >
-      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      <div className={cn('absolute -top-32 -right-32 z-0 h-64 w-64 rounded-full blur-[100px] transition-all duration-700 opacity-20 group-hover:opacity-50', glowClass)} />
-      
       <div className="relative z-10 flex h-full flex-col">
         <div
           className={cn(
-            'mb-6 w-fit inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-lg',
+            'mb-4 w-fit inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase',
             accentClass
           )}
         >
           <Icon className="h-4 w-4" />
           {label}
         </div>
-        <div className="text-xl font-bold tracking-tight text-white md:text-2xl">{title}</div>
-        <p className="mt-4 text-sm leading-relaxed text-white/50 transition-colors group-hover:text-white/70">{detail}</p>
+        <div className="text-xl font-bold tracking-tight text-foreground md:text-2xl">{title}</div>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{detail}</p>
       </div>
     </motion.div>
   );
@@ -113,7 +110,7 @@ function FloatingNav() {
             key={item.id}
             onClick={() => scrollTo(item.id)}
             className={cn(
-              'group flex items-center gap-2 rounded-xl border p-2 backdrop-blur-md transition-all hover:scale-105',
+              'group flex items-center gap-2  border p-2 backdrop-blur-md transition-all hover:scale-105',
               isActive ? 'bg-primary/20 border-primary/50 shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'hover:border-primary/30 border-white/10 bg-[#0A0A0F]/80'
             )}
             title={item.label}
@@ -187,8 +184,8 @@ export function SharedKlineResult({
             transition={{ duration: 0.6, delay: 0.8 }}
             className="mx-auto mb-6 max-w-2xl text-center"
           >
-            <div className="inline-flex animate-pulse items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 shadow-[0_0_20px_rgba(244,63,94,0.15)]">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500/20 text-rose-400">
+            <div className="inline-flex animate-pulse items-center gap-2  border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 shadow-[0_0_20px_rgba(244,63,94,0.15)]">
+              <span className="flex h-5 w-5 items-center justify-center bg-rose-500/20 text-rose-400">
                 <Brain className="h-3 w-3" />
               </span>
               <span className="text-sm font-semibold text-rose-200">
@@ -212,27 +209,33 @@ export function SharedKlineResult({
 
       {/* ── 3. K-LINE READING ── */}
       <ReportSection id="kline-reading" divider={false} className="relative z-[40] pb-6">
-        <div className="rounded-[3rem] border border-white/5 bg-[#0A0A0F]/60 p-6 shadow-2xl backdrop-blur-xl md:p-10">
-          <div className="mb-10 max-w-3xl">
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-primary/90 uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              {t("reading_title")}
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-              className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl"
-            >
-              Read the position first, then decide the move
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-              className="mt-6 text-base leading-loose text-white/60 md:text-lg"
-            >
-              This chart answers the questions users actually care about: are you in an expansion phase or a protection phase, which years are strongest for aggressive action, and which years require tighter risk control.
-            </motion.p>
+        <div className="p-8 md:p-12">
+          <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div>
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                className="mb-8 inline-flex items-center gap-3 text-[10px] font-bold tracking-[0.22em] text-primary uppercase"
+              >
+                <div className="h-px w-6 bg-primary" />
+                {t("reading_title")}
+              </motion.div>
+              <Heading level={2} as={motion.h2}
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                className="text-3xl md:text-5xl lg:text-6xl leading-[1.1]"
+              >
+                Read the position.
+                <br />
+                Then move.
+              </Heading>
+            </div>
+            <div className="flex items-end lg:pb-4">
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                className="text-base leading-relaxed text-muted-foreground md:text-lg border-l border-foreground/10 pl-6"
+              >
+                This chart answers the questions users actually care about: are you in an expansion phase or a protection phase, which years are strongest for aggressive action, and which years require tighter risk control.
+              </motion.p>
+            </div>
           </div>
 
           <div className="grid gap-5 lg:grid-cols-3">
@@ -271,11 +274,9 @@ export function SharedKlineResult({
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-[#0A0A0F]/40 p-8 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:border-white/10 hover:bg-[#0A0A0F]/60"
+              className="group relative overflow-hidden  border border-white/10 bg-[#050505] p-8 transition-colors duration-300 hover:border-[#D4AF37]/30 hover:bg-[#0A0A0A]"
             >
-              <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              
-              <div className="relative z-10 mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] text-white/50 uppercase backdrop-blur-md">
+              <div className="relative z-10 mb-8 inline-flex items-center gap-2  border border-white/20 bg-white/5 px-3 py-1.5 text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase">
                 <Brain className="h-4 w-4" />
                 {t("how_it_is_calculated")}
               </div>
@@ -286,7 +287,7 @@ export function SharedKlineResult({
                   { title: 'Medium cycle', desc: 'Controls pacing. Some years stack momentum, while others are better for consolidation and cleanup.' },
                   { title: 'Turning points', desc: 'Highlights inflection years so users can change strategy before pressure becomes obvious.' },
                 ].map((item, i) => (
-                  <div key={i} className="rounded-3xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.05] hover:shadow-xl">
+                  <div key={i} className=" border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.05] hover:shadow-xl">
                     <div className="text-base font-bold text-white/90">{item.title}</div>
                     <p className="mt-3 text-sm leading-relaxed text-white/50">{item.desc}</p>
                   </div>
@@ -299,18 +300,16 @@ export function SharedKlineResult({
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-[#0A0A0F]/40 p-8 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:border-white/10 hover:bg-[#0A0A0F]/60"
+              className="group relative overflow-hidden  border border-white/10 bg-[#050505] p-8 transition-colors duration-300 hover:border-[#D4AF37]/30 hover:bg-[#0A0A0A]"
             >
-              <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-tl from-white/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              
-              <div className="relative z-10 mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] text-white/50 uppercase backdrop-blur-md">
+              <div className="relative z-10 mb-8 inline-flex items-center gap-2  border border-white/20 bg-white/5 px-3 py-1.5 text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase">
                 <Target className="h-4 w-4" />
                 {t("how_to_read")}
               </div>
               
               <div className="relative z-10 space-y-4">
-                <div className="flex items-center gap-5 rounded-3xl border border-emerald-400/10 bg-emerald-500/5 p-5 transition-all duration-300 hover:bg-emerald-500/10 hover:shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-300 shadow-inner">
+                <div className="flex items-center gap-5  border border-emerald-400/10 bg-emerald-500/5 p-5 transition-all duration-300 hover:bg-emerald-500/10 hover:shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center  bg-emerald-500/20 text-emerald-300 shadow-inner">
                     <Star className="h-5 w-5" />
                   </div>
                   <div className="text-sm leading-relaxed text-white/60">
@@ -318,8 +317,8 @@ export function SharedKlineResult({
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-5 rounded-3xl border border-sky-400/10 bg-sky-500/5 p-5 transition-all duration-300 hover:bg-sky-500/10 hover:shadow-[0_0_20px_rgba(14,165,233,0.1)]">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-sky-500/20 text-sky-300 shadow-inner">
+                <div className="flex items-center gap-5  border border-sky-400/10 bg-sky-500/5 p-5 transition-all duration-300 hover:bg-sky-500/10 hover:shadow-[0_0_20px_rgba(14,165,233,0.1)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center  bg-sky-500/20 text-sky-300 shadow-inner">
                     <Star className="h-5 w-5" />
                   </div>
                   <div className="text-sm leading-relaxed text-white/60">
@@ -327,9 +326,9 @@ export function SharedKlineResult({
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-5 rounded-3xl border border-[#D4AF37]/10 bg-[#D4AF37]/5 p-5 transition-all duration-300 hover:bg-[#D4AF37]/10 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/20 text-[#D4AF37] shadow-inner">
-                    <div className="h-0.5 w-5 rounded-full bg-[#D4AF37] opacity-80 mix-blend-screen" />
+                <div className="flex items-center gap-5  border border-[#D4AF37]/10 bg-[#D4AF37]/5 p-5 transition-all duration-300 hover:bg-[#D4AF37]/10 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#D4AF37]/20 text-[#D4AF37] shadow-inner">
+                    <div className="h-0.5 w-5 bg-[#D4AF37] opacity-80 mix-blend-screen" />
                   </div>
                   <div className="text-sm leading-relaxed text-white/60">
                     <span className="font-bold text-[#F4E1A1]">Dashed line</span> shows your current age to judge distance to a peak, low, or reversal zone.
@@ -357,32 +356,37 @@ export function SharedKlineResult({
         />
 
         {/* ── PREMIUM PDF UPSELL ── */}
-        <div className="mt-16 flex flex-col items-center justify-center rounded-[3rem] border border-[#D4AF37]/20 bg-gradient-to-b from-[#15131a] to-[#0A0A0F] py-16 px-6 text-center shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 h-1 w-64 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50 blur-sm" />
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] text-[#D4AF37] uppercase">
-            <Star className="h-3 w-3" /> Exclusive VIP Access
+        <div className="mt-24 grid grid-cols-1 lg:grid-cols-2 border border-foreground/10 bg-muted/30 relative">
+          <div className="p-10 md:p-16 flex flex-col justify-center">
+            <div className="mb-8 inline-flex items-center gap-4 text-[10px] font-bold tracking-[0.2em] text-primary uppercase">
+              <span className="h-px w-6 bg-primary" /> Exclusive VIP Access
+            </div>
+            <Heading level={3} variant="section" className="mb-6 text-4xl md:text-5xl leading-[1.1]">
+               Unlock Your <br/>
+               <span className="text-primary italic">5-Year Master Plan.</span>
+             </Heading>
+            <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+              Stop guessing your future. Get your uncompromising, highly curated psychological transit blueprint. No daily noise—just your Top 3 epoch-defining karmic transits per year.
+            </p>
           </div>
-          <h3 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-4xl">
-            Download Your <span className="text-[#D4AF37]">5-Year Strategic</span> Master Plan
-          </h3>
-          <p className="mb-8 max-w-2xl text-base leading-relaxed text-white/50">
-            Stop guessing your future. Get your uncompromising, highly curated psychological transit blueprint. No daily noise—just your Top 3 epoch-defining karmic transits per year. Keep it forever, study your cycles, and master your destiny timeline.
-          </p>
-          <div className="w-full max-w-sm">
-            <PremiumDownloadButton 
-              profile={profile} 
-              klineData={klineData} 
-              transitDetails={transitDetails} 
-              tier={tier}
-              onUpgradeClick={onUpgradeClick}
-            />
+          <div className="bg-background border-l border-foreground/10 p-10 md:p-16 flex flex-col items-center justify-center">
+            <div className="w-full max-w-sm flex flex-col gap-6">
+              <PremiumDownloadButton 
+                profile={profile} 
+                klineData={klineData} 
+                transitDetails={transitDetails} 
+                tier={tier}
+                onUpgradeClick={onUpgradeClick}
+              />
+              <p className="text-xs text-center text-muted-foreground font-mono">Keep it forever, study your cycles, and master your destiny timeline.</p>
+            </div>
           </div>
         </div>
       </ReportSection>
 
       {/* -- 6. ADVANCED RAW DATA -- */}
       <ReportSection id="natal-chart" divider={false} className="relative z-[10] pb-24">
-        <details className="group mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-white/5 bg-black/40 backdrop-blur-sm transition-all duration-300 open:bg-[#111015]/80">
+        <details className="group mx-auto w-full max-w-4xl overflow-hidden  border border-white/5 bg-black/40 backdrop-blur-sm transition-all duration-300 open:bg-[#111015]/80">
           <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-white/50 transition-colors hover:text-white">
             <span className="text-[11px] font-bold tracking-widest uppercase">
               Advanced Raw Data (For Astrologers)

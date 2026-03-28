@@ -666,7 +666,7 @@ export function MusicGenerator({ className, srOnlyTitle }: SongGeneratorProps) {
                         <div key={song.id} className="space-y-4">
                           <div className="flex gap-4">
                             <div className="relative flex-shrink-0">
-                              <div className="bg-muted relative h-20 w-20 overflow-hidden rounded-lg">
+                              <div className="bg-muted relative h-20 w-20 overflow-hidden ">
                                 {song.imageUrl ? (
                                   <LazyImage
                                     src={song.imageUrl}
@@ -684,7 +684,7 @@ export function MusicGenerator({ className, srOnlyTitle }: SongGeneratorProps) {
                                 <Button
                                   size="sm"
                                   variant="secondary"
-                                  className="absolute top-6 right-6 h-8 w-8 rounded-full p-0 shadow-lg"
+                                  className="absolute top-6 right-6 h-8 w-8 p-0 shadow-lg"
                                   onClick={() => togglePlay(song)}
                                   disabled={isCurrentlyLoading}
                                 >
@@ -762,7 +762,7 @@ export function MusicGenerator({ className, srOnlyTitle }: SongGeneratorProps) {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center">
                       <Music className="text-muted-foreground h-8 w-8" />
                     </div>
                     <p className="text-muted-foreground mb-2">

@@ -51,6 +51,7 @@ import {
 } from '@/shared/types/blocks/pricing';
 import { authClient } from '@/core/auth/client';
 import { User } from '@/shared/models/user';
+import { Heading } from '@/components/astrokline/ui/heading';
 
 const PENDING_CHECKOUT_KEY = 'astrokline_pending_checkout_intent';
 const PENDING_CHECKOUT_MAX_AGE_MS = 30 * 60 * 1000;
@@ -707,7 +708,7 @@ export function Pricing({
       >
         <div className="relative z-10 mx-auto mb-12 px-4 text-center md:px-8">
         {paymentStatus === 'cancelled' || paymentStatus === 'failed' ? (
-          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border border-amber-500/20 bg-amber-500/10 p-5 text-left">
+          <div className="mx-auto mb-8 max-w-3xl  border border-amber-500/20 bg-amber-500/10 p-5 text-left">
             <div className="flex items-start gap-3">
               <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" />
               <div className="flex-1">
@@ -742,7 +743,7 @@ export function Pricing({
         ) : null}
 
         {!paymentStatus && paymentAttempt?.status === 'pending' ? (
-          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border border-sky-500/20 bg-sky-500/10 p-5 text-left">
+          <div className="mx-auto mb-8 max-w-3xl  border border-sky-500/20 bg-sky-500/10 p-5 text-left">
             <div className="flex items-start gap-3">
               <ExternalLink className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" />
               <div className="flex-1">
@@ -770,9 +771,9 @@ export function Pricing({
         )}
 
         {section.title && (
-          <h2 className="mb-6 text-3xl font-bold text-pretty lg:text-4xl">
+          <Heading level={2} variant="section" className="mb-6 text-pretty">
             {section.title}
-          </h2>
+          </Heading>
         )}
         <p className="text-muted-foreground mx-auto mb-4 max-w-xl lg:max-w-none lg:text-lg">
           {section.description}
@@ -781,7 +782,7 @@ export function Pricing({
 
       <div className="container">
         {checkoutProgress ? (
-          <div className="mx-auto mb-10 max-w-2xl rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-5 text-center">
+          <div className="mx-auto mb-10 max-w-2xl  border border-emerald-500/20 bg-emerald-500/10 p-5 text-center">
             <div className="flex items-center justify-center gap-2 text-white">
               <Loader2 className="h-4 w-4 animate-spin" />
               <span className="text-sm font-semibold">
@@ -822,7 +823,7 @@ export function Pricing({
 
             {/* Custom Toggle Switch matching screenshot */}
             <div
-              className="relative flex h-7 w-12 cursor-pointer items-center rounded-full p-[3px] transition-colors"
+              className="relative flex h-7 w-12 cursor-pointer items-center p-[3px] transition-colors"
               style={{ backgroundColor: '#d4af37' }}
               onClick={() => {
                 setGroup((prev) =>
@@ -834,7 +835,7 @@ export function Pricing({
             >
               {/* Switch Thumb */}
               <div
-                className="aspect-square h-full rounded-full bg-[#1f1d19] shadow-md"
+                className="aspect-square h-full bg-[#1f1d19] shadow-md"
                 style={{
                   transform: `translateX(${
                     group === section.groups[0].name ? 0 : 20
@@ -860,7 +861,7 @@ export function Pricing({
               </span>
 
               {section.groups[1].label && (
-                <span className="relative -top-3 rounded-full border border-[#d4af37]/20 bg-[#d4af37]/10 px-2 py-[2px] text-[10px] font-bold tracking-wide whitespace-nowrap text-[#d4af37] shadow-sm sm:text-xs">
+                <span className="relative -top-3 border border-[#d4af37]/20 bg-[#d4af37]/10 px-2 py-[2px] text-[10px] font-bold tracking-wide whitespace-nowrap text-[#d4af37] shadow-sm sm:text-xs">
                   {section.groups[1].label}
                 </span>
               )}
@@ -926,7 +927,7 @@ export function Pricing({
                 )}
               >
                 {item.label && (
-                  <span className="absolute inset-x-0 -top-3 mx-auto flex h-6 w-fit items-center rounded-full bg-[#d4af37]/10 px-3 py-1 text-xs font-bold text-[#d4af37] ring-1 ring-[#d4af37]/30 ring-offset-1 ring-offset-[#111] ring-inset">
+                  <span className="absolute inset-x-0 -top-3 mx-auto flex h-6 w-fit items-center bg-[#d4af37]/10 px-3 py-1 text-xs font-bold text-[#d4af37] ring-1 ring-[#d4af37]/30 ring-offset-1 ring-offset-[#111] ring-inset">
                     {item.label}
                   </span>
                 )}
@@ -1016,7 +1017,7 @@ export function Pricing({
                       onClick={() => handlePayment(item)}
                       disabled={isLoading || !canStartCheckout}
                       className={cn(
-                        'focus-visible:ring-ring inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+                        'focus-visible:ring-ring inline-flex items-center justify-center gap-2  text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
                         'mt-4 h-10 w-full px-4 py-2',
                         item.is_featured
                           ? 'border-none bg-gradient-to-r from-[#e5c147] to-[#c5a028] font-semibold text-black shadow-[0_4px_14px_rgba(212,175,55,0.4)] hover:opacity-90'

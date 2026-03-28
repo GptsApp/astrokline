@@ -5,6 +5,7 @@ import { Compass, CornerRightDown, FileDigit, LineChart } from 'lucide-react';
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
 import { useRouter } from '@/core/i18n/navigation';
 import { Section } from '@/shared/types/blocks/landing';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 export function HowItWorks({ section }: { section?: Section }) {
   const { open } = useBirthInfoModal();
@@ -35,9 +36,9 @@ export function HowItWorks({ section }: { section?: Section }) {
     >
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-5xl">
+          <Heading level={2} className="mb-4">
             {section?.title || 'Three Steps'}
-          </h2>
+          </Heading>
           <p className="text-muted-foreground text-lg">
             {section?.description || 'No astrology background needed.'}
           </p>
@@ -51,7 +52,7 @@ export function HowItWorks({ section }: { section?: Section }) {
               key={step.title}
               className="group relative z-10 flex flex-col items-center text-center"
             >
-              <div className="group-hover:border-primary/30 relative mb-6 flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl border border-white/5 bg-[#111] shadow-[0_0_30px_rgba(212,175,55,0.05)] transition-colors duration-500">
+              <div className="group-hover:border-primary/30 relative mb-6 flex h-24 w-24 items-center justify-center overflow-hidden  border border-white/5 bg-[#111] shadow-[0_0_30px_rgba(212,175,55,0.05)] transition-colors duration-500">
                 <div className="from-primary/10 absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <step.icon className="text-primary/70 group-hover:text-primary h-10 w-10 transition-colors" />
                 <div className="text-primary/30 absolute top-2 right-2 font-mono text-[10px]">
@@ -59,9 +60,9 @@ export function HowItWorks({ section }: { section?: Section }) {
                 </div>
               </div>
 
-              <h3 className="text-foreground mb-3 text-xl font-bold">
+              <Heading level={3} className="mb-3">
                 {step.title}
-              </h3>
+              </Heading>
               <p className="text-muted-foreground px-4 text-sm leading-relaxed">
                 {step.desc}
               </p>
@@ -79,10 +80,10 @@ export function HowItWorks({ section }: { section?: Section }) {
           <button
             type="button"
             onClick={() => open((birthData) => { router.push('/kline'); })}
-            className="group border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary relative flex items-center gap-3 rounded-full border px-8 py-3 font-medium shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all hover:shadow-[0_0_25px_rgba(212,175,55,0.15)]"
+            className="group border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary relative flex items-center gap-3 border px-8 py-3 font-medium shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all hover:shadow-[0_0_25px_rgba(212,175,55,0.15)]"
           >
             <span>See My Timing Map</span>
-            <div className="h-2 w-2 rounded-full animate-pulse bg-emerald-500" />
+            <div className="h-2 w-2 animate-pulse bg-emerald-500" />
           </button>
         </div>
       </div>

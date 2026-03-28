@@ -336,7 +336,7 @@ export function IdealPartnerGenerator({
               <CardContent className="space-y-6 pb-8">
                 {step === 0 && (
                   <div className="animate-in fade-in slide-in-from-bottom-4 space-y-6 py-8 text-center duration-500">
-                    <div className="bg-primary/10 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                    <div className="bg-primary/10 mx-auto mb-4 flex h-16 w-16 items-center justify-center">
                       <Sparkles className="text-primary h-8 w-8" />
                     </div>
                     <h3 className="text-2xl font-bold">
@@ -562,7 +562,7 @@ export function IdealPartnerGenerator({
                     >
                       <div
                         className={cn(
-                          'flex h-8 w-8 items-center justify-center rounded-full border-2 text-sm font-bold transition-all duration-300',
+                          'flex h-8 w-8 items-center justify-center border-2 text-sm font-bold transition-all duration-300',
                           step === s.id
                             ? 'bg-primary border-primary text-primary-foreground shadow-[0_0_15px_rgba(212,175,55,0.4)]'
                             : step > s.id
@@ -608,7 +608,7 @@ export function IdealPartnerGenerator({
                   />
                 ) : generatedImages.length > 0 ? (
                   <div className="space-y-12">
-                    <div className="border-primary/10 flex flex-col items-center rounded-3xl border bg-black/20 p-6 backdrop-blur-xl">
+                    <div className="border-primary/10 flex flex-col items-center  border bg-black/20 p-6 backdrop-blur-xl">
                       <h4 className="text-primary/80 mb-6 text-center font-mono text-lg tracking-[0.2em] uppercase">
                         <Sparkles className="mr-2 mb-1 inline-block h-4 w-4" />
                         Synastry Blueprint
@@ -627,8 +627,8 @@ export function IdealPartnerGenerator({
                           <div
                             className={
                               generatedImages.length === 1
-                                ? 'relative overflow-hidden rounded-lg border'
-                                : 'relative aspect-square overflow-hidden rounded-lg border'
+                                ? 'relative overflow-hidden  border'
+                                : 'relative aspect-square overflow-hidden  border'
                             }
                           >
                             <LazyImage
@@ -676,7 +676,7 @@ export function IdealPartnerGenerator({
                         {[0, 1, 2].map((i) => (
                           <div
                             key={i}
-                            className="bg-primary/5 border-primary/10 flex items-start gap-3 rounded-lg border p-3"
+                            className="bg-primary/5 border-primary/10 flex items-start gap-3  border p-3"
                           >
                             <CheckCircle2 className="text-primary mt-0.5 h-5 w-5 shrink-0" />
                             <span className="text-foreground/90 text-sm">
@@ -706,7 +706,7 @@ export function IdealPartnerGenerator({
                   </div>
                 ) : (
                   <div className="flex h-full flex-col items-center justify-center py-16 text-center">
-                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center">
                       <ImageIcon className="text-muted-foreground h-10 w-10" />
                     </div>
                     <p className="text-muted-foreground">

@@ -119,7 +119,7 @@ export function Header({ header }: { header: HeaderType }) {
                   {item.title}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="min-w-2xs origin-top p-0.5">
-                  <div className="border-foreground/5 bg-card ring-foreground/5 rounded-[calc(var(--radius)-2px)] border border-transparent p-2 shadow ring-1">
+                  <div className="border-foreground/5 bg-card ring-foreground/5 -[calc(var(--radius)-2px)] border border-transparent p-2 shadow ring-1">
                     <ul className="mt-1 space-y-2">
                       {item.children?.map((subItem: NavItem, index: number) => (
                         <ListItem
@@ -232,7 +232,7 @@ export function Header({ header }: { header: HeaderType }) {
             target={target || '_self'}
             className="grid grid-cols-[auto_1fr] gap-3.5"
           >
-            <div className="bg-background ring-foreground/10 relative flex size-9 items-center justify-center rounded border border-transparent shadow-sm ring-1">
+            <div className="bg-background ring-foreground/10 relative flex size-9 items-center justify-center  border border-transparent shadow-sm ring-1">
               {children}
             </div>
             <div className="space-y-0.5">
@@ -295,18 +295,6 @@ export function Header({ header }: { header: HeaderType }) {
               <div className="mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 in-data-[state=active]:flex max-lg:in-data-[state=active]:mt-6 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
                 <div className="flex w-full flex-row items-center gap-4 sm:flex-row sm:gap-6 sm:space-y-0 md:w-fit">
                   <LocaleSelector type="icon" />
-                  <button
-                    onClick={() => {
-                      open((birthData) => {
-                        router.push('/kline/result');
-                      });
-                    }}
-                    type="button"
-                    aria-label="Open Birth Info Form"
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:bg-primary/90 transition-all hover:scale-105"
-                  >
-                    Generate My K-Line
-                  </button>
                   <div className="flex-1 md:hidden"></div>
                   {header.show_sign ? (
                     <SignUser userNav={header.user_nav} />

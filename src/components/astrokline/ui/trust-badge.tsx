@@ -17,7 +17,7 @@ export function TrustBadge({ className }: { className?: string }) {
         {AVATARS.map((src, i) => (
           <div
             key={i}
-            className="border-background relative z-10 h-8 w-8 overflow-hidden rounded-full border-2"
+            className="border-background relative z-10 h-8 w-8 overflow-hidden border-2"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -28,7 +28,7 @@ export function TrustBadge({ className }: { className?: string }) {
             />
           </div>
         ))}
-        <div className="border-background relative z-20 flex h-8 w-8 items-center justify-center rounded-full border-2 bg-[#15131A] text-[9px] font-bold text-white/80 shadow-sm">
+        <div className="border-background relative z-20 flex h-8 w-8 items-center justify-center border-2 bg-[#15131A] text-[9px] font-bold text-white/80 shadow-sm">
           10k+
         </div>
       </div>

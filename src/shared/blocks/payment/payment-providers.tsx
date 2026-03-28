@@ -154,7 +154,7 @@ export function PaymentProviders({
               alt={provider.title || provider.name || ''}
               width={24}
               height={24}
-              className="rounded-full"
+              className="-full"
             />
           )}
           <h3>{provider.title}</h3>

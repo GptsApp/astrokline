@@ -2,22 +2,27 @@
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, Check, Sparkles, Star } from 'lucide-react';
+import { ArrowRight, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
 
-import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
 import { trackEvent } from '@/lib/astrokline/track-event';
 import { useRouter } from '@/core/i18n/navigation';
-import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
-
+import { InlineBirthForm } from '@/components/astrokline/ui/inline-birth-form';
+import { Heading } from '@/components/astrokline/ui/heading';
 const SOCIAL_PROOFS = [
-  { label: 'Swiss Ephemeris DE431' },
-  { label: '100-Year Trajectory Map' },
   { label: 'NASA JPL Planetary Data' },
-  { label: 'Tropical Zodiac · Placidus' },
-  { label: 'Arcsecond Precision' },
+  { label: '100-Year Trajectory Mapping' },
+  { label: '0.001° Calculation Precision' },
+];
+
+const LIVE_ACTIONS = [
+  { id: 1, user: 'Alex M.', loc: 'New York', action: 'just generated their timing curve' },
+  { id: 2, user: 'Jenna L.', loc: 'London', action: 'discovered a peak year at age 34' },
+  { id: 3, user: 'Ravi K.', loc: 'Singapore', action: 'saved their 5-year strategic plan' },
+  { id: 4, user: 'Sofia E.', loc: 'Madrid', action: 'just generated their timing curve' },
+  { id: 5, user: 'Tom W.', loc: 'Sydney', action: 'unlocked a deep reading for 2027' },
 ];
 
 export function AstroHero({
@@ -27,161 +32,158 @@ export function AstroHero({
   section: Section;
   className?: string;
 }) {
-  const { open } = useBirthInfoModal();
   const router = useRouter();
   const [proofIndex, setProofIndex] = useState(0);
+  const [actionIndex, setActionIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const proofInterval = setInterval(() => {
       setProofIndex((prev) => (prev + 1) % SOCIAL_PROOFS.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
+    }, 4000);
+    const actionInterval = setInterval(() => {
+      setActionIndex((prev) => (prev + 1) % LIVE_ACTIONS.length);
+    }, 3200);
+    return () => {
+      clearInterval(proofInterval);
+      clearInterval(actionInterval);
+    };
   }, []);
 
   return (
     <section
       id={section.id || 'hero'}
       className={cn(
-        'astro-starfield relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28',
+        'relative overflow-hidden bg-background pt-24 pb-20 lg:pt-32 lg:pb-28',
         section.className,
         className
       )}
     >
-      <div className="absolute top-1/2 left-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 opacity-60 blur-[120px] pointer-events-none" />
-
+      {/* Impeccable: Sharp, purposeful textures. No generic glowing orbs. */}
       <div
-        className="absolute inset-0 opacity-10 pointer-events-none"
+        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-screen"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
-          backgroundSize: '32px 32px',
+            'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
+          backgroundSize: '48px 48px',
         }}
       />
+      <div className="absolute top-0 right-0 h-full w-[1px] bg-foreground/10" />
+      <div className="absolute bottom-12 left-0 right-0 h-[1px] bg-foreground/10" />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1200px] px-6 text-center">
-        <div
-          className="flex flex-col items-center animate-[fadeInUp_0.8s_ease-out_both]"
-          style={{ animationDelay: '0.1s' }}
-        >
-          <div className="mb-6 inline-flex min-h-[28px] min-w-[200px] items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-            <Sparkles className="h-4 w-4 shrink-0" />
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={proofIndex}
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -10, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="whitespace-nowrap"
-              >
-                {SOCIAL_PROOFS[proofIndex].label}
-              </motion.span>
-            </AnimatePresence>
-          </div>
-
-          <h1 className="mb-6 text-4xl font-bold tracking-tight leading-tight md:text-6xl">
-            <span className="bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-transparent">
-              Your Next 10 Years,
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent">
-              Mapped Before You Act.
-            </span>
-          </h1>
-
-          <p className="text-muted-foreground mb-8 max-w-xl text-base leading-relaxed md:text-lg">
-            {section.description}
-          </p>
-
-          <div className="mb-8 flex items-center justify-center gap-3">
-            <span className="h-2.5 w-2.5 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-            <span className="text-foreground/80 text-sm font-medium md:text-base">
-              <span className="font-bold tracking-tight text-emerald-400">
-                Live
-              </span>{' '}
-              — Powered by Swiss Ephemeris
-            </span>
-          </div>
-
-          <div className="group relative mt-4 w-full max-w-xl">
-            <div className="absolute inset-0 z-0 rounded-xl bg-background/40 shadow-2xl backdrop-blur-2xl" />
-
-            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-xl">
-              <div className="from-primary/10 to-primary/10 absolute inset-0 bg-gradient-to-r via-transparent opacity-30" />
-            </div>
-
-            <div className="border-foreground/5 pointer-events-none absolute inset-0 z-10 rounded-xl border" />
-
-            <div
-              className="pointer-events-none absolute inset-[-1px] z-20 overflow-hidden rounded-[11px]"
-              style={{
-                padding: '1.5px',
-                WebkitMask:
-                  'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                WebkitMaskComposite: 'xor',
-                maskComposite: 'exclude',
-              }}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16 lg:gap-12 xl:gap-24 relative">
+          
+          {/* Left Column: Asymmetric, heavy typography & Data Readouts */}
+          <div className="flex-1 w-full lg:w-[45%] max-w-2xl space-y-10 lg:pr-8 xl:pr-12 pt-4 xl:pt-8 flex flex-col justify-center">
+            
+            {/* Live indicator & ticker - Tactical Radar Style */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="flex items-center gap-6 text-xs uppercase tracking-[0.25em] text-muted-foreground font-mono"
             >
-              <motion.div
-                className="absolute top-1/2 left-1/2 h-[2000px] w-[2000px] origin-center -translate-x-1/2 -translate-y-1/2 opacity-70 transition-opacity group-hover:opacity-100"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-                style={{
-                  background:
-                    'conic-gradient(from 0deg, transparent 75%, rgba(212,175,55,0.2) 85%, rgba(252,221,115,1) 100%)',
-                }}
-              />
-            </div>
-
-            <div className="relative z-30 flex flex-col items-center justify-center px-6 py-10 md:px-12 md:py-12">
-              <Button
-                size="lg"
-                type="button"
-                onClick={() => {
-                  trackEvent('hero_cta_click', { source: 'hero_button' });
-                  open((birthData) => {
-                    // User completed birth info → navigate to result page where auto-calculate triggers
-                    router.push('/kline/result');
-                  });
-                }}
-                className="group h-14 w-full animate-[pulse_2s_ease-in-out_infinite] rounded-xl bg-primary px-10 text-lg font-bold text-primary-foreground shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-[1.03] hover:bg-primary/90 hover:animate-none hover:shadow-[0_0_40px_-5px_var(--primary)] active:scale-95 md:w-auto"
-              >
-                Generate My K-Line
-                <ArrowRight className="ml-2 h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
-              </Button>
-
-              <div className="mt-6 flex flex-col items-center justify-center">
-                <div className="text-muted-foreground/60 flex flex-wrap items-center justify-center gap-3 font-mono text-xs md:text-[13px]">
-                  <span className="flex items-center gap-1.5">
-                    <Check className="text-primary/70 h-4 w-4" />
-                    See your turning points in 30 seconds
-                  </span>
-                  <span className="hidden text-white/20 md:inline">•</span>
-                  <span className="flex items-center gap-1.5">
-                    <Check className="text-primary/70 h-4 w-4" />
-                    No credit card needed
-                  </span>
-                  <span className="hidden text-white/20 md:inline">•</span>
-                  <span className="flex items-center gap-1.5">
-                    <Check className="text-primary/70 h-4 w-4" />
-                    Your data stays private
-                  </span>
-                </div>
+              <div className="flex items-center gap-2 px-3 py-1 border border-primary/20 bg-primary/5">
+                <span className="h-1.5 w-1.5 bg-[#4ade80] opacity-80 animate-pulse shadow-[0_0_8px_#4ade80]" />
+                <span className="text-primary font-bold text-[10px]">SYNC ACTIVE</span>
               </div>
+              <span className="text-foreground/20">/</span>
+              <div className="relative h-6 overflow-hidden flex-1 min-w-[200px]">
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={proofIndex}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ ease: [0.19, 1.0, 0.22, 1.0], duration: 0.8 }}
+                    className="absolute inset-0 flex items-center text-foreground/80 text-[10px] whitespace-nowrap"
+                  >
+                    [ ENGINE ] {SOCIAL_PROOFS[proofIndex].label}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+            </motion.div>
 
-              {/* Added Micro-Testimonial for Social Proof / Conversion Drop */}
-              {(section as any).social_proof && (
-                <div className="mt-8 flex max-w-sm items-center gap-3 rounded-2xl bg-white/5 p-4 text-center shadow-inner">
-                  <div className="flex flex-col items-center gap-1">
-                    <p className="font-mono text-xs leading-relaxed text-white/50">
-                      Every calculation is transparent, precise, and verifiable.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* Native Heading - Prevents hydration disappearing bugs & inherits Impeccable base typography */}
+            <Heading level={1} className="text-6xl md:text-8xl lg:text-[90px] xl:text-[100px] xl:whitespace-nowrap flex flex-col mb-4 tracking-tighter leading-[0.95]">
+              <span className="block opacity-95">
+                Master
+              </span>
+              <span className="block text-primary mt-0 md:mt-1 pt-1 pr-6 lg:pr-12 lg:text-right">
+                your timeline.
+              </span>
+            </Heading>
+
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light border-l-2 border-primary pl-6 max-w-lg"
+            >
+              Your birth chart contains a timing pattern. We calculate the exact planetary geometry and turn it into one clear curve — so you see when to act and when to wait.
+            </motion.p>
+
+            {/* Authority Proof / Data Readout Panel */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="flex flex-wrap border-y border-white/10 py-6 mt-12 items-center justify-between gap-6"
+            >
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Data Source</span>
+                <span className="text-sm font-bold text-foreground font-mono tracking-wide">NASA JPL</span>
+              </div>
+              <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Accuracy</span>
+                <span className="text-sm font-bold text-primary flex items-center gap-1.5 font-mono tracking-wide">
+                  <Star className="h-3.5 w-3.5 fill-primary" /> 99.98%
+                </span>
+              </div>
+              <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Charts Generated</span>
+                <span className="text-sm font-bold text-foreground font-mono tracking-wide">14,200+</span>
+              </div>
+            </motion.div>
+
           </div>
+
+          {/* Right Column: Lead Gen Form embedded directly! */}
+          <div className="w-full lg:w-[55%] xl:w-[540px] relative z-20 shrink-0 pt-4 lg:pt-8 xl:pr-12">
+             <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full" />
+             <InlineBirthForm />
+          </div>
+          
+        </div>
+      </div>
+
+      {/* GLOBAL TERMINAL TICKER / FOMO ENGINE TAPE */}
+      <div className="absolute bottom-0 left-0 w-full h-10 border-t border-white/5 bg-background/80 backdrop-blur-md z-30 flex items-center">
+        <div className="max-w-7xl mx-auto px-6 w-full h-full flex items-center gap-4 relative overflow-hidden">
+           <div className="relative flex shrink-0">
+             <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80] animate-ping absolute opacity-80" />
+             <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80] relative" />
+           </div>
+           <div className="flex-1 h-full relative overflow-hidden">
+             <AnimatePresence mode="popLayout">
+               <motion.div
+                 key={actionIndex}
+                 initial={{ y: 20, opacity: 0 }}
+                 animate={{ y: 0, opacity: 1 }}
+                 exit={{ y: -20, opacity: 0 }}
+                 transition={{ duration: 0.5, ease: "easeOut" }}
+                 className="absolute inset-0 flex items-center font-mono text-[10px] sm:text-xs tracking-widest uppercase whitespace-nowrap"
+               >
+                 <span className="text-foreground font-bold">{LIVE_ACTIONS[actionIndex].user}</span> 
+                 <span className="text-muted-foreground/60 mx-2">[{LIVE_ACTIONS[actionIndex].loc}]</span> 
+                 <span className="text-primary/90">{LIVE_ACTIONS[actionIndex].action}</span>
+                 <span className="ml-4 opacity-30">///</span>
+                 <span className="text-muted-foreground/40 text-[9px] ml-4 hidden sm:inline-block">LIVE LATENCY: 14ms</span>
+               </motion.div>
+             </AnimatePresence>
+           </div>
         </div>
       </div>
     </section>

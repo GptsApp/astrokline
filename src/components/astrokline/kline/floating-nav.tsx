@@ -64,7 +64,7 @@ export function FloatingNav() {
             className="group relative flex items-center gap-4"
           >
             <div
-              className={`h-3 w-3 rounded-full border-2 transition-all duration-500 ease-out ${isActive ? 'scale-125 border-[#D4AF37] bg-[#D4AF37] shadow-[0_0_12px_rgba(212,175,55,0.6)]' : 'border-white/20 bg-[#0A0A0A] group-hover:scale-110 group-hover:border-white/50'}`}
+              className={`h-3 w-3 border-2 transition-all duration-500 ease-out ${isActive ? 'scale-125 border-[#D4AF37] bg-[#D4AF37] shadow-[0_0_12px_rgba(212,175,55,0.6)]' : 'border-white/20 bg-[#0A0A0A] group-hover:scale-110 group-hover:border-white/50'}`}
             />
 
             <div

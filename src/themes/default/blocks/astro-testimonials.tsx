@@ -1,6 +1,10 @@
 'use client';
 
-import { Testimonials } from '@/components/astrokline/sections/testimonials';
+import dynamic from 'next/dynamic';
+
+const Testimonials = dynamic(
+  () => import('@/components/astrokline/sections/testimonials').then(m => m.Testimonials)
+);
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 

@@ -219,7 +219,7 @@ export function ChatHistory() {
       return (
         <div className="flex flex-col gap-3">
           {Array.from({ length: 6 }).map((_, idx) => (
-            <Skeleton key={idx} className="h-20 w-full rounded-lg" />
+            <Skeleton key={idx} className="h-20 w-full " />
           ))}
         </div>
       );

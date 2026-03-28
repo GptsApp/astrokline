@@ -1,5 +1,7 @@
 'use client';
 
+import { Heading } from "@/components/astrokline/ui/heading";
+
 import { motion } from 'framer-motion';
 import {
   Clock,
@@ -59,10 +61,10 @@ export function MethodologyBadge() {
           <p className="text-primary/70 mb-3 font-mono text-xs tracking-[0.3em] uppercase">
             Built on Real Astronomy
           </p>
-          <h2 className="mb-3 text-2xl font-bold md:text-3xl">
+          <Heading level={2} className="mb-3">
             Professional-Grade{' '}
             <span className="text-primary">Methodology.</span>
-          </h2>
+          </Heading>
           <p className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed">
             AstroKline uses the same astronomical engine trusted by professional
             astrologers worldwide. Every calculation is transparent, precise,
@@ -84,17 +86,17 @@ export function MethodologyBadge() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.05 * i }}
-              className="group hover:border-primary/20 relative rounded-2xl border border-white/5 bg-[#15131A] p-5 transition-all duration-300"
+              className="group hover:border-primary/20 relative  border border-white/5 bg-[#15131A] p-5 transition-all duration-300"
             >
-              <div className="from-primary/5 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="from-primary/5 absolute inset-0  bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="relative z-10 flex flex-col gap-3">
-                <div className="bg-primary/10 border-primary/20 flex h-9 w-9 items-center justify-center rounded-xl border">
+                <div className="bg-primary/10 border-primary/20 flex h-9 w-9 items-center justify-center  border">
                   <item.icon className="text-primary h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="mb-1 text-sm font-bold text-white/90">
+                  <Heading level={3} className="mb-1 text-white/90">
                     {item.label}
-                  </h3>
+                  </Heading>
                   <p className="text-[11px] leading-relaxed text-white/40">
                     {item.detail}
                   </p>
@@ -110,7 +112,7 @@ export function MethodologyBadge() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="mt-10 mx-auto max-w-2xl rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center"
+          className="mt-10 mx-auto max-w-2xl  border border-white/5 bg-white/[0.02] p-6 text-center"
         >
           <p className="text-sm leading-relaxed text-white/50 italic">
             &quot;We don&apos;t manufacture fortune anxiety. We don&apos;t tell you Mercury retrograde
@@ -135,7 +137,7 @@ export function MethodologyBadge() {
           </p>
           <a
             href="#pricing"
-            className="text-foreground hover:border-primary/20 inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.06] px-6 py-2.5 text-sm font-medium transition-all hover:bg-white/[0.12]"
+            className="text-foreground hover:border-primary/20 inline-flex items-center gap-2  border border-white/[0.08] bg-white/[0.06] px-6 py-2.5 text-sm font-medium transition-all hover:bg-white/[0.12]"
           >
             See our precision in action →
           </a>

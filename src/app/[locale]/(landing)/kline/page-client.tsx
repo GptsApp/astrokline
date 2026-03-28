@@ -56,6 +56,7 @@ import {
   AccordionTrigger,
 } from '@/shared/components/ui/accordion';
 import { cn } from '@/shared/lib/utils';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 // ─── Floating Mini Nav ───
 function FloatingNav() {
@@ -109,7 +110,7 @@ function FloatingNav() {
             key={item.id}
             onClick={() => scrollTo(item.id)}
             className={cn(
-              'group flex items-center gap-2 rounded-xl border p-2 backdrop-blur-md transition-all hover:scale-105',
+              'group flex items-center gap-2  border p-2 backdrop-blur-md transition-all hover:scale-105',
               isActive
                 ? 'bg-primary/20 border-primary/50 shadow-[0_0_15px_rgba(212,175,55,0.3)]'
                 : 'hover:border-primary/30 border-white/10 bg-[#0A0A0F]/80'
@@ -315,8 +316,10 @@ export function KlineClient({
   return (
     <div className="bg-background astro-starfield min-h-screen">
       {/* ── Global Page Breadcrumb ── */}
-      <div className="relative z-50 mx-auto w-full max-w-7xl px-4 pt-24 md:px-8">
-        <PageBreadcrumb className="mb-0" />
+      <div className="relative z-40 mx-auto w-full max-w-7xl px-4 pt-24 md:px-8 pointer-events-none">
+        <div className="pointer-events-auto inline-block">
+          <PageBreadcrumb className="mb-0" />
+        </div>
       </div>
 
       {/* ===== 3D SPATIAL LOADER ===== */}
@@ -335,21 +338,21 @@ export function KlineClient({
         <div className="relative flex flex-col items-center justify-center border-b border-white/5 bg-gradient-to-b from-transparent to-[#15131A]/30 px-4 py-20 text-center">
           <div className="background-gradient-to-t from-background pointer-events-none absolute inset-0 via-transparent to-transparent" />
           <div className="relative z-10 mx-auto w-full max-w-3xl space-y-6">
-            <div className="bg-primary/10 border-primary/20 text-primary mx-auto mb-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+            <div className="bg-primary/10 border-primary/20 text-primary mx-auto mb-2 inline-flex items-center gap-2 border px-3 py-1 text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]">
               <Sparkles className="h-3.5 w-3.5" /> Quantitative Cosmic Strategy
             </div>
-            <h1 className="mb-4 font-serif text-4xl leading-tight font-bold tracking-tight text-white drop-shadow-md md:text-5xl lg:text-7xl">
+            <Heading level={1} className="mb-4 text-4xl leading-tight tracking-tight text-white drop-shadow-md md:text-5xl lg:text-7xl">
               100-Year{' '}
               <span className="bg-gradient-to-r from-[#D4AF37] to-[#F5EBBA] bg-clip-text text-transparent">
                 Risk & Momentum Map
               </span>
-            </h1>
+            </Heading>
             <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed font-light text-white/60 md:text-lg">
               Identify your exact low-margin-of-error windows, high-volatility expansion periods, and strategic turning points. Built for decision makers.
             </p>
             <button
               onClick={handleGetMyKline}
-              className="group bg-primary text-primary-foreground hover:bg-primary/90 relative inline-flex h-12 items-center justify-center gap-3 rounded-full px-8 text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] active:scale-95 md:h-14 md:text-base"
+              className="group bg-primary text-primary-foreground hover:bg-primary/90 relative inline-flex h-12 items-center justify-center gap-3 px-8 text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] active:scale-95 md:h-14 md:text-base"
             >
               Initialize Natal Coordinates
               <ArrowUp className="h-4 w-4 rotate-45 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -362,7 +365,7 @@ export function KlineClient({
               </p>
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 opacity-70 grayscale transition-all duration-500 hover:grayscale-0 md:gap-12">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                  <div className="flex h-10 w-10 items-center justify-center border border-white/10 bg-[#15131A] shadow-inner">
                     <Cpu className="h-5 w-5 text-zinc-400" />
                   </div>
                   <div className="text-left leading-tight">
@@ -374,7 +377,7 @@ export function KlineClient({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                  <div className="flex h-10 w-10 items-center justify-center border border-white/10 bg-[#15131A] shadow-inner">
                     <GraduationCap className="h-5 w-5 text-zinc-400" />
                   </div>
                   <div className="text-left leading-tight">
@@ -388,7 +391,7 @@ export function KlineClient({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                  <div className="flex h-10 w-10 items-center justify-center border border-white/10 bg-[#15131A] shadow-inner">
                     <Award className="h-5 w-5 text-zinc-400" />
                   </div>
                   <div className="text-left leading-tight">
@@ -400,7 +403,7 @@ export function KlineClient({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-inner">
+                  <div className="flex h-10 w-10 items-center justify-center border border-white/10 bg-[#15131A] shadow-inner">
                     <ShieldCheck className="h-5 w-5 text-zinc-400" />
                   </div>
                   <div className="text-left leading-tight">
@@ -420,46 +423,46 @@ export function KlineClient({
         {/* Section 1: Algorithmic Scoring Methodology */}
         <div className="mx-auto w-full max-w-6xl px-6 py-20">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 font-serif text-3xl font-bold text-white md:text-4xl">
+            <Heading level={2} variant="section" className="mb-4 text-3xl text-white md:text-4xl">
               How To Read Your Turning Points
-            </h2>
+            </Heading>
             <p className="text-muted-foreground mx-auto max-w-3xl">
               Your score isn't a grade on your life. It's a weather forecast for your decisions—built from long cycles, transit pressure, and chart structure.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            <div className="hover:border-primary/20 rounded-3xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-green-500/10 text-green-400">
+            <div className="hover:border-primary/20  border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center  bg-green-500/10 text-green-400">
                 <TrendingUp className="h-6 w-6" />
               </div>
-              <h3 className="mb-3 text-xl font-bold text-white">
+              <Heading level={3} className="mb-3 text-xl font-bold text-white">
                 Strong Windows (Push)
-              </h3>
+              </Heading>
               <p className="text-sm leading-relaxed text-white/50">
                 The cosmic wind is at your back. This is when you launch, invest, ask for the promotion, or make the big move. Effort yields maximum return.
               </p>
             </div>
 
-            <div className="hover:border-primary/20 rounded-3xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
+            <div className="hover:border-primary/20  border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center  bg-red-500/10 text-red-400">
                 <TrendingDown className="h-6 w-6" />
               </div>
-              <h3 className="mb-3 text-xl font-bold text-white">
+              <Heading level={3} className="mb-3 text-xl font-bold text-white">
                 Weak Windows (Protect)
-              </h3>
+              </Heading>
               <p className="text-sm leading-relaxed text-white/50">
                 Friction is high. Pushing forward now burns capital and energy. This is your time to protect assets, heal, restructure, and avoid risky gambles.
               </p>
             </div>
 
-            <div className="hover:border-primary/20 rounded-3xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-400">
+            <div className="hover:border-primary/20  border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-colors">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center  bg-blue-500/10 text-blue-400">
                 <Clock className="h-6 w-6" />
               </div>
-              <h3 className="mb-3 text-xl font-bold text-white">
+              <Heading level={3} className="mb-3 text-xl font-bold text-white">
                 Transition Years (Prepare)
-              </h3>
+              </Heading>
               <p className="text-sm leading-relaxed text-white/50">
                 The board is resetting. You might feel stuck, but the foundation you build during these neutral years determines how high you fly in the next strong window.
               </p>
@@ -471,21 +474,21 @@ export function KlineClient({
         <div className="w-full border-y border-white/5 bg-[#110F15] py-20">
           <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2">
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-bold tracking-widest text-white/60 uppercase">
+              <div className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1 text-xs font-bold tracking-widest text-white/60 uppercase">
                 <SearchCode className="h-3.5 w-3.5" /> Case Study
               </div>
-              <h2 className="font-serif text-3xl leading-tight font-bold text-white md:text-4xl">
+              <Heading level={2} variant="section" className="text-3xl leading-tight text-white md:text-4xl">
                 Timing Is Everything: <br />
                 <span className="text-primary italic">
                   Steve Jobs&apos; K-Line
                 </span>
-              </h2>
+              </Heading>
               <p className="text-base leading-relaxed text-white/60">
                 Success isn't just hard work; it's doing the right thing at the right time. His cosmic K-Line perfectly mirrors his real-world turning points.
               </p>
               <ul className="space-y-4">
                 <li className="flex gap-4">
-                  <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]" />
+                  <div className="mt-2 h-1.5 w-1.5 shrink-0 bg-red-500 shadow-[0_0_10px_#ef4444]" />
                   <div>
                     <strong className="mb-1 block text-white">
                       1985: Forced Out (Weak Window)
@@ -496,7 +499,7 @@ export function KlineClient({
                   </div>
                 </li>
                 <li className="flex gap-4">
-                  <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]" />
+                  <div className="mt-2 h-1.5 w-1.5 shrink-0 bg-green-500 shadow-[0_0_10px_#22c55e]" />
                   <div>
                     <strong className="mb-1 block text-white">
                       1997: The Return (Strong Window)
@@ -507,7 +510,7 @@ export function KlineClient({
                   </div>
                 </li>
                 <li className="flex gap-4">
-                  <div className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full shadow-[0_0_10px_#D4AF37]" />
+                  <div className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 shadow-[0_0_10px_#D4AF37]" />
                   <div>
                     <strong className="mb-1 block text-white">
                       2007: Maximum Peak (The iPhone)
@@ -528,7 +531,7 @@ export function KlineClient({
                 </button>
               </div>
             </div>
-            <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-black p-6 shadow-2xl md:aspect-[4/3]">
+            <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden  border border-white/10 bg-black p-6 shadow-2xl md:aspect-[4/3]">
               {/* Fake abstract chart representing the case study */}
               <div
                 className="absolute inset-0 opacity-20"
@@ -575,9 +578,9 @@ export function KlineClient({
         {/* Section 3: Tech Methodology */}
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
           <Cpu className="text-primary/50 mx-auto mb-6 h-10 w-10" />
-          <h2 className="mb-6 font-serif text-2xl font-bold text-white md:text-3xl">
+          <Heading level={2} variant="section" className="mb-6 text-2xl text-white md:text-3xl">
             Built on verified astronomy data
-          </h2>
+          </Heading>
           <p className="mb-8 leading-relaxed text-white/50">
             We calculate planetary movement data, then turn it into a readable
             score and timing curve.
@@ -600,15 +603,15 @@ export function KlineClient({
         {/* Section 4: Deep Horoscope FAQ */}
         <div className="mx-auto w-full max-w-4xl px-6 py-16">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 font-serif text-3xl font-bold text-white">
+            <Heading level={2} variant="section" className="mb-4 text-3xl text-white">
               Frequently Asked Questions
-            </h2>
+            </Heading>
             <p className="text-muted-foreground">
               Common questions about the chart, timing, and privacy.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-white/5 bg-[#15131A] p-6 shadow-2xl md:p-10">
+          <div className=" border border-white/5 bg-[#15131A] p-6 shadow-2xl md:p-10">
             <Accordion type="single" collapsible className="w-full">
               {[
                 {
@@ -678,7 +681,7 @@ export function KlineClient({
         >
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
           <div
-            className="border-primary/20 bg-background/95 relative mx-4 max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl border p-8 shadow-[0_0_60px_rgba(212,175,55,0.15)] backdrop-blur-xl"
+            className="border-primary/20 bg-background/95 relative mx-4 max-h-[80vh] w-full max-w-lg overflow-y-auto  border p-8 shadow-[0_0_60px_rgba(212,175,55,0.15)] backdrop-blur-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -688,10 +691,10 @@ export function KlineClient({
               ✕
             </button>
             <div className="mb-6 text-center">
-              <div className="bg-primary/10 border-primary/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border">
+              <div className="bg-primary/10 border-primary/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center border">
                 <Sparkles className="text-primary h-5 w-5" />
               </div>
-              <h3 className="text-2xl font-bold">Unlock Your Full Blueprint</h3>
+              <Heading level={3} className="text-2xl font-bold">Unlock Your Full Blueprint</Heading>
               <p className="text-muted-foreground mt-2 text-sm">
                 Choose a plan to unlock your complete 10-year destiny K-Line and
                 deep analysis.
@@ -723,14 +726,14 @@ export function KlineClient({
                     })
                   }
                   className={cn(
-                    'block rounded-xl border p-5 transition-all hover:scale-[1.02]',
+                    'block  border p-5 transition-all hover:scale-[1.02]',
                     plan.featured
                       ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]'
                       : 'border-white/10 bg-white/[0.02] hover:border-white/20'
                   )}
                 >
                   <div className="mb-2 flex items-center justify-between">
-                    <h4 className="text-foreground font-bold">{plan.name}</h4>
+                    <Heading level={4} className="text-foreground font-bold">{plan.name}</Heading>
                     <span className="text-primary text-lg font-bold">
                       {plan.price}
                     </span>

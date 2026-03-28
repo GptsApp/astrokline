@@ -3,6 +3,7 @@
 import { trackEvent } from '@/lib/astrokline/track-event';
 import { Lock, Zap } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 interface QuotaLimitModalProps {
   isOpen: boolean;
@@ -55,20 +56,20 @@ export function QuotaLimitModal({
 
       {/* Modal */}
       <div
-        className="border-primary/20 bg-background/95 relative mx-4 w-full max-w-md rounded-2xl border p-6 shadow-[0_0_60px_rgba(212,175,55,0.1)] backdrop-blur-xl"
+        className="border-primary/20 bg-background/95 relative mx-4 w-full max-w-md  border p-6 shadow-[0_0_60px_rgba(212,175,55,0.1)] backdrop-blur-xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Icon */}
         <div className="mb-4 flex justify-center">
-          <div className="bg-primary/10 border-primary/30 flex h-14 w-14 items-center justify-center rounded-full border">
+          <div className="bg-primary/10 border-primary/30 flex h-14 w-14 items-center justify-center border">
             <Lock className="text-primary h-6 w-6" />
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-foreground mb-2 text-center text-xl font-bold">
+        <Heading level={3} className="text-foreground mb-2 text-center text-xl font-bold">
           Query Limit Reached
-        </h3>
+        </Heading>
 
         {/* Status */}
         <p className="text-muted-foreground mb-6 text-center text-sm">
@@ -77,7 +78,7 @@ export function QuotaLimitModal({
         </p>
 
         {/* Upgrade card */}
-        <div className="border-primary/20 bg-primary/5 mb-4 rounded-xl border p-4">
+        <div className="border-primary/20 bg-primary/5 mb-4  border p-4">
           <div className="mb-2 flex items-center gap-2">
             <Zap className="text-primary h-4 w-4" />
             <span className="text-foreground text-sm font-bold">
@@ -91,7 +92,7 @@ export function QuotaLimitModal({
             <button
               type="button"
               onClick={onClose}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-full py-2.5 text-center text-sm font-bold transition-all"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full py-2.5 text-center text-sm font-bold transition-all"
             >
               Got It
             </button>
@@ -102,14 +103,14 @@ export function QuotaLimitModal({
                 trackEvent('premium_cta_click', { source: 'quota_modal' });
                 onUpgradeClick();
               }}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-full py-2.5 text-center text-sm font-bold transition-all"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full py-2.5 text-center text-sm font-bold transition-all"
             >
               Upgrade Now
             </button>
           ) : (
             <Link
               href="/pricing"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full rounded-full py-2.5 text-center text-sm font-bold transition-all"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full py-2.5 text-center text-sm font-bold transition-all"
             >
               Upgrade Now
             </Link>

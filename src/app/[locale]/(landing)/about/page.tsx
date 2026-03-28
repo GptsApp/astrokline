@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 
 import { envConfigs } from '@/config';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 const aboutUrl = `${envConfigs.app_url}/about`;
 
@@ -81,16 +82,16 @@ export default function AboutPage() {
 
       <section className="relative overflow-hidden border-b border-white/5 pt-32 pb-16">
         <div className="pointer-events-none absolute inset-0">
-          <div className="bg-primary/10 absolute top-16 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full blur-[120px]" />
-          <div className="absolute right-10 bottom-0 h-56 w-56 rounded-full bg-emerald-500/5 blur-[100px]" />
+          <div className="bg-primary/10 absolute top-16 left-1/2 h-80 w-80 -translate-x-1/2 blur-[120px]" />
+          <div className="absolute right-10 bottom-0 h-56 w-56 bg-emerald-500/5 blur-[100px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
           <p className="text-primary/70 mb-4 font-mono text-xs tracking-[0.3em] uppercase">
             About AstroKline
           </p>
-          <h1 className="mx-auto max-w-3xl text-4xl leading-tight font-bold tracking-tight md:text-6xl">
+          <Heading level={1} className="mx-auto max-w-3xl text-4xl leading-tight font-bold tracking-tight md:text-6xl">
             A Practical Astrology Product Built Around Timing, Not Fluff
-          </h1>
+          </Heading>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
             AstroKline was created for people who want more than a generic
             horoscope. We built a system that turns birth chart data into a
@@ -103,7 +104,7 @@ export default function AboutPage() {
       <section className="border-b border-white/5 py-16">
         <article className="mx-auto max-w-4xl px-6">
           <div className="prose prose-invert prose-headings:text-white prose-p:text-white/70 prose-li:text-white/70 max-w-none">
-            <h2>Why AstroKline Exists</h2>
+            <Heading level={2}>Why AstroKline Exists</Heading>
             <p>
               The internet is full of astrology content, but most of it is not
               useful when a person is trying to make a real decision. A generic
@@ -121,7 +122,7 @@ export default function AboutPage() {
               clear directional curve.
             </p>
 
-            <h2>What AstroKline Actually Does</h2>
+            <Heading level={2}>What AstroKline Actually Does</Heading>
             <p>
               AstroKline combines three layers of work. The first layer is
               astronomical calculation. The second layer is timing logic based on
@@ -139,7 +140,7 @@ export default function AboutPage() {
               timing calibration.
             </p>
 
-            <h2>Why We Use Swiss Ephemeris</h2>
+            <Heading level={2}>Why We Use Swiss Ephemeris</Heading>
             <p>
               Accuracy starts with the underlying chart. AstroKline relies on
               Swiss Ephemeris because it is one of the most trusted astronomical
@@ -154,7 +155,7 @@ export default function AboutPage() {
               instead of shortcuts or low-precision approximations.
             </p>
 
-            <h2>What Makes the K-Line Different</h2>
+            <Heading level={2}>What Makes the K-Line Different</Heading>
             <p>
               The K-Line is the core idea behind AstroKline. Traditional chart
               reports often overwhelm users with symbols, houses, aspects, and
@@ -171,7 +172,7 @@ export default function AboutPage() {
               to satisfy that intent directly.
             </p>
 
-            <h2>Our Editorial Standard for AI Astrology</h2>
+            <Heading level={2}>Our Editorial Standard for AI Astrology</Heading>
             <p>
               AI can make astrology more readable, but it also creates a risk of
               generic output. AstroKline is not built to produce vague feel-good
@@ -186,7 +187,7 @@ export default function AboutPage() {
               goal is not to inflate certainty. It is to improve usefulness.
             </p>
 
-            <h2>Who AstroKline Is For</h2>
+            <Heading level={2}>Who AstroKline Is For</Heading>
             <p>
               AstroKline is for users who want a practical astrology workflow.
               Some are astrology beginners who need a clearer starting point.
@@ -202,7 +203,7 @@ export default function AboutPage() {
               structure than mainstream horoscope content provides.
             </p>
 
-            <h2>What We Believe About Privacy</h2>
+            <Heading level={2}>What We Believe About Privacy</Heading>
             <p>
               Birth data is intimate. A platform that asks for someone&apos;s
               birth time, birthplace, and personal profile should handle that
@@ -221,7 +222,7 @@ export default function AboutPage() {
               .
             </p>
 
-            <h2>Where To Start</h2>
+            <Heading level={2}>Where To Start</Heading>
             <p>
               If you want to understand AstroKline in practice, the fastest path
               is to view a sample{' '}
@@ -245,18 +246,18 @@ export default function AboutPage() {
 
       <section className="border-b border-white/5 bg-white/[0.02] py-16">
         <div className="mx-auto max-w-5xl px-6">
-          <h2 className="mb-8 text-3xl font-bold tracking-tight">
+          <Heading level={2} className="mb-8 text-3xl font-bold tracking-tight">
             The Principles Behind the Product
-          </h2>
+          </Heading>
           <div className="grid gap-6 md:grid-cols-2">
             {principles.map((item) => (
               <div
                 key={item.title}
-                className="rounded-3xl border border-white/8 bg-[#111015] p-7"
+                className=" border border-white/8 bg-[#111015] p-7"
               >
-                <h3 className="mb-3 text-xl font-semibold text-white/90">
+                <Heading level={3} className="mb-3 text-xl font-semibold text-white/90">
                   {item.title}
-                </h3>
+                </Heading>
                 <p className="leading-7 text-white/65">{item.description}</p>
               </div>
             ))}
@@ -266,9 +267,9 @@ export default function AboutPage() {
 
       <section className="py-16">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+          <Heading level={2} className="text-3xl font-bold tracking-tight md:text-4xl">
             Read Your Timing With More Structure
-          </h2>
+          </Heading>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/65">
             Start with the K-Line if you want to see how AstroKline turns birth
             chart data into something practical and readable.
@@ -276,13 +277,13 @@ export default function AboutPage() {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/kline"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-12 items-center justify-center rounded-xl px-6 text-sm font-semibold"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-12 items-center justify-center  px-6 text-sm font-semibold"
             >
               Explore the K-Line
             </Link>
             <Link
               href="/pricing"
-              className="inline-flex h-12 items-center justify-center rounded-xl border border-white/10 px-6 text-sm font-semibold text-white/80 transition-colors hover:bg-white/5"
+              className="inline-flex h-12 items-center justify-center  border border-white/10 px-6 text-sm font-semibold text-white/80 transition-colors hover:bg-white/5"
             >
               View Pricing
             </Link>

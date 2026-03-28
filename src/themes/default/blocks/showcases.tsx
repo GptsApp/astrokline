@@ -76,7 +76,7 @@ export function Showcases({
                   key={group.name}
                   onClick={() => setSelectedGroup(group.name)}
                   className={cn(
-                    'relative rounded-lg px-3 py-1.5 text-sm font-medium transition-all',
+                    'relative  px-3 py-1.5 text-sm font-medium transition-all',
                     isSelected
                       ? ''
                       : 'border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground border'
@@ -94,8 +94,8 @@ export function Showcases({
                 >
                   {isSelected ? (
                     <>
-                      <span className="bg-primary absolute inset-0 rounded-lg p-[2px]">
-                        <span className="bg-background block h-full w-full rounded-[calc(0.5rem-2px)]" />
+                      <span className="bg-primary absolute inset-0  p-[2px]">
+                        <span className="bg-background block h-full w-full -[calc(0.5rem-2px)]" />
                       </span>
                       <span className="bg-primary relative z-10 bg-clip-text text-transparent">
                         {group.title}
@@ -138,7 +138,7 @@ export function Showcases({
                         alt={item.image?.alt ?? ''}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         fill
-                        className="rounded-t-lg object-cover transition-transform duration-300"
+                        className="-t-lg object-cover transition-transform duration-300"
                       />
                     </motion.div>
                     <div className="p-6">

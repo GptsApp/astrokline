@@ -9,6 +9,7 @@ import { cn } from '@/shared/lib/utils';
 
 import { AdvancedAstrologyData } from './advanced-astrology-data';
 import { AstrologyChartWheel } from './astrology-chart-wheel';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 interface Props {
   profile: UserProfile;
@@ -31,17 +32,17 @@ export function ChartHero({ profile }: Props) {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-2xl border border-white/5 bg-[#111015]/80 shadow-2xl backdrop-blur-md"
+          className="relative overflow-hidden  border border-white/5 bg-[#111015]/80 shadow-2xl backdrop-blur-md"
         >
           {/* Background glows */}
-          <div className="pointer-events-none absolute top-0 right-1/4 h-[200px] w-[200px] rounded-full bg-purple-500/10 blur-[80px]" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-[150px] w-[150px] rounded-full bg-[#D4AF37]/5 blur-[60px]" />
+          <div className="pointer-events-none absolute top-0 right-1/4 h-[200px] w-[200px] bg-purple-500/10 blur-[80px]" />
+          <div className="pointer-events-none absolute bottom-0 left-0 h-[150px] w-[150px] bg-[#D4AF37]/5 blur-[60px]" />
 
           {/* Header */}
           <div className="relative z-20 flex justify-center pt-6 pb-2">
-            <h3 className="text-[10px] font-bold tracking-[0.25em] text-white/30 uppercase">
+            <Heading level={3} className="text-[10px] font-bold tracking-[0.25em] text-white/30 uppercase">
               Natal Chart
-            </h3>
+            </Heading>
           </div>
 
           {/* ── Main Grid: Wheel + Planetary Positions ── */}
@@ -61,7 +62,7 @@ export function ChartHero({ profile }: Props) {
             {/* Right: Planetary Positions — two groups */}
             <div className="flex flex-col gap-4">
               {/* Personal Planets */}
-              <div className="rounded-xl border border-white/5 bg-white/[0.03] p-4">
+              <div className=" border border-white/5 bg-white/[0.03] p-4">
                 <div className="mb-3 flex items-center gap-2">
                   <Orbit className="text-primary/60 h-3.5 w-3.5" />
                   <span className="text-primary/50 text-[10px] font-bold tracking-[0.2em] uppercase">
@@ -75,7 +76,7 @@ export function ChartHero({ profile }: Props) {
                       className="flex items-center justify-between border-b border-white/[0.04] py-2 last:border-b-0"
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className="bg-primary/10 text-primary/80 flex h-5 w-7 items-center justify-center rounded font-mono text-[9px] font-bold">
+                        <span className="bg-primary/10 text-primary/80 flex h-5 w-7 items-center justify-center  font-mono text-[9px] font-bold">
                           {(planet.name || '').slice(0, 2).toUpperCase()}
                         </span>
                         <span className="text-sm font-medium text-white/80">
@@ -100,7 +101,7 @@ export function ChartHero({ profile }: Props) {
               </div>
 
               {/* Outer Planets */}
-              <div className="rounded-xl border border-white/5 bg-white/[0.03] p-4">
+              <div className=" border border-white/5 bg-white/[0.03] p-4">
                 <div className="mb-3 flex items-center gap-2">
                   <Globe className="h-3.5 w-3.5 text-indigo-400/60" />
                   <span className="text-[10px] font-bold tracking-[0.2em] text-indigo-400/50 uppercase">
@@ -114,7 +115,7 @@ export function ChartHero({ profile }: Props) {
                       className="flex items-center justify-between border-b border-white/[0.04] py-2 last:border-b-0"
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className="flex h-5 w-7 items-center justify-center rounded bg-indigo-500/10 font-mono text-[9px] font-bold text-indigo-400/80">
+                        <span className="flex h-5 w-7 items-center justify-center  bg-indigo-500/10 font-mono text-[9px] font-bold text-indigo-400/80">
                           {(planet.name || '').slice(0, 2).toUpperCase()}
                         </span>
                         <span className="text-sm font-medium text-white/80">

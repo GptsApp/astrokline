@@ -38,7 +38,7 @@ export function Table({
   return (
     <TableComponent className="w-full">
       <TableHeader className="">
-        <TableRow className="rounded-md">
+        <TableRow className="">
           {columns &&
             columns.map((item: TableColumn, idx: number) => {
               return (

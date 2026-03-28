@@ -134,18 +134,18 @@ export function LifeStageScores({ data, birthYear }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-10">
-      <div className="rounded-[3rem] border border-white/5 bg-[#0A0A0F]/60 p-6 shadow-2xl backdrop-blur-xl md:p-10">
+      <div className="-[3rem] border border-white/5 bg-[#0A0A0F]/60 p-6 shadow-2xl backdrop-blur-xl md:p-10">
         <div className="mb-10 text-center">
           <motion.div 
             initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-primary/90 uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+            className="mb-4 inline-flex items-center gap-2 border border-primary/20 bg-primary/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] text-primary/90 uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]"
           >
             <Sparkles className="h-3.5 w-3.5" />
             {t("engine")}
           </motion.div>
           <motion.h2 
             initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="text-2xl font-bold tracking-tight text-white md:text-4xl"
+            className="font-serif text-2xl md:text-4xl font-bold tracking-tight text-white leading-[1.2]"
           >
             {t("title")}
           </motion.h2>
@@ -165,7 +165,7 @@ export function LifeStageScores({ data, birthYear }: Props) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className={cn(
-                  'group relative flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border p-6 transition-all duration-300 hover:scale-105',
+                  'group relative flex flex-col items-center justify-center overflow-hidden -[2rem] border p-6 transition-all duration-300 hover:scale-105',
                   isCurrentStage
                     ? 'border-[#D4AF37]/50 bg-[#D4AF37]/10 shadow-[0_0_30px_rgba(212,175,55,0.2)]'
                     : 'border-white/5 bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
@@ -181,7 +181,7 @@ export function LifeStageScores({ data, birthYear }: Props) {
                 <div className={cn("relative z-10 font-mono text-3xl font-black tracking-tighter sm:text-4xl", getScoreColor(stage.score).split(' ')[0])}>
                   {stage.score}
                 </div>
-                {isCurrentStage && <div className="mt-3 relative z-10 rounded-full bg-[#D4AF37]/20 px-2 py-0.5 text-[9px] font-bold text-[#F4E1A1] uppercase">{t('current')}</div>}
+                {isCurrentStage && <div className="mt-3 relative z-10 bg-[#D4AF37]/20 px-2 py-0.5 text-[9px] font-bold text-[#F4E1A1] uppercase">{t('current')}</div>}
               </motion.div>
             );
           })}
@@ -190,7 +190,7 @@ export function LifeStageScores({ data, birthYear }: Props) {
         {/* Summary Stats */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 rounded-[2rem] border border-white/5 bg-black/20 px-8 py-5 text-sm backdrop-blur-md"
+          className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 -[2rem] border border-white/5 bg-black/20 px-8 py-5 text-sm backdrop-blur-md"
         >
           <div className="flex flex-col items-center gap-1">
             <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">{t("stats.historical_avg")}</span>

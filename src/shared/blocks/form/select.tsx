@@ -26,10 +26,10 @@ export function Select({
       defaultValue={field.value}
       {...field.attributes}
     >
-      <SelectTrigger className="bg-background w-full rounded-md">
+      <SelectTrigger className="bg-background w-full ">
         <SelectValue placeholder={field.placeholder} />
       </SelectTrigger>
-      <SelectContent className="bg-background rounded-md">
+      <SelectContent className="bg-background ">
         {field.options?.map((option: any) => (
           <SelectItem key={option.value} value={option.value}>
             {option.title}

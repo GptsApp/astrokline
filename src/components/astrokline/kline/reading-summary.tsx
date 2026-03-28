@@ -1,5 +1,7 @@
 'use client';
 
+import { Heading } from "@/components/astrokline/ui/heading";
+
 import { DestinyReading } from '@/lib/astrokline/mock-astrology-data';
 import { motion } from 'framer-motion';
 import {
@@ -61,9 +63,9 @@ export function ReadingSummary({ reading }: Props) {
       {/* Section Header */}
       <div className="flex items-center gap-3">
         <Sparkles className="h-5 w-5 text-[#D4AF37]" />
-        <h2 className="font-serif text-2xl tracking-tight text-white/90">
+        <Heading level={2} className="font-serif text-2xl tracking-tight text-white/90">
           Cosmic Diagnosis
-        </h2>
+        </Heading>
         <div className="ml-4 h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
       </div>
 
@@ -72,7 +74,7 @@ export function ReadingSummary({ reading }: Props) {
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/5 via-transparent to-purple-500/5 px-6 py-8"
+        className="relative overflow-hidden  border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/5 via-transparent to-purple-500/5 px-6 py-8"
       >
         <div className="absolute top-4 left-6 font-serif text-5xl leading-none text-[#D4AF37]/10">
           &ldquo;
@@ -80,7 +82,7 @@ export function ReadingSummary({ reading }: Props) {
         <div className="absolute right-6 bottom-4 font-serif text-5xl leading-none text-[#D4AF37]/10">
           &rdquo;
         </div>
-        <div className="pointer-events-none absolute top-0 right-0 h-[200px] w-[200px] rounded-full bg-[#D4AF37]/5 blur-[80px]" />
+        <div className="pointer-events-none absolute top-0 right-0 h-[200px] w-[200px] bg-[#D4AF37]/5 blur-[80px]" />
 
         <blockquote className="relative z-10 mx-auto max-w-3xl text-center font-serif text-lg leading-relaxed text-white/90 md:text-xl">
           {cosmicQuote}
@@ -95,9 +97,9 @@ export function ReadingSummary({ reading }: Props) {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Eye className="h-4 w-4 text-purple-400" />
-            <h3 className="font-serif text-base text-white/80">
+            <Heading level={3} className="font-serif text-base text-white/80">
               What The Stars See In You
-            </h3>
+            </Heading>
             <span className="ml-auto font-mono text-[9px] tracking-widest text-white/25 uppercase">
               AI Precision
             </span>
@@ -112,10 +114,10 @@ export function ReadingSummary({ reading }: Props) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.08 }}
-                className="group flex gap-3 rounded-xl border border-white/5 bg-[#111015] p-4 transition-all hover:border-white/10"
+                className="group flex gap-3  border border-white/5 bg-[#111015] p-4 transition-all hover:border-white/10"
               >
                 <div className="mt-0.5 shrink-0">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors group-hover:border-[#D4AF37]/30">
+                  <div className="flex h-8 w-8 items-center justify-center border border-white/10 bg-white/5 transition-colors group-hover:border-[#D4AF37]/30">
                     <Icon className="h-4 w-4 text-white/40 transition-colors group-hover:text-[#D4AF37]" />
                   </div>
                 </div>
@@ -147,9 +149,9 @@ export function ReadingSummary({ reading }: Props) {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative overflow-hidden rounded-2xl border border-purple-500/15 bg-gradient-to-br from-purple-500/5 to-transparent p-5"
+          className="relative overflow-hidden  border border-purple-500/15 bg-gradient-to-br from-purple-500/5 to-transparent p-5"
         >
-          <div className="pointer-events-none absolute top-0 right-0 h-32 w-32 rounded-full bg-purple-500/10 blur-[60px]" />
+          <div className="pointer-events-none absolute top-0 right-0 h-32 w-32 bg-purple-500/10 blur-[60px]" />
           <div className="relative z-10">
             <div className="mb-3 flex items-center gap-2">
               <Star className="h-4 w-4 text-purple-400" />
@@ -157,13 +159,13 @@ export function ReadingSummary({ reading }: Props) {
                 Hidden Talent
               </span>
             </div>
-            <h4 className="mb-2 font-serif text-lg text-white/90">
+            <Heading level={4} className="mb-2 font-serif text-lg text-white/90">
               {reading.hiddenTalent.title}
-            </h4>
+            </Heading>
             <p className="mb-3 text-sm leading-relaxed text-white/60">
               {reading.hiddenTalent.description}
             </p>
-            <div className="rounded-xl border border-purple-500/10 bg-purple-500/5 px-4 py-3">
+            <div className=" border border-purple-500/10 bg-purple-500/5 px-4 py-3">
               <p className="mb-1 text-[10px] font-bold tracking-widest text-[#D4AF37] uppercase">
                 How to Activate
               </p>
@@ -183,19 +185,19 @@ export function ReadingSummary({ reading }: Props) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111015] p-5 shadow-xl"
+          className="group relative overflow-hidden  border border-white/5 bg-[#111015] p-5 shadow-xl"
         >
-          <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-yellow-500/5 blur-[40px] transition-colors group-hover:bg-yellow-500/10" />
+          <div className="absolute top-0 right-0 h-24 w-24 bg-yellow-500/5 blur-[40px] transition-colors group-hover:bg-yellow-500/10" />
           <div className="relative z-10 flex h-full flex-col">
             <div className="mb-4 flex items-center justify-between">
               <Layers className="h-5 w-5 text-white/50" />
-              <span className="rounded-full bg-[#D4AF37]/10 px-2 py-0.5 text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
+              <span className="-full bg-[#D4AF37]/10 px-2 py-0.5 text-[9px] font-bold tracking-widest text-[#D4AF37] uppercase">
                 01
               </span>
             </div>
-            <h3 className="mb-1 font-serif text-lg text-white/90">
+            <Heading level={3} className="mb-1 font-serif text-lg text-white/90">
               {reading.structure.title}
-            </h3>
+            </Heading>
             <div className="mb-3 font-mono text-[10px] text-[#D4AF37]">
               {reading.structure.element}
             </div>
@@ -219,19 +221,19 @@ export function ReadingSummary({ reading }: Props) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#111015] p-5 shadow-xl"
+          className="group relative overflow-hidden  border border-white/5 bg-[#111015] p-5 shadow-xl"
         >
-          <div className="absolute top-0 right-0 h-24 w-24 rounded-full bg-blue-500/5 blur-[40px] transition-colors group-hover:bg-blue-500/10" />
+          <div className="absolute top-0 right-0 h-24 w-24 bg-blue-500/5 blur-[40px] transition-colors group-hover:bg-blue-500/10" />
           <div className="relative z-10 flex h-full flex-col">
             <div className="mb-4 flex items-center justify-between">
               <Hourglass className="h-5 w-5 text-white/50" />
-              <span className="rounded-full bg-[#3B82F6]/10 px-2 py-0.5 text-[9px] font-bold tracking-widest text-[#3B82F6] uppercase">
+              <span className="-full bg-[#3B82F6]/10 px-2 py-0.5 text-[9px] font-bold tracking-widest text-[#3B82F6] uppercase">
                 02
               </span>
             </div>
-            <h3 className="mb-3 font-serif text-lg text-white/90">
+            <Heading level={3} className="mb-3 font-serif text-lg text-white/90">
               {reading.phase.title}
-            </h3>
+            </Heading>
             <div className="flex-1 space-y-3">
               <div>
                 <p className="mb-0.5 text-[10px] font-bold tracking-wider text-white/35 uppercase">
@@ -251,7 +253,7 @@ export function ReadingSummary({ reading }: Props) {
                   {reading.phase.turningPoint}
                 </p>
               </div>
-              <div className="h-1 w-full overflow-hidden rounded-full bg-white/5">
+              <div className="h-1 w-full overflow-hidden bg-white/5">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: `${reading.phase.momentum}%` }}
@@ -273,19 +275,19 @@ export function ReadingSummary({ reading }: Props) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="group relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/10 to-transparent p-5 shadow-xl"
+          className="group relative overflow-hidden  border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/10 to-transparent p-5 shadow-xl"
         >
-          <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-[#D4AF37]/10 blur-[50px] transition-transform duration-700 group-hover:scale-110" />
+          <div className="absolute top-0 right-0 h-32 w-32 bg-[#D4AF37]/10 blur-[50px] transition-transform duration-700 group-hover:scale-110" />
           <div className="relative z-10 flex h-full flex-col">
             <div className="mb-4 flex items-center justify-between">
               <ArrowRightCircle className="h-5 w-5 text-[#D4AF37]" />
-              <span className="rounded-full bg-[#D4AF37] px-2 py-0.5 text-[9px] font-bold tracking-widest text-black uppercase shadow-[0_0_10px_rgba(212,175,55,0.3)]">
+              <span className="-full bg-[#D4AF37] px-2 py-0.5 text-[9px] font-bold tracking-widest text-black uppercase shadow-[0_0_10px_rgba(212,175,55,0.3)]">
                 03
               </span>
             </div>
-            <h3 className="mb-4 font-serif text-lg text-white/90">
+            <Heading level={3} className="mb-4 font-serif text-lg text-white/90">
               Strategic Directives
-            </h3>
+            </Heading>
             <div className="flex-1 space-y-3">
               <AdviceItem
                 icon={Zap}

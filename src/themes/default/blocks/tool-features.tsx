@@ -32,7 +32,7 @@ export function ToolFeatures({
             viewport={{ once: true }}
           >
             {section.headline && (
-              <div className="bg-primary/10 text-primary mb-6 inline-flex items-center rounded-full px-4 py-2 text-sm font-medium">
+              <div className="bg-primary/10 text-primary mb-6 inline-flex items-center px-4 py-2 text-sm font-medium">
                 {section.headline}
               </div>
             )}
@@ -67,7 +67,7 @@ export function ToolFeatures({
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="flex-1 space-y-8"
                 >
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center  border border-white/10 bg-white/5">
                     {feature.icon ? (
                       <SmartIcon
                         name={feature.icon}
@@ -90,7 +90,7 @@ export function ToolFeatures({
                     <ul className="space-y-4 pt-4">
                       {feature.items.map((item: any, i: number) => (
                         <li key={i} className="flex items-start gap-4">
-                          <div className="bg-primary/20 mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full">
+                          <div className="bg-primary/20 mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center">
                             <SmartIcon
                               name={item.icon || 'Check'}
                               className="text-primary h-3.5 w-3.5"
@@ -118,7 +118,7 @@ export function ToolFeatures({
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="w-full flex-1"
                 >
-                  <div className="group relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-[#15131A] shadow-2xl">
+                  <div className="group relative flex aspect-[4/3] items-center justify-center overflow-hidden  border border-white/10 bg-[#15131A] shadow-2xl">
                     <div className="from-primary/5 absolute inset-0 bg-gradient-to-br to-transparent opacity-50" />
                     {feature.image ? (
                       <img
@@ -128,8 +128,8 @@ export function ToolFeatures({
                       />
                     ) : (
                       <div className="p-8 text-center">
-                        <div className="mx-auto mb-4 h-20 w-20 animate-pulse rounded-full bg-white/5" />
-                        <div className="mx-auto h-4 w-32 animate-pulse rounded bg-white/5" />
+                        <div className="mx-auto mb-4 h-20 w-20 animate-pulse bg-white/5" />
+                        <div className="mx-auto h-4 w-32 animate-pulse  bg-white/5" />
                       </div>
                     )}
                   </div>

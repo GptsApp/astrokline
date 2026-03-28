@@ -1,6 +1,10 @@
 'use client';
 
-import { Features } from '@/components/astrokline/sections/features';
+import dynamic from 'next/dynamic';
+
+const Features = dynamic(
+  () => import('@/components/astrokline/sections/features').then(m => m.Features)
+);
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 

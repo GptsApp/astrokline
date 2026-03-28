@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 
 import { ZODIAC_SIGNS, ZodiacSign } from '@/lib/astrokline/zodiac-data';
 import { envConfigs } from '@/config';
+import { Heading } from "@/components/astrokline/ui/heading";
 
 type Props = { params: Promise<{ sign: string }> };
 
@@ -57,17 +58,17 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-white/5 pt-32 pb-16">
         <div className="pointer-events-none absolute inset-0">
-          <div className="bg-primary/10 absolute top-16 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full blur-[120px]" />
+          <div className="bg-primary/10 absolute top-16 left-1/2 h-80 w-80 -translate-x-1/2 blur-[120px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
           <p className="text-7xl mb-4">{z.symbol}</p>
-          <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
+          <Heading level={1} className="text-4xl font-bold tracking-tight md:text-6xl">
             {z.name} Birth Chart
             <br />
             <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent">
               K-Line Reading
             </span>
-          </h1>
+          </Heading>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/65 md:text-lg">
             {z.dateRange} · {z.element} · Ruled by {z.ruler}
           </p>
@@ -80,10 +81,10 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
       {/* K-Line Insight */}
       <section className="border-b border-white/5 py-16">
         <div className="mx-auto max-w-4xl px-6">
-          <h2 className="mb-6 text-3xl font-bold">
+          <Heading level={2} className="mb-6 text-3xl font-bold">
             Your {z.name} K-Line Pattern
-          </h2>
-          <div className="rounded-3xl border border-white/8 bg-[#111015] p-8">
+          </Heading>
+          <div className=" border border-white/8 bg-[#111015] p-8">
             <p className="leading-8 text-white/70">{z.klineInsight}</p>
           </div>
         </div>
@@ -93,10 +94,10 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
       <section className="border-b border-white/5 bg-white/[0.02] py-16">
         <div className="mx-auto max-w-4xl px-6">
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-3xl border border-white/8 bg-[#111015] p-7">
-              <h3 className="mb-4 text-xl font-semibold text-emerald-400">
+            <div className=" border border-white/8 bg-[#111015] p-7">
+              <Heading level={3} className="mb-4 text-xl font-semibold text-emerald-400">
                 {z.name} Strengths
-              </h3>
+              </Heading>
               <ul className="space-y-2">
                 {z.strengths.map((s) => (
                   <li key={s} className="flex items-center gap-2 text-white/70">
@@ -105,10 +106,10 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
                 ))}
               </ul>
             </div>
-            <div className="rounded-3xl border border-white/8 bg-[#111015] p-7">
-              <h3 className="mb-4 text-xl font-semibold text-rose-400">
+            <div className=" border border-white/8 bg-[#111015] p-7">
+              <Heading level={3} className="mb-4 text-xl font-semibold text-rose-400">
                 {z.name} Challenges
-              </h3>
+              </Heading>
               <ul className="space-y-2">
                 {z.challenges.map((c) => (
                   <li key={c} className="flex items-center gap-2 text-white/70">
@@ -124,9 +125,9 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
       {/* CTA */}
       <section className="py-16">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">
+          <Heading level={2} className="text-3xl font-bold md:text-4xl">
             See Your Personal {z.name} K-Line
-          </h2>
+          </Heading>
           <p className="mx-auto mt-4 max-w-2xl text-white/65">
             Enter your exact birth time and location to generate a K-Line
             specific to your natal chart — not just your Sun sign.
@@ -134,13 +135,13 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/kline"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-12 items-center rounded-xl px-6 text-sm font-semibold"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-12 items-center  px-6 text-sm font-semibold"
             >
               Generate My K-Line Free →
             </Link>
             <Link
               href="/kline"
-              className="inline-flex h-12 items-center rounded-xl border border-white/10 px-6 text-sm font-semibold text-white/80 hover:bg-white/5"
+              className="inline-flex h-12 items-center  border border-white/10 px-6 text-sm font-semibold text-white/80 hover:bg-white/5"
             >
               Explore the Full K-Line
             </Link>

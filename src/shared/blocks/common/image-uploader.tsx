@@ -465,7 +465,7 @@ export function ImageUploader({
     >
       {isDragActive && (
         <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black/10 backdrop-blur-sm">
-          <div className="bg-background/80 text-foreground rounded-full px-4 py-2 text-sm font-medium shadow-sm">
+          <div className="bg-background/80 text-foreground px-4 py-2 text-sm font-medium shadow-sm">
             Drop to upload
           </div>
         </div>
@@ -498,16 +498,16 @@ export function ImageUploader({
         {items.map((item) => (
           <div
             key={item.id}
-            className="group border-border bg-muted/50 hover:border-border hover:bg-muted relative overflow-hidden rounded-xl border p-1 shadow-sm transition"
+            className="group border-border bg-muted/50 hover:border-border hover:bg-muted relative overflow-hidden  border p-1 shadow-sm transition"
           >
-            <div className="relative overflow-hidden rounded-lg">
+            <div className="relative overflow-hidden ">
               <img
                 src={item.preview}
                 alt="Reference"
-                className="h-32 w-32 rounded-lg object-cover"
+                className="h-32 w-32  object-cover"
               />
               {item.size && (
-                <span className="bg-background text-muted-foreground absolute bottom-2 left-2 rounded-md px-2 py-1 text-[10px] font-medium">
+                <span className="bg-background text-muted-foreground absolute bottom-2 left-2  px-2 py-1 text-[10px] font-medium">
                   {formatBytes(item.size)}
                 </span>
               )}
@@ -517,7 +517,7 @@ export function ImageUploader({
                     type="button"
                     size="icon"
                     variant="secondary"
-                    className="bg-background/50 text-foreground hover:bg-background/50 h-10 w-10 rounded-full shadow-sm backdrop-blur focus-visible:ring-2 focus-visible:ring-white/70"
+                    className="bg-background/50 text-foreground hover:bg-background/50 h-10 w-10 shadow-sm backdrop-blur focus-visible:ring-2 focus-visible:ring-white/70"
                     onClick={() => openReplacePicker(item.id)}
                     aria-label="Upload a new image to replace"
                   >
@@ -549,14 +549,14 @@ export function ImageUploader({
         ))}
 
         {items.length < maxCount && (
-          <div className="group border-border bg-muted/50 hover:border-border hover:bg-muted relative overflow-hidden rounded-xl border border-dashed p-1 shadow-sm transition">
-            <div className="relative overflow-hidden rounded-lg">
+          <div className="group border-border bg-muted/50 hover:border-border hover:bg-muted relative overflow-hidden  border border-dashed p-1 shadow-sm transition">
+            <div className="relative overflow-hidden ">
               <button
                 type="button"
                 className="flex h-32 w-32 flex-col items-center justify-center gap-2"
                 onClick={openFilePicker}
               >
-                <div className="border-border flex h-10 w-10 items-center justify-center rounded-full border border-dashed">
+                <div className="border-border flex h-10 w-10 items-center justify-center border border-dashed">
                   <IconUpload className="h-5 w-5" />
                 </div>
                 <span className="text-xs font-medium">Upload</span>

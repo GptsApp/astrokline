@@ -77,16 +77,16 @@ export function ToolCrossLinks({
               >
                 <Link
                   href={tool.href}
-                  className="group relative block h-full overflow-hidden rounded-3xl border border-white/5 bg-[#15131A] p-8 transition-all hover:border-white/20 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+                  className="group relative block h-full overflow-hidden  border border-white/5 bg-[#15131A] p-8 transition-all hover:border-white/20 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
                 >
                   <div
                     className={cn(
-                      'absolute top-0 right-0 h-32 w-32 rounded-full bg-gradient-to-br opacity-40 blur-[50px] transition-opacity group-hover:opacity-80',
+                      'absolute top-0 right-0 h-32 w-32 bg-gradient-to-br opacity-40 blur-[50px] transition-opacity group-hover:opacity-80',
                       tool.color
                     )}
                   />
                   <div className="relative z-10 flex h-full flex-col">
-                    <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                    <div className="mb-6 flex h-12 w-12 items-center justify-center  border border-white/10 bg-white/5">
                       <Icon className={cn('h-6 w-6', tool.iconColor)} />
                     </div>
                     <h3 className="text-foreground mb-3 text-xl font-bold">

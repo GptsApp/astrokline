@@ -826,7 +826,7 @@ export function VideoGenerator({
                 )}
 
                 {isGenerating && (
-                  <div className="space-y-2 rounded-lg border p-4">
+                  <div className="space-y-2  border p-4">
                     <div className="flex items-center justify-between text-sm">
                       <span>{t('progress')}</span>
                       <span>{progress}%</span>
@@ -854,7 +854,7 @@ export function VideoGenerator({
                   <div className="space-y-6">
                     {generatedVideos.map((video) => (
                       <div key={video.id} className="space-y-3">
-                        <div className="relative overflow-hidden rounded-lg border">
+                        <div className="relative overflow-hidden  border">
                           <video
                             src={video.url}
                             controls
@@ -887,7 +887,7 @@ export function VideoGenerator({
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-16 text-center">
-                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center">
                       <Video className="text-muted-foreground h-10 w-10" />
                     </div>
                     <p className="text-muted-foreground">

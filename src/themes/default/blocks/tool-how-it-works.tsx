@@ -62,9 +62,9 @@ export function ToolHowItWorks({
               transition={{ delay: index * 0.2 }}
               className="relative z-10 flex flex-col items-center text-center"
             >
-              <div className="group relative mb-8 flex h-[120px] w-[120px] items-center justify-center rounded-full border border-white/10 bg-[#15131A] shadow-xl">
-                <div className="from-primary/40 absolute inset-[-4px] rounded-full bg-gradient-to-br to-transparent opacity-0 blur-[10px] transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="bg-primary/10 border-primary/20 flex h-16 w-16 items-center justify-center rounded-full border">
+              <div className="group relative mb-8 flex h-[120px] w-[120px] items-center justify-center border border-white/10 bg-[#15131A] shadow-xl">
+                <div className="from-primary/40 absolute inset-[-4px] bg-gradient-to-br to-transparent opacity-0 blur-[10px] transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="bg-primary/10 border-primary/20 flex h-16 w-16 items-center justify-center border">
                   {step.icon ? (
                     <SmartIcon
                       name={step.icon}
@@ -77,7 +77,7 @@ export function ToolHowItWorks({
                   )}
                 </div>
                 {/* Step number badge */}
-                <div className="bg-primary text-primary-foreground absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-[0_4px_10px_rgba(212,175,55,0.4)]">
+                <div className="bg-primary text-primary-foreground absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center text-sm font-bold shadow-[0_4px_10px_rgba(212,175,55,0.4)]">
                   {index + 1}
                 </div>
               </div>

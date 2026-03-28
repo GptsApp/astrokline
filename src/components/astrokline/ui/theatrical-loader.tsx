@@ -86,7 +86,7 @@ export function AstrologyLoader({
       {/* ─── Mystical Zodiac Ring (Spatial 3D) ─── */}
       <div className="relative flex h-64 w-64 items-center justify-center perspective-[800px]">
         {/* Deep background galaxy blur */}
-        <div className="bg-primary/20 pointer-events-none absolute inset-0 scale-150 animate-pulse rounded-full blur-[80px]" />
+        <div className="bg-primary/20 pointer-events-none absolute inset-0 scale-150 animate-pulse blur-[80px]" />
 
         {/* Outer zodiac ring tilted in 3D */}
         <motion.div
@@ -105,8 +105,8 @@ export function AstrologyLoader({
         >
           {ZODIAC_SIGN_NAMES.map((sign, i) => {
             const angle = i * 30 * (Math.PI / 180);
-            const x = 50 + 45 * Math.cos(angle);
-            const y = 50 + 45 * Math.sin(angle);
+            const x = (50 + 45 * Math.cos(angle)).toFixed(4);
+            const y = (50 + 45 * Math.sin(angle)).toFixed(4);
             return (
               <span
                 key={i}
@@ -125,7 +125,7 @@ export function AstrologyLoader({
 
         {/* Inner pulsing structural rings (Spatial Depth) */}
         <motion.div
-          className="border-primary/20 absolute inset-4 rounded-full border"
+          className="border-primary/20 absolute inset-4 border"
           style={{ transformStyle: 'preserve-3d' }}
           animate={{
             rotateX: [50, 55, 50],
@@ -135,7 +135,7 @@ export function AstrologyLoader({
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="border-primary/30 absolute inset-8 rounded-full border"
+          className="border-primary/30 absolute inset-8 border"
           style={{ transformStyle: 'preserve-3d' }}
           animate={{
             rotateX: [70, 65, 70],
@@ -147,7 +147,7 @@ export function AstrologyLoader({
 
         {/* Spinning aspect line */}
         <motion.div
-          className="border-primary/40 absolute inset-10 rounded-full border border-dashed"
+          className="border-primary/40 absolute inset-10 border border-dashed"
           animate={{ rotate: -360 }}
           transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
         />
@@ -156,7 +156,7 @@ export function AstrologyLoader({
         {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={`dust-${i}`}
-            className="absolute h-1 w-1 rounded-full bg-white shadow-[0_0_10px_#fff]"
+            className="absolute h-1 w-1 bg-white shadow-[0_0_10px_#fff]"
             initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
             animate={{
               x: (Math.random() - 0.5) * 200,
@@ -174,7 +174,7 @@ export function AstrologyLoader({
 
         {/* Center mystical symbol floating */}
         <motion.div
-          className="border-primary/40 z-10 flex h-24 w-24 items-center justify-center rounded-full border-2 bg-[#0A0A0A]/90 shadow-[0_0_40px_rgba(212,175,55,0.4)] backdrop-blur-md"
+          className="border-primary/40 z-10 flex h-24 w-24 items-center justify-center border-2 bg-[#0A0A0A]/90 shadow-[0_0_40px_rgba(212,175,55,0.4)] backdrop-blur-md"
           animate={{ y: [-5, 5, -5] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
@@ -211,7 +211,7 @@ export function AstrologyLoader({
         </div>
 
         {/* Subtle progress bar */}
-        <div className="h-0.5 w-48 overflow-hidden rounded-full bg-white/5">
+        <div className="h-0.5 w-48 overflow-hidden bg-white/5">
           <motion.div
             className="from-primary/40 to-primary/80 h-full bg-gradient-to-r"
             style={{ width: `${progress}%` }}

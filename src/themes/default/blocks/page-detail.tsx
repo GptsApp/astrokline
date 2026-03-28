@@ -24,7 +24,7 @@ export async function PageDetail({ post }: { post: PostType }) {
             )}
           </div>
 
-          <div className="ring-foreground/5 relative mt-8 rounded-3xl border border-transparent px-4 shadow ring-1 md:px-8">
+          <div className="ring-foreground/5 relative mt-8  border border-transparent px-4 shadow ring-1 md:px-8">
             <div>
               {post.body ? (
                 <div className="docs text-foreground text-md my-8 space-y-4 font-normal *:leading-relaxed">

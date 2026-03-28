@@ -1,5 +1,7 @@
 "use client";
 
+import { Heading } from "@/components/astrokline/ui/heading";
+
 import { motion } from "framer-motion";
 import {
   Accordion,
@@ -11,32 +13,32 @@ import {
 export function FAQ() {
   const faqs = [
     {
-      question: "How is AstroKline different from a regular horoscope?",
-      answer: "Regular horoscopes look only at your Sun sign (1 of 12 patterns). AstroKline's astrology AI uses your exact birth time, date, and GPS coordinates to calculate the precise planetary geometry of your natal chart. We then track how current planetary transits interact with your unique birth chart blueprint, providing deeply personalized astrology insights no generic horoscope ever could."
+      question: "How is AstroKline different from a daily horoscope?",
+      answer: "Daily horoscopes use only your Sun sign — 1 of 12 generic patterns. AstroKline uses your exact birth time, date, and location to calculate the precise planetary geometry unique to you. The result is a personalized timing curve no generic horoscope could ever produce."
     },
     {
-      question: "What is an astrology K-Line and how does the 'Turning Point' work?",
-      answer: "The astrology K-Line is AstroKline's signature visualization — inspired by financial K-Line charts — that maps your cosmic energy over time. When slow-moving planets (like Saturn or Pluto) form exact geometric angles to crucial points in your natal chart, major life shifts often occur. Your K-Line visualizes these periods as peaks or dips, helping you anticipate career breakthroughs, relationship tests, or periods of mandatory introspection."
+      question: "What exactly is a K-Line?",
+      answer: "A K-Line is a timing curve — inspired by financial charts — that maps your life energy over 100 years. Peaks show years of natural momentum and opportunity. Dips show years of friction where you should protect, not push. It's the simplest way to see your life's big picture at a glance."
     },
     {
-      question: "Is my Destiny Score fixed? Can I change my future?",
-      answer: "Astrology is the map, not the car. A low Destiny Score on your K-Line doesn't mean you are doomed — it indicates a period of high friction or required learning (called 'Crossroads' in your astrology chart). A high score indicates cosmic flow and opportunity. By reading your planetary weather, you can choose how to navigate. You always retain free will."
+      question: "Is my score fixed? Can I change my future?",
+      answer: "No — your score is a weather forecast, not a sentence. A dip means headwinds, not failure. A peak means tailwinds, not guaranteed success. You always retain free will. The K-Line simply helps you choose when to push and when to pause."
     },
     {
-      question: "Do I need my exact birth time for the natal chart reading?",
-      answer: "Yes, for maximum birth chart accuracy. Without an exact birth time, AstroKline cannot accurately calculate your Ascendant (Rising Sign) or the Houses of your natal chart, which govern specific life areas like career, wealth, and relationships. If you only know the day, your astrology K-Line will be a broader estimation."
+      question: "Do I need my exact birth time?",
+      answer: "For the most accurate results, yes. Your birth time determines your Rising Sign and House placements, which govern specific areas like career, wealth, and relationships. If you only know the date, your chart will still show the major trends — just with less precision on life-area breakdowns."
     },
     {
-      question: "What is the Destiny Blueprint 'Life Book' export?",
-      answer: "The 'Life Book' is a comprehensive, 50+ page HD PDF export of your complete astrology reading. It includes your full natal chart breakdown, a decade-long destiny K-Line projection, deep-dive analysis into your Wealth, Career, and Relationship planetary sectors, and personalized survival guides for upcoming major transits (like your Saturn Return)."
+      question: "Is my data safe?",
+      answer: "Yes. Your birth data is encrypted and never shared with third parties. We use it solely to calculate your chart. You can delete your account and all associated data at any time from your settings."
     },
     {
-      question: "Can I cancel my AstroKline subscription at any time?",
-      answer: "Absolutely. Our 'Compass' and 'Destiny Blueprint' plans auto-renew, but you can cancel the renewal at any time directly from your account settings. You will retain full access to your astrology K-Line, birth chart data, and transit alerts until the end of your current billing period."
+      question: "Can I cancel anytime?",
+      answer: "Absolutely. Cancel your subscription anytime from your account settings — no questions asked. You keep full access until the end of your billing period. The free tier is yours forever."
     },
     {
-      question: "Is my destiny fixed according to my birth chart?",
-      answer: "Absolutely not. AstroKline's core philosophy is that the birth chart reveals tendencies and potentials, never fixed outcomes. Your K-Line shows the cosmic weather — you always choose how to navigate it. We strongly recommend consulting licensed professionals for medical, legal, or financial decisions."
+      question: "How accurate is the calculation?",
+      answer: "We use Swiss Ephemeris (DE431), the same astronomical dataset used by NASA for planetary positions. All calculations are precise to 0.001° and can be independently verified. This is professional-grade astronomy, not guesswork."
     }
   ];
 
@@ -67,9 +69,9 @@ export function FAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 id="faq-heading" className="text-3xl md:text-5xl font-bold mb-4">
+            <Heading level={2} id="faq-heading" className="mb-4">
               Frequently Asked <span className="text-primary">Questions</span>.
-            </h2>
+            </Heading>
             <p className="text-muted-foreground text-lg">
               Everything you need to know about interpreting your life&apos;s K-Line.
             </p>
@@ -81,7 +83,7 @@ export function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="bg-[#15131A] border border-white/5 rounded-3xl p-6 md:p-10 shadow-2xl"
+          className="bg-[#15131A] border border-white/5  p-6 md:p-10 shadow-2xl"
         >
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, i) => (
