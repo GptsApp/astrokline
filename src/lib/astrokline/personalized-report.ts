@@ -84,6 +84,82 @@ const SIGN_INDEX: Record<string, number> = {
   Pisces: 11,
 };
 
+// ─── Vedic: Vimshottari Dasha System ───
+const DASHA_LORDS = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury'] as const;
+const DASHA_YEARS = [7, 20, 6, 10, 7, 18, 16, 19, 17]; // total = 120 years
+const DASHA_SCORE_MODIFIER: Record<string, number> = {
+  // Calibrated against AstroSage/IndAstro/Astroyogi consensus
+  Ketu: -8,     // "Dark night of the soul" — spiritual upheaval, material loss
+  Venus: 8,     // "Golden period" — love, prosperity, luxury
+  Sun: 3,       // Moderate positive — ego awakening, authority
+  Moon: 5,      // Emotional stability, nurturing
+  Mars: -4,     // Conflict, accidents, aggression
+  Rahu: -7,     // Material obsession, deception, sudden shocks
+  Jupiter: 9,   // Best benefic — wisdom, expansion, prosperity
+  Saturn: -8,   // "Strictest teacher" — delays, discipline, isolation
+  Mercury: 4,   // Communication, learning, adaptability
+};
+const MALEFIC_DASHAS = new Set(['Ketu', 'Rahu', 'Saturn', 'Mars']);
+
+function getMoonNakshatra(moonLongitude: number): number {
+  // 27 Nakshatras, each spanning 13°20' (13.333°)
+  return Math.floor(moonLongitude / (360 / 27)) % 27;
+}
+
+function getDashaStartIndex(nakshatra: number): number {
+  // Each Nakshatra is ruled by one of 9 Dasha lords in cyclic order
+  return nakshatra % 9;
+}
+
+function getDashaModifier(age: number, moonLongitude: number): { modifier: number; lord: string; isTransition: boolean } {
+  const nakshatra = getMoonNakshatra(moonLongitude);
+  const startIdx = getDashaStartIndex(nakshatra);
+
+  // Calculate remaining portion of first Dasha based on Moon position within Nakshatra
+  const nakshatraSpan = 360 / 27;
+  const posInNakshatra = moonLongitude % nakshatraSpan;
+  const fractionElapsed = posInNakshatra / nakshatraSpan;
+  const firstDashaRemaining = DASHA_YEARS[startIdx] * (1 - fractionElapsed);
+
+  let elapsed = 0;
+  let currentIdx = startIdx;
+  let isFirst = true;
+
+  for (let cycle = 0; cycle < 3; cycle++) {
+    for (let i = 0; i < 9; i++) {
+      const idx = (startIdx + i) % 9;
+      const duration = isFirst ? firstDashaRemaining : DASHA_YEARS[idx];
+      isFirst = false;
+
+      if (age >= elapsed && age < elapsed + duration) {
+        const yearsIntoDasha = age - elapsed;
+        const isTransition = yearsIntoDasha < 1 || (elapsed + duration - age) < 1;
+        return {
+          modifier: DASHA_SCORE_MODIFIER[DASHA_LORDS[idx]],
+          lord: DASHA_LORDS[idx],
+          isTransition,
+        };
+      }
+      elapsed += duration;
+      currentIdx = idx;
+    }
+  }
+
+  return { modifier: 0, lord: 'Mercury', isTransition: false };
+}
+
+function getSadeSatiModifier(transitSaturnLongitude: number, natalMoonLongitude: number): number {
+  const saturnSign = Math.floor(transitSaturnLongitude / 30);
+  const moonSign = Math.floor(natalMoonLongitude / 30);
+  const signDiff = ((saturnSign - moonSign) % 12 + 12) % 12;
+
+  // Sade Sati: 7.5-year Saturn transit. Calibrated to Vedic consensus.
+  if (signDiff === 0) return -15;  // Peak phase — Saturn conjunct Moon sign (most intense)
+  if (signDiff === 11) return -8;  // Rising phase — Saturn in 12th from Moon
+  if (signDiff === 1) return -5;   // Setting phase — Saturn in 2nd from Moon
+  return 0;
+}
+
 const OUTER_PLANETS = new Set([
   'Jupiter',
   'Saturn',
@@ -481,6 +557,9 @@ export function buildPersonalizedKlineTimeline(
   const phaseC = ((uranus?.longitude ?? 0) / 360) * Math.PI * 2;
   const phaseD = ((pluto?.longitude ?? 0) / 360) * Math.PI * 2;
 
+  const moon = chart.planets.find((planet) => planet.name === 'Moon');
+  const moonLongitude = moon?.longitude ?? 0;
+
   const klineData: DestinyScorePoint[] = [];
   const transitDetails: Record<number, TransitEvent[]> = {};
 
@@ -499,10 +578,10 @@ export function buildPersonalizedKlineTimeline(
       (sum, event) => sum + event.contribution,
       0
     );
-    const waveA = Math.sin((age / 11.86) * Math.PI * 2 + phaseA) * 6.5;
-    const waveB = Math.sin((age / 29.46) * Math.PI * 2 + phaseB) * 9.5;
-    const waveC = Math.sin((age / 19.2) * Math.PI * 2 + phaseC) * 4.2;
-    const waveD = Math.cos((age / 83.75) * Math.PI * 2 + phaseD) * 3.5;
+    const waveA = Math.sin((age / 11.86) * Math.PI * 2 + phaseA) * 4.5;  // Jupiter cycle (reduced from 6.5)
+    const waveB = Math.sin((age / 29.46) * Math.PI * 2 + phaseB) * 6.5;  // Saturn cycle (reduced from 9.5)
+    const waveC = Math.sin((age / 19.2) * Math.PI * 2 + phaseC) * 3.0;   // Uranus cycle (reduced from 4.2)
+    const waveD = Math.cos((age / 83.75) * Math.PI * 2 + phaseD) * 2.5;  // Pluto cycle (reduced from 3.5)
 
     let envelope = 0;
     if (age < 12) envelope = -8 + age * 0.9;
@@ -511,8 +590,49 @@ export function buildPersonalizedKlineTimeline(
     else if (age < 60) envelope = 5 - (age - 42) * 0.25;
     else envelope = 1 - (age - 60) * 0.18;
 
+    // Vedic: Dasha period modifier (primary timing mechanism in Jyotish)
+    const dasha = getDashaModifier(age, moonLongitude);
+    const dashaModifier = dasha.modifier * 2.0; // Dasha is ~50% of timing signal
+    const dashaTransitionBonus = dasha.isTransition ? 3 : 0;
+
+    // Vedic: Sade Sati detection (7.5-year Saturn transit)
+    const transitSaturn = transitPositions.find((p) => p.name === 'Saturn');
+    const sadeSatiPenalty = transitSaturn
+      ? getSadeSatiModifier(transitSaturn.longitude, moonLongitude)
+      : 0;
+
+    // Vedic: Malefic Dasha × Sade Sati interaction (compounding difficulty)
+    const maleficSadeSatiInteraction =
+      MALEFIC_DASHAS.has(dasha.lord) && sadeSatiPenalty < 0 ? -5 : 0;
+
+    // ─── Vedic: Dasha-Transit Harmony ───
+    // Core Jyotish principle: "Dasha sets the weather, transits trigger rain."
+    // During malefic Dasha → positive transits are dampened (good luck can't fully manifest)
+    // During benefic Dasha → negative transits are softened (bad luck is cushioned)
+    const isMaleficDasha = MALEFIC_DASHAS.has(dasha.lord);
+    const isBeneficDasha = ['Jupiter', 'Venus', 'Moon', 'Mercury'].includes(dasha.lord);
+    let adjustedEventContribution = eventContribution;
+    if (isMaleficDasha && eventContribution > 0) {
+      adjustedEventContribution = eventContribution * 0.4; // Good transits only 40% effective in bad Dasha
+    } else if (isBeneficDasha && eventContribution < 0) {
+      adjustedEventContribution = eventContribution * 0.5; // Bad transits softened 50% in good Dasha
+    }
+
+    // Sade Sati additionally dampens positive events regardless of Dasha
+    // (Saturn's gravity affects everyone — even Venus Dasha can't fully escape Sade Sati)
+    if (sadeSatiPenalty < -10 && adjustedEventContribution > 0) {
+      adjustedEventContribution *= 0.5; // Peak Sade Sati halves positive events
+    } else if (sadeSatiPenalty < -5 && adjustedEventContribution > 0) {
+      adjustedEventContribution *= 0.7; // Rising/Setting reduces positive events 30%
+    }
+
+    // Vedic: Sade Sati dampens all positive waves (Saturn's gravity suppresses uplift)
+    const sadeSatiWaveDampen = sadeSatiPenalty < -10 ? 0.5 : sadeSatiPenalty < -5 ? 0.75 : 1.0;
+    const adjustedWaveSum = (waveA + waveB + waveC + waveD) * sadeSatiWaveDampen;
+
     const rawScore =
-      54 + chartBias + waveA + waveB + waveC + waveD + envelope + eventContribution;
+      54 + chartBias + adjustedWaveSum + envelope + adjustedEventContribution
+      + dashaModifier + sadeSatiPenalty + dashaTransitionBonus + maleficSadeSatiInteraction;
     const score = clamp(Math.round(rawScore), 18, 96);
     const previousScore = klineData[age - 1]?.score ?? score;
     const stage = pickStage(score, previousScore, yearEvents);
@@ -523,7 +643,7 @@ export function buildPersonalizedKlineTimeline(
       stage,
       energyLevel: scoreEnergyLevel(score),
       isPeak: age > 0 ? score > previousScore + 5 : score >= 78,
-      isCrossroads: Math.abs(score - 55) <= 4 || Math.abs(score - previousScore) <= 2,
+      isCrossroads: dasha.isTransition || Math.abs(score - 55) <= 4 || Math.abs(score - previousScore) <= 2,
       explanation: buildYearExplanation(age, score, stage, yearEvents),
     });
 

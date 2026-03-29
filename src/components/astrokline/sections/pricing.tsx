@@ -16,6 +16,7 @@ import { useSession } from '@/core/auth/client';
 import { usePathname, useRouter } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import { Heading } from "@/components/astrokline/ui/heading";
+import { useAppContext } from '@/shared/contexts/app';
 
 /* ─── Plan Data ─── */
 interface PlanFeature {
@@ -144,17 +145,21 @@ export function Pricing() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
+  const { setIsShowSignModal } = useAppContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const signInHref =
-    pathname && pathname !== '/'
-      ? `/sign-in?callbackUrl=${encodeURIComponent(pathname)}`
-      : '/sign-in';
+
+  const handleAuthRequired = () => {
+    if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+      (window as any).setAuthModalType('sign-in');
+    }
+    setIsShowSignModal(true);
+  };
 
   const handleCheckout = async (planId: string) => {
     if (!session) {
-      router.push(signInHref);
+      handleAuthRequired();
       return;
     }
 
@@ -175,7 +180,7 @@ export function Pricing() {
       if (!response.ok) throw new Error('Checkout request failed');
       const { code, data, message } = await response.json();
       if (message === 'no auth, please sign in') {
-        router.push(signInHref);
+        handleAuthRequired();
         return;
       }
       if (code !== 0) throw new Error(message);
@@ -196,6 +201,7 @@ export function Pricing() {
 
   const currentPlanId = (plan: Plan) =>
     isAnnual ? plan.productIdAnnual : plan.productIdMonthly;
+
 
   return (
     <section
@@ -398,7 +404,7 @@ export function Pricing() {
                       type="button"
                       onClick={() => {
                         if (!session) {
-                          router.push(signInHref);
+                          handleAuthRequired();
                         } else {
                           router.push('/kline');
                         }
@@ -412,7 +418,7 @@ export function Pricing() {
                       type="button"
                       onClick={() => {
                         if (!session) {
-                          router.push(signInHref);
+                          handleAuthRequired();
                         } else {
                           handleCheckout(currentPlanId(plan)!);
                         }
@@ -430,7 +436,7 @@ export function Pricing() {
                       type="button"
                       onClick={() => {
                         if (!session) {
-                          router.push(signInHref);
+                          handleAuthRequired();
                         } else {
                           handleCheckout(currentPlanId(plan)!);
                         }
@@ -448,7 +454,7 @@ export function Pricing() {
                       type="button"
                       onClick={() => {
                         if (!session) {
-                          router.push(signInHref);
+                          handleAuthRequired();
                         } else {
                           handleCheckout(currentPlanId(plan)!);
                         }

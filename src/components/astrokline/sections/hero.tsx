@@ -65,17 +65,17 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="flex flex-col items-center"
+          className="flex w-full flex-col items-start text-left md:items-center md:text-center"
         >
           <div className="bg-primary/10 border-primary/20 text-primary mb-6 inline-flex items-center gap-2 border px-3 py-1 text-sm font-medium">
             <Sparkles className="h-4 w-4" />
             <span>{t('badge')}</span>
           </div>
 
-          <Heading level={1} className="mb-6 bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-4xl leading-tight font-bold tracking-tight text-transparent md:text-6xl">
+          <Heading level={1} className="mb-6 w-full bg-gradient-to-b from-white via-white/90 to-white/40 bg-clip-text text-left font-sans text-6xl font-bold leading-[0.9] tracking-tighter text-transparent sm:text-7xl md:text-center md:text-8xl lg:text-[7rem]">
             {t('title1')}
             <br />
-            <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent italic font-serif font-medium">
+            <span className="block pr-8 font-serif font-medium italic text-transparent bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text md:inline md:pr-0 md:ml-4">
               {t('title2')}
             </span>
           </Heading>

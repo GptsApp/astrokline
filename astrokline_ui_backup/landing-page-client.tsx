@@ -335,18 +335,24 @@ export function KlineClient({
 
       <div className="flex w-full flex-col pb-24">
         {/* Hero Section */}
-        <div className="relative flex flex-col justify-center border-b border-white/5 bg-[#050505] px-6 py-32 md:px-12">
-          <div className="relative z-10 w-full max-w-4xl space-y-8">
-            <Heading level={1} className="font-serif text-5xl tracking-normal text-white/95 md:text-7xl lg:text-8xl lg:leading-[1.1]">
-              100-Year<br/>
-              Risk & Momentum Map
+        <div className="relative flex flex-col items-center justify-center border-b border-white/5 bg-gradient-to-b from-transparent to-[#15131A]/30 px-4 py-20 text-center">
+          <div className="background-gradient-to-t from-background pointer-events-none absolute inset-0 via-transparent to-transparent" />
+          <div className="relative z-10 mx-auto w-full max-w-3xl space-y-6">
+            <div className="bg-primary/10 border-primary/20 text-primary mx-auto mb-2 inline-flex items-center gap-2 border px-3 py-1 text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+              <Sparkles className="h-3.5 w-3.5" /> Quantitative Cosmic Strategy
+            </div>
+            <Heading level={1} className="mb-4 text-4xl leading-tight tracking-tight text-white drop-shadow-md md:text-5xl lg:text-7xl">
+              100-Year{' '}
+              <span className="bg-gradient-to-r from-[#D4AF37] to-[#F5EBBA] bg-clip-text text-transparent">
+                Risk & Momentum Map
+              </span>
             </Heading>
-            <p className="max-w-prose text-lg font-light leading-relaxed tracking-wide text-white/50 md:text-2xl">
-              Identify your exact low-margin-of-error windows, high-volatility expansion periods, and strategic turning points. Built exclusively for decision makers.
+            <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed font-light text-white/60 md:text-lg">
+              Identify your exact low-margin-of-error windows, high-volatility expansion periods, and strategic turning points. Built for decision makers.
             </p>
             <button
               onClick={handleGetMyKline}
-              className="group relative inline-flex h-14 items-center justify-center gap-4 bg-[#D4AF37] px-10 text-sm font-bold tracking-[0.1em] text-black uppercase transition-transform hover:scale-105 active:scale-95"
+              className="group bg-primary text-primary-foreground hover:bg-primary/90 relative inline-flex h-12 items-center justify-center gap-3 px-8 text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] active:scale-95 md:h-14 md:text-base"
             >
               Initialize Natal Coordinates
               <ArrowUp className="h-4 w-4 rotate-45 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />

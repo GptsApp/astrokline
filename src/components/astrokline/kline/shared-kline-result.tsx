@@ -1,50 +1,61 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { ArrowUp, BarChart3, Brain, Layers, Star, Target, TrendingDown, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowRight, Briefcase, Coins, Heart, Leaf, Lock, Sparkles } from 'lucide-react';
 
-import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
-import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
-import { PremiumDownloadButton } from '@/components/astrokline/kline/premium-download-button';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
-import { TrustEvidenceBar } from '@/components/astrokline/kline/trust-evidence-bar';
 import { cn } from '@/shared/lib/utils';
 import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { Heading } from "@/components/astrokline/ui/heading";
 
-// Helper functions
-function getScoreBand(score: number, t: any) {
-  if (score >= 82) return { label: t('bands.expansion.label'), summary: t('bands.expansion.summary') };
-  if (score <= 38) return { label: t('bands.protection.label'), summary: t('bands.protection.summary') };
-  return { label: t('bands.build.label'), summary: t('bands.build.summary') };
+function extractDimensionPreviews(
+  klineData: DestinyScorePoint[],
+  transitDetails: Record<number, TransitEvent[]>,
+  currentYear: number,
+  birthYear: number
+) {
+  const future = Object.entries(transitDetails)
+    .filter(([y]) => Number(y) > currentYear && Number(y) <= currentYear + 30)
+    .sort(([a], [b]) => Number(a) - Number(b));
+
+  const findPeak = (theme: string) => {
+    for (const [y, events] of future) {
+      const hit = events.find(e => e.theme === theme && e.impactScore >= 6);
+      if (hit) return { year: Number(y), age: Number(y) - birthYear, event: hit };
+    }
+    return null;
+  };
+
+  const healthDip = klineData.find(p => p.year > currentYear && p.score < 45);
+
+  return {
+    love: findPeak('Love'),
+    career: findPeak('Career'),
+    wealth: findPeak('Wealth'),
+    health: healthDip ? { year: healthDip.year, age: healthDip.year - birthYear } : null,
+  };
 }
 
-function InsightCard({
+function DimensionPreviewRow({
   icon: Icon,
   label,
-  ageStr,
-  yearStr,
-  scoreStr,
-  detail,
-  fallback,
-  accentColorClass,
-  accentBgClass,
+  tease,
+  ctaText,
+  accentClass,
+  onCta,
   delay = 0,
 }: {
-  icon: typeof TrendingUp;
+  icon: typeof Heart;
   label: string;
-  ageStr?: string;
-  yearStr?: string | number;
-  scoreStr?: string | number;
-  detail: string;
-  fallback?: string;
-  accentColorClass: string;
-  accentBgClass: string;
+  tease: string;
+  ctaText: string;
+  accentClass: string;
+  onCta: () => void;
   delay?: number;
 }) {
   return (
@@ -53,117 +64,69 @@ function InsightCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.6, delay }}
-      className="group relative flex flex-col overflow-hidden border border-white/[0.04] bg-[#0A0A0F]/80 p-6 transition-colors hover:border-white/[0.08] hover:bg-white/[0.02] md:p-8"
+      className="group relative flex flex-col gap-4 border-b border-white/5 py-8 last:border-b-0 md:flex-row md:items-center md:gap-8"
     >
-      {/* Subtle corner glow effect */}
-      <div className={cn("absolute -right-12 -top-12 h-40 w-40 blur-[60px] opacity-[0.03] transition-opacity group-hover:opacity-[0.08]", accentBgClass.replace('/10', ''))} />
-
-      <div className="relative z-10 flex h-full flex-col">
-        {/* Label Badge */}
-        <div
-          className={cn(
-            'mb-6 w-fit inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-[9px] font-bold tracking-widest uppercase',
-            accentBgClass,
-            accentColorClass
-          )}
-        >
-          <Icon className="h-3 w-3" />
-          {label}
+      <div className="flex shrink-0 items-center gap-3 md:w-[120px]">
+        <div className={cn('flex h-10 w-10 items-center justify-center border border-white/10 bg-white/5', accentClass)}>
+          <Icon className="h-5 w-5" />
         </div>
-
-        {ageStr && yearStr && scoreStr ? (
-          <>
-            {/* Main Metric: Age & Year */}
-            <div className="mb-1 flex items-baseline gap-2.5">
-              <span className="font-serif text-3xl text-white/90 md:text-4xl">
-                 {ageStr}
-              </span>
-              <span className="font-mono text-sm tracking-widest text-white/30">
-                 {yearStr}
-              </span>
-            </div>
-            
-            {/* Score */}
-            <div className="mb-5 flex items-center gap-2 text-xs">
-               <span className="text-white/40">Score</span>
-               <span className={cn("font-mono font-bold text-sm", accentColorClass)}>{scoreStr}</span>
-            </div>
-          </>
-        ) : (
-          <div className="mb-5 text-lg font-serif text-white/50">{fallback}</div>
-        )}
-
-        <div className="mb-5 h-px w-8 bg-white/10" />
-        
-        {/* Description */}
-        <p className="text-sm leading-relaxed text-white/50">{detail}</p>
+        <span className={cn('text-xs font-bold uppercase tracking-widest', accentClass)}>{label}</span>
       </div>
+      <p className="flex-1 text-sm leading-relaxed tracking-wide text-white/70">{tease}</p>
+      <button
+        onClick={onCta}
+        className={cn('flex shrink-0 items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-colors hover:text-white', accentClass)}
+      >
+        {ctaText}
+        <ArrowRight className="h-3.5 w-3.5" />
+      </button>
     </motion.div>
   );
 }
 
-// ─── Floating Mini Nav ───
-function FloatingNav() {
-  const [activeId, setActiveId] = useState<string>('destiny-summary');
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: '-30% 0px -70% 0px' }
+function ActionableFutureCliffhanger({ onActionGate, tier }: any) {
+  if (tier === 'PRO') {
+    return (
+      <div className="mx-auto mt-16 max-w-4xl px-4 py-8 pb-24 text-center">
+         <p className="text-white/40">You are on the PRO tier. Your full 5-year outlook is unlocked.</p>
+         {/* Insert real PRO content here */}
+      </div>
     );
+  }
 
-    const sections = ['destiny-summary', 'kline-hero', 'kline-reading', 'life-stages', 'ai-insight', 'natal-chart'];
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-  const items = [
-    { id: 'destiny-summary', icon: ArrowUp, label: 'You' },
-    { id: 'kline-hero', icon: BarChart3, label: 'Curve' },
-    { id: 'kline-reading', icon: Target, label: 'Insights' },
-    { id: 'life-stages', icon: Layers, label: 'Decades' },
-    { id: 'ai-insight', icon: Brain, label: 'Guidance' },
-    { id: 'natal-chart', icon: Star, label: 'Chart' },
-  ];
   return (
-    <div className="fixed top-1/2 right-3 z-50 hidden -translate-y-1/2 flex-col gap-2 lg:flex">
-      {items.map((item) => {
-        const isActive = activeId === item.id;
-        return (
-          <button
-            key={item.id}
-            onClick={() => scrollTo(item.id)}
-            className={cn(
-              'group flex items-center gap-2  border p-2 backdrop-blur-md transition-all hover:scale-105',
-              isActive ? 'bg-primary/20 border-primary/50 shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'hover:border-primary/30 border-white/10 bg-[#0A0A0F]/80'
-            )}
-            title={item.label}
-          >
-            <item.icon className={cn('h-4 w-4 transition-colors', isActive ? 'text-primary' : 'group-hover:text-primary text-white/40')} />
-            <span
-              className={cn(
-                'overflow-hidden text-[10px] whitespace-nowrap transition-all',
-                isActive ? 'text-primary/90 w-16 px-1 opacity-100' : 'w-0 text-white/0 opacity-0 group-hover:w-16 group-hover:px-1 group-hover:text-white/60 group-hover:opacity-100'
-              )}
-            >
-              {item.label}
-            </span>
-          </button>
-        );
-      })}
+    <div className="relative mt-8 py-16">
+       {/* Teaser content that fades out */}
+       <div 
+         className="mx-auto max-w-4xl space-y-8 px-4 opacity-50 select-none pb-40 flex flex-col items-start" 
+         aria-hidden="true" 
+         style={{ maskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)', WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)' }}
+       >
+          <Heading level={3} className="font-serif text-2xl text-white/90 md:text-3xl">What the Next 5 Years Hold for You</Heading>
+          <p className="max-w-prose leading-loose text-white/70">
+            Between 2026 and 2028, your love sector activates with unusual intensity. If you are single, this is when connections carry real emotional weight. If you are partnered, this is when the relationship either deepens or demands honest renegotiation.
+          </p>
+          <p className="max-w-prose leading-loose text-white/70">
+            Your career curve shows a critical pivot point around 2027. The decision you make in that window determines whether the next decade accelerates or stalls. The chart strongly favors...
+          </p>
+       </div>
+
+      {/* Overlay Paywall */}
+      <div className="absolute inset-x-0 bottom-0 z-10 flex h-3/4 flex-col items-center justify-end bg-gradient-to-t from-background via-background/90 to-transparent pb-16">
+        <button 
+          onClick={() => onActionGate?.('unlock_5_year_plan', 'FREE')}
+          className="group flex flex-col items-center gap-1 transition-transform hover:scale-105"
+        >
+          <span className="flex items-center gap-2 bg-[#D4AF37] px-10 py-4 text-xs font-bold uppercase tracking-[0.15em] text-black shadow-[0_0_40px_rgba(212,175,55,0.1)]">
+            <Lock className="h-4 w-4" />
+            Unlock My 5-Year Outlook
+          </span>
+          <span className="mt-4 font-mono text-[9.5px] uppercase tracking-widest text-[#D4AF37]/50 transition-colors group-hover:text-[#D4AF37]/80">
+            See love, career, and wealth timing in detail
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
@@ -173,7 +136,7 @@ interface SharedKlineResultProps {
   klineData: DestinyScorePoint[];
   transitDetails: Record<number, TransitEvent[]>;
   tier: string;
-  onUpgradeClick: () => void;
+  onActionGate: (context?: string, tier?: string) => void;
   hideFloatingNav?: boolean;
 }
 
@@ -182,206 +145,106 @@ export function SharedKlineResult({
   klineData,
   transitDetails,
   tier,
-  onUpgradeClick,
-  hideFloatingNav = false,
+  onActionGate,
 }: SharedKlineResultProps) {
   const t = useTranslations('pages.index.page.sections.kline_result.page_client');
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
 
   const birthYear = parseInt(profile?.birthDate?.split('-')[0] || '1990', 10);
   const currentYear = new Date().getFullYear();
+  const dims = extractDimensionPreviews(klineData, transitDetails, currentYear, birthYear);
 
-  const highestPoint = klineData.length > 0 ? klineData.reduce((prev, current) => (prev.score > current.score ? prev : current)) : null;
-  const lowestPoint = klineData.length > 0 ? klineData.reduce((prev, current) => (prev.score < current.score ? prev : current)) : null;
-  const currentPoint = klineData.find((point) => point.year === currentYear) ?? null;
-
-  const selectedYearFocus = selectedYear !== undefined ? transitDetails[selectedYear]?.[0] ?? null : null;
+  const handleDimCta = (context: string) => {
+    onActionGate?.(context, tier === 'GUEST' ? 'FREE' : 'LITE');
+  };
 
   return (
-    <>
-      <div className="mt-8" />
-      {!hideFloatingNav && <FloatingNav />}
-
-      {/* -- 1. HERO IDENTITY CARD -- */}
-      <ReportSection id="destiny-summary" divider={false} className="relative z-[60] pt-4 pb-2">
-        <DestinySummaryCard profile={profile} klineData={klineData} />
-      </ReportSection>
-
-      {/* ── 2. THE LIFE CURVE ── */}
-      <ReportSection id="kline-hero" divider={false} className="relative z-[50] overflow-visible pt-2 pb-4">
+    <div className="w-full">
+      {/* ── 1. K-LINE CHART & PROFILE RIBBON ── */}
+      <ReportSection id="kline-hero" divider={false} className="w-full overflow-hidden px-0 py-0 pb-8 pt-12 md:pt-16">
         <InteractiveChart
           data={klineData}
           transitDetails={transitDetails}
           onNodeClick={(year) => setSelectedYear(year)}
           selectedYear={selectedYear}
           birthYear={birthYear}
+          profileName={profile?.name}
           tier={tier as any}
+          onActionGate={onActionGate}
         />
-        <p className="mt-4 text-center text-xs text-white/30 tracking-wide">Tap any point on the curve to explore that year in detail</p>
-      </ReportSection>
-
-      {/* ── 3. K-LINE READING ── */}
-      <ReportSection id="kline-reading" divider={false} className="relative z-[40] pb-6">
-        <div className="p-8 md:p-12">
-          <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                className="mb-6 inline-flex items-center gap-3 text-[10px] font-bold tracking-[0.22em] text-[#D4AF37]/80 uppercase"
-              >
-                <div className="h-px w-6 bg-[#D4AF37]/50" />
-                {t("reading_title")}
-              </motion.div>
-              <Heading level={2} as={motion.h2}
-                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                className="text-3xl font-serif text-white/90 md:text-4xl lg:text-5xl lg:leading-[1.15]"
-              >
-                See the big picture.
-                <br />
-                Then decide.
-              </Heading>
-            </div>
-            <div className="flex items-end lg:pb-2">
-              <motion.p 
-                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                className="pl-6 border-l border-white/10 text-sm leading-relaxed text-white/50 md:text-base"
-              >
-                Your curve shows which years carry natural momentum and which carry friction. Use it to time career moves, financial decisions, and life changes with confidence.
-              </motion.p>
-            </div>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-3">
-            <InsightCard
-              icon={TrendingUp}
-              label={t("cards.highest_point.title")}
-              ageStr={highestPoint ? t("cards.highest_point.stat", { age: highestPoint.year - birthYear }) : undefined}
-              yearStr={highestPoint?.year}
-              scoreStr={highestPoint?.score}
-              fallback="Highest point unavailable"
-              detail={t("cards.highest_point.desc")}
-              accentColorClass="text-emerald-400"
-              accentBgClass="bg-emerald-400/10"
-              delay={0.1}
-            />
-            <InsightCard
-              icon={TrendingDown}
-              label={t("cards.lowest_point.title")}
-              ageStr={lowestPoint ? t("cards.lowest_point.stat", { age: lowestPoint.year - birthYear }) : undefined}
-              yearStr={lowestPoint?.year}
-              scoreStr={lowestPoint?.score}
-              fallback="Lowest point unavailable"
-              detail={t("cards.lowest_point.desc")}
-              accentColorClass="text-sky-400"
-              accentBgClass="bg-sky-400/10"
-              delay={0.2}
-            />
-            <InsightCard
-              icon={Target}
-              label={t("cards.current_status.title")}
-              ageStr={currentPoint ? t("cards.current_status.stat", { age: currentPoint.year - birthYear }) : undefined}
-              yearStr={currentPoint?.year}
-              scoreStr={currentPoint?.score}
-              fallback="Your current age is outside the visible range."
-              detail={currentPoint ? t("cards.current_status.desc", { trend: currentPoint.score > 50 ? 'expansion' : 'protection' }) : 'Your current age is outside the visible range.'}
-              accentColorClass="text-[#D4AF37]"
-              accentBgClass="bg-[#D4AF37]/10"
-              delay={0.3}
-            />
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.04] px-2 pt-6 pb-2"
-          >
-            <div className="flex items-center gap-2">
-              <Brain className="h-3.5 w-3.5 text-white/30" />
-              <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
-                Algorithm powered by planetary transits & progressed timeline
-              </span>
-            </div>
-            
-            <div className="flex items-center gap-5 text-[10px] font-bold tracking-widest uppercase">
-              <div className="flex items-center gap-1.5 text-emerald-400/80">
-                <Star className="h-3 w-3" />
-                <span>Peak Year</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-sky-400/80">
-                <Star className="h-3 w-3" />
-                <span>Challenge Year</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-[#D4AF37]/80">
-                <div className="h-px w-3 bg-[#D4AF37]" />
-                <span>Current Age</span>
-              </div>
-            </div>
-          </motion.div>
+        <div className="relative z-40 mt-[-1rem]">
+          <DestinySummaryCard profile={profile} klineData={klineData} />
         </div>
       </ReportSection>
 
-      {/* ── 4. LIFE STAGE SCORES ── */}
-      <ReportSection id="life-stages" divider={false} className="relative z-[30] pb-8">
-        <LifeStageScores data={klineData} birthYear={birthYear} />
-      </ReportSection>
-
-      {/* ── 5. AI INLINE DEEP READING ── */}
-      <ReportSection id="ai-insight" divider={false} className="relative z-[20] pb-16">
-        <AiReadingPanels
-          profile={profile}
-          tier={tier as any}
-          onUpgradeClick={onUpgradeClick}
-          selectedYear={selectedYear}
-          yearFocusEvent={selectedYearFocus}
-        />
-
-        {/* ── PREMIUM PDF UPSELL ── */}
-        <div className="mt-24 grid grid-cols-1 lg:grid-cols-2 border border-foreground/10 bg-muted/30 relative">
-          <div className="p-10 md:p-16 flex flex-col justify-center">
-            <div className="mb-8 inline-flex items-center gap-4 text-[10px] font-bold tracking-[0.2em] text-primary uppercase">
-              <span className="h-px w-6 bg-primary" /> Keep Your Full Reading
-            </div>
-            <Heading level={3} variant="section" className="mb-6 text-4xl md:text-5xl leading-[1.1]">
-               Download Your <br/>
-               <span className="text-primary italic">5-Year Outlook.</span>
-             </Heading>
-            <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-              Get a beautiful PDF with your complete timing curve, decade scores, and the top 3 turning points for each of the next 5 years. Refer back anytime — no login needed.
-            </p>
+      {/* ── 2. FOUR-DIMENSION LIFE PREVIEW ── */}
+      <ReportSection id="kline-insights" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
+        <div className="mb-12 flex flex-col items-center justify-center text-center">
+          <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
+            <Sparkles className="h-4 w-4" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Your Life Dimensions</span>
           </div>
-          <div className="bg-background border-l border-foreground/10 p-10 md:p-16 flex flex-col items-center justify-center">
-            <div className="w-full max-w-sm flex flex-col gap-6">
-              <PremiumDownloadButton 
-                profile={profile} 
-                klineData={klineData} 
-                transitDetails={transitDetails} 
-                tier={tier}
-                onUpgradeClick={onUpgradeClick}
-              />
-              <p className="text-xs text-center text-muted-foreground font-mono">Keep it forever. Revisit before every big decision.</p>
-            </div>
-          </div>
+          <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
+            What Your Chart Reveals
+          </Heading>
+          <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
+            Your timeline carries distinct signals across four life dimensions. Here is what stands out.
+          </p>
+        </div>
+
+        <div className="flex flex-col">
+          <DimensionPreviewRow
+            icon={Heart}
+            label="Love"
+            tease={dims.love
+              ? `A significant connection forms around age ${dims.love.age}. Your chart shows heightened emotional receptivity in that window.`
+              : 'Your love timeline carries a quietly powerful current. The details reveal exactly when emotional availability peaks.'}
+            ctaText="See love timeline"
+            accentClass="text-rose-400"
+            onCta={() => handleDimCta('love_timeline')}
+            delay={0.1}
+          />
+          <DimensionPreviewRow
+            icon={Briefcase}
+            label="Career"
+            tease={dims.career
+              ? `Your professional momentum peaks sharply at age ${dims.career.age}. This window demands preparation now.`
+              : 'Your career arc contains a pronounced acceleration phase. Unlock the full timeline to see when to make your move.'}
+            ctaText="See career details"
+            accentClass="text-amber-400"
+            onCta={() => handleDimCta('career_details')}
+            delay={0.2}
+          />
+          <DimensionPreviewRow
+            icon={Coins}
+            label="Wealth"
+            tease={dims.wealth
+              ? `A structural wealth opportunity appears around age ${dims.wealth.age}. The timing favors decisive action over passive waiting.`
+              : 'Your financial curve points to a clear accumulation window ahead. See when your chart favors building lasting assets.'}
+            ctaText="See wealth forecast"
+            accentClass="text-emerald-400"
+            onCta={() => handleDimCta('wealth_forecast')}
+            delay={0.3}
+          />
+          <DimensionPreviewRow
+            icon={Leaf}
+            label="Health"
+            tease={dims.health
+              ? `Your vitality curve dips around age ${dims.health.age}. Preventive action in the years before makes a measurable difference.`
+              : 'Your energy pattern has clear seasonal rhythms. Understanding them lets you protect your vitality before it dips.'}
+            ctaText="See health insights"
+            accentClass="text-sky-400"
+            onCta={() => handleDimCta('health_insights')}
+            delay={0.4}
+          />
         </div>
       </ReportSection>
 
-      {/* -- 6. ADVANCED RAW DATA -- */}
-      <ReportSection id="natal-chart" divider={false} className="relative z-[10] pb-24">
-        <details className="group mx-auto w-full max-w-4xl overflow-hidden  border border-white/5 bg-black/40 backdrop-blur-sm transition-all duration-300 open:bg-[#111015]/80">
-          <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-white/50 transition-colors hover:text-white">
-            <span className="text-[11px] font-bold tracking-widest uppercase">
-              Full Birth Chart Data
-            </span>
-            <div className="text-white/30 transition-transform duration-300 group-open:rotate-180">
-              ▼
-            </div>
-          </summary>
-          <div className="border-t border-white/5 bg-transparent p-2">
-            <ChartHero profile={profile} />
-          </div>
-        </details>
+      {/* ── 3. CLIFFHANGER ── */}
+      <ReportSection id="future-cliffhanger" divider={false} className="w-full">
+         <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} />
       </ReportSection>
-    </>
+    </div>
   );
 }
+

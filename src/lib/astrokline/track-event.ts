@@ -22,6 +22,8 @@ export type FunnelEvent =
   // Layer 4 – Premium Upgrade
   | 'premium_cta_click'
   | 'pricing_modal_open'
+  | 'auth_gate_triggered'
+  | 'share_to_unlock_clicked'
   // Layer 5 – Pricing / Checkout
   | 'pricing_plan_click'
   | 'pricing_checkout_resume'

@@ -47,7 +47,6 @@ type Props = {
   birthYear?: number;
   tier?: AppTier;
   isSimulation?: boolean;
-  profileName?: string;
   onActionGate?: (context: string, tier: AppTier) => void;
 };
 
@@ -275,7 +274,6 @@ export function InteractiveChart({
   birthYear = 1990,
   tier = 'PRO',
   isSimulation = false,
-  profileName,
   onActionGate,
 }: Props) {
   const currentYear = new Date().getFullYear();
@@ -368,38 +366,39 @@ export function InteractiveChart({
       aria-label="Interactive 100-year K-Line destiny timing chart showing life score trends by age"
       data-testid="interactive-kline-chart"
     >
+      {/* Mystical Background Glows */}
+      <div className="pointer-events-none absolute top-1/2 left-1/4 h-[400px] w-[400px] bg-[#D4AF37]/5 blur-[120px]" />
+      <div className="pointer-events-none absolute top-1/2 right-1/4 h-[400px] w-[400px] bg-purple-600/5 blur-[120px]" />
+
       <div
-        className="relative w-full pb-6 pt-2"
+        className="relative  border border-white/5 bg-[#111015]/80 p-6 shadow-2xl backdrop-blur-md"
         style={{ overflow: 'visible' }}
       >
-        {/* Header - Centered Big Title & Subtitle */}
-        <div className="mb-8 flex flex-col items-center justify-center text-center px-4">
-          <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
-            {profileName ? `${profileName}'s` : 'Your'} Life Kline {(tier === 'GUEST' || isSimulation) && <span className="ml-2 text-white/30 text-2xl font-normal inline-block">(Preview)</span>}
+        {/* Header - Minimal */}
+        <div className="mb-4 flex flex-col items-center gap-1 text-center md:flex-row md:justify-between md:text-left">
+          <Heading level={2} className="text-base font-semibold text-white/80 md:text-lg">
+            Your Life Curve {(tier === 'GUEST' || isSimulation) && <span className="text-white/30 text-sm font-normal">(Preview)</span>}
           </Heading>
-          <p className="mt-4 text-sm leading-relaxed text-white/50">
-            A complete projection of your life energy across a 100-year timeline.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[10px] font-mono uppercase tracking-[0.1em] text-white/30">
-            <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />Peak</span>
-            <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]" />Valley</span>
-            <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-3 border-t border-dashed border-white/40" />Now</span>
+          <div className="flex flex-wrap items-center gap-3 text-[10px] text-white/30">
+            <span className="flex items-center gap-1"><span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />Peak</span>
+            <span className="flex items-center gap-1"><span className="inline-block h-1.5 w-1.5 rounded-full bg-sky-400" />Valley</span>
+            <span className="flex items-center gap-1"><span className="inline-block h-1.5 w-3 border-t border-dashed border-white/40" />Now</span>
             {currentPoint && (
-              <span className="ml-2 border-l border-white/10 pl-4">Score: <span className="text-white/70">{currentPoint.close}</span> <span className="mx-2">·</span> Avg: <span className="text-white/70">{avgScore}</span></span>
+              <span>Score: {currentPoint.close} · Avg: {avgScore}</span>
             )}
           </div>
         </div>
 
         {tier === 'GUEST' && (
-          <div className="pointer-events-none absolute inset-0 z-30 mt-32 flex flex-col items-center justify-center">
-            <div className="absolute top-[20%] bottom-0 w-[120%] -left-[10%] -b-[3rem] bg-gradient-to-b from-transparent via-background/90 to-background backdrop-blur-[3px]" />
+          <div className="pointer-events-none absolute inset-0 z-[100] mt-32 flex flex-col items-center justify-center">
+            <div className="absolute top-[20%] bottom-0 w-[120%] -left-[10%] -b-[3rem] bg-gradient-to-b from-transparent via-[#111015]/95 to-[#111015] backdrop-blur-[3px]" />
             <div className="border-primary/20 pointer-events-auto relative z-10 mt-20 flex flex-col items-center  border bg-black/60 p-6 shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl">
               <Lock className="text-primary mb-3 h-8 w-8" />
               <Heading level={3} className="mb-2 text-xl font-bold text-white">
-                Your Timeline Has More to Tell You
+                See Your Full Life Curve
               </Heading>
               <p className="mb-6 max-w-sm text-center text-sm text-white/60">
-                Your chart reveals when love arrives, when career peaks, and when to protect your energy. Sign in to see your full story.
+                Create a free account to unlock your complete timing curve and discover your strongest years ahead.
               </p>
               <button
                 type="button"
@@ -416,7 +415,7 @@ export function InteractiveChart({
                 }}
                 className="bg-primary hover:bg-primary/90 flex items-center gap-2 px-8 py-3 font-bold text-black transition-all hover:scale-105"
               >
-                <Sparkles className="h-4 w-4" /> See My Full Timeline
+                <Sparkles className="h-4 w-4" /> Get Started Free
               </button>
             </div>
           </div>
@@ -857,13 +856,13 @@ const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate }: 
   };
 
   return (
-    <div className="relative z-40 max-w-[calc(100vw-24px)] min-w-[280px] border border-white/10 bg-[#050505] shadow-2xl sm:max-w-[420px] sm:min-w-[340px]">
-      <div className="border-b border-white/5 bg-transparent px-4 py-3">
+    <div className="relative z-[99999] max-w-[calc(100vw-24px)] min-w-[280px] overflow-hidden  border border-white/20 bg-[#0A0A0F]/95 shadow-[0_8px_32px_rgba(0,0,0,0.9)] backdrop-blur-3xl sm:max-w-[420px] sm:min-w-[340px]">
+      <div className="border-b border-white/10 bg-white/[0.02] px-4 py-3">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="font-serif text-2xl text-white">{d.year}</span>
             <span className=" bg-white/10 px-1.5 py-0.5 font-mono text-[9px] font-medium tracking-widest text-white/60 uppercase">
-              {tier === 'FREE' || tier === 'GUEST' ? <span className="flex items-center gap-1"><Lock className="h-2.5 w-2.5" />Locked</span> : d.stage}
+              {tier === 'FREE' || tier === 'GUEST' ? '???' : d.stage}
             </span>
             <span className="text-[10px] text-white/30">Age ~{age}</span>
           </div>

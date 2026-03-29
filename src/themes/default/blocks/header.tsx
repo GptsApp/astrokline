@@ -30,6 +30,7 @@ import { useMedia } from '@/shared/hooks/use-media';
 import { cn } from '@/shared/lib/utils';
 import { NavItem } from '@/shared/types/blocks/common';
 import { Header as HeaderType } from '@/shared/types/blocks/landing';
+import { useAppContext } from '@/shared/contexts/app';
 
 // For Next.js hydration mismatch warning, conditionally render NavigationMenuTrigger only after mount to avoid inconsistency between server/client render
 function NavigationMenuTrigger(
@@ -53,6 +54,7 @@ export function Header({ header }: { header: HeaderType }) {
   const pathname = usePathname();
   const { open } = useBirthInfoModal();
   const router = useRouter();
+  const { setIsShowSignModal } = useAppContext();
 
   useEffect(() => {
     // Listen to scroll event to enable header styles on scroll
@@ -92,20 +94,42 @@ export function Header({ header }: { header: HeaderType }) {
         <NavigationMenuList className="gap-2">
           {header.nav?.items?.map((item, idx) => {
             if (!item.children || item.children.length === 0) {
+              const url = item.url as string || '';
+              const isAuthLink = url.includes('/sign-in') || url.includes('/sign-up') || url.includes('/login');
+
               return (
                 <NavigationMenuLink key={idx} asChild>
-                  <Link
-                    href={item.url || ''}
-                    target={item.target || '_self'}
-                    className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm ${
-                      item.is_active || pathname.endsWith(item.url as string)
-                        ? 'bg-muted/40 text-muted-foreground'
-                        : ''
-                    }`}
-                  >
-                    {item.icon && <SmartIcon name={item.icon as string} />}
-                    {item.title}
-                  </Link>
+                  {isAuthLink ? (
+                    <button
+                      onClick={() => {
+                        if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+                          (window as any).setAuthModalType(url.includes('up') ? 'sign-up' : 'sign-in');
+                        }
+                        setIsShowSignModal(true);
+                      }}
+                      className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm cursor-pointer ${
+                        item.is_active || pathname.endsWith(url)
+                          ? 'bg-muted/40 text-muted-foreground'
+                          : ''
+                      }`}
+                    >
+                      {item.icon && <SmartIcon name={item.icon as string} />}
+                      {item.title}
+                    </button>
+                  ) : (
+                    <Link
+                      href={url}
+                      target={item.target || '_self'}
+                      className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm ${
+                        item.is_active || pathname.endsWith(url)
+                          ? 'bg-muted/40 text-muted-foreground'
+                          : ''
+                      }`}
+                    >
+                      {item.icon && <SmartIcon name={item.icon as string} />}
+                      {item.title}
+                    </Link>
+                  )}
                 </NavigationMenuLink>
               );
             }
@@ -121,19 +145,50 @@ export function Header({ header }: { header: HeaderType }) {
                 <NavigationMenuContent className="min-w-2xs origin-top p-0.5">
                   <div className="border-foreground/5 bg-card ring-foreground/5 -[calc(var(--radius)-2px)] border border-transparent p-2 shadow ring-1">
                     <ul className="mt-1 space-y-2">
-                      {item.children?.map((subItem: NavItem, index: number) => (
-                        <ListItem
-                          key={index}
-                          href={subItem.url || ''}
-                          target={subItem.target || '_self'}
-                          title={subItem.title || ''}
-                          description={subItem.description || ''}
-                        >
-                          {subItem.icon && (
-                            <SmartIcon name={subItem.icon as string} />
-                          )}
-                        </ListItem>
-                      ))}
+                      {item.children?.map((subItem: NavItem, index: number) => {
+                        const subUrl = subItem.url as string || '';
+                        const isSubAuthLink = subUrl.includes('/sign-in') || subUrl.includes('/sign-up') || subUrl.includes('/login');
+                        
+                        return isSubAuthLink ? (
+                          <li key={index}>
+                            <NavigationMenuLink asChild>
+                              <button
+                                onClick={() => {
+                                  if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+                                    (window as any).setAuthModalType(subUrl.includes('up') ? 'sign-up' : 'sign-in');
+                                  }
+                                  setIsShowSignModal(true);
+                                }}
+                                className="grid grid-cols-[auto_1fr] gap-3.5 w-full text-left"
+                              >
+                                <div className="bg-background ring-foreground/10 relative flex size-9 items-center justify-center  border border-transparent shadow-sm ring-1">
+                                  {subItem.icon && (
+                                    <SmartIcon name={subItem.icon as string} />
+                                  )}
+                                </div>
+                                <div className="space-y-0.5 w-full">
+                                  <div className="text-foreground text-sm font-medium">{subItem.title}</div>
+                                  <p className="text-muted-foreground line-clamp-1 text-xs">
+                                    {subItem.description}
+                                  </p>
+                                </div>
+                              </button>
+                            </NavigationMenuLink>
+                          </li>
+                        ) : (
+                          <ListItem
+                            key={index}
+                            href={subUrl}
+                            target={subItem.target || '_self'}
+                            title={subItem.title || ''}
+                            description={subItem.description || ''}
+                          >
+                            {subItem.icon && (
+                              <SmartIcon name={subItem.icon as string} />
+                            )}
+                          </ListItem>
+                        );
+                      })}
                     </ul>
                   </div>
                 </NavigationMenuContent>
@@ -169,39 +224,77 @@ export function Header({ header }: { header: HeaderType }) {
                     <AccordionTrigger className="data-[state=open]:bg-muted flex items-center justify-between px-4 py-3 text-lg **:!font-normal">
                       {item.title}
                     </AccordionTrigger>
-                    <AccordionContent className="pb-5">
+                      <AccordionContent className="pb-5">
                       <ul>
-                        {item.children?.map((subItem: NavItem, iidx) => (
-                          <li key={iidx}>
-                            <Link
-                              href={subItem.url || ''}
-                              onClick={closeMenu}
-                              className="grid grid-cols-[auto_1fr] items-center gap-2.5 px-4 py-2"
-                            >
-                              <div
-                                aria-hidden
-                                className="flex items-center justify-center *:size-4"
-                              >
-                                {subItem.icon && (
-                                  <SmartIcon name={subItem.icon as string} />
-                                )}
-                              </div>
-                              <div className="text-base">{subItem.title}</div>
-                            </Link>
-                          </li>
-                        ))}
+                        {item.children?.map((subItem: NavItem, iidx) => {
+                          const subUrl = subItem.url as string || '';
+                          const isSubAuthLink = subUrl.includes('/sign-in') || subUrl.includes('/sign-up') || subUrl.includes('/login');
+
+                          return (
+                            <li key={iidx}>
+                              {isSubAuthLink ? (
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    closeMenu();
+                                    if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+                                      (window as any).setAuthModalType(subUrl.includes('up') ? 'sign-up' : 'sign-in');
+                                    }
+                                    setIsShowSignModal(true);
+                                  }}
+                                  className="grid grid-cols-[auto_1fr] items-center gap-2.5 px-4 py-2 w-full text-left"
+                                >
+                                  <div aria-hidden className="flex items-center justify-center *:size-4">
+                                    {subItem.icon && <SmartIcon name={subItem.icon as string} />}
+                                  </div>
+                                  <div className="text-base">{subItem.title}</div>
+                                </button>
+                              ) : (
+                                <Link
+                                  href={subUrl}
+                                  onClick={closeMenu}
+                                  className="grid grid-cols-[auto_1fr] items-center gap-2.5 px-4 py-2"
+                                >
+                                  <div aria-hidden className="flex items-center justify-center *:size-4">
+                                    {subItem.icon && <SmartIcon name={subItem.icon as string} />}
+                                  </div>
+                                  <div className="text-base">{subItem.title}</div>
+                                </Link>
+                              )}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </AccordionContent>
                   </>
-                ) : (
-                  <Link
-                    href={item.url || ''}
-                    onClick={closeMenu}
-                    className="data-[state=open]:bg-muted flex items-center justify-between px-4 py-3 text-lg **:!font-normal"
-                  >
-                    {item.title}
-                  </Link>
-                )}
+                ) : (() => {
+                  const url = item.url as string || '';
+                  const isAuthLink = url.includes('/sign-in') || url.includes('/sign-up') || url.includes('/login');
+                  
+                  return isAuthLink ? (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        closeMenu();
+                        if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+                          (window as any).setAuthModalType(url.includes('up') ? 'sign-up' : 'sign-in');
+                        }
+                        setIsShowSignModal(true);
+                      }}
+                      className="data-[state=open]:bg-muted flex items-center justify-between px-4 py-3 text-lg **:!font-normal w-full text-left"
+                    >
+                      {item.title}
+                    </button>
+                  ) : (
+                    <Link
+                      href={url}
+                      onClick={closeMenu}
+                      className="data-[state=open]:bg-muted flex items-center justify-between px-4 py-3 text-lg **:!font-normal"
+                    >
+                      {item.title}
+                    </Link>
+                  );
+                })()}
               </AccordionItem>
             );
           })}

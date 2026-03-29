@@ -174,16 +174,16 @@ export function AstrologyLoader({
 
         {/* Center mystical symbol floating */}
         <motion.div
-          className="border-primary/40 z-10 flex h-24 w-24 items-center justify-center border-2 bg-[#0A0A0A]/90 shadow-[0_0_40px_rgba(212,175,55,0.4)] backdrop-blur-md"
+          className="border-primary/40 z-10 flex h-24 w-24 items-center justify-center border-2 bg-[#0A0A0A]/90 shadow-[0_0_40px_rgba(212,175,55,0.4)] backdrop-blur-md rotate-45"
           animate={{ y: [-5, 5, -5] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
           <AnimatePresence mode="wait">
             <motion.span
               key={phaseIdx}
-              initial={{ opacity: 0, scale: 0.5, rotateY: -90 }}
-              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-              exit={{ opacity: 0, scale: 0.5, rotateY: 90 }}
+              initial={{ opacity: 0, scale: 0.5, rotateY: -90, rotateZ: -45 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0, rotateZ: -45 }}
+              exit={{ opacity: 0, scale: 0.5, rotateY: 90, rotateZ: -45 }}
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center"
             >

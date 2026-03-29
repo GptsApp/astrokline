@@ -466,7 +466,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
             klineData={klineData}
             transitDetails={transitDetails}
             tier={chartTier}
-            onUpgradeClick={() => window.location.href = '/pricing'}
+            onActionGate={() => window.location.href = '/pricing'}
             hideFloatingNav={true}
           />
         )}

@@ -62,7 +62,7 @@ export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profi
               className="flex w-full items-center justify-center gap-2  bg-[#D4AF37] py-3.5 text-sm font-bold text-black transition-colors hover:bg-[#FCDD73]"
             >
               <Download className="h-4 w-4" />
-              <span>{canSave ? 'Save My Report' : 'Upgrade to Save'}</span>
+              <span>{canSave ? 'Save My Report' : '🔒 Upgrade to Save'}</span>
             </button>
             <button
               type="button"
