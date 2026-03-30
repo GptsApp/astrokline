@@ -8,6 +8,12 @@ import { ArrowRight, Briefcase, Coins, Heart, Leaf, Lock, Sparkles } from 'lucid
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
+import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
+import { CosmicIdCard } from '@/components/astrokline/kline/cosmic-id-card';
+import { SynastryPanel } from '@/components/astrokline/kline/synastry-panel';
+import { ActionCalendar } from '@/components/astrokline/kline/action-calendar';
+import { AskChartPanel } from '@/components/astrokline/kline/ask-chart-panel';
+import { YearlyEnergyCurve } from '@/components/astrokline/kline/yearly-energy-curve';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { cn } from '@/shared/lib/utils';
 import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
@@ -159,6 +165,7 @@ export function SharedKlineResult({
   };
 
   return (
+    <>
     <div className="w-full">
       {/* ── 1. K-LINE CHART & PROFILE RIBBON ── */}
       <ReportSection id="kline-hero" divider={false} className="w-full overflow-hidden px-0 py-0 pb-8 pt-12 md:pt-16">
@@ -177,7 +184,12 @@ export function SharedKlineResult({
         </div>
       </ReportSection>
 
-      {/* ── 2. FOUR-DIMENSION LIFE PREVIEW ── */}
+      {/* ── 2. COSMIC ID CARD ── */}
+      <ReportSection id="cosmic-id" divider={false} className="mx-auto w-full max-w-md px-4 py-12 md:px-8">
+        <CosmicIdCard profile={profile} />
+      </ReportSection>
+
+      {/* ── 3. FOUR-DIMENSION LIFE PREVIEW ── */}
       <ReportSection id="kline-insights" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
         <div className="mb-12 flex flex-col items-center justify-center text-center">
           <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
@@ -240,11 +252,42 @@ export function SharedKlineResult({
         </div>
       </ReportSection>
 
-      {/* ── 3. CLIFFHANGER ── */}
+      {/* ── 4. AI DEEP READING ── */}
+      {(tier === 'LITE' || tier === 'PRO') && (
+        <ReportSection id="ai-reading" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
+          <AiReadingPanels
+            profile={profile}
+            tier={tier}
+            onActionGate={onActionGate}
+            selectedYear={selectedYear}
+          />
+        </ReportSection>
+      )}
+
+      {/* ── 5. YEARLY ENERGY CURVE ── */}
+      <ReportSection id="yearly-energy" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">
+        <YearlyEnergyCurve klineData={klineData} tier={tier} onActionGate={onActionGate} />
+      </ReportSection>
+
+      {/* ── 6. 30-DAY ACTION CALENDAR ── */}
+      <ReportSection id="action-calendar" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">
+        <ActionCalendar profile={profile} tier={tier} onActionGate={onActionGate} />
+      </ReportSection>
+
+      {/* ── 6. SYNASTRY / COMPATIBILITY ── */}
+      <ReportSection id="synastry" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
+        <SynastryPanel profile={profile} tier={tier} onActionGate={onActionGate} />
+      </ReportSection>
+
+      {/* ── 7. CLIFFHANGER ── */}
       <ReportSection id="future-cliffhanger" divider={false} className="w-full">
          <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} />
       </ReportSection>
     </div>
+
+    {/* ── FLOATING: ASK YOUR CHART ── */}
+    <AskChartPanel profile={profile} tier={tier} onActionGate={onActionGate} />
+    </>
   );
 }
 

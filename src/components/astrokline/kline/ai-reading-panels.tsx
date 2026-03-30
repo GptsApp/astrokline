@@ -384,14 +384,35 @@ function AstroTextParser({ text }: { text: string }) {
   const normText = (text || '').replace(/\\n/g, '\n');
   const paragraphs = normText.split('\n\n').filter((p) => p.trim());
 
+  // Separate main content from action steps
+  let isInActionSection = false;
+  const mainContent: { text: string; idx: number }[] = [];
+  const actionSteps: string[] = [];
+
+  paragraphs.forEach((p, i) => {
+    if (p.startsWith('### Next Steps') || p.startsWith('### Action Steps') || p.startsWith('### next steps')) {
+      isInActionSection = true;
+      return;
+    }
+    if (isInActionSection) {
+      // Collect bullet items as action steps
+      if (p.includes('- ')) {
+        const lines = p.split('\n').filter(l => l.trim().startsWith('- '));
+        lines.forEach(l => actionSteps.push(l.replace(/^-\s*/, '')));
+      } else if (p.trim().startsWith('- ')) {
+        actionSteps.push(p.trim().replace(/^-\s*/, ''));
+      }
+      return;
+    }
+    mainContent.push({ text: p, idx: i });
+  });
+
   return (
     <>
-      {paragraphs.map((p, i) => {
-        // Detect H3 Action Plan Headers
+      {mainContent.map(({ text: p, idx: i }) => {
         if (p.startsWith('### ')) {
           return <Heading level={3} key={i}>{p.replace('### ', '')}</Heading>;
         }
-        // Detect lists
         if (p.includes('\n- ')) {
           const lines = p.split('\n');
           return (
@@ -411,6 +432,30 @@ function AstroTextParser({ text }: { text: string }) {
         }
         return <p key={i}>{parseBold(p)}</p>;
       })}
+
+      {/* ── Upgraded Action Steps Card ── */}
+      {actionSteps.length > 0 && (
+        <div className="mt-8 border border-[#D4AF37]/20 bg-[#D4AF37]/[0.03] p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center bg-[#D4AF37]/20 text-[10px] text-[#D4AF37]">🎯</span>
+            <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-[#D4AF37] uppercase">
+              Your Action Plan
+            </span>
+          </div>
+          <div className="space-y-3">
+            {actionSteps.map((step, i) => (
+              <div key={i} className="flex items-start gap-3 group">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center border border-[#D4AF37]/30 bg-[#D4AF37]/10 font-mono text-[10px] font-bold text-[#D4AF37]">
+                  {i + 1}
+                </span>
+                <p className="text-[13px] leading-relaxed text-white/70 group-hover:text-white/90 transition-colors">
+                  {parseBold(step)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }
