@@ -2,7 +2,7 @@
 
 import { Heading } from "@/components/astrokline/ui/heading";
 
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import {
   DestinyScorePoint,
   TransitEvent,
@@ -18,7 +18,7 @@ import {
   Sparkles,
   Target,
   Zap,
-  CheckCircle2,
+
   ArrowRight,
   History,
 } from 'lucide-react';
@@ -51,7 +51,8 @@ type Props = {
   onActionGate?: (context: string, tier: AppTier) => void;
 };
 
-// Generate candle data with natural bull/bear patterns and proportional wicks
+// Generate candle data with natural bull/bear patterns and NO gaps between candles.
+// Each candle's open === previous candle's close for continuity.
 function generateCandleData(data: DestinyScorePoint[]) {
   // Use a seeded approach so values are stable across renders
   const seed = data.map((d) => d.score).join(',');
@@ -62,50 +63,60 @@ function generateCandleData(data: DestinyScorePoint[]) {
     return x - Math.floor(x);
   };
 
+  // Track the previous candle's close so the next opens there (no gaps)
+  let prevClose = data.length > 0 ? data[0].score : 50;
+
   return data.map((point, i) => {
     const prevScore = i > 0 ? data[i - 1].score : point.score;
     const trend = point.score - prevScore;
 
+    // This candle's open is ALWAYS the previous candle's close
+    const open = i === 0 ? point.score : prevClose;
+
     // Natural intra-candle volatility scaled to the score movement
-    const volatility = Math.max(3, Math.abs(trend) * 0.8 + pseudoRand() * 5 + 2);
+    const volatility = Math.max(2, Math.abs(trend) * 0.6 + pseudoRand() * 4 + 1.5);
 
     // In strong trends ~80% follow direction; in weak trends ~55%
     const trendStrength = Math.abs(trend);
     const followsTrend =
       pseudoRand() < (trendStrength > 5 ? 0.82 : trendStrength > 2 ? 0.65 : 0.55);
 
-    let open: number;
     let close: number;
 
     if (followsTrend) {
       if (trend >= 0) {
-        open = point.score - volatility * (0.4 + pseudoRand() * 0.4);
-        close = point.score + volatility * pseudoRand() * 0.2;
+        // Bullish: close above open, pulled toward current score
+        close = open + volatility * (0.3 + pseudoRand() * 0.5);
       } else {
-        open = point.score + volatility * (0.4 + pseudoRand() * 0.4);
-        close = point.score - volatility * pseudoRand() * 0.2;
+        // Bearish: close below open
+        close = open - volatility * (0.3 + pseudoRand() * 0.5);
       }
     } else {
       // Counter-trend candle (adds realism)
       if (trend >= 0) {
-        open = point.score + volatility * pseudoRand() * 0.3;
-        close = point.score - volatility * (0.2 + pseudoRand() * 0.3);
+        close = open - volatility * (0.15 + pseudoRand() * 0.3);
       } else {
-        open = point.score - volatility * pseudoRand() * 0.3;
-        close = point.score + volatility * (0.2 + pseudoRand() * 0.3);
+        close = open + volatility * (0.15 + pseudoRand() * 0.3);
       }
     }
 
+    // Gently pull close toward the actual score so the chart tracks the destiny curve
+    const pullStrength = 0.3 + pseudoRand() * 0.2;
+    close = close + (point.score - close) * pullStrength;
+
     // Clamp to valid range
-    open = Math.max(3, Math.min(97, open));
     close = Math.max(3, Math.min(97, close));
 
     // Ensure minimum body size — no identical-looking flat candles
-    if (Math.abs(close - open) < 2) {
-      const adj = 1.5 + pseudoRand() * 2.5;
-      if (close >= open) close = Math.min(97, close + adj);
-      else open = Math.min(97, open + adj);
+    if (Math.abs(close - open) < 1.5) {
+      const adj = 1.5 + pseudoRand() * 2;
+      close = trend >= 0
+        ? Math.min(97, close + adj)
+        : Math.max(3, close - adj);
     }
+
+    // Update prevClose for the next candle
+    prevClose = close;
 
     const isBullish = close >= open;
     const bodySize = Math.abs(close - open);
@@ -389,28 +400,13 @@ export function InteractiveChart({
   );
 
   const pastLowPoint = useMemo(() => {
-    // Find absolute lowest point in the last 10 years before current year
-    const pastData = chartData.filter(d => d.year >= currentYear - 10 && d.year < currentYear);
+    // Find absolute lowest point between 2-10 years ago (at least 2 years back for meaningful look-back)
+    const pastData = chartData.filter(d => d.year >= currentYear - 10 && d.year <= currentYear - 2);
     if (!pastData.length) return null;
     return pastData.reduce((prev, current) => (prev.score < current.score ? prev : current), pastData[0]);
   }, [chartData, currentYear]);
 
-  const [validationState, setValidationState] = useState<'idle' | 'selected' | 'revealed'>('idle');
-  const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
 
-  const handleValidationSelect = (theme: string) => {
-    if (validationState !== 'idle') return;
-    setSelectedTheme(theme);
-    setValidationState('selected');
-    setTimeout(() => {
-      setValidationState('revealed');
-    }, 800);
-  };
-
-  const handleValidationReset = useCallback(() => {
-    setValidationState('idle');
-    setSelectedTheme(null);
-  }, []);
 
   return (
     <div
@@ -658,85 +654,57 @@ export function InteractiveChart({
                     Sign in to Reveal
                   </button>
                 </div>
-                <div className="opacity-30 blur-sm pointer-events-none mb-5 text-sm leading-relaxed text-white/60">
-                  <p className="mb-4">People who went through a difficult period around this time often experienced one of these themes. Which one resonates most with you?</p>
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <div className="bg-white/5 p-4 text-center text-xs">A relationship challenge</div>
-                    <div className="bg-white/5 p-4 text-center text-xs">A career setback</div>
-                    <div className="bg-white/5 p-4 text-center text-xs">Emotional struggle</div>
-                  </div>
+                <div className="opacity-30 blur-sm pointer-events-none space-y-3">
+                  <div className="border border-white/10 bg-white/5 p-4"><div className="h-3 w-3/4 bg-white/10 rounded" /></div>
+                  <div className="border border-white/10 bg-white/5 p-4"><div className="h-3 w-2/3 bg-white/10 rounded" /></div>
+                  <div className="border border-white/10 bg-white/5 p-4"><div className="h-3 w-4/5 bg-white/10 rounded" /></div>
                 </div>
               </div>
             ) : (
-              // Logged in user experience...
-              <>
-                {validationState === 'idle' && (
-                  <div className="animate-in fade-in duration-500">
-                <p className="mb-5 text-sm leading-relaxed text-white/60">
-                  People who went through a difficult period around this time often experienced one of these themes. Which one resonates most with you?
+              <div className="mt-4 space-y-4">
+                <p className="text-sm leading-relaxed text-white/50 mb-2">
+                  Our algorithm detected three key energy signatures during this period:
                 </p>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {[
-                    'A relationship challenge',
-                    'A career setback or change',
-                    'Emotional or personal struggle'
-                  ].map((theme) => (
-                    <button
-                      type="button"
-                      key={theme}
-                      onClick={() => handleValidationSelect(theme)}
-                      className="group flex flex-col items-center justify-center  border border-white/10 bg-white/5 p-4 text-center transition-all hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10"
-                    >
-                      <span className="text-xs font-medium text-white/80 group-hover:text-[#D4AF37]">
-                        {theme}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
-            {validationState === 'selected' && (
-              <div className="flex h-[120px] items-center justify-center">
-                <div className="flex flex-col items-center justify-center gap-3">
-                  <div className="h-5 w-5 animate-spin border-2 border-[#D4AF37] border-t-transparent" />
-                  <span className="animate-pulse font-mono text-[10px] tracking-widest text-[#D4AF37] uppercase">
-                    Checking your timeline...
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {validationState === 'revealed' && (
-              <div className="animate-in slide-in-from-bottom-4 fade-in duration-700">
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                    <span className="text-sm font-semibold text-emerald-400">
-                      That matches your chart
-                    </span>
+                {/* Relationship Analysis */}
+                <div className="border border-white/10 bg-white/[0.03] p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Heart className="h-4 w-4 text-rose-400" />
+                    <span className="text-sm font-bold text-white">Relationship & Emotional Bonds</span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleValidationReset}
-                    className="flex items-center gap-1 text-[10px] font-mono tracking-widest text-white/40 uppercase transition-colors hover:text-white/70"
-                  >
-                    ← Back
-                  </button>
+                  <p className="text-sm leading-relaxed text-white/60">
+                    Your chart reveals heightened emotional sensitivity around {pastLowPoint.year}, a period where Venus transits amplified interpersonal friction. People with similar curves often experienced <strong className="text-white/80">relationship tension, trust recalibration, or the end of a significant bond</strong>. This turbulence ultimately clarified your deepest emotional needs and strengthened boundaries.
+                  </p>
                 </div>
-                <p className="mb-4 text-sm leading-relaxed text-white/80">
-                  {selectedTheme?.includes('relationship') 
-                    ? <>Your chart shows heightened emotional sensitivity around {pastLowPoint.year}, which often surfaces as <strong>relationship tension</strong>. That period of friction helped clarify what you truly need from the people around you.</>
-                    : selectedTheme?.includes('career')
-                    ? <>Around {pastLowPoint.year}, your chart indicates a period of <strong>career restructuring</strong>. Many people with similar patterns experienced direction changes that ultimately led to better-fitting paths.</>
-                    : <>Your chart highlights {pastLowPoint.year} as a period of deep <strong>personal transformation</strong>. The internal challenges you faced were building emotional resilience that serves you in the years ahead.</>
-                  }
-                </p>
-                <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-4">
+
+                {/* Career Analysis */}
+                <div className="border border-white/10 bg-white/[0.03] p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Briefcase className="h-4 w-4 text-amber-400" />
+                    <span className="text-sm font-bold text-white">Career & Financial Direction</span>
+                  </div>
+                  <p className="text-sm leading-relaxed text-white/60">
+                    Around {pastLowPoint.year}, Saturn's influence created a period of <strong className="text-white/80">career restructuring and financial pressure</strong>. Your curve shows a classic "reforging" pattern — blocked momentum that forced a strategic pivot. Many individuals with this signature experienced job changes, industry shifts, or entrepreneurial turning points that, in retrospect, moved them toward a better-fitting path.
+                  </p>
+                </div>
+
+                {/* Personal Transformation */}
+                <div className="border border-white/10 bg-white/[0.03] p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="h-4 w-4 text-violet-400" />
+                    <span className="text-sm font-bold text-white">Inner Transformation & Growth</span>
+                  </div>
+                  <p className="text-sm leading-relaxed text-white/60">
+                    {pastLowPoint.year} stands out as a period of deep <strong className="text-white/80">personal transformation and identity reconstruction</strong>. Pluto and Rahu alignments suggest you confronted hidden fears, outgrew old self-images, or navigated health/energy challenges. The emotional resilience forged during this window is now a core asset — your curve shows accelerating recovery in the years that follow.
+                  </p>
+                </div>
+
+                {/* Forward-looking CTA */}
+                <div className="border border-[#D4AF37]/20 bg-[#D4AF37]/10 p-4 mt-2">
                   <p className="flex items-start gap-2 text-sm font-medium text-[#F4E1A1]">
                     <ArrowRight className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>
-                      Based on your curve, your next strong period arrives around age {pastLowPoint.age + 7}. 
+                      Based on your curve, your next strong period arrives around age {pastLowPoint.age + 7}.
                       <button type="button" onClick={() => {
                         if (onNodeClick) {
                           onNodeClick(pastLowPoint.year + 7);
@@ -753,8 +721,6 @@ export function InteractiveChart({
                 </div>
               </div>
             )}
-            </>
-          )}
         </div>
       )}
 

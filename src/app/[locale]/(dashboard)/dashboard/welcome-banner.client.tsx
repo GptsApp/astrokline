@@ -85,7 +85,7 @@ export function DashboardWelcomeBanner({
         <div>
           <div className="mb-2 flex items-center gap-3">
             <span className="bg-primary/20 text-primary px-3 py-1 text-xs font-bold tracking-wider uppercase">
-              {userTier} TIER
+              {userTier === 'STANDARD' ? 'Lite' : userTier === 'PREMIUM' ? 'Pro' : userTier}
             </span>
           </div>
           <Heading level={1} className="mb-2 text-3xl text-white md:text-4xl">

@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { PERMISSIONS, requireAllPermissions } from '@/core/rbac';
 import { Header, Main, MainHeader } from '@/shared/blocks/dashboard';
 import { FormCard } from '@/shared/blocks/form';
-import { getConfigs, saveConfigs } from '@/shared/models/config';
+import { getAllConfigs, saveConfigs } from '@/shared/models/config';
 import { getUserInfo } from '@/shared/models/user';
 import {
   getSettingGroups,
@@ -28,7 +28,7 @@ export default async function SettingsPage({
     locale,
   });
 
-  const configs = await getConfigs();
+  const configs = await getAllConfigs();
 
   const settingGroups = await getSettingGroups();
   const settings = await getSettings();
@@ -45,22 +45,32 @@ export default async function SettingsPage({
   const handleSubmit = async (data: FormData, passby: any) => {
     'use server';
 
-    const user = await getUserInfo();
+    try {
+      const user = await getUserInfo();
 
-    if (!user) {
-      throw new Error('no auth');
+      if (!user) {
+        throw new Error('no auth');
+      }
+
+      // Only save fields from the form submission, not all configs
+      const formConfigs: Record<string, string> = {};
+      data.forEach((value, name) => {
+        formConfigs[name] = value as string;
+      });
+
+      await saveConfigs(formConfigs);
+
+      return {
+        status: 'success',
+        message: 'Settings updated',
+      };
+    } catch (e: any) {
+      console.error('Failed to save settings:', e);
+      return {
+        status: 'error',
+        message: e?.message || 'Failed to save settings',
+      };
     }
-
-    data.forEach((value, name) => {
-      configs[name] = value as string;
-    });
-
-    await saveConfigs(configs);
-
-    return {
-      status: 'success',
-      message: 'Settings updated',
-    };
   };
 
   let forms: FormType[] = [];
