@@ -1,14 +1,24 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { createClient } from '@libsql/client';
-import { drizzle } from 'drizzle-orm/libsql';
+import { drizzle as drizzleD1 } from 'drizzle-orm/d1';
+import { drizzle as drizzleLibsql } from 'drizzle-orm/libsql';
 
 import { envConfigs } from '@/config';
 import { isCloudflareWorker } from '@/shared/lib/env';
 
 // SQLite/libsql singleton (only used when DB_SINGLETON_ENABLED === 'true' and not in Workers)
-let sqliteDbInstance: ReturnType<typeof drizzle> | null = null;
+let sqliteDbInstance: ReturnType<typeof drizzleLibsql> | null = null;
 
-// get sqlite db instance (works for both local sqlite file:... and turso/libsql://...)
+// get sqlite db instance (works for local sqlite file:..., turso/libsql://..., and Cloudflare D1)
 export function getSqliteDb() {
+  // In Cloudflare Workers with D1 provider, use the D1 binding directly
+  if (isCloudflareWorker && envConfigs.database_provider === 'd1') {
+    const { env }: { env: any } = getCloudflareContext();
+    if (env?.DB) {
+      return drizzleD1(env.DB);
+    }
+  }
+
   const databaseUrl = envConfigs.database_url;
   if (!databaseUrl) {
     throw new Error('DATABASE_URL is not set');
@@ -26,7 +36,7 @@ export function getSqliteDb() {
       url: databaseUrl,
       ...options,
     });
-    return drizzle({ client });
+    return drizzleLibsql({ client });
   }
 
   // Singleton mode: reuse existing instance
@@ -37,7 +47,7 @@ export function getSqliteDb() {
       url: databaseUrl,
       ...options,
     });
-    sqliteDbInstance = drizzle({ client });
+    sqliteDbInstance = drizzleLibsql({ client });
     return sqliteDbInstance;
   }
 
@@ -46,5 +56,5 @@ export function getSqliteDb() {
     url: databaseUrl,
     ...options,
   });
-  return drizzle({ client });
+  return drizzleLibsql({ client });
 }

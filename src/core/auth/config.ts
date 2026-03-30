@@ -180,7 +180,7 @@ export async function getAuthOptions(
     ...authOptions,
     baseURL: await resolveAuthBaseUrl(request),
     // Add database connection only when actually needed (runtime)
-    database: envConfigs.database_url
+    database: (envConfigs.database_url || ['d1', 'turso'].includes(envConfigs.database_provider))
       ? drizzleAdapter(db(), {
           provider: getDatabaseProvider(envConfigs.database_provider),
           schema: schema,

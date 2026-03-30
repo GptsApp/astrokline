@@ -173,14 +173,16 @@ export function SignUp({
 
   return (
     <Card className={isShowSignModal ? "border-0 shadow-none bg-transparent" : "mx-auto w-full md:max-w-md"}>
-      <CardHeader>
-        <CardTitle className="text-lg md:text-xl">
-          <h1>{t('sign_up_title')}</h1>
-        </CardTitle>
-        <CardDescription className="text-xs md:text-sm">
-          <h2>{t('sign_up_description')}</h2>
-        </CardDescription>
-      </CardHeader>
+      {!isShowSignModal && (
+        <CardHeader>
+          <CardTitle className="text-lg md:text-xl">
+            <h1>{t('sign_up_heading')}</h1>
+          </CardTitle>
+          <CardDescription className="text-xs md:text-sm">
+            <h2>{t('sign_up_description')}</h2>
+          </CardDescription>
+        </CardHeader>
+      )}
       <CardContent>
         <div className="grid gap-4">
           {isEmailAuthEnabled && (
@@ -252,7 +254,7 @@ export function SignUp({
                 {loading ? (
                   <Loader2 size={16} className="animate-spin" />
                 ) : (
-                  <p>{t('sign_up_title')}</p>
+                  <p>{t('sign_up_button')}</p>
                 )}
               </Button>
             </form>

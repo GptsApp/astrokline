@@ -8,6 +8,8 @@
     "sign_in_title": "Sign In",
     "sign_in_description": "Access your saved charts and reports.",
     "sign_up_title": "Sign Up",
+    "sign_up_heading": "Crea Tu Cuenta",
+    "sign_up_button": "Crear Cuenta",
     "sign_up_description": "Create your account and save your chart.",
     "email_title": "Email",
     "email_placeholder": "you@example.com",

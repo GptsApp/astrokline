@@ -5,11 +5,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
 const MESSAGES = [
-  "Sarah from London just unlocked her Destiny Blueprint",
-  "Michael in NYC just saved his 2026 K-Line",
+  "S.L. from London just unlocked their Destiny Blueprint",
+  "M.K. in New York just saved their 2026 K-Line",
   "A user in Singapore is generating their 100-Year Map",
-  "Elena from Berlin just upgraded to Pro",
-  "David from SF just uncovered a major 'Weak Window'"
+  "E.R. from Berlin just upgraded to Pro",
+  "D.C. in San Francisco just uncovered a major 'Weak Window'",
+  "Y.T. in Tokyo just generated a full natal chart",
+  "A user in Sydney is reviewing their Saturn Return",
+  "J.M. from Toronto just unlocked their career trajectory",
+  "A user in Seoul is mapping their next decade",
+  "L.W. in Amsterdam just downloaded their PDF report",
+  "A user in Dubai just started their first reading",
+  "R.H. from Paris just discovered their peak year",
+  "A user in Mumbai is exploring their planetary transits",
+  "K.S. in Stockholm just shared their chart",
+  "A user in São Paulo just generated their relationship map",
+  "N.G. from Melbourne just unlocked a hidden talent window",
+  "A user in Bangkok is calculating their Jupiter Return",
+  "C.Z. in Vancouver just saved their annual forecast",
+  "A user in Lagos just completed their first K-Line",
+  "T.A. from Zurich just upgraded their reading to Premium",
 ];
 
 export function LiveFomoToast() {
