@@ -25,11 +25,12 @@
         "items": [
           {
             "title": "Free",
-            "description": "See your full 100-year timing curve and find out what’s ahead — completely free, forever.",
+            "description": "See your full 100-year timing curve, generate your Cosmic ID card, and discover what lies ahead — completely free, forever.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
               "Overall destiny score & trend direction",
+              "Cosmic ID Card — shareable profile",
               "1 chart generation for life",
               "Year details blurred — upgrade to reveal"
             ],
@@ -49,15 +50,16 @@
           },
           {
             "title": "Lite",
-            "description": "See how each year affects your career, wealth, love, and health — so every big decision has timing on its side.",
+            "description": "Unlock your full AI reading, 30-day action calendar, yearly energy curve, and compatibility checks — so every big decision has timing on its side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "Click any year for full tooltip details",
               "Career, Wealth, Love & Health AI reading",
+              "30-Day Action Calendar with daily Do/Don't",
+              "12-Month Energy Curve forecast",
+              "Compatibility Check (synastry)",
               "5 chart generations per month",
               "Save & download reports",
-              "Personal dashboard + history",
-              "Yearly energy forecasts & life stages"
+              "Personal dashboard + history"
             ],
             "interval": "month",
             "amount": 3990,
@@ -75,16 +77,16 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a low-margin-of-error window blind. Full access to your complete strategic dossier, risk vectors, and timing maps.",
+            "description": "Your complete strategic intelligence dossier. Ask Your Chart anything, explore Time Travel, and get deep transit analysis for every turning point.",
             "label": "Built for Decision Makers",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "Exact planetary transit details & advice",
-              "5-Year Strategic Master Plan",
+              "\"Ask Your Chart\" — AI chat with your birth chart",
+              "Time Travel — explore any past or future year",
               "Strengths & Blindspots deep analysis",
+              "Exact planetary transit details & advice",
               "Unlimited chart generations",
               "HD PDF Life Book export (50+ pages)",
-              "Life Radar, Destiny Reading, Next 30 Days",
               "Priority access to every new release"
             ],
             "interval": "month",
@@ -103,11 +105,12 @@
           },
           {
             "title": "Free",
-            "description": "See your full 100-year timing curve and find out what’s ahead — completely free, forever.",
+            "description": "See your full 100-year timing curve, generate your Cosmic ID card, and discover what lies ahead — completely free, forever.",
             "features_title": "Includes",
             "features": [
               "Full 100-year K-Line curve",
               "Overall destiny score & trend direction",
+              "Cosmic ID Card — shareable profile",
               "1 chart generation for life",
               "Year details blurred — upgrade to reveal"
             ],
@@ -127,15 +130,16 @@
           },
           {
             "title": "Lite",
-            "description": "See how each year affects your career, wealth, love, and health — so every big decision has timing on its side.",
+            "description": "Unlock your full AI reading, 30-day action calendar, yearly energy curve, and compatibility checks — so every big decision has timing on its side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "Click any year for full tooltip details",
               "Career, Wealth, Love & Health AI reading",
+              "30-Day Action Calendar with daily Do/Don't",
+              "12-Month Energy Curve forecast",
+              "Compatibility Check (synastry)",
               "5 chart generations per month",
               "Save & download reports",
-              "Personal dashboard + history",
-              "Yearly energy forecasts & life stages"
+              "Personal dashboard + history"
             ],
             "interval": "year",
             "amount": 23880,
@@ -154,16 +158,16 @@
           },
           {
             "title": "Pro",
-            "description": "Click any year for an instant deep reading. Full access to every tool, every dimension, every turning point.",
+            "description": "Your complete strategic intelligence dossier. Ask Your Chart anything, explore Time Travel, and get deep transit analysis for every turning point.",
             "label": "Most Popular",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "Exact planetary transit details & advice",
-              "5-Year Strategic Master Plan",
+              "\"Ask Your Chart\" — AI chat with your birth chart",
+              "Time Travel — explore any past or future year",
               "Strengths & Blindspots deep analysis",
+              "Exact planetary transit details & advice",
               "Unlimited chart generations",
               "HD PDF Life Book export (50+ pages)",
-              "Life Radar, Destiny Reading, Next 30 Days",
               "Priority access to every new release"
             ],
             "interval": "year",

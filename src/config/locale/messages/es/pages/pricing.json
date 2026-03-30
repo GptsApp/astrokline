@@ -25,14 +25,14 @@
         "items": [
           {
             "title": "Gratis",
-            "description": "Mira tu K-Line de 100 años y descubre lo que viene.",
+            "description": "Mira tu K-Line de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
             "features_title": "Incluye",
             "features": [
               "Curva K-Line completa de 100 años",
-              "Lectura principal impulsada por IA",
-              "Insights anuales de impulso",
-              "Datos puros de carta natal",
-              "2 cartas guardadas de por vida"
+              "Puntuación de destino y dirección de tendencia",
+              "Tarjeta de ID Cósmica — perfil compartible",
+              "1 generación de carta de por vida",
+              "Detalles anuales borrosos — mejora para ver"
             ],
             "interval": "month",
             "amount": 0,
@@ -50,14 +50,16 @@
           },
           {
             "title": "Lite",
-            "description": "Sabe qué años presionar y cuáles proteger. Toma decisiones con el tiempo de tu lado.",
+            "description": "Desbloquea lectura AI completa, calendario de acción de 30 días, curva de energía anual y verificación de compatibilidad.",
             "features_title": "Todo en Gratis, más",
             "features": [
-              "10 K-Lines guardados por mes",
-              "Desgloses de Carrera, Riqueza, Amor y Salud",
-              "Resúmenes anuales de tránsitos",
-              "Panel personal con reportes",
-              "Sube a Pro en cualquier momento"
+              "Lectura AI de Carrera, Riqueza, Amor y Salud",
+              "Calendario de Acción de 30 Días (Hacer/Evitar)",
+              "Pronóstico de Curva de Energía de 12 Meses",
+              "Verificación de Compatibilidad (sinastría)",
+              "5 generaciones de carta por mes",
+              "Guardar y descargar reportes",
+              "Panel personal + historial"
             ],
             "interval": "month",
             "amount": 3990,
@@ -75,17 +77,17 @@
           },
           {
             "title": "Pro",
-            "description": "Nunca vuelvas a entrar a un punto de inflexión a ciegas. Acceso total a cada herramienta, cada año, cada dimensión.",
+            "description": "Tu dossier de inteligencia estratégica completo. Pregunta a tu Carta, explora Viaje en el Tiempo, y obtén análisis profundo de tránsitos.",
             "label": "Mejor para Grandes Decisiones",
             "features_title": "Todo en Lite, más",
             "features": [
-              "30 K-Lines guardados por mes",
-              "Clica cualquier año para lectura profunda",
-              "Análisis de Fortalezas y Puntos Ciegos",
-              "Detalle exacto de tránsito para cada año de inflexión",
-              "Acceso prioritario a lanzamientos",
-              "Exportar reportes pulidos en PDF",
-              "Radar de Vida, Lectura de Destino"
+              "\"Pregunta a tu Carta\" — chat AI con tu carta natal",
+              "Viaje en el Tiempo — explora cualquier año pasado o futuro",
+              "Análisis profundo de Fortalezas y Puntos Ciegos",
+              "Detalles exactos de tránsito planetario y consejos",
+              "Generaciones de carta ilimitadas",
+              "Exportar Libro de Vida PDF HD (50+ páginas)",
+              "Acceso prioritario a cada nuevo lanzamiento"
             ],
             "interval": "month",
             "amount": 7990,
@@ -103,14 +105,14 @@
           },
           {
             "title": "Gratis",
-            "description": "Mira tu K-Line de 100 años y descubre lo que viene.",
+            "description": "Mira tu K-Line de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
             "features_title": "Incluye",
             "features": [
               "Curva K-Line completa de 100 años",
-              "Lectura principal impulsada por IA",
-              "Insights anuales de impulso",
-              "Datos puros de carta natal",
-              "2 cartas guardadas de por vida"
+              "Puntuación de destino y dirección de tendencia",
+              "Tarjeta de ID Cósmica — perfil compartible",
+              "1 generación de carta de por vida",
+              "Detalles anuales borrosos — mejora para ver"
             ],
             "interval": "year",
             "amount": 0,
@@ -128,14 +130,16 @@
           },
           {
             "title": "Lite",
-            "description": "Sabe qué años presionar y cuáles proteger. Toma decisiones con el tiempo de tu lado.",
+            "description": "Desbloquea lectura AI completa, calendario de acción de 30 días, curva de energía anual y verificación de compatibilidad.",
             "features_title": "Todo en Gratis, más",
             "features": [
-              "10 K-Lines guardados por mes",
-              "Desgloses de Carrera, Riqueza, Amor y Salud",
-              "Resúmenes anuales de tránsitos",
-              "Panel personal con reportes",
-              "Sube a Pro en cualquier momento"
+              "Lectura AI de Carrera, Riqueza, Amor y Salud",
+              "Calendario de Acción de 30 Días (Hacer/Evitar)",
+              "Pronóstico de Curva de Energía de 12 Meses",
+              "Verificación de Compatibilidad (sinastría)",
+              "5 generaciones de carta por mes",
+              "Guardar y descargar reportes",
+              "Panel personal + historial"
             ],
             "interval": "year",
             "amount": 23880,
@@ -154,17 +158,17 @@
           },
           {
             "title": "Pro",
-            "description": "Nunca vuelvas a entrar a un punto de inflexión a ciegas. Acceso total a cada herramienta, cada año, cada dimensión.",
+            "description": "Tu dossier de inteligencia estratégica completo. Pregunta a tu Carta, explora Viaje en el Tiempo, y obtén análisis profundo de tránsitos.",
             "label": "Mejor para Grandes Decisiones",
             "features_title": "Todo en Lite, más",
             "features": [
-              "30 K-Lines guardados por mes",
-              "Clica cualquier año para lectura profunda",
-              "Análisis de Fortalezas y Puntos Ciegos",
-              "Detalle exacto de tránsito para cada año de inflexión",
-              "Acceso prioritario a lanzamientos",
-              "Exportar reportes pulidos en PDF",
-              "Radar de Vida, Lectura de Destino"
+              "\"Pregunta a tu Carta\" — chat AI con tu carta natal",
+              "Viaje en el Tiempo — explora cualquier año pasado o futuro",
+              "Análisis profundo de Fortalezas y Puntos Ciegos",
+              "Detalles exactos de tránsito planetario y consejos",
+              "Generaciones de carta ilimitadas",
+              "Exportar Libro de Vida PDF HD (50+ páginas)",
+              "Acceso prioritario a cada nuevo lanzamiento"
             ],
             "interval": "year",
             "amount": 47880,

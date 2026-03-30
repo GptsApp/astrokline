@@ -35,19 +35,19 @@ const tiers = [
   {
     icon: Sparkles,
     name: 'Free',
-    highlight: 'Past K-Line only',
+    highlight: 'K-Line + Cosmic ID',
     color: 'text-muted-foreground',
   },
   {
     icon: TrendingUp,
-    name: 'Compass',
-    highlight: '1-2 Year Future',
+    name: 'Lite',
+    highlight: 'AI Reading + Calendar + Synastry',
     color: 'text-primary',
   },
   {
     icon: Shield,
-    name: 'Blueprint',
-    highlight: '10+ Year Full Access',
+    name: 'Pro',
+    highlight: 'Ask Your Chart + Time Travel',
     color: 'text-emerald-400',
   },
 ];

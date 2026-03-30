@@ -699,13 +699,13 @@ export function KlineClient({
                 {
                   name: 'Lite',
                   price: '$39.9',
-                  desc: '1-2 Year Future K-Line + Career & Love tracks',
+                  desc: 'AI Reading + 30-Day Calendar + Energy Curve + Compatibility Check',
                   id: 'standard',
                 },
                 {
                   name: 'Pro',
                   price: '$79.9',
-                  desc: 'Full 10+ Year K-Line + All 4 dimensions + AI Deep Chat',
+                  desc: 'All Lite features + Ask Your Chart AI Chat + Time Travel + Deep Analysis',
                   id: 'premium',
                   featured: true,
                 },
