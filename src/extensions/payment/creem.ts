@@ -325,12 +325,31 @@ export class CreemProvider implements PaymentProvider {
     const order = session.order || session.last_transaction;
     const orderStatus = order?.status;
 
+    // Check order-level status first (most reliable)
     if (orderStatus === 'paid') {
       return PaymentStatus.SUCCESS;
-    } else {
-      // todo: handle other status
-      throw new Error(`Unknown Creem session status: ${status}`);
     }
+    if (orderStatus === 'failed' || orderStatus === 'expired') {
+      return PaymentStatus.FAILED;
+    }
+    if (orderStatus === 'refunded') {
+      return PaymentStatus.CANCELED;
+    }
+
+    // Fall back to session-level status
+    if (status === 'completed' || status === 'active') {
+      return PaymentStatus.SUCCESS;
+    }
+    if (status === 'pending' || status === 'processing' || status === 'open') {
+      return PaymentStatus.PROCESSING;
+    }
+    if (status === 'canceled' || status === 'cancelled' || status === 'expired') {
+      return PaymentStatus.CANCELED;
+    }
+
+    // Unknown status — log but don't crash the callback flow
+    console.error(`Unknown Creem status: session.status=${status}, order.status=${orderStatus}`);
+    return PaymentStatus.PROCESSING;
   }
 
   // build payment session from checkout session

@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 
 import { envConfigs } from '@/config';
 import { PaymentType } from '@/extensions/payment/types';
-import { findOrderByOrderNo, Order } from '@/shared/models/order';
+import { findOrderByOrderNo, Order, OrderStatus } from '@/shared/models/order';
 import { getUserInfo } from '@/shared/models/user';
 import {
   getPaymentService,
@@ -109,6 +109,23 @@ export async function GET(req: Request) {
       throw new Error('order not found');
     }
 
+    // If the webhook has already marked this order as PAID, skip provider
+    // session check and go straight to success. This handles the common race
+    // condition where the webhook fires before the user's browser redirects back.
+    if (order.status === OrderStatus.PAID) {
+      redirectUrl = appendQuery(getOrderRedirectUrl(order, appBaseUrl), {
+        payment: 'success',
+        order_no: order.orderNo,
+        provider: order.paymentProvider,
+      }, appBaseUrl);
+
+      if (user?.id && order.userId && order.userId !== user.id) {
+        redirectUrl = getSignInRedirectUrl(redirectUrl, appBaseUrl);
+      }
+
+      return redirect(redirectUrl);
+    }
+
     // validate order and user
     if (!order.paymentSessionId || !order.paymentProvider) {
       throw new Error('invalid order');
@@ -148,6 +165,28 @@ export async function GET(req: Request) {
     }
   } catch (e: any) {
     console.log('checkout callback failed:', e);
+
+    // Before giving up, re-check DB — the webhook may have settled the order
+    // between our first check and this catch block (or the session query threw
+    // but the webhook already succeeded).
+    if (orderNo) {
+      try {
+        const freshOrder = await findOrderByOrderNo(orderNo);
+        if (freshOrder?.status === OrderStatus.PAID) {
+          console.log(`Order ${orderNo} was settled by webhook, redirecting to success`);
+          redirectUrl = appendQuery(getOrderRedirectUrl(freshOrder, appBaseUrl), {
+            payment: 'success',
+            order_no: freshOrder.orderNo,
+            provider: freshOrder.paymentProvider,
+          }, appBaseUrl);
+
+          return redirect(redirectUrl);
+        }
+      } catch {
+        // best-effort only
+      }
+    }
+
     redirectUrl = appendQuery(`${appBaseUrl}/pricing`, {
       payment: 'failed',
       order_no: orderNo,

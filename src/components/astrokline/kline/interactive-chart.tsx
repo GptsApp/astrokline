@@ -51,7 +51,7 @@ type Props = {
   onActionGate?: (context: string, tier: AppTier) => void;
 };
 
-// Generate candle data with dramatic high/low swings
+// Generate candle data with natural bull/bear patterns and proportional wicks
 function generateCandleData(data: DestinyScorePoint[]) {
   // Use a seeded approach so values are stable across renders
   const seed = data.map((d) => d.score).join(',');
@@ -63,15 +63,65 @@ function generateCandleData(data: DestinyScorePoint[]) {
   };
 
   return data.map((point, i) => {
-    const prevScore = i > 0 ? data[i - 1].score : point.score - 8;
-    const open = prevScore;
-    const close = point.score;
-    // Dramatic wicks — larger swings for more visual impact
-    const wickUp = Math.floor(pseudoRand() * 12 + 6);
-    const wickDown = Math.floor(pseudoRand() * 12 + 6);
+    const prevScore = i > 0 ? data[i - 1].score : point.score;
+    const trend = point.score - prevScore;
+
+    // Natural intra-candle volatility scaled to the score movement
+    const volatility = Math.max(3, Math.abs(trend) * 0.8 + pseudoRand() * 5 + 2);
+
+    // In strong trends ~80% follow direction; in weak trends ~55%
+    const trendStrength = Math.abs(trend);
+    const followsTrend =
+      pseudoRand() < (trendStrength > 5 ? 0.82 : trendStrength > 2 ? 0.65 : 0.55);
+
+    let open: number;
+    let close: number;
+
+    if (followsTrend) {
+      if (trend >= 0) {
+        open = point.score - volatility * (0.4 + pseudoRand() * 0.4);
+        close = point.score + volatility * pseudoRand() * 0.2;
+      } else {
+        open = point.score + volatility * (0.4 + pseudoRand() * 0.4);
+        close = point.score - volatility * pseudoRand() * 0.2;
+      }
+    } else {
+      // Counter-trend candle (adds realism)
+      if (trend >= 0) {
+        open = point.score + volatility * pseudoRand() * 0.3;
+        close = point.score - volatility * (0.2 + pseudoRand() * 0.3);
+      } else {
+        open = point.score - volatility * pseudoRand() * 0.3;
+        close = point.score + volatility * (0.2 + pseudoRand() * 0.3);
+      }
+    }
+
+    // Clamp to valid range
+    open = Math.max(3, Math.min(97, open));
+    close = Math.max(3, Math.min(97, close));
+
+    // Ensure minimum body size — no identical-looking flat candles
+    if (Math.abs(close - open) < 2) {
+      const adj = 1.5 + pseudoRand() * 2.5;
+      if (close >= open) close = Math.min(97, close + adj);
+      else open = Math.min(97, open + adj);
+    }
+
+    const isBullish = close >= open;
+    const bodySize = Math.abs(close - open);
+
+    // Proportional wicks — 15-50% of body, slightly larger at key points
+    const isKeyCandle = point.isPeak || point.isCrossroads;
+    const wickUp = Math.max(1, Math.floor(
+      bodySize * (0.15 + pseudoRand() * (isKeyCandle ? 0.45 : 0.3))
+    ));
+    const wickDown = Math.max(1, Math.floor(
+      bodySize * (0.15 + pseudoRand() * (isKeyCandle ? 0.45 : 0.3))
+    ));
+
     const high = Math.max(open, close) + wickUp;
     const low = Math.min(open, close) - wickDown;
-    const isBullish = close >= open;
+
     const volume = point.isPeak
       ? 95
       : point.isCrossroads
@@ -80,10 +130,10 @@ function generateCandleData(data: DestinyScorePoint[]) {
 
     return {
       ...point,
-      open,
-      close,
-      high,
-      low,
+      open: Math.round(open * 100) / 100,
+      close: Math.round(close * 100) / 100,
+      high: Math.round(high * 100) / 100,
+      low: Math.round(low * 100) / 100,
       isBullish,
       volume,
     };
@@ -207,11 +257,9 @@ const CandlestickShape = (props: any) => {
   if (!payload) return null;
 
   const { open, close, high, low, isBullish } = payload;
-  const yScale = props.yScale || ((v: number) => y);
 
   // Colors based on absolute value (Rainbow mapping)
   const baseColor = getScoreColor(close);
-  // To preserve some candlestick tradition, bear candles can be hollow, bull solid
   const fillColor = isBullish ? baseColor : 'transparent';
   const strokeColor = baseColor;
 
@@ -224,6 +272,13 @@ const CandlestickShape = (props: any) => {
   // Wick center
   const wickX = bodyX + bodyW / 2;
 
+  // Stable wick calculation: derive pixels-per-unit from body, cap to prevent pin bars
+  const bodyDataRange = Math.abs(close - open) || 1;
+  const pixelsPerUnit = bodyH / bodyDataRange;
+  const maxWickPx = Math.max(bodyH * 1.2, 6);
+  const upperWickPx = Math.min((high - Math.max(open, close)) * pixelsPerUnit, maxWickPx);
+  const lowerWickPx = Math.min((Math.min(open, close) - low) * pixelsPerUnit, maxWickPx);
+
   return (
     <g>
       {/* Upper wick */}
@@ -231,11 +286,7 @@ const CandlestickShape = (props: any) => {
         x1={wickX}
         y1={bodyY}
         x2={wickX}
-        y2={
-          bodyY -
-          (high - Math.max(open, close)) *
-            (bodyH / (Math.abs(close - open) || 1))
-        }
+        y2={bodyY - upperWickPx}
         stroke={strokeColor}
         strokeWidth={1.5}
       />
@@ -244,12 +295,7 @@ const CandlestickShape = (props: any) => {
         x1={wickX}
         y1={bodyY + bodyH}
         x2={wickX}
-        y2={
-          bodyY +
-          bodyH +
-          (Math.min(open, close) - low) *
-            (bodyH / (Math.abs(close - open) || 1))
-        }
+        y2={bodyY + bodyH + lowerWickPx}
         stroke={strokeColor}
         strokeWidth={1.5}
       />
@@ -324,7 +370,7 @@ export function InteractiveChart({
   const maxPoint = useMemo(
     () =>
       chartData.reduce(
-        (prev, current) => (prev.close > current.close ? prev : current),
+        (prev, current) => (prev.score > current.score ? prev : current),
         chartData[0]
       ),
     [chartData]
@@ -332,7 +378,7 @@ export function InteractiveChart({
   const minPoint = useMemo(
     () =>
       chartData.reduce(
-        (prev, current) => (prev.close < current.close ? prev : current),
+        (prev, current) => (prev.score < current.score ? prev : current),
         chartData[0]
       ),
     [chartData]
@@ -346,7 +392,7 @@ export function InteractiveChart({
     // Find absolute lowest point in the last 10 years before current year
     const pastData = chartData.filter(d => d.year >= currentYear - 10 && d.year < currentYear);
     if (!pastData.length) return null;
-    return pastData.reduce((prev, current) => (prev.close < current.close ? prev : current), pastData[0]);
+    return pastData.reduce((prev, current) => (prev.score < current.score ? prev : current), pastData[0]);
   }, [chartData, currentYear]);
 
   const [validationState, setValidationState] = useState<'idle' | 'selected' | 'revealed'>('idle');
@@ -360,6 +406,11 @@ export function InteractiveChart({
       setValidationState('revealed');
     }, 800);
   };
+
+  const handleValidationReset = useCallback(() => {
+    setValidationState('idle');
+    setSelectedTheme(null);
+  }, []);
 
   return (
     <div
@@ -385,7 +436,7 @@ export function InteractiveChart({
             <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-1.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]" />Valley</span>
             <span className="flex items-center gap-1.5"><span className="inline-block h-1.5 w-3 border-t border-dashed border-white/40" />Now</span>
             {currentPoint && (
-              <span className="ml-2 border-l border-white/10 pl-4">Score: <span className="text-white/70">{currentPoint.close}</span> <span className="mx-2">·</span> Avg: <span className="text-white/70">{avgScore}</span></span>
+              <span className="ml-2 border-l border-white/10 pl-4">Score: <span className="text-white/70">{currentPoint.score}</span> <span className="mx-2">·</span> Avg: <span className="text-white/70">{avgScore}</span></span>
             )}
           </div>
         </div>
@@ -485,13 +536,13 @@ export function InteractiveChart({
                   <ReferenceLine
                     x={currentAge}
                     label={{
-                      position: 'insideBottomRight',
-                      value: currentAge.toString(),
-                      fill: 'rgba(255,255,255,0.9)',
-                      fontSize: 12,
-                      fontWeight: 600,
-                      offset: 10,
-                      fontFamily: 'sans-serif',
+                      position: 'insideTopLeft',
+                      value: 'NOW',
+                      fill: 'rgba(212,175,55,0.9)',
+                      fontSize: 9,
+                      fontWeight: 700,
+                      offset: 4,
+                      fontFamily: 'monospace',
                     }}
                     stroke="none"
                   />
@@ -515,7 +566,7 @@ export function InteractiveChart({
                 {maxPoint && (
                   <ReferenceDot
                     x={maxPoint.age}
-                    y={maxPoint.close}
+                    y={maxPoint.score}
                     ifOverflow="extendDomain"
                     shape={
                       <ExtremumStar
@@ -530,7 +581,7 @@ export function InteractiveChart({
                 {minPoint && (
                   <ReferenceDot
                     x={minPoint.age}
-                    y={minPoint.close}
+                    y={minPoint.score}
                     ifOverflow="extendDomain"
                     shape={
                       <ExtremumStar
@@ -595,7 +646,7 @@ export function InteractiveChart({
             </div>
             
             <Heading level={3} className="mb-2 text-base font-bold text-white">
-              Your curve shows {pastLowPoint.year} was a particularly difficult year.
+              Your curve shows {pastLowPoint.year} was {pastLowPoint.score <= 35 ? 'a particularly difficult year' : pastLowPoint.score <= 50 ? 'a challenging and transformative year' : 'a year of significant energy shifts'}.
             </Heading>
             
             {tier === 'GUEST' ? (
@@ -658,11 +709,20 @@ export function InteractiveChart({
 
             {validationState === 'revealed' && (
               <div className="animate-in slide-in-from-bottom-4 fade-in duration-700">
-                <div className="mb-3 flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                  <span className="text-sm font-semibold text-emerald-400">
-                    That matches your chart
-                  </span>
+                <div className="mb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                    <span className="text-sm font-semibold text-emerald-400">
+                      That matches your chart
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleValidationReset}
+                    className="flex items-center gap-1 text-[10px] font-mono tracking-widest text-white/40 uppercase transition-colors hover:text-white/70"
+                  >
+                    ← Back
+                  </button>
                 </div>
                 <p className="mb-4 text-sm leading-relaxed text-white/80">
                   {selectedTheme?.includes('relationship') 
