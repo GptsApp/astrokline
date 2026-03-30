@@ -20,30 +20,27 @@ export type GetAllConfigsOptions = {
 export const CACHE_TAG_CONFIGS = 'configs';
 
 export async function saveConfigs(configs: Record<string, string>) {
-  const result = await db().transaction(async (tx: any) => {
-    const configEntries = Object.entries(configs);
-    const results: any[] = [];
+  const configEntries = Object.entries(configs);
+  const results: any[] = [];
 
-    for (const [name, configValue] of configEntries) {
-      const [upsertResult] = await tx
-        .insert(config)
-        .values({ name, value: configValue })
-        .onConflictDoUpdate({
-          target: config.name,
-          set: { value: configValue },
-        })
-        .returning();
+  for (const [name, configValue] of configEntries) {
+    const [upsertResult] = await db()
+      .insert(config)
+      .values({ name, value: configValue })
+      .onConflictDoUpdate({
+        target: config.name,
+        set: { value: configValue },
+      })
+      .returning();
 
-      results.push(upsertResult);
-    }
-
-    return results;
-  });
+    results.push(upsertResult);
+  }
 
   revalidateTag(CACHE_TAG_CONFIGS);
 
-  return result;
+  return results;
 }
+
 
 export async function addConfig(newConfig: NewConfig) {
   const [result] = await db().insert(config).values(newConfig).returning();
@@ -55,7 +52,7 @@ export async function addConfig(newConfig: NewConfig) {
 async function loadConfigsFromDb(): Promise<Configs> {
   const configs: Record<string, string> = {};
 
-  if (!envConfigs.database_url) {
+  if (!envConfigs.database_url && !['d1', 'sqlite', 'turso'].includes(envConfigs.database_provider)) {
     return configs;
   }
 
@@ -90,7 +87,7 @@ export async function getAllConfigs(
   let dbConfigs: Configs = {};
 
   // only get configs from db in server side
-  if (typeof window === 'undefined' && envConfigs.database_url) {
+  if (typeof window === 'undefined' && (envConfigs.database_url || ['d1', 'sqlite', 'turso'].includes(envConfigs.database_provider))) {
     try {
       dbConfigs = options.fresh ? await getFreshConfigs() : await getConfigs();
     } catch (e) {
