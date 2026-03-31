@@ -15,6 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }[] = [
     { path: '/', changeFrequency: 'daily', priority: 1 },
     { path: '/kline', changeFrequency: 'weekly', priority: 0.9 },
+    { path: '/tools/energy', changeFrequency: 'weekly', priority: 0.85 },
+    { path: '/tools/calendar', changeFrequency: 'weekly', priority: 0.85 },
+    { path: '/tools/compatibility', changeFrequency: 'weekly', priority: 0.85 },
     { path: '/pricing', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/about', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/blog', changeFrequency: 'weekly', priority: 0.7 },
