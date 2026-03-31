@@ -130,32 +130,50 @@ export function AiReadingPanels({
   useEffect(() => {
     if (tier === 'GUEST' || tier === 'FREE') return; // Guests and Free users don't get AI hits to save costs
     let isMounted = true;
-    setIsLoading(true);
+    let retryCount = 0;
+    const maxRetries = 2;
 
-    fetch('/api/astrology/ai-insight', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profile }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (isMounted && data && !data.error) {
-          // Map backend keys to our modules
-          setInsight({
-            summary: data.summary,
-            career: data.career,
-            wealth: data.wealth,
-            love: data.relationships, // Backend returns 'relationships'
-            health: data.health,
-            strengths: data.strengths,
-            shadow: data.warnings, // Backend returns 'warnings'
-          });
-        }
+    const fetchInsight = () => {
+      setIsLoading(true);
+      fetch('/api/astrology/ai-insight', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile }),
       })
-      .catch((err) => console.error('Failed to load AI reading', err))
-      .finally(() => {
-        if (isMounted) setIsLoading(false);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          if (isMounted && data && !data.error) {
+            // Map backend keys to our modules
+            setInsight({
+              summary: data.summary,
+              career: data.career,
+              wealth: data.wealth,
+              love: data.relationships, // Backend returns 'relationships'
+              health: data.health,
+              strengths: data.strengths,
+              shadow: data.warnings, // Backend returns 'warnings'
+            });
+          } else if (isMounted && retryCount < maxRetries) {
+            // Retry on empty response
+            retryCount++;
+            setTimeout(fetchInsight, 2000);
+            return;
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to load AI reading', err);
+          if (isMounted && retryCount < maxRetries) {
+            retryCount++;
+            setTimeout(fetchInsight, 3000);
+            return;
+          }
+        })
+        .finally(() => {
+          if (isMounted) setIsLoading(false);
+        });
+    };
+
+    fetchInsight();
 
     return () => {
       isMounted = false;
@@ -361,9 +379,13 @@ export function AiReadingPanels({
                           {insight?.[mod.id] ? (
                             <AstroTextParser text={insight[mod.id]} />
                           ) : (
-                            <p className="text-white/30 italic">
-                              No guidance recorded for this sector.
-                            </p>
+                            <div className="flex flex-col items-center gap-3 py-4 text-center">
+                              <div className="flex items-center gap-2 text-white/30">
+                                <Sparkles className="h-4 w-4 animate-pulse text-[#D4AF37]/50" />
+                                <span className="text-sm">Generating your personalized reading...</span>
+                              </div>
+                              <p className="text-[11px] text-white/20">This usually takes a few seconds. If it persists, try refreshing the page.</p>
+                            </div>
                           )}
                         </div>
                       )}

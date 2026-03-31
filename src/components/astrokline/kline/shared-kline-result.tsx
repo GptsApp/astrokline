@@ -3,17 +3,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, Briefcase, Coins, Heart, Leaf, Lock, Sparkles } from 'lucide-react';
+import { ArrowRight, Briefcase, Calendar, Coins, Heart, Leaf, Sparkles, TrendingUp, Users } from 'lucide-react';
 
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
-import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
 import { CosmicIdCard } from '@/components/astrokline/kline/cosmic-id-card';
-import { SynastryPanel } from '@/components/astrokline/kline/synastry-panel';
-import { ActionCalendar } from '@/components/astrokline/kline/action-calendar';
 import { AskChartPanel } from '@/components/astrokline/kline/ask-chart-panel';
-import { YearlyEnergyCurve } from '@/components/astrokline/kline/yearly-energy-curve';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { cn } from '@/shared/lib/utils';
 import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
@@ -267,25 +263,45 @@ export function SharedKlineResult({
         </ReportSection>
       )}
 
-      {/* ── 6. YOUR PERSONAL FORECAST (merged Strategic Timing + Connections) ── */}
-      <ReportSection id="personal-forecast" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
+      {/* ── 6. CONTINUE YOUR JOURNEY — entry cards to Dashboard tools ── */}
+      <ReportSection id="explore-tools" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
         <div className="mb-10 flex flex-col items-center justify-center text-center">
           <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
             <Sparkles className="h-4 w-4" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Your Personal Forecast</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Go Deeper</span>
           </div>
           <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
-            Tools Built Around You
+            Continue Your Journey
           </Heading>
-          <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
-            Energy forecasts, daily guidance, and relationship insights — all shaped by your unique chart.
+          <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-md mx-auto">
+            Your chart has more to say. Explore these tools in your Dashboard.
           </p>
         </div>
 
-        <div className="space-y-6">
-          <YearlyEnergyCurve klineData={klineData} tier={tier} onActionGate={onActionGate} />
-          <ActionCalendar profile={profile} tier={tier} onActionGate={onActionGate} />
-          <SynastryPanel profile={profile} tier={tier} onActionGate={onActionGate} />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {[
+            { icon: TrendingUp, label: 'Energy Forecast', desc: 'See your month-by-month energy peaks & dips', color: 'text-purple-400', borderColor: 'border-purple-400/20 hover:border-purple-400/40', bgColor: 'bg-purple-400/5', href: '/dashboard' },
+            { icon: Calendar, label: 'Action Calendar', desc: 'Daily dos & don\'ts tailored to your chart', color: 'text-emerald-400', borderColor: 'border-emerald-400/20 hover:border-emerald-400/40', bgColor: 'bg-emerald-400/5', href: '/dashboard' },
+            { icon: Users, label: 'Compatibility', desc: 'Discover chemistry with anyone', color: 'text-rose-400', borderColor: 'border-rose-400/20 hover:border-rose-400/40', bgColor: 'bg-rose-400/5', href: '/dashboard' },
+          ].map((tool) => (
+            <a
+              key={tool.label}
+              href={tool.href}
+              className={cn(
+                'group flex flex-col items-center gap-3 border p-6 text-center transition-all hover:scale-[1.02] hover:shadow-lg',
+                tool.borderColor, 'bg-white/[0.01]'
+              )}
+            >
+              <div className={cn('flex h-12 w-12 items-center justify-center border', tool.borderColor, tool.bgColor)}>
+                <tool.icon className={cn('h-5 w-5', tool.color)} />
+              </div>
+              <Heading level={4} className="text-sm font-bold text-white/80">{tool.label}</Heading>
+              <p className="text-[11px] leading-relaxed text-white/40">{tool.desc}</p>
+              <span className={cn('mt-auto flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity', tool.color)}>
+                Open <ArrowRight className="h-3 w-3" />
+              </span>
+            </a>
+          ))}
         </div>
       </ReportSection>
 
