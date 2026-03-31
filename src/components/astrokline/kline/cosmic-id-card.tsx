@@ -36,21 +36,37 @@ export function CosmicIdCard({ profile, klineData }: Props) {
     try {
       const html2canvas = (await import('html2canvas-pro')).default;
       const el = cardRef.current;
+      
+      // Fixed card dimensions — must match cosmic-id-card-content.tsx
+      const CARD_WIDTH = 380;
+      
       const canvas = await html2canvas(el, {
         backgroundColor: '#08080F',
         scale: 3,
         useCORS: true,
         logging: false,
-        width: el.scrollWidth,
-        height: el.scrollHeight,
-        windowWidth: 420,
-        windowHeight: el.scrollHeight + 40,
+        // Use fixed width, let height be auto-calculated from content
+        width: CARD_WIDTH,
+        windowWidth: CARD_WIDTH + 40,
         onclone: (doc) => {
-          // Ensure cloned element has same fixed width
           const cloned = doc.querySelector('[data-cosmic-card]') as HTMLElement;
           if (cloned) {
-            cloned.style.width = '380px';
+            // Reset ALL layout constraints that modal might impose
+            cloned.style.width = `${CARD_WIDTH}px`;
+            cloned.style.minWidth = `${CARD_WIDTH}px`;
+            cloned.style.maxWidth = `${CARD_WIDTH}px`;
             cloned.style.overflow = 'visible';
+            cloned.style.position = 'relative';
+            cloned.style.transform = 'none';
+            cloned.style.maxHeight = 'none';
+            // Ensure parent containers don't clip
+            let parent = cloned.parentElement;
+            while (parent) {
+              parent.style.overflow = 'visible';
+              parent.style.maxHeight = 'none';
+              parent.style.transform = 'none';
+              parent = parent.parentElement;
+            }
           }
         },
       });
