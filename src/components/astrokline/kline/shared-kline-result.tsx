@@ -105,7 +105,7 @@ function ActionableFutureCliffhanger({ onActionGate, tier }: any) {
     <div className="relative mt-8 py-16">
        {/* Teaser content that fades out */}
        <div 
-         className="mx-auto max-w-4xl space-y-8 px-4 opacity-50 select-none pb-40 flex flex-col items-start" 
+         className="mx-auto max-w-4xl space-y-8 px-4 opacity-50 select-none pb-40 flex flex-col items-center text-center" 
          aria-hidden="true" 
          style={{ maskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)', WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)' }}
        >
@@ -161,7 +161,13 @@ export function SharedKlineResult({
   const dims = extractDimensionPreviews(klineData, transitDetails, currentYear, birthYear);
 
   const handleDimCta = (context: string) => {
-    onActionGate?.(context, tier === 'GUEST' ? 'FREE' : 'LITE');
+    if (tier === 'LITE' || tier === 'PRO') {
+      // Paid users: scroll to AI reading section
+      const target = document.getElementById('ai-reading');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      onActionGate?.(context, tier === 'GUEST' ? 'FREE' : 'LITE');
+    }
   };
 
   return (
@@ -276,12 +282,9 @@ export function SharedKlineResult({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-6">
           <YearlyEnergyCurve klineData={klineData} tier={tier} onActionGate={onActionGate} />
           <ActionCalendar profile={profile} tier={tier} onActionGate={onActionGate} />
-        </div>
-
-        <div className="mt-4">
           <SynastryPanel profile={profile} tier={tier} onActionGate={onActionGate} />
         </div>
       </ReportSection>

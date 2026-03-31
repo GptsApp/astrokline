@@ -619,10 +619,10 @@ export function InteractiveChart({
                     strokeWidth: 1,
                     strokeDasharray: '4 4',
                   }}
-                  allowEscapeViewBox={{ x: false, y: false }}
+                  allowEscapeViewBox={{ x: false, y: true }}
                   wrapperStyle={{
                     zIndex: 99999,
-                    pointerEvents: 'none',
+                    pointerEvents: 'auto',
                   }}
                   isAnimationActive={false}
                 />

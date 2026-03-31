@@ -204,10 +204,17 @@ export function ResultClient({
               <Heading level={3} className="text-2xl font-bold tracking-tight">{pricingModalContext.title}</Heading>
             </div>
             <div className="space-y-4">
+              {tier === 'LITE' && (
+                <div className="mb-2 text-center">
+                  <span className="inline-flex items-center gap-1.5 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-3 py-1 text-[10px] font-bold tracking-wider text-[#D4AF37] uppercase">
+                    ✓ You're on Lite
+                  </span>
+                </div>
+              )}
               {[
-                { name: 'Lite', price: '$39.9', desc: 'Full tooltip details + Career, Wealth, Love & Health AI reading + 5 charts/mo', id: 'standard' },
-                { name: 'Pro', price: '$79.9', desc: 'Transit details + 5-Year Strategic Plan + Unlimited charts + PDF export', id: 'premium', featured: true },
-              ].map((plan) => (
+                { name: 'Lite', price: '$39.9', desc: 'Full tooltip details + Career, Wealth, Love & Health AI reading + 5 charts/mo', id: 'standard', hidden: tier === 'LITE' || tier === 'PRO' },
+                { name: 'Pro', price: '$79.9', desc: 'Transit details + 5-Year Strategic Plan + Unlimited charts + PDF export', id: 'premium', featured: true, hidden: tier === 'PRO' },
+              ].filter(p => !p.hidden).map((plan) => (
                 <a key={plan.id} href={`/pricing`} onClick={() => trackEvent('pricing_plan_click', { plan: plan.id, source: 'inline_modal' })} className={cn('block  border p-5 transition-all hover:scale-[1.02]', plan.featured ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-white/10 bg-white/[0.02] hover:border-white/20')}>
                   <div className="mb-2 flex items-center justify-between"><Heading level={4} className="text-foreground font-bold">{plan.name}</Heading><span className="text-primary text-lg font-bold">{plan.price}</span></div>
                   <p className="text-muted-foreground text-xs">{plan.desc}</p>
