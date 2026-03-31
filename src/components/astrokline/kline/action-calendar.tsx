@@ -90,31 +90,29 @@ export function ActionCalendar({ profile, tier, onActionGate }: Props) {
   // Locked state
   if (isLocked) {
     return (
-      <div className="mx-auto w-full max-w-4xl">
-        <button
-          onClick={() => onActionGate('action_calendar', 'LITE')}
-          className="group flex w-full items-center gap-4 border border-white/5 bg-white/[0.02] p-6 transition-all hover:border-[#D4AF37]/20 hover:bg-[#D4AF37]/[0.02]"
-        >
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-white/10 bg-white/5">
-            <Calendar className="h-5 w-5 text-emerald-400/60" />
-          </div>
-          <div className="flex-1 text-left">
-            <Heading level={3} className="text-sm font-bold text-white/80">30-Day Action Calendar</Heading>
-            <p className="mt-1 text-xs text-white/40">
-              See what to do (and avoid) each day this month, tailored to your chart.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 border border-white/5 bg-white/[0.02] px-3 py-1.5 group-hover:border-[#D4AF37]/30 group-hover:bg-[#D4AF37]/10">
-            <Lock className="h-3.5 w-3.5 text-white/30 group-hover:text-[#D4AF37]" />
-            <span className="hidden text-[9px] font-bold tracking-widest text-white/30 uppercase group-hover:text-[#D4AF37] md:block">Lite+</span>
-          </div>
-        </button>
-      </div>
+      <button
+        onClick={() => onActionGate('action_calendar', 'LITE')}
+        className="group flex w-full flex-col items-center gap-4 border border-white/5 bg-white/[0.02] p-6 text-center transition-all hover:border-[#D4AF37]/20 hover:bg-[#D4AF37]/[0.02]"
+      >
+        <div className="flex h-14 w-14 items-center justify-center border border-emerald-400/20 bg-emerald-400/5">
+          <Calendar className="h-6 w-6 text-emerald-400/60" />
+        </div>
+        <div>
+          <Heading level={3} className="text-sm font-bold text-white/80">30-Day Action Calendar</Heading>
+          <p className="mt-2 text-xs leading-relaxed text-white/40">
+            See what to do (and avoid) each day this month, tailored to your chart.
+          </p>
+        </div>
+        <div className="flex items-center gap-2 border border-white/5 bg-white/[0.02] px-3 py-1.5 group-hover:border-[#D4AF37]/30 group-hover:bg-[#D4AF37]/10">
+          <Lock className="h-3.5 w-3.5 text-white/30 group-hover:text-[#D4AF37]" />
+          <span className="text-[9px] font-bold tracking-widest text-white/30 uppercase group-hover:text-[#D4AF37]">Lite+</span>
+        </div>
+      </button>
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="w-full">
       {/* Header */}
       <div className="mb-6 text-center">
         <div className="mb-2 flex items-center justify-center gap-2 text-emerald-400">

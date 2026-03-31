@@ -264,18 +264,42 @@ export function SharedKlineResult({
         </ReportSection>
       )}
 
-      {/* ── 5. YEARLY ENERGY CURVE ── */}
-      <ReportSection id="yearly-energy" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">
-        <YearlyEnergyCurve klineData={klineData} tier={tier} onActionGate={onActionGate} />
+      {/* ── 5. STRATEGIC TIMING TOOLS ── */}
+      <ReportSection id="strategic-timing" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
+        <div className="mb-10 flex flex-col items-center justify-center text-center">
+          <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
+            <Sparkles className="h-4 w-4" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Strategic Timing</span>
+          </div>
+          <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
+            Your Timing Intelligence
+          </Heading>
+          <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
+            Actionable forecasts powered by your natal chart. Know when to move, when to rest, and when to prepare.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <YearlyEnergyCurve klineData={klineData} tier={tier} onActionGate={onActionGate} />
+          <ActionCalendar profile={profile} tier={tier} onActionGate={onActionGate} />
+        </div>
       </ReportSection>
 
-      {/* ── 6. 30-DAY ACTION CALENDAR ── */}
-      <ReportSection id="action-calendar" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">
-        <ActionCalendar profile={profile} tier={tier} onActionGate={onActionGate} />
-      </ReportSection>
+      {/* ── 6. COSMIC CONNECTIONS ── */}
+      <ReportSection id="cosmic-connections" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
+        <div className="mb-10 flex flex-col items-center justify-center text-center">
+          <div className="mb-4 flex items-center gap-2 text-rose-400">
+            <Heart className="h-4 w-4" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Cosmic Connections</span>
+          </div>
+          <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
+            Relationship Intelligence
+          </Heading>
+          <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
+            Discover the chemistry, friction, and deeper patterns between you and anyone.
+          </p>
+        </div>
 
-      {/* ── 6. SYNASTRY / COMPATIBILITY ── */}
-      <ReportSection id="synastry" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
         <SynastryPanel profile={profile} tier={tier} onActionGate={onActionGate} />
       </ReportSection>
 

@@ -90,35 +90,33 @@ export function SynastryPanel({ profile, tier, onActionGate }: Props) {
   // Locked state for FREE users
   if (isLocked) {
     return (
-      <div className="mx-auto w-full max-w-4xl">
-        <button
-          onClick={() => onActionGate('synastry', 'LITE')}
-          className="group flex w-full items-center gap-4 border border-white/5 bg-white/[0.02] p-6 transition-all hover:border-[#D4AF37]/20 hover:bg-[#D4AF37]/[0.02]"
-        >
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-white/10 bg-white/5">
-            <Users className="h-5 w-5 text-rose-400/60" />
-          </div>
-          <div className="flex-1 text-left">
-            <Heading level={3} className="text-sm font-bold text-white/80">
-              Compatibility Check
-            </Heading>
-            <p className="mt-1 text-xs text-white/40">
-              Compare your chart with someone special. See where you spark and where you clash.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 border border-white/5 bg-white/[0.02] px-3 py-1.5 group-hover:border-[#D4AF37]/30 group-hover:bg-[#D4AF37]/10">
-            <Lock className="h-3.5 w-3.5 text-white/30 group-hover:text-[#D4AF37]" />
-            <span className="hidden text-[9px] font-bold tracking-widest text-white/30 uppercase group-hover:text-[#D4AF37] md:block">
-              Lite+
-            </span>
-          </div>
-        </button>
-      </div>
+      <button
+        onClick={() => onActionGate('synastry', 'LITE')}
+        className="group flex w-full items-center gap-4 border border-white/5 bg-white/[0.02] p-6 transition-all hover:border-[#D4AF37]/20 hover:bg-[#D4AF37]/[0.02]"
+      >
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-rose-400/20 bg-rose-400/5">
+          <Users className="h-5 w-5 text-rose-400/60" />
+        </div>
+        <div className="flex-1 text-left">
+          <Heading level={3} className="text-sm font-bold text-white/80">
+            Compatibility Check
+          </Heading>
+          <p className="mt-1 text-xs text-white/40">
+            Compare your chart with someone special. See where you spark and where you clash.
+          </p>
+        </div>
+        <div className="flex items-center gap-2 border border-white/5 bg-white/[0.02] px-3 py-1.5 group-hover:border-[#D4AF37]/30 group-hover:bg-[#D4AF37]/10">
+          <Lock className="h-3.5 w-3.5 text-white/30 group-hover:text-[#D4AF37]" />
+          <span className="hidden text-[9px] font-bold tracking-widest text-white/30 uppercase group-hover:text-[#D4AF37] md:block">
+            Lite+
+          </span>
+        </div>
+      </button>
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="w-full">
       {/* Entry trigger */}
       {!isOpen && !result && (
         <button
