@@ -109,7 +109,7 @@ function ActionableFutureCliffhanger({ onActionGate, tier }: any) {
          aria-hidden="true" 
          style={{ maskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)', WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)' }}
        >
-          <Heading level={3} className="font-serif text-2xl text-white/90 md:text-3xl">What the Next 5 Years Hold for You</Heading>
+          <Heading level={3} className="font-serif text-2xl text-white/90 md:text-3xl">The Next Chapter of Your Story</Heading>
           <p className="max-w-prose leading-loose text-white/70">
             Between 2026 and 2028, your love sector activates with unusual intensity. If you are single, this is when connections carry real emotional weight. If you are partnered, this is when the relationship either deepens or demands honest renegotiation.
           </p>
@@ -125,11 +125,11 @@ function ActionableFutureCliffhanger({ onActionGate, tier }: any) {
           className="group flex flex-col items-center gap-1 transition-transform hover:scale-105"
         >
           <span className="flex items-center gap-2 bg-[#D4AF37] px-10 py-4 text-xs font-bold uppercase tracking-[0.15em] text-black shadow-[0_0_40px_rgba(212,175,55,0.1)]">
-            <Lock className="h-4 w-4" />
-            Unlock My 5-Year Outlook
+            <Sparkles className="h-4 w-4" />
+            See What's Coming for You
           </span>
           <span className="mt-4 font-mono text-[9.5px] uppercase tracking-widest text-[#D4AF37]/50 transition-colors group-hover:text-[#D4AF37]/80">
-            See love, career, and wealth timing in detail
+            Your love, career, and wealth timing — revealed
           </span>
         </button>
       </div>
@@ -179,14 +179,6 @@ export function SharedKlineResult({
           tier={tier as any}
           onActionGate={onActionGate}
         />
-        <div className="relative z-40 mt-[-1rem]">
-          <DestinySummaryCard profile={profile} klineData={klineData} />
-        </div>
-      </ReportSection>
-
-      {/* ── 2. COSMIC ID CARD ── */}
-      <ReportSection id="cosmic-id" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">
-        <CosmicIdCard profile={profile} klineData={klineData} />
       </ReportSection>
 
       {/* ── 3. FOUR-DIMENSION LIFE PREVIEW ── */}
@@ -194,13 +186,13 @@ export function SharedKlineResult({
         <div className="mb-12 flex flex-col items-center justify-center text-center">
           <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
             <Sparkles className="h-4 w-4" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Your Life Dimensions</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">What's Written for You</span>
           </div>
           <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
-            What Your Chart Reveals
+            Your Next Chapter
           </Heading>
           <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
-            Your timeline carries distinct signals across four life dimensions. Here is what stands out.
+            Your chart carries quiet signals about what's coming. Here's what we found.
           </p>
         </div>
 
@@ -209,9 +201,9 @@ export function SharedKlineResult({
             icon={Heart}
             label="Love"
             tease={dims.love
-              ? `A significant connection forms around age ${dims.love.age}. Your chart shows heightened emotional receptivity in that window.`
-              : 'Your love timeline carries a quietly powerful current. The details reveal exactly when emotional availability peaks.'}
-            ctaText="See love timeline"
+              ? `The love you're waiting for? It's closer than you think — your chart lights up around age ${dims.love.age}.`
+              : `Your love timeline carries a quietly powerful current. Something is building beneath the surface.`}
+            ctaText="Go deeper"
             accentClass="text-rose-400"
             onCta={() => handleDimCta('love_timeline')}
             delay={0.1}
@@ -220,9 +212,9 @@ export function SharedKlineResult({
             icon={Briefcase}
             label="Career"
             tease={dims.career
-              ? `Your professional momentum peaks sharply at age ${dims.career.age}. This window demands preparation now.`
-              : 'Your career arc contains a pronounced acceleration phase. Unlock the full timeline to see when to make your move.'}
-            ctaText="See career details"
+              ? `You're building toward something bigger. Your chart shows it landing around age ${dims.career.age}.`
+              : `Your career arc contains a clear acceleration window. The timing matters more than you think.`}
+            ctaText="Go deeper"
             accentClass="text-amber-400"
             onCta={() => handleDimCta('career_details')}
             delay={0.2}
@@ -231,9 +223,9 @@ export function SharedKlineResult({
             icon={Coins}
             label="Wealth"
             tease={dims.wealth
-              ? `A structural wealth opportunity appears around age ${dims.wealth.age}. The timing favors decisive action over passive waiting.`
-              : 'Your financial curve points to a clear accumulation window ahead. See when your chart favors building lasting assets.'}
-            ctaText="See wealth forecast"
+              ? `You're not bad with money — your timing was just off. A real wealth window opens around age ${dims.wealth.age}.`
+              : `Your financial curve points to a clear accumulation window ahead. The timing is everything.`}
+            ctaText="Go deeper"
             accentClass="text-emerald-400"
             onCta={() => handleDimCta('wealth_forecast')}
             delay={0.3}
@@ -242,9 +234,9 @@ export function SharedKlineResult({
             icon={Leaf}
             label="Health"
             tease={dims.health
-              ? `Your vitality curve dips around age ${dims.health.age}. Preventive action in the years before makes a measurable difference.`
-              : 'Your energy pattern has clear seasonal rhythms. Understanding them lets you protect your vitality before it dips.'}
-            ctaText="See health insights"
+              ? `Your body already knows. Around age ${dims.health.age}, your energy needs extra attention.`
+              : `Your energy has clear rhythms. Understanding them helps you stay ahead of the dips.`}
+            ctaText="Go deeper"
             accentClass="text-sky-400"
             onCta={() => handleDimCta('health_insights')}
             delay={0.4}
@@ -252,7 +244,12 @@ export function SharedKlineResult({
         </div>
       </ReportSection>
 
-      {/* ── 4. AI DEEP READING ── */}
+      {/* ── 4. CLIFFHANGER — moved up from position 7 for max conversion ── */}
+      <ReportSection id="future-cliffhanger" divider={false} className="w-full">
+         <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} />
+      </ReportSection>
+
+      {/* ── 5. AI DEEP READING (LITE+ only, hidden for FREE to avoid lock fatigue) ── */}
       {(tier === 'LITE' || tier === 'PRO') && (
         <ReportSection id="ai-reading" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
           <AiReadingPanels
@@ -264,18 +261,18 @@ export function SharedKlineResult({
         </ReportSection>
       )}
 
-      {/* ── 5. STRATEGIC TIMING TOOLS ── */}
-      <ReportSection id="strategic-timing" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
+      {/* ── 6. YOUR PERSONAL FORECAST (merged Strategic Timing + Connections) ── */}
+      <ReportSection id="personal-forecast" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
         <div className="mb-10 flex flex-col items-center justify-center text-center">
           <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
             <Sparkles className="h-4 w-4" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Strategic Timing</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Your Personal Forecast</span>
           </div>
           <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
-            Your Timing Intelligence
+            Tools Built Around You
           </Heading>
           <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
-            Actionable forecasts powered by your natal chart. Know when to move, when to rest, and when to prepare.
+            Energy forecasts, daily guidance, and relationship insights — all shaped by your unique chart.
           </p>
         </div>
 
@@ -283,29 +280,15 @@ export function SharedKlineResult({
           <YearlyEnergyCurve klineData={klineData} tier={tier} onActionGate={onActionGate} />
           <ActionCalendar profile={profile} tier={tier} onActionGate={onActionGate} />
         </div>
-      </ReportSection>
 
-      {/* ── 6. COSMIC CONNECTIONS ── */}
-      <ReportSection id="cosmic-connections" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
-        <div className="mb-10 flex flex-col items-center justify-center text-center">
-          <div className="mb-4 flex items-center gap-2 text-rose-400">
-            <Heart className="h-4 w-4" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest">Cosmic Connections</span>
-          </div>
-          <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
-            Relationship Intelligence
-          </Heading>
-          <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
-            Discover the chemistry, friction, and deeper patterns between you and anyone.
-          </p>
+        <div className="mt-4">
+          <SynastryPanel profile={profile} tier={tier} onActionGate={onActionGate} />
         </div>
-
-        <SynastryPanel profile={profile} tier={tier} onActionGate={onActionGate} />
       </ReportSection>
 
-      {/* ── 7. CLIFFHANGER ── */}
-      <ReportSection id="future-cliffhanger" divider={false} className="w-full">
-         <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} />
+      {/* ── 7. COSMIC ID CARD — moved to end (share after being wowed) ── */}
+      <ReportSection id="cosmic-id" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">
+        <CosmicIdCard profile={profile} klineData={klineData} />
       </ReportSection>
     </div>
 
