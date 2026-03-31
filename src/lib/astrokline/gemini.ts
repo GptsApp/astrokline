@@ -56,25 +56,24 @@ Follow Rob Hand's core philosophy: "There are no bad charts — only charts not 
 
 // ─── Format profile data for prompt ───
 function formatProfileForPrompt(profile: UserProfile): string {
-  const planetList = profile.planets
+  const planetList = (profile.planets || [])
     .map(
-      (p) => `${p.name}: ${p.sign} ${p.degree}°${p.minute}' (House ${p.house})`
+      (p) => `${p.name}: ${p.sign} ${p.degree}°${p.minute || 0}' (House ${p.house})`
     )
     .join('\n  ');
 
   return `## User Birth Chart Data
-Name: ${profile.name}
-Date of Birth: ${profile.birthDate}
-Time of Birth: ${profile.birthTime}
-Birth Location: ${profile.birthLocation}
+Name: ${profile.name || 'Unknown'}
+Date of Birth: ${profile.birthDate || 'Unknown'}
+Time of Birth: ${profile.birthTime || 'Unknown'}
+Birth Location: ${profile.birthLocation || 'Unknown'}
 
 The Big Three:
-  Sun: ${profile.sun.sign} ${profile.sun.degree}°${profile.sun.minute}' (House ${profile.sun.house})
-  Moon: ${profile.moon.sign} ${profile.moon.degree}°${profile.moon.minute}' (House ${profile.moon.house})
-  Rising: ${profile.rising.sign} ${profile.rising.degree}°${profile.rising.minute}' (House ${profile.rising.house})
+  Sun: ${profile.sun.sign} ${profile.sun.degree}°${profile.sun.minute || 0}' (House ${profile.sun.house})
+  Moon: ${profile.moon.sign} ${profile.moon.degree}°${profile.moon.minute || 0}' (House ${profile.moon.house})
+  Rising: ${profile.rising.sign} ${profile.rising.degree}°${profile.rising.minute || 0}' (House ${profile.rising.house})
 
-Full Planetary Placements:
-  ${planetList}
+${planetList ? `Full Planetary Placements:\n  ${planetList}` : ''}
 
 Elemental Distribution:
   Fire: ${profile.elements.fire}%
@@ -82,10 +81,10 @@ Elemental Distribution:
   Air: ${profile.elements.air}%
   Water: ${profile.elements.water}%
 
-Modalities Distribution:
+${profile.modalities ? `Modalities Distribution:
   Cardinal: ${profile.modalities.cardinal}%
   Fixed: ${profile.modalities.fixed}%
-  Mutable: ${profile.modalities.mutable}%`;
+  Mutable: ${profile.modalities.mutable}%` : ''}`;
 }
 
 // ─── Generate Personality Insight ───
