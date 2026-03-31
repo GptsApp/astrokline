@@ -1,59 +1,65 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
-import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
-import { Download, Share2, Sparkles } from 'lucide-react';
+import type { UserProfile, DestinyScorePoint } from '@/lib/astrokline/mock-astrology-data';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Share2, Sparkles, X } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import { CosmicIdCardContent } from './cosmic-id-card-content';
 
 interface Props {
   profile: UserProfile;
+  klineData: DestinyScorePoint[];
 }
 
-function ElementBar({ label, value, color }: { label: string; value: number; color: string }) {
-  return (
-    <div className="flex items-center gap-2">
-      <span className="w-8 text-[9px] font-bold uppercase tracking-wider text-white/40">{label}</span>
-      <div className="h-1.5 flex-1 overflow-hidden bg-white/5">
-        <div className="h-full transition-all duration-1000" style={{ width: `${value}%`, background: color }} />
-      </div>
-      <span className="w-7 text-right font-mono text-[9px] text-white/30">{value}%</span>
-    </div>
-  );
-}
+const SHARE_QUOTES = [
+  '✨ Your cosmic blueprint is one-of-a-kind. Share it with the universe.',
+  '🌟 Only 0.001% of humans share your exact natal fingerprint.',
+  '🔥 Your friends deserve to know their destiny too. Show them the way.',
+  '💫 The stars aligned just for you. Let the world see your chart.',
+];
 
-export function CosmicIdCard({ profile }: Props) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isExporting, setIsExporting] = useState(false);
+export function CosmicIdCard({ profile, klineData }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  const dominantElement = Object.entries(profile.elements).sort((a, b) => b[1] - a[1])[0];
-  const ruling = profile.planets?.find(p => p.name === 'Sun');
+  const quote = SHARE_QUOTES[Math.floor(profile.birthDate.charCodeAt(0) % SHARE_QUOTES.length)];
 
-  // Generate a cosmic tagline from the big three
-  const tagline = `${profile.sun.sign} Sun · ${profile.moon.sign} Moon · ${profile.rising.sign} Rising`;
-
-  const handleExportImage = useCallback(async () => {
-    if (!cardRef.current || isExporting) return;
-    setIsExporting(true);
+  const handleSaveImage = useCallback(async () => {
+    if (!cardRef.current || isSaving) return;
+    setIsSaving(true);
+    setSaveStatus('idle');
     try {
-      // Use browser print as fallback - prompt user to screenshot
-      const text = `✨ ${profile.name || 'My'} Cosmic ID\n☉ ${profile.sun.sign} Sun\n☽ ${profile.moon.sign} Moon\n↑ ${profile.rising.sign} Rising\n\n🔥 Fire ${profile.elements.fire}% · 🌍 Earth ${profile.elements.earth}%\n💨 Air ${profile.elements.air}% · 💧 Water ${profile.elements.water}%\n\nDiscover yours → astrokline.com/kline`;
-      await navigator.clipboard.writeText(text);
-      setShareStatus('copied');
-      setTimeout(() => setShareStatus('idle'), 2000);
+      const html2canvas = (await import('html2canvas-pro')).default;
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: '#0A0A14',
+        scale: 3,
+        useCORS: true,
+        logging: false,
+      });
+      const link = document.createElement('a');
+      link.download = `cosmic-id-${profile.name || 'card'}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus('idle'), 3000);
     } catch (err) {
-      console.error('Copy failed:', err);
+      console.error('Save failed:', err);
+      setSaveStatus('error');
     } finally {
-      setIsExporting(false);
+      setIsSaving(false);
     }
-  }, [isExporting, profile]);
+  }, [isSaving, profile.name]);
 
   const handleShare = useCallback(async () => {
-    const text = `✨ My Cosmic ID: ${profile.sun.sign} ☉ · ${profile.moon.sign} ☽ · ${profile.rising.sign} ↑\nDiscover yours at astrokline.com`;
+    const text = `✨ My Cosmic ID: ${profile.sun.sign} ☉ · ${profile.moon.sign} ☽ · ${profile.rising.sign} ↑\nDiscover yours at astrokline.com/kline`;
     if (navigator.share) {
       try {
         await navigator.share({ title: 'My Cosmic ID', text, url: 'https://astrokline.com/kline' });
-      } catch {}
+      } catch { /* user cancelled */ }
     } else {
       await navigator.clipboard.writeText(text);
       setShareStatus('copied');
@@ -61,113 +67,95 @@ export function CosmicIdCard({ profile }: Props) {
     }
   }, [profile]);
 
-  return (
-    <div className="mx-auto w-full max-w-md">
-      {/* ── The Card ── */}
-      <div
-        ref={cardRef}
-        className="relative overflow-hidden border border-white/10 bg-gradient-to-br from-[#0A0A14] via-[#0D0B18] to-[#0A0A14] p-6 shadow-[0_0_60px_rgba(212,175,55,0.05)]"
+  // Trigger button (inline in result page)
+  if (!isOpen) {
+    return (
+      <button
+        onClick={() => setIsOpen(true)}
+        className="group mx-auto flex w-full max-w-md items-center gap-4 border border-[#D4AF37]/20 bg-[#D4AF37]/[0.03] p-5 transition-all hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/[0.06] hover:shadow-[0_0_30px_rgba(212,175,55,0.1)]"
       >
-        {/* Background pattern */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-
-        {/* Header */}
-        <div className="relative z-10 mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
-            <span className="font-mono text-[9px] font-bold tracking-[0.25em] text-[#D4AF37] uppercase">
-              Cosmic ID
-            </span>
-          </div>
-          <span className="font-mono text-[8px] tracking-wider text-white/20 uppercase">
-            AstroKline
-          </span>
+        <div className="flex h-12 w-12 items-center justify-center border border-[#D4AF37]/30 bg-[#D4AF37]/10">
+          <Sparkles className="h-5 w-5 text-[#D4AF37]" />
         </div>
-
-        {/* Name & Tagline */}
-        <div className="relative z-10 mb-6">
-          <h3 className="font-serif text-2xl font-bold text-white/95">
-            {profile.name || 'Unknown Voyager'}
-          </h3>
-          <p className="mt-1 font-mono text-[11px] tracking-wide text-[#D4AF37]/70">
-            {tagline}
-          </p>
+        <div className="flex-1 text-left">
+          <p className="text-sm font-bold text-white/90">View My Cosmic ID</p>
+          <p className="mt-0.5 text-xs text-white/40">Your shareable cosmic identity card with K-Line</p>
         </div>
+        <span className="font-mono text-lg text-[#D4AF37]/50 group-hover:text-[#D4AF37]">→</span>
+      </button>
+    );
+  }
 
-        {/* Big Three Grid */}
-        <div className="relative z-10 mb-5 grid grid-cols-3 gap-3">
-          {[
-            { label: 'SUN', sign: profile.sun.sign, glyph: '☉', color: 'text-amber-400' },
-            { label: 'MOON', sign: profile.moon.sign, glyph: '☽', color: 'text-blue-300' },
-            { label: 'RISING', sign: profile.rising.sign, glyph: '↑', color: 'text-purple-400' },
-          ].map((item) => (
-            <div key={item.label} className="border border-white/5 bg-white/[0.02] p-3 text-center">
-              <span className={cn('text-lg', item.color)}>{item.glyph}</span>
-              <p className="mt-1 text-xs font-bold text-white/90">{item.sign}</p>
-              <p className="font-mono text-[8px] tracking-widest text-white/30 uppercase">{item.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Element Distribution */}
-        <div className="relative z-10 space-y-1.5">
-          <p className="mb-2 font-mono text-[8px] font-bold tracking-[0.2em] text-white/30 uppercase">
-            Elemental Balance
-          </p>
-          <ElementBar label="🔥" value={profile.elements.fire} color="#ef4444" />
-          <ElementBar label="🌍" value={profile.elements.earth} color="#a3e635" />
-          <ElementBar label="💨" value={profile.elements.air} color="#38bdf8" />
-          <ElementBar label="💧" value={profile.elements.water} color="#818cf8" />
-        </div>
-
-        {/* Dominant Element Badge */}
-        <div className="relative z-10 mt-4 flex items-center justify-between border-t border-white/5 pt-4">
-          <div>
-            <p className="font-mono text-[8px] tracking-widest text-white/30 uppercase">Dominant</p>
-            <p className="text-xs font-bold capitalize text-white/80">{dominantElement[0]} ({dominantElement[1]}%)</p>
-          </div>
-          <div className="text-right">
-            <p className="font-mono text-[8px] tracking-widest text-white/30 uppercase">Born</p>
-            <p className="text-xs font-bold text-white/80">{profile.birthDate}</p>
-          </div>
-        </div>
-
-        {/* Watermark */}
-        <div className="relative z-10 mt-4 border-t border-white/5 pt-3 text-center">
-          <p className="font-mono text-[7px] tracking-[0.3em] text-white/15 uppercase">
-            astrokline.com — see your next 100 years
-          </p>
-        </div>
-      </div>
-
-      {/* ── Action Buttons ── */}
-      <div className="mt-3 flex gap-2">
-        <button
-          onClick={handleExportImage}
-          disabled={isExporting}
-          className="flex flex-1 items-center justify-center gap-2 border border-white/10 bg-white/5 py-2.5 text-xs font-bold text-white/70 transition-all hover:border-[#D4AF37]/30 hover:text-[#D4AF37] disabled:opacity-50"
+  // Modal overlay
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+        onClick={(e) => e.target === e.currentTarget && setIsOpen(false)}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          className="relative flex max-h-[90vh] flex-col items-center overflow-y-auto"
         >
-          <Download className="h-3.5 w-3.5" />
-          {isExporting ? 'Exporting...' : 'Save Image'}
-        </button>
-        <button
-          onClick={handleShare}
-          className={cn(
-            'flex flex-1 items-center justify-center gap-2 py-2.5 text-xs font-bold transition-all',
-            shareStatus === 'copied'
-              ? 'border border-green-500/30 bg-green-500/10 text-green-400'
-              : 'border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[#D4AF37] hover:bg-[#D4AF37]/20'
-          )}
-        >
-          <Share2 className="h-3.5 w-3.5" />
-          {shareStatus === 'copied' ? 'Copied!' : 'Share'}
-        </button>
-      </div>
-    </div>
+          {/* Close */}
+          <button onClick={() => setIsOpen(false)} className="absolute -top-2 -right-2 z-10 rounded-full bg-white/10 p-1.5 text-white/50 hover:text-white">
+            <X className="h-4 w-4" />
+          </button>
+
+          {/* The Card */}
+          <CosmicIdCardContent profile={profile} klineData={klineData} cardRef={cardRef} />
+
+          {/* Share Incentive */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-5 max-w-[380px] text-center"
+          >
+            <p className="text-sm leading-relaxed text-white/60">{quote}</p>
+          </motion.div>
+
+          {/* Action Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-4 flex w-full max-w-[380px] gap-3"
+          >
+            <button
+              onClick={handleSaveImage}
+              disabled={isSaving}
+              className={cn(
+                'flex flex-1 items-center justify-center gap-2 border py-3 text-xs font-bold transition-all',
+                saveStatus === 'saved'
+                  ? 'border-green-500/30 bg-green-500/10 text-green-400'
+                  : 'border-white/10 bg-white/5 text-white/70 hover:border-[#D4AF37]/30 hover:text-[#D4AF37]',
+                isSaving && 'opacity-50'
+              )}
+            >
+              <Download className="h-4 w-4" />
+              {isSaving ? 'Saving...' : saveStatus === 'saved' ? 'Saved ✓' : 'Save Image'}
+            </button>
+            <button
+              onClick={handleShare}
+              className={cn(
+                'flex flex-1 items-center justify-center gap-2 py-3 text-xs font-bold transition-all',
+                shareStatus === 'copied'
+                  ? 'border border-green-500/30 bg-green-500/10 text-green-400'
+                  : 'border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[#D4AF37] hover:bg-[#D4AF37]/20'
+              )}
+            >
+              <Share2 className="h-4 w-4" />
+              {shareStatus === 'copied' ? 'Copied!' : 'Share'}
+            </button>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

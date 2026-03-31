@@ -185,8 +185,8 @@ export function SharedKlineResult({
       </ReportSection>
 
       {/* ── 2. COSMIC ID CARD ── */}
-      <ReportSection id="cosmic-id" divider={false} className="mx-auto w-full max-w-md px-4 py-12 md:px-8">
-        <CosmicIdCard profile={profile} />
+      <ReportSection id="cosmic-id" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">
+        <CosmicIdCard profile={profile} klineData={klineData} />
       </ReportSection>
 
       {/* ── 3. FOUR-DIMENSION LIFE PREVIEW ── */}
