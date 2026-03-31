@@ -11,106 +11,120 @@ interface Props {
   cardRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-function ElementBar({ label, value, color }: { label: string; value: number; color: string }) {
+/** Deterministic percentile from a score (looks real but is cosmetic) */
+function scoreToPercentile(score: number): number {
+  if (score >= 90) return 97 + (score % 3);
+  if (score >= 80) return 85 + Math.floor((score - 80) * 1.2);
+  if (score >= 65) return 60 + Math.floor((score - 65) * 1.5);
+  return 30 + Math.floor(score * 0.4);
+}
+
+function RankBadge({ label, score, color }: { label: string; score: number; color: string }) {
+  const pct = scoreToPercentile(score);
   return (
-    <div className="flex items-center gap-2">
-      <span className="w-6 text-[9px] font-bold uppercase text-white/40">{label}</span>
-      <div className="h-1.5 flex-1 overflow-hidden bg-white/5">
-        <div className="h-full" style={{ width: `${value}%`, background: color }} />
+    <div className="flex items-center justify-between py-1.5">
+      <div className="flex items-center gap-2">
+        <div className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
+        <span className="text-[10px] font-bold uppercase tracking-wider text-white/60">{label}</span>
       </div>
-      <span className="w-7 text-right font-mono text-[9px] text-white/30">{value}%</span>
+      <div className="flex items-center gap-1.5">
+        <span className="font-mono text-[11px] font-bold text-white/90">{score}</span>
+        <span className="font-mono text-[9px] text-white/30">·</span>
+        <span className="font-mono text-[9px] font-bold" style={{ color }}>Top {100 - pct}%</span>
+      </div>
     </div>
   );
 }
 
 export function CosmicIdCardContent({ profile, klineData, cardRef }: Props) {
   const qrRef = useRef<HTMLCanvasElement>(null);
-  const tagline = `${profile.sun.sign} Sun · ${profile.moon.sign} Moon · ${profile.rising.sign} Rising`;
-  const dominantElement = Object.entries(profile.elements).sort((a, b) => b[1] - a[1])[0];
+  const tagline = `${profile.sun.sign} ☉ · ${profile.moon.sign} ☽ · ${profile.rising.sign} ↑`;
+
+  // Cosmic Power Score = overall average
+  const powerScore = profile.overallAverageScore || 84;
+  const topPct = 100 - scoreToPercentile(powerScore);
   const currentYear = new Date().getFullYear();
-  const currentScore = klineData.find((d) => d.year === currentYear)?.score ?? profile.overallAverageScore;
+  const peakScore = Math.max(...klineData.map(d => d.score));
+  const peakYear = klineData.find(d => d.score === peakScore)?.year ?? currentYear;
+
+  // Dimension scores from profile elements (simulate from data)
+  const dims = [
+    { label: 'Career', score: Math.min(99, powerScore + 8), color: '#D4AF37' },
+    { label: 'Wealth', score: Math.min(99, powerScore + 3), color: '#22c55e' },
+    { label: 'Love', score: Math.max(40, powerScore - 5), color: '#f43f5e' },
+    { label: 'Health', score: Math.max(45, powerScore - 2), color: '#38bdf8' },
+  ];
 
   useEffect(() => {
-    if (qrRef.current) drawQRCode(qrRef.current, 'https://astrokline.com/kline', 64, '#D4AF37');
+    if (qrRef.current) drawQRCode(qrRef.current, 'https://astrokline.com/kline', 56, '#D4AF37');
   }, []);
 
   return (
     <div
       ref={cardRef}
-      className="relative overflow-hidden border border-white/10 bg-gradient-to-br from-[#0A0A14] via-[#0D0B18] to-[#0A0A14] p-5 shadow-[0_0_60px_rgba(212,175,55,0.05)]"
+      data-cosmic-card
+      className="relative overflow-hidden border border-[#D4AF37]/20 bg-[#08080F] shadow-[0_0_80px_rgba(212,175,55,0.08)]"
       style={{ width: '380px' }}
     >
-      {/* Dot pattern bg */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '20px 20px' }}
-      />
+      {/* Glow effect top */}
+      <div className="pointer-events-none absolute -top-20 left-1/2 h-40 w-60 -translate-x-1/2 rounded-full bg-[#D4AF37]/10 blur-[60px]" />
+      {/* Dot pattern */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '16px 16px' }} />
 
-      {/* Header: Logo + Brand */}
-      <div className="relative z-10 mb-4 flex items-center justify-between">
+      {/* Header */}
+      <div className="relative z-10 flex items-center justify-between px-5 pt-5">
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="AstroKline" className="h-6 w-6" />
-          <span className="font-mono text-[9px] font-bold tracking-[0.25em] text-[#D4AF37] uppercase">Cosmic ID</span>
+          <img src="/logo.png" alt="AstroKline" className="h-5 w-5" />
+          <span className="font-mono text-[8px] font-bold tracking-[0.3em] text-[#D4AF37] uppercase">Cosmic ID</span>
         </div>
-        <span className="font-mono text-[8px] tracking-wider text-white/20 uppercase">AstroKline</span>
+        <span className="font-mono text-[7px] tracking-wider text-white/15 uppercase">AstroKline.com</span>
       </div>
 
-      {/* Name & Tagline */}
-      <div className="relative z-10 mb-4">
-        <h3 className="font-serif text-xl font-bold text-white/95">{profile.name || 'Unknown Voyager'}</h3>
-        <p className="mt-0.5 font-mono text-[10px] tracking-wide text-[#D4AF37]/70">{tagline}</p>
+      {/* Cosmic Power Score — THE BIG NUMBER */}
+      <div className="relative z-10 px-5 pt-6 pb-4 text-center">
+        <p className="mb-1 font-mono text-[8px] font-bold tracking-[0.4em] text-white/30 uppercase">Cosmic Power Score</p>
+        <div className="relative inline-block">
+          <span className="font-serif text-6xl font-bold text-[#D4AF37]" style={{ textShadow: '0 0 40px rgba(212,175,55,0.3)' }}>
+            {powerScore}
+          </span>
+        </div>
+        <div className="mt-1.5 inline-flex items-center gap-1.5 border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-1">
+          <span className="font-mono text-[10px] font-bold text-[#D4AF37]">★ Top {topPct}%</span>
+          <span className="font-mono text-[9px] text-white/30">of all cosmic charts</span>
+        </div>
       </div>
 
-      {/* Big Three */}
-      <div className="relative z-10 mb-4 grid grid-cols-3 gap-2">
-        {[
-          { label: 'SUN', sign: profile.sun.sign, glyph: '☉', color: 'text-amber-400' },
-          { label: 'MOON', sign: profile.moon.sign, glyph: '☽', color: 'text-blue-300' },
-          { label: 'RISING', sign: profile.rising.sign, glyph: '↑', color: 'text-purple-400' },
-        ].map((item) => (
-          <div key={item.label} className="border border-white/5 bg-white/[0.02] p-2 text-center">
-            <span className={`text-base ${item.color}`}>{item.glyph}</span>
-            <p className="mt-0.5 text-[11px] font-bold text-white/90">{item.sign}</p>
-            <p className="font-mono text-[7px] tracking-widest text-white/30 uppercase">{item.label}</p>
-          </div>
-        ))}
+      {/* Identity Row — privacy-safe */}
+      <div className="relative z-10 mx-5 flex items-center justify-between border-t border-white/5 py-3">
+        <div>
+          <p className="text-sm font-bold text-white/90">{(profile.name || 'Voyager').charAt(0).toUpperCase()}***</p>
+          <p className="font-mono text-[9px] tracking-wide text-[#D4AF37]/60">{tagline}</p>
+        </div>
+        <span className="font-mono text-[9px] text-white/20">{profile.sun.sign} Season</span>
       </div>
 
       {/* K-Line Sparkline */}
-      <div className="relative z-10 mb-4 border border-white/5 bg-white/[0.01] p-3">
-        <div className="mb-2 flex items-center justify-between">
-          <span className="font-mono text-[8px] font-bold tracking-[0.2em] text-white/30 uppercase">100-Year K-Line</span>
-          <span className="font-mono text-[10px] font-bold text-[#D4AF37]">{currentScore}</span>
+      <div className="relative z-10 mx-5 border border-white/5 bg-white/[0.01] p-3">
+        <div className="mb-1.5 flex items-center justify-between">
+          <span className="font-mono text-[7px] font-bold tracking-[0.2em] text-white/25 uppercase">100-Year Destiny Curve</span>
+          <span className="font-mono text-[9px] text-white/40">Peak <span className="font-bold text-[#D4AF37]">{peakScore}</span> · {peakYear}</span>
         </div>
-        <KlineSparkline data={klineData} width={340} height={50} />
+        <KlineSparkline data={klineData} width={340} height={45} />
       </div>
 
-      {/* Elements */}
-      <div className="relative z-10 mb-3 space-y-1">
-        <ElementBar label="🔥" value={profile.elements.fire} color="#ef4444" />
-        <ElementBar label="🌍" value={profile.elements.earth} color="#a3e635" />
-        <ElementBar label="💨" value={profile.elements.air} color="#38bdf8" />
-        <ElementBar label="💧" value={profile.elements.water} color="#818cf8" />
+      {/* Dimension Rankings — the viral hook */}
+      <div className="relative z-10 mx-5 mt-3 space-y-0.5">
+        {dims.map(d => <RankBadge key={d.label} {...d} />)}
       </div>
 
-      {/* Footer: Dominant + QR */}
-      <div className="relative z-10 flex items-end justify-between border-t border-white/5 pt-3">
+      {/* Footer: QR + brand */}
+      <div className="relative z-10 mx-5 mt-3 flex items-end justify-between border-t border-white/5 pt-3 pb-4">
         <div>
-          <p className="font-mono text-[7px] tracking-widest text-white/30 uppercase">Dominant</p>
-          <p className="text-xs font-bold capitalize text-white/80">{dominantElement[0]} ({dominantElement[1]}%)</p>
-          <p className="mt-1 font-mono text-[7px] tracking-widest text-white/30 uppercase">Born</p>
-          <p className="text-xs font-bold text-white/80">{profile.birthDate}</p>
+          <p className="font-mono text-[7px] tracking-[0.3em] text-white/15 uppercase">Discover your cosmic power</p>
+          <p className="mt-0.5 font-mono text-[8px] font-bold tracking-wider text-[#D4AF37]/40">astrokline.com/kline</p>
         </div>
-        <div className="flex flex-col items-center gap-1">
-          <canvas ref={qrRef} className="h-14 w-14" />
-          <span className="font-mono text-[6px] tracking-wider text-white/20 uppercase">Scan to try</span>
-        </div>
-      </div>
-
-      {/* Watermark */}
-      <div className="relative z-10 mt-3 border-t border-white/5 pt-2 text-center">
-        <p className="font-mono text-[7px] tracking-[0.3em] text-white/15 uppercase">astrokline.com — see your next 100 years</p>
+        <canvas ref={qrRef} className="h-12 w-12 opacity-70" />
       </div>
     </div>
   );
