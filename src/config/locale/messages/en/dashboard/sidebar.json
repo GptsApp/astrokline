@@ -8,7 +8,7 @@
         "icon": "Home"
       },
       {
-        "title": "K-Line",
+        "title": "My Charts",
         "url": "/dashboard/kline",
         "icon": "Activity"
       }
@@ -16,6 +16,16 @@
   },
   "bottom_nav": {
     "items": [
+      {
+        "title": "Profile",
+        "url": "/settings/profile",
+        "icon": "User"
+      },
+      {
+        "title": "Billing",
+        "url": "/settings/billing",
+        "icon": "CreditCard"
+      },
       {
         "title": "Settings",
         "url": "/settings/profile",
