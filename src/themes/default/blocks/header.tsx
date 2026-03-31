@@ -32,6 +32,7 @@ import { NavItem } from '@/shared/types/blocks/common';
 import { Header as HeaderType } from '@/shared/types/blocks/landing';
 import { useAppContext } from '@/shared/contexts/app';
 import { useSession } from '@/core/auth/client';
+import { MobileBottomTab } from '@/components/astrokline/ui/mobile-bottom-tab';
 
 // For Next.js hydration mismatch warning, conditionally render NavigationMenuTrigger only after mount to avoid inconsistency between server/client render
 function NavigationMenuTrigger(
@@ -401,6 +402,7 @@ export function Header({ header }: { header: HeaderType }) {
           </div>
         </div>
       </header>
+      {isLoggedIn && <MobileBottomTab />}
     </>
   );
 }
