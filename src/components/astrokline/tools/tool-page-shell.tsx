@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import { useAppContext } from '@/shared/contexts/app';
 import { Link } from '@/core/i18n/navigation';
+import { EnergyTool } from './energy-tool';
+import { CalendarTool } from './calendar-tool';
+import { CompatibilityTool } from './compatibility-tool';
 
 const TOOL_ICONS: Record<string, React.ReactNode> = {
   energy: <TrendingUp className="h-6 w-6" />,
@@ -82,6 +85,7 @@ export function ToolPageShell({
       toolTitle={toolTitle}
       toolDescription={toolDescription}
       tier={tier}
+      klineResult={klineResult}
     />
   );
 }
@@ -281,59 +285,29 @@ function NoKlineState({
   );
 }
 
-/* ── Logged-in Tool Content (placeholder for real components) ── */
+/* ── Logged-in Tool Content — routes to real components ── */
 function ToolContent({
   toolId,
   toolTitle,
   toolDescription,
   tier,
+  klineResult,
 }: {
   toolId: string;
   toolTitle: string;
   toolDescription: string;
   tier: string;
+  klineResult?: unknown;
 }) {
-  const isFree = tier === 'FREE';
-
-  return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            {TOOL_ICONS[toolId]}
-          </div>
-          <h1 className="text-2xl font-bold text-foreground">{toolTitle}</h1>
-        </div>
-        <p className="text-muted-foreground">{toolDescription}</p>
-      </div>
-
-      {/* Tool content area - will be populated with real components */}
-      <div className="rounded-2xl border border-border/50 bg-card p-8">
-        <div className="text-center py-12">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            {TOOL_ICONS[toolId]}
-          </div>
-          <p className="text-lg font-medium text-foreground">
-            {toolTitle} — Coming Soon
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            This tool is being refined for the best experience.
-          </p>
-          {isFree && (
-            <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-4 max-w-sm mx-auto">
-              <p className="text-sm text-foreground font-medium">
-                Upgrade to Lite for full access
-              </p>
-              <Link
-                href="/pricing"
-                className="mt-3 inline-flex items-center gap-1 text-sm text-primary font-semibold hover:underline"
-              >
-                See Plans <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  if (toolId === 'energy') {
+    return <EnergyTool tier={tier} klineResult={klineResult} />;
+  }
+  if (toolId === 'calendar') {
+    return <CalendarTool tier={tier} klineResult={klineResult} />;
+  }
+  if (toolId === 'compatibility') {
+    return <CompatibilityTool tier={tier} klineResult={klineResult} />;
+  }
+  return null;
 }
+
