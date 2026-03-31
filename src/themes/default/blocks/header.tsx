@@ -31,6 +31,7 @@ import { cn } from '@/shared/lib/utils';
 import { NavItem } from '@/shared/types/blocks/common';
 import { Header as HeaderType } from '@/shared/types/blocks/landing';
 import { useAppContext } from '@/shared/contexts/app';
+import { useSession } from '@/core/auth/client';
 
 // For Next.js hydration mismatch warning, conditionally render NavigationMenuTrigger only after mount to avoid inconsistency between server/client render
 function NavigationMenuTrigger(
@@ -55,6 +56,8 @@ export function Header({ header }: { header: HeaderType }) {
   const { open } = useBirthInfoModal();
   const router = useRouter();
   const { setIsShowSignModal } = useAppContext();
+  const { data: session } = useSession();
+  const isLoggedIn = !!(session?.user);
 
   useEffect(() => {
     // Listen to scroll event to enable header styles on scroll
@@ -92,7 +95,7 @@ export function Header({ header }: { header: HeaderType }) {
         className="**:data-[slot=navigation-menu-content]:top-10 max-lg:hidden"
       >
         <NavigationMenuList className="gap-2">
-          {header.nav?.items?.map((item, idx) => {
+          {(isLoggedIn ? header.auth_nav?.items || header.nav?.items : header.nav?.items)?.map((item: NavItem, idx: number) => {
             if (!item.children || item.children.length === 0) {
               const url = item.url as string || '';
               const isAuthLink = url.includes('/sign-in') || url.includes('/sign-up') || url.includes('/login');
@@ -212,7 +215,7 @@ export function Header({ header }: { header: HeaderType }) {
           collapsible
           className="-mx-4 mt-0.5 space-y-0.5 **:hover:no-underline"
         >
-          {header.nav?.items?.map((item, idx) => {
+          {(isLoggedIn ? header.auth_nav?.items || header.nav?.items : header.nav?.items)?.map((item: NavItem, idx: number) => {
             return (
               <AccordionItem
                 key={idx}

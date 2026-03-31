@@ -40,12 +40,14 @@ export interface Header extends Section {
   id?: string;
   brand?: Brand;
   nav?: Nav;
+  auth_nav?: Nav;
   buttons?: Button[];
   user_nav?: UserNav;
   show_theme?: boolean;
   show_locale?: boolean;
   show_sign?: boolean;
   className?: string;
+  [key: string]: any;
 }
 
 // footer props for footer component

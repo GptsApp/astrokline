@@ -28,6 +28,43 @@
         }
       ]
     },
+    "auth_nav": {
+      "items": [
+        {
+          "title": "Dashboard",
+          "url": "/dashboard",
+          "icon": "LayoutDashboard"
+        },
+        {
+          "title": "K-Line",
+          "url": "/kline",
+          "icon": "Activity"
+        },
+        {
+          "title": "Tools",
+          "children": [
+            {
+              "title": "Energy Forecast",
+              "url": "/tools/energy",
+              "icon": "TrendingUp",
+              "description": "Monthly energy peaks and dips"
+            },
+            {
+              "title": "Action Calendar",
+              "url": "/tools/calendar",
+              "icon": "Calendar",
+              "description": "Daily guidance tailored to your chart"
+            },
+            {
+              "title": "Compatibility",
+              "url": "/tools/compatibility",
+              "icon": "Users",
+              "description": "Chemistry analysis with anyone"
+            }
+          ]
+        }
+      ]
+    },
     "user_nav": {
       "items": [
         {
