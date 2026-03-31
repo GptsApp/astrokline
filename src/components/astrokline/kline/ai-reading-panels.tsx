@@ -238,10 +238,10 @@ export function AiReadingPanels({
     <div className="mt-8 flex w-full flex-col gap-4" ref={containerRef}>
       <div className="mb-6 text-center">
         <Heading level={3} className="text-primary mb-2 text-[10px] font-bold tracking-[0.2em] uppercase md:text-xs">
-          AI Reading
+          Your Personal Reading
         </Heading>
         <Heading level={2} className="mb-3 font-serif text-2xl font-bold text-white md:text-3xl">
-          What Your Chart Says About You
+          What We See in Your Chart
         </Heading>
         <p className="mx-auto max-w-xl text-sm text-white/50">
           {tier === 'GUEST'

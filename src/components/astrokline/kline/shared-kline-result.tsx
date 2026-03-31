@@ -87,7 +87,7 @@ function DimensionPreviewRow({
 }
 
 
-function ActionableFutureCliffhanger({ onActionGate, tier }: any) {
+function ActionableFutureCliffhanger({ onActionGate, tier, profile }: any) {
   if (tier === 'PRO') {
     return (
       <div className="mx-auto mt-16 max-w-4xl px-4 py-8 pb-24 text-center">
@@ -107,10 +107,10 @@ function ActionableFutureCliffhanger({ onActionGate, tier }: any) {
        >
           <Heading level={3} className="font-serif text-2xl text-white/90 md:text-3xl">The Next Chapter of Your Story</Heading>
           <p className="max-w-prose leading-loose text-white/70">
-            Between 2026 and 2028, your love sector activates with unusual intensity. If you are single, this is when connections carry real emotional weight. If you are partnered, this is when the relationship either deepens or demands honest renegotiation.
+            Between 2026 and 2028, {profile?.sun?.sign ? `as a ${profile.sun.sign}` : 'your'} love sector activates with unusual intensity. If you are single, this is when connections carry real emotional weight. If you are partnered, this is when the relationship either deepens or demands honest renegotiation.
           </p>
           <p className="max-w-prose leading-loose text-white/70">
-            Your career curve shows a critical pivot point around 2027. The decision you make in that window determines whether the next decade accelerates or stalls. The chart strongly favors...
+            {profile?.sun?.sign ? `With ${profile.sun.sign} energy driving your chart,` : 'Your'} career curve shows a critical pivot point around 2027. The decision you make in that window determines whether the next decade accelerates or stalls. The chart strongly favors...
           </p>
        </div>
 
@@ -154,7 +154,16 @@ export function SharedKlineResult({
 
   const birthYear = parseInt(profile?.birthDate?.split('-')[0] || '1990', 10);
   const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const dims = extractDimensionPreviews(klineData, transitDetails, currentYear, birthYear);
+
+  // Current energy snapshot
+  const currentPoint = klineData.find(p => p.year === currentYear);
+  const currentScore = currentPoint?.score ?? 65;
+  const energyLabel = currentScore >= 75 ? 'Strong' : currentScore >= 55 ? 'Steady' : 'Rebuilding';
+  const energyColor = currentScore >= 75 ? 'text-emerald-400' : currentScore >= 55 ? 'text-amber-400' : 'text-rose-400';
+  const firstName = (profile?.name || 'Voyager').split(' ')[0];
 
   const handleDimCta = (context: string) => {
     if (tier === 'LITE' || tier === 'PRO') {
@@ -183,6 +192,30 @@ export function SharedKlineResult({
         />
       </ReportSection>
 
+      {/* ── 2. ENERGY SNAPSHOT — Co-Star style 'Right Now' anchor ── */}
+      <ReportSection id="energy-now" divider={false} className="mx-auto w-full max-w-4xl px-4 py-6 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="flex items-center justify-between border border-white/5 bg-white/[0.01] px-6 py-5"
+        >
+          <div className="flex items-center gap-4">
+            <div className={cn('flex h-14 w-14 items-center justify-center border border-white/10 font-serif text-2xl font-bold', energyColor)}>
+              {currentScore}
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">{monthNames[currentMonth]} {currentYear}</p>
+              <p className="text-sm text-white/80">Your energy this month is <span className={cn('font-bold', energyColor)}>{energyLabel}</span></p>
+            </div>
+          </div>
+          <div className="hidden sm:block text-right">
+            <p className="font-mono text-[9px] uppercase tracking-widest text-white/20">{profile.sun.sign} Season</p>
+          </div>
+        </motion.div>
+      </ReportSection>
+
       {/* ── 3. FOUR-DIMENSION LIFE PREVIEW ── */}
       <ReportSection id="kline-insights" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
         <div className="mb-12 flex flex-col items-center justify-center text-center">
@@ -191,10 +224,10 @@ export function SharedKlineResult({
             <span className="font-mono text-[10px] font-bold uppercase tracking-widest">What's Written for You</span>
           </div>
           <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
-            Your Next Chapter
+            {firstName}'s Next Chapter
           </Heading>
           <p className="mt-4 text-sm leading-relaxed text-white/50 max-w-2xl mx-auto">
-            Your chart carries quiet signals about what's coming. Here's what we found.
+            Your chart carries quiet signals about what's coming. Here's what we found for you.
           </p>
         </div>
 
@@ -248,7 +281,7 @@ export function SharedKlineResult({
 
       {/* ── 4. CLIFFHANGER — moved up from position 7 for max conversion ── */}
       <ReportSection id="future-cliffhanger" divider={false} className="w-full">
-         <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} />
+         <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} profile={profile} />
       </ReportSection>
 
       {/* ── 5. AI DEEP READING (LITE+ only, hidden for FREE to avoid lock fatigue) ── */}
@@ -283,10 +316,14 @@ export function SharedKlineResult({
             { icon: TrendingUp, label: 'Energy Forecast', desc: 'See your month-by-month energy peaks & dips', color: 'text-purple-400', borderColor: 'border-purple-400/20 hover:border-purple-400/40', bgColor: 'bg-purple-400/5', href: '/dashboard' },
             { icon: Calendar, label: 'Action Calendar', desc: 'Daily dos & don\'ts tailored to your chart', color: 'text-emerald-400', borderColor: 'border-emerald-400/20 hover:border-emerald-400/40', bgColor: 'bg-emerald-400/5', href: '/dashboard' },
             { icon: Users, label: 'Compatibility', desc: 'Discover chemistry with anyone', color: 'text-rose-400', borderColor: 'border-rose-400/20 hover:border-rose-400/40', bgColor: 'bg-rose-400/5', href: '/dashboard' },
-          ].map((tool) => (
-            <a
+          ].map((tool, i) => (
+            <motion.a
               key={tool.label}
               href={tool.href}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
               className={cn(
                 'group flex flex-col items-center gap-3 border p-6 text-center transition-all hover:scale-[1.02] hover:shadow-lg',
                 tool.borderColor, 'bg-white/[0.01]'
@@ -300,7 +337,7 @@ export function SharedKlineResult({
               <span className={cn('mt-auto flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity', tool.color)}>
                 Open <ArrowRight className="h-3 w-3" />
               </span>
-            </a>
+            </motion.a>
           ))}
         </div>
       </ReportSection>
