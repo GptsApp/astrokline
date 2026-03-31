@@ -54,7 +54,7 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-500/10">
+          <div className="flex h-10 w-10 items-center justify-center bg-rose-500/10">
             <Users className="h-5 w-5 text-rose-400" />
           </div>
           <div>
@@ -65,7 +65,7 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
       </div>
 
       {/* Input form */}
-      <div className="rounded-xl border border-white/5 bg-white/[0.02] p-6">
+      <div className="border border-white/5 bg-white/[0.02] p-6">
         <p className="text-sm text-muted-foreground mb-4">
           Enter the other person&apos;s details to see your astrological chemistry.
         </p>
@@ -77,7 +77,7 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
               value={partnerName}
               onChange={(e) => setPartnerName(e.target.value)}
               placeholder="e.g. Alex"
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-primary/50 focus:outline-none"
+              className="w-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-primary/50 focus:outline-none"
             />
           </div>
           <div>
@@ -86,7 +86,7 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
               type="date"
               value={partnerBirth}
               onChange={(e) => setPartnerBirth(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white focus:border-primary/50 focus:outline-none"
+              className="w-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white focus:border-primary/50 focus:outline-none"
             />
           </div>
         </div>
@@ -94,7 +94,7 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
           onClick={handleCheck}
           disabled={!partnerBirth}
           className={cn(
-            'mt-4 inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition-all',
+            'mt-4 inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold transition-all',
             partnerBirth
               ? 'bg-primary text-primary-foreground hover:scale-105'
               : 'bg-white/5 text-white/30 cursor-not-allowed'
@@ -108,7 +108,7 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
       {result && (
         <div className="mt-8 space-y-6">
           {/* Overall score */}
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-6 text-center">
+          <div className="border border-primary/20 bg-primary/5 p-6 text-center">
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
               {myName} + {partnerName || 'Partner'}
             </p>
@@ -123,13 +123,13 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
           {/* Dimension breakdown */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {dimensions.map((d) => (
-              <div key={d.label} className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+              <div key={d.label} className="border border-white/5 bg-white/[0.02] p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <d.icon className={cn('h-4 w-4', d.color)} />
                   <span className="text-sm font-medium text-white">{d.label}</span>
                   <span className={cn('ml-auto text-sm font-bold', d.color)}>{d.score}</span>
                 </div>
-                <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+                <div className="h-1.5 bg-white/5 overflow-hidden">
                   <div className={cn('h-full rounded-full', d.bg)} style={{ width: `${d.score}%` }} />
                 </div>
               </div>

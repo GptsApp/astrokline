@@ -67,7 +67,7 @@ export function CalendarTool({ tier, klineResult }: CalendarToolProps) {
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
+          <div className="flex h-10 w-10 items-center justify-center bg-emerald-500/10">
             <Calendar className="h-5 w-5 text-emerald-400" />
           </div>
           <div>
@@ -81,13 +81,13 @@ export function CalendarTool({ tier, klineResult }: CalendarToolProps) {
       <div className="grid grid-cols-1 sm:grid-cols-7 gap-2">
         {days.map((day) => (
           <div key={day.dateStr} className={cn(
-            'rounded-xl border p-4 text-center transition-all',
+            'border p-4 text-center transition-all',
             day.isToday ? 'border-primary/40 bg-primary/5 ring-1 ring-primary/20' : 'border-white/5 bg-white/[0.02]'
           )}>
             <p className="text-[10px] font-mono text-muted-foreground uppercase">{day.dayName}</p>
             <p className="text-lg font-bold text-white">{day.dayNum}</p>
             <p className="text-[10px] text-muted-foreground">{day.monthName}</p>
-            <div className={cn('mt-2 rounded-full px-2 py-0.5 text-[10px] font-bold border', day.bgColor, day.color)}>
+            <div className={cn('mt-2 px-2 py-0.5 text-[10px] font-bold border', day.bgColor, day.color)}>
               {day.score} · {day.label}
             </div>
           </div>
@@ -100,14 +100,14 @@ export function CalendarTool({ tier, klineResult }: CalendarToolProps) {
           const isLocked = isFree && i >= 3;
           return (
             <div key={day.dateStr} className={cn(
-              'rounded-xl border p-5 transition-all',
+              'border p-5 transition-all',
               day.isToday ? 'border-primary/30 bg-primary/5' : 'border-white/5 bg-white/[0.01]',
               isLocked && 'opacity-40 blur-[2px] select-none'
             )}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-white">{day.dayName}, {day.monthName} {day.dayNum}</span>
-                  {day.isToday && <span className="text-[10px] rounded-full bg-primary/20 text-primary px-2 py-0.5">TODAY</span>}
+                  {day.isToday && <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5">TODAY</span>}
                 </div>
                 <span className={cn('text-sm font-bold', day.color)}>{isLocked ? '--' : day.score}</span>
               </div>
@@ -129,7 +129,7 @@ export function CalendarTool({ tier, klineResult }: CalendarToolProps) {
       </div>
 
       {isFree && (
-        <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
+        <div className="mt-6 border border-primary/20 bg-primary/5 p-5 text-center">
           <Lock className="mx-auto h-5 w-5 text-primary mb-2" />
           <p className="text-sm font-medium text-white">Full 30-day calendar</p>
           <p className="text-xs text-muted-foreground mt-1">Upgrade to see detailed daily guidance for the month ahead</p>

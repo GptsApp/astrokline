@@ -65,7 +65,7 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
+          <div className="flex h-10 w-10 items-center justify-center bg-purple-500/10">
             <TrendingUp className="h-5 w-5 text-purple-400" />
           </div>
           <div>
@@ -76,7 +76,7 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
       </div>
 
       {/* Year overview score */}
-      <div className="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-5">
+      <div className="mb-6 border border-white/5 bg-white/[0.02] p-5">
         <div className="flex items-baseline gap-2">
           <span className="text-sm text-muted-foreground">Year baseline</span>
           <span className="text-2xl font-bold text-white">{yearScore}</span>
@@ -93,7 +93,7 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
           const isCurrent = i === currentMonth;
           return (
             <div key={m.name} className={cn(
-              'rounded-lg border p-4 transition-all',
+              'border p-4 transition-all',
               isCurrent ? 'border-primary/30 bg-primary/5' : 'border-white/5 bg-white/[0.01]',
               isLocked && 'opacity-40 blur-[2px] select-none'
             )}>
@@ -102,12 +102,12 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
                   <span className="w-8 text-xs font-mono text-muted-foreground">{m.name}</span>
                   <span className="text-lg font-bold text-white">{isLocked ? '--' : m.score}</span>
                   <span className={cn('text-xs font-semibold', m.textColor)}>{isLocked ? '' : m.label}</span>
-                  {isCurrent && <span className="text-[10px] rounded-full bg-primary/20 text-primary px-2 py-0.5">NOW</span>}
+                  {isCurrent && <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5">NOW</span>}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
-                  <div className={cn('h-full rounded-full transition-all', m.color)}
+                <div className="flex-1 h-2 bg-white/5 overflow-hidden">
+                  <div className={cn('h-full transition-all', m.color)}
                     style={{ width: isLocked ? '0%' : `${(m.score / maxScore) * 100}%` }} />
                 </div>
               </div>
@@ -121,7 +121,7 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
 
       {/* Upgrade CTA for FREE */}
       {isFree && (
-        <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
+        <div className="mt-6 border border-primary/20 bg-primary/5 p-5 text-center">
           <Lock className="mx-auto h-5 w-5 text-primary mb-2" />
           <p className="text-sm font-medium text-white">See all 12 months</p>
           <p className="text-xs text-muted-foreground mt-1">Upgrade to Lite for the full year forecast</p>

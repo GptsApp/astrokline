@@ -123,7 +123,7 @@ export function DashboardClient({
   if (!mounted || localHasData === null) {
     return (
       <div className="mx-auto max-w-5xl">
-        <div className="h-48 w-full animate-pulse rounded-2xl bg-white/5" />
+        <div className="h-48 w-full animate-pulse bg-white/5" />
       </div>
     );
   }
@@ -147,10 +147,10 @@ export function DashboardClient({
   if (!localHasData) {
     return (
       <div className="mx-auto max-w-5xl">
-        <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-[#15131a]/80 to-primary/5 p-8 backdrop-blur-xl">
+        <div className="relative overflow-hidden border border-primary/20 bg-gradient-to-br from-[#15131a]/80 to-primary/5 p-8 backdrop-blur-xl">
           <div className="pointer-events-none absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 bg-primary/10 blur-[100px]" />
           <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center py-6 text-center">
-            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10">
+            <div className="mb-6 flex h-16 w-16 items-center justify-center border border-primary/30 bg-primary/10">
               <Compass className="h-8 w-8 text-primary" />
             </div>
             <Heading level={2} className="mb-3 text-3xl text-white md:text-4xl">
@@ -165,7 +165,7 @@ export function DashboardClient({
                 setLocalHasData(true);
                 router.refresh();
               })}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-bold text-primary-foreground shadow-lg transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 bg-primary px-8 py-4 font-bold text-primary-foreground shadow-lg transition-all hover:scale-105"
             >
               <Plus className="h-5 w-5" />
               Create My K-Line
@@ -180,7 +180,7 @@ export function DashboardClient({
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       {/* Energy Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-[#15131A]/60 p-6 md:p-8 backdrop-blur-xl">
+      <div className="relative overflow-hidden border border-white/5 bg-[#15131A]/60 p-6 md:p-8 backdrop-blur-xl">
         <div className="pointer-events-none absolute top-0 right-0 h-48 w-48 bg-primary/5 blur-[80px]" />
 
         <div className="relative z-10">
@@ -189,7 +189,7 @@ export function DashboardClient({
             <span className="text-sm text-muted-foreground">
               {energy?.greeting || 'Welcome'}, {displayName}
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
+            <span className="inline-flex items-center gap-1.5 border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
               <CreditCard className="h-3 w-3" />
               {tierLabel}
             </span>
@@ -208,7 +208,7 @@ export function DashboardClient({
           {energy ? (
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                <div className="flex h-14 w-14 items-center justify-center border border-white/10 bg-white/5">
                   <Gauge className="h-6 w-6 text-primary" />
                 </div>
                 <div>
@@ -231,7 +231,7 @@ export function DashboardClient({
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+              <div className="flex h-14 w-14 items-center justify-center border border-white/10 bg-white/5">
                 <Activity className="h-6 w-6 text-primary" />
               </div>
               <div>
@@ -249,9 +249,9 @@ export function DashboardClient({
           <Link
             key={tool.id}
             href={tool.href}
-            className={`group flex flex-col gap-3 rounded-2xl border p-5 sm:p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${tool.borderColor} bg-[#15131A]/40 backdrop-blur-sm`}
+            className={`group flex flex-col gap-3 border p-5 sm:p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${tool.borderColor} bg-[#15131A]/40 backdrop-blur-sm`}
           >
-            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${tool.bgColor}`}>
+            <div className={`flex h-10 w-10 items-center justify-center ${tool.bgColor}`}>
               <tool.icon className={`h-5 w-5 ${tool.color}`} />
             </div>
             <div>
@@ -266,7 +266,7 @@ export function DashboardClient({
       </div>
 
       {/* Subscription Bar */}
-      <div className="flex items-center justify-between rounded-2xl border border-white/5 bg-[#15131A]/40 px-6 py-4 backdrop-blur-sm">
+      <div className="flex items-center justify-between border border-white/5 bg-[#15131A]/40 px-6 py-4 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <CreditCard className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm text-white/70">

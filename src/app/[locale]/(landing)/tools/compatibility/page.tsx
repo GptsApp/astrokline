@@ -44,6 +44,11 @@ export default async function CompatibilityPage({
         { q: 'What is synastry?', a: 'Synastry is the astrological technique of comparing two birth charts to understand the dynamics between two people — attraction, tension, communication styles, and long-term potential.' },
         { q: 'Do I need the other person\'s birth time?', a: 'Birth time improves accuracy but is not required. Birth date and location provide a solid foundation for compatibility analysis.' },
         { q: 'Is this just about romance?', a: 'Not at all. Synastry works for business partners, friends, family members — any relationship where understanding interpersonal dynamics matters.' },
+        { q: 'How is the compatibility score calculated?', a: 'We analyze planetary aspects between both charts: conjunctions, trines, squares, and oppositions across Venus, Mars, Moon, and Sun positions to compute attraction and friction.' },
+        { q: 'Can a low score mean the relationship is doomed?', a: 'No. Low scores indicate areas requiring conscious effort. Many strong relationships have challenging synastry — awareness of tension points actually helps couples navigate them.' },
+        { q: 'What does the Tension Points dimension mean?', a: 'Tension Points measure potential friction — squares and oppositions between key planets. Some tension creates passion and growth; too much creates exhaustion. Context matters.' },
+        { q: 'Can I check compatibility with more than one person?', a: 'Yes. You can run unlimited compatibility checks. Many users compare multiple potential partners or analyze dynamics with colleagues and family.' },
+        { q: 'How does this compare to Sun sign compatibility?', a: 'Sun sign matching uses 1 data point. Our analysis uses 10+ planetary positions, house overlays, and aspect patterns — making it roughly 10x more accurate and nuanced.' },
       ]}
     />
   );

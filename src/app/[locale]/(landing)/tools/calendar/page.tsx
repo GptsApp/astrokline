@@ -44,6 +44,11 @@ export default async function CalendarPage({
         { q: 'How is my daily guidance calculated?', a: 'We cross-reference real-time planetary transits with your natal chart positions. Each transit activates specific life areas, creating a personalized daily forecast.' },
         { q: 'Can I plan important events around this?', a: 'Many users time job interviews, launches, and important conversations around their high-energy days with great success.' },
         { q: 'How far ahead can I see?', a: 'Free users see 7 days ahead. Lite subscribers get a full 30-day calendar with detailed daily breakdowns.' },
+        { q: 'Is this different from a generic horoscope?', a: 'Yes. Generic horoscopes use only your Sun sign. Our calendar uses your full natal chart — Moon, rising sign, and all planetary positions — for precision guidance.' },
+        { q: 'What does a "rest day" actually mean?', a: 'Rest days indicate periods when planetary energy suggests reflection over action. These are ideal for journaling, strategy planning, and self-care — not inactivity.' },
+        { q: 'Can I sync this with my real calendar?', a: 'We are building calendar integrations. Currently, you can screenshot or bookmark your weekly view for quick reference throughout the week.' },
+        { q: 'Do retrograde periods show up?', a: 'Yes. Mercury, Venus, and Mars retrogrades are factored into your daily scores. Retrograde periods often lower action scores and raise reflection scores.' },
+        { q: 'How should I use the DO and DON\'T recommendations?', a: 'Think of them as gentle nudges, not rigid rules. They highlight areas where cosmic energy supports you (DO) or where extra caution helps (DON\'T).' },
       ]}
     />
   );

@@ -44,6 +44,11 @@ export default async function EnergyPage({
         { q: 'How does astrology predict energy levels?', a: 'Your birth chart creates a unique blueprint. As planets transit through different houses, they activate or challenge specific life areas, creating natural energy cycles.' },
         { q: 'How accurate is the energy forecast?', a: 'The forecast is based on precise astronomical calculations of planetary positions relative to your birth chart. Users report 85%+ accuracy in identifying high and low energy periods.' },
         { q: 'Do I need my exact birth time?', a: 'Birth time improves accuracy significantly, but a forecast can still be generated with just your birth date and location.' },
+        { q: 'How often does the forecast update?', a: 'Your monthly energy forecast is recalculated daily as planetary positions shift, ensuring the most accurate and up-to-date readings.' },
+        { q: 'Can I use this to plan my career moves?', a: 'Absolutely. Many users time job interviews, product launches, and negotiations around their high-energy months for maximum effectiveness.' },
+        { q: 'What planets affect my energy the most?', a: 'Mars governs physical drive, Jupiter expands opportunities, and Saturn tests discipline. The Moon cycles affect daily mood, while your Sun sign sets the baseline vitality.' },
+        { q: 'Is this the same as a daily horoscope?', a: 'No. Daily horoscopes are generic and based only on Sun signs. This forecast uses your complete birth chart — all planets, houses, and aspects — for truly personalized predictions.' },
+        { q: 'What if my energy score is low for a month?', a: 'Low-energy months are not bad months — they signal times for rest, reflection, and preparation. The most successful people align action and recovery with their natural rhythms.' },
       ]}
     />
   );

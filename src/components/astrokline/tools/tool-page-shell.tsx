@@ -115,7 +115,7 @@ function GuestLanding({
       <section className="relative overflow-hidden py-24 sm:py-32">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary">
+          <div className="mb-6 inline-flex items-center gap-2 border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary">
             {TOOL_ICONS[toolId]}
             <span>{toolTitle}</span>
           </div>
@@ -128,7 +128,7 @@ function GuestLanding({
           <div className="mt-10">
             <button
               onClick={() => setIsShowSignModal(true)}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02]"
             >
               Start Free — See Your {toolTitle}
               <ArrowRight className="h-4 w-4" />
@@ -147,9 +147,9 @@ function GuestLanding({
             {features.map((f, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-border/50 bg-card p-6 transition-colors hover:border-primary/30"
+                className="border border-border/50 bg-card p-6 transition-colors hover:border-primary/30"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center bg-primary/10 text-primary">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground">
@@ -173,12 +173,12 @@ function GuestLanding({
           <p className="mt-3 text-muted-foreground">
             Here&apos;s what your personalized {toolTitle.toLowerCase()} looks like
           </p>
-          <div className="relative mt-8 overflow-hidden rounded-2xl border border-border/50 bg-card">
+          <div className="relative mt-8 overflow-hidden border border-border/50 bg-card">
             <div className="p-8 blur-[6px] select-none pointer-events-none opacity-60">
-              <div className="h-48 rounded-xl bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5" />
+              <div className="h-48 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5" />
               <div className="mt-4 grid grid-cols-3 gap-4">
                 {[1, 2, 3].map((n) => (
-                  <div key={n} className="h-24 rounded-lg bg-muted" />
+                  <div key={n} className="h-24 bg-muted" />
                 ))}
               </div>
             </div>
@@ -190,7 +190,7 @@ function GuestLanding({
                 </p>
                 <button
                   onClick={() => setIsShowSignModal(true)}
-                  className="mt-4 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105"
+                  className="mt-4 bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105"
                 >
                   Get Started Free
                 </button>
@@ -210,7 +210,7 @@ function GuestLanding({
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-border/50 bg-card overflow-hidden"
+                className="border border-border/50 bg-card overflow-hidden"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
@@ -243,7 +243,7 @@ function GuestLanding({
           </p>
           <button
             onClick={() => setIsShowSignModal(true)}
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground shadow-lg transition-all hover:scale-[1.02]"
+            className="mt-8 inline-flex items-center gap-2 bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground shadow-lg transition-all hover:scale-[1.02]"
           >
             Create Free Account
             <ArrowRight className="h-4 w-4" />
@@ -265,7 +265,7 @@ function NoKlineState({
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-6">
       <div className="max-w-md text-center">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center bg-primary/10">
           <Activity className="h-8 w-8 text-primary" />
         </div>
         <h1 className="text-2xl font-bold text-foreground">{toolTitle}</h1>
@@ -275,7 +275,7 @@ function NoKlineState({
         </p>
         <Link
           href="/kline"
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:scale-105"
+          className="mt-6 inline-flex items-center gap-2 bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:scale-105"
         >
           Generate K-Line
           <ArrowRight className="h-4 w-4" />
