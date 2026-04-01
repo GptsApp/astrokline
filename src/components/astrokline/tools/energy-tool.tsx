@@ -114,7 +114,7 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
       {/* Timeline */}
       <div ref={timelineRef} className="relative ml-4 sm:ml-8">
         {/* Spine line */}
-        <div className="absolute left-3 top-0 bottom-0 w-px bg-gradient-to-b from-white/20 via-white/10 to-transparent" />
+        <div className="absolute left-[13.5px] top-0 bottom-0 w-px bg-gradient-to-b from-white/20 via-white/10 to-transparent" />
 
         {months.map((m, i) => {
           const isLocked = i >= visibleMonths;
@@ -134,13 +134,17 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
             >
               {/* Timeline dot */}
               <div className={cn(
-                'absolute left-0 top-1 flex h-7 w-7 items-center justify-center rounded-full border-2 transition-all duration-300',
-                isCurrent ? `${c.dot} border-transparent shadow-lg ${c.glow}` :
-                isLocked ? 'bg-white/5 border-white/10' :
-                isPast ? `${c.dot}/30 border-white/10` : 'bg-white/5 border-white/10'
+                'absolute left-0 top-[7px] z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 bg-[#0a090d] transition-all duration-300',
+                isCurrent ? `${c.dot} border-transparent shadow-lg ${c.glow}` : 'border-white/10'
               )}>
+                {!isCurrent && (
+                  <span className={cn(
+                    'absolute inset-0 rounded-full',
+                    isLocked ? 'bg-white/5' : isPast ? `${c.dot}/30` : 'bg-white/5'
+                  )} />
+                )}
                 {isCurrent && <span className="absolute inset-0 animate-ping rounded-full bg-current opacity-20" />}
-                <span className={cn('text-[9px] font-bold', isCurrent ? 'text-black' : isLocked ? 'text-white/30' : 'text-white/60')}>
+                <span className={cn('relative z-10 text-[9px] font-bold', isCurrent ? 'text-black' : isLocked ? 'text-white/30' : 'text-white/60')}>
                   {i + 1}
                 </span>
               </div>
