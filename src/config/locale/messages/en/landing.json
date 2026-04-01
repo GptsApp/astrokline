@@ -24,12 +24,6 @@
               "description": "Monthly energy peaks and dips"
             },
             {
-              "title": "Action Calendar",
-              "url": "/tools/calendar",
-              "icon": "Calendar",
-              "description": "Daily guidance tailored to your chart"
-            },
-            {
               "title": "Compatibility",
               "url": "/tools/compatibility",
               "icon": "Users",

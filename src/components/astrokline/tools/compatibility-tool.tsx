@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Users, ArrowRight, Heart, MessageCircle, Zap, Shield } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import { ScrollPicker } from '../ui/scroll-picker';
 
 function hashCode(str: string): number {
   let hash = 0;
@@ -35,13 +36,26 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
   const myName = data?.profile?.name || 'You';
 
   const [partnerName, setPartnerName] = useState('');
-  const [partnerBirth, setPartnerBirth] = useState('');
+  const [partnerBirthYear, setPartnerBirthYear] = useState('');
+  const [partnerBirthMonth, setPartnerBirthMonth] = useState('');
+  const [partnerBirthDay, setPartnerBirthDay] = useState('');
+
+  const partnerBirth = partnerBirthYear && partnerBirthMonth && partnerBirthDay 
+    ? `${partnerBirthYear}-${partnerBirthMonth.padStart(2, '0')}-${partnerBirthDay.padStart(2, '0')}` 
+    : '';
+
   const [result, setResult] = useState<ReturnType<typeof computeCompatibility> | null>(null);
 
   const handleCheck = () => {
     if (!partnerBirth) return;
     setResult(computeCompatibility(myBirthDate, partnerBirth));
   };
+
+  const yearUpperBound = Math.max(new Date().getFullYear(), 2026);
+  const years = Array.from({ length: 102 }, (_, i) => String(yearUpperBound - i));
+  const months = Array.from({ length: 12 }, (_, i) => String(i + 1));
+  const maxDay = partnerBirthYear && partnerBirthMonth ? new Date(Number(partnerBirthYear), Number(partnerBirthMonth), 0).getDate() : 31;
+  const days = Array.from({ length: maxDay }, (_, i) => String(i + 1));
 
   const dimensions = result ? [
     { icon: Heart, label: 'Romance', score: result.romance, color: 'text-rose-400', bg: 'bg-rose-500' },
@@ -82,12 +96,28 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
           </div>
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">Their Birth Date</label>
-            <input
-              type="date"
-              value={partnerBirth}
-              onChange={(e) => setPartnerBirth(e.target.value)}
-              className="w-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white focus:border-primary/50 focus:outline-none"
-            />
+            <div className="grid grid-cols-3 gap-3">
+              <ScrollPicker
+                items={years.map(y => ({ value: y, label: y }))}
+                value={partnerBirthYear}
+                onChange={setPartnerBirthYear}
+                placeholder="YYYY"
+              />
+              <ScrollPicker
+                items={months.map(m => ({ value: m, label: m.padStart(2, '0') }))}
+                value={partnerBirthMonth}
+                onChange={(v) => { setPartnerBirthMonth(v); setPartnerBirthDay(''); }}
+                placeholder="MM"
+                loop={true}
+              />
+              <ScrollPicker
+                items={days.map(d => ({ value: d, label: d.padStart(2, '0') }))}
+                value={partnerBirthDay}
+                onChange={setPartnerBirthDay}
+                placeholder="DD"
+                loop={true}
+              />
+            </div>
           </div>
         </div>
         <button
