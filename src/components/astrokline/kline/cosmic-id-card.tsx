@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import type { UserProfile, DestinyScorePoint } from '@/lib/astrokline/mock-astrology-data';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Share2, Sparkles, X, Trophy } from 'lucide-react';
@@ -24,7 +24,20 @@ export function CosmicIdCard({ profile, klineData }: Props) {
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
+  const [shareUrl, setShareUrl] = useState<string>('https://astrokline.com/kline');
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Fetch actual referral url for viral sharing
+  useEffect(() => {
+    fetch('/api/kline/referral')
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success && res.data?.shareUrl) {
+          setShareUrl(res.data.shareUrl);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const powerScore = profile.overallAverageScore || 84;
   const topPct = 100 - scoreToPercentile(powerScore);
@@ -86,7 +99,6 @@ export function CosmicIdCard({ profile, klineData }: Props) {
 
   const handleShare = useCallback(async () => {
     const text = `✨ My Cosmic Power Score: ${powerScore} — Top ${topPct}% of all charts!\n${profile.sun.sign} ☉ · ${profile.moon.sign} ☽ · ${profile.rising.sign} ↑\nDiscover yours:`;
-    const shareUrl = 'https://astrokline.com/dashboard/invite';
     
     if (navigator.share) {
       try {
@@ -97,7 +109,7 @@ export function CosmicIdCard({ profile, klineData }: Props) {
       setShareStatus('copied');
       setTimeout(() => setShareStatus('idle'), 2000);
     }
-  }, [profile, powerScore, topPct]);
+  }, [profile, powerScore, topPct, shareUrl]);
 
   if (!isOpen) {
     return (
@@ -139,7 +151,7 @@ export function CosmicIdCard({ profile, klineData }: Props) {
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           className="relative flex max-h-[90vh] flex-col items-center overflow-y-auto overflow-x-hidden"
         >
-          <CosmicIdCardContent profile={profile} klineData={klineData} cardRef={cardRef} />
+          <CosmicIdCardContent profile={profile} klineData={klineData} cardRef={cardRef} shareUrl={shareUrl} />
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-4 max-w-[380px] text-center">
             <p className="text-sm text-white/60">

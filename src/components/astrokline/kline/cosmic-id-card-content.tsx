@@ -9,6 +9,7 @@ interface Props {
   profile: UserProfile;
   klineData: DestinyScorePoint[];
   cardRef?: React.RefObject<HTMLDivElement | null>;
+  shareUrl?: string;
 }
 
 /** Deterministic percentile from a score (looks real but is cosmetic) */
@@ -36,7 +37,7 @@ function RankBadge({ label, score, color }: { label: string; score: number; colo
   );
 }
 
-export function CosmicIdCardContent({ profile, klineData, cardRef }: Props) {
+export function CosmicIdCardContent({ profile, klineData, cardRef, shareUrl = 'https://astrokline.com/kline' }: Props) {
   const qrRef = useRef<HTMLCanvasElement>(null);
   const tagline = `${profile.sun.sign} ☉ · ${profile.moon.sign} ☽ · ${profile.rising.sign} ↑`;
 
@@ -56,8 +57,8 @@ export function CosmicIdCardContent({ profile, klineData, cardRef }: Props) {
   ];
 
   useEffect(() => {
-    if (qrRef.current) drawQRCode(qrRef.current, 'https://astrokline.com/kline', 56, '#D4AF37');
-  }, []);
+    if (qrRef.current) drawQRCode(qrRef.current, shareUrl, 56, '#D4AF37');
+  }, [shareUrl]);
 
   return (
     <div
@@ -122,7 +123,7 @@ export function CosmicIdCardContent({ profile, klineData, cardRef }: Props) {
       <div className="relative z-10 mx-5 mt-3 flex items-end justify-between border-t border-white/5 pt-3 pb-4">
         <div>
           <p className="font-mono text-[7px] tracking-[0.3em] text-white/15 uppercase">Discover your cosmic power</p>
-          <p className="mt-0.5 font-mono text-[8px] font-bold tracking-wider text-[#D4AF37]/40">astrokline.com/kline</p>
+          <p className="mt-0.5 font-mono text-[8px] font-bold tracking-wider text-[#D4AF37]/40">Scan to view reading</p>
         </div>
         <canvas ref={qrRef} className="h-12 w-12 opacity-70" />
       </div>
