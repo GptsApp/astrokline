@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, Briefcase, Calendar, Coins, Heart, Leaf, Sparkles, TrendingUp, Users } from 'lucide-react';
+import { ArrowRight, Briefcase, Coins, Heart, Leaf, Sparkles, TrendingUp, Users } from 'lucide-react';
 
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
@@ -311,10 +311,9 @@ export function SharedKlineResult({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {[
             { icon: TrendingUp, label: 'Energy Forecast', desc: 'See your month-by-month energy peaks & dips', color: 'text-purple-400', borderColor: 'border-purple-400/20 hover:border-purple-400/40', bgColor: 'bg-purple-400/5', href: '/tools/energy' },
-            { icon: Calendar, label: 'Action Calendar', desc: 'Daily dos & don\'ts tailored to your chart', color: 'text-emerald-400', borderColor: 'border-emerald-400/20 hover:border-emerald-400/40', bgColor: 'bg-emerald-400/5', href: '/tools/calendar' },
             { icon: Users, label: 'Compatibility', desc: 'Discover chemistry with anyone', color: 'text-rose-400', borderColor: 'border-rose-400/20 hover:border-rose-400/40', bgColor: 'bg-rose-400/5', href: '/tools/compatibility' },
           ].map((tool, i) => (
             <motion.a

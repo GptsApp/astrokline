@@ -30,7 +30,7 @@ const TIER_CONFIG = {
     unit: '/ month',
     features: [
       'Career, Wealth, Love & Health AI reading',
-      '30-Day Action Calendar with daily Do/Don\'t',
+      'Full-Year Energy Forecast with planetary analysis',
       '12-Month Energy Curve forecast',
       'Compatibility Check (synastry)',
       '5 chart generations per month',

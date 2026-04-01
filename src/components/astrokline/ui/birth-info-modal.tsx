@@ -97,12 +97,9 @@ export function BirthInfoModal() {
       const d = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
       setData((prev) => {
         const newData = { ...prev, date: d };
-        // Auto-save partial data to prevent drop-off loss
-        if (newData.name) {
-          try {
-            localStorage.setItem('astrokline_birth_data', JSON.stringify(newData));
-          } catch (e) {}
-        }
+        try {
+          localStorage.setItem('astrokline_birth_data', JSON.stringify(newData));
+        } catch (e) {}
         return newData;
       });
     } else {
@@ -112,17 +109,14 @@ export function BirthInfoModal() {
 
   // Auto-save on data change if at least name is present
   useEffect(() => {
-    if (data.name) {
-      try {
-        localStorage.setItem('astrokline_birth_data', JSON.stringify(data));
-      } catch (e) {}
-    }
+    try {
+      localStorage.setItem('astrokline_birth_data', JSON.stringify(data));
+    } catch (e) {}
   }, [data]);
 
   // Validate current step — returns error string or ""
   const validate = useCallback((): string => {
     if (step === 0) {
-      if (!data.name.trim()) return 'Please enter your name';
       if (!birthYear || !birthMonth || !birthDay)
         return 'Please select your complete birth date';
     } else if (step === 1) {
@@ -150,7 +144,7 @@ export function BirthInfoModal() {
       trackEvent('birth_modal_submit');
 
       // SYNC SAVE: forcefully save to localStorage immediately to prevent redirect data loss
-      if (data.name && data.date && data.location) {
+      if (data.date && data.location) {
         try {
           localStorage.setItem('astrokline_birth_data', JSON.stringify(data));
         } catch (e) {}
@@ -273,7 +267,7 @@ export function BirthInfoModal() {
                   htmlFor="modal-name"
                   className="text-foreground/80 text-sm font-medium"
                 >
-                  Your Name <span className="text-amber-400">*</span>
+                  Your Name <span className="text-muted-foreground/50 text-xs">(optional)</span>
                 </Label>
                 <Input
                   id="modal-name"
@@ -283,11 +277,8 @@ export function BirthInfoModal() {
                     setData((d) => ({ ...d, name: e.target.value }));
                     setErrorMsg('');
                   }}
-                  placeholder="Enter your name"
-                  className={cn(
-                    'focus-visible:ring-primary/50 placeholder:text-muted-foreground/50 h-12  border-white/10 bg-black/50 text-white',
-                    errorMsg && !data.name.trim() && 'border-amber-500/50'
-                  )}
+                  placeholder="Nickname or initials"
+                  className="focus-visible:ring-primary/50 placeholder:text-muted-foreground/50 h-12  border-white/10 bg-black/50 text-white"
                 />
               </div>
 

@@ -13,8 +13,8 @@ import {
 import {
   extractCurrentYearScore, extractSunSign, extractMoonSign,
 } from '@/lib/astrokline/daily-energy';
-import { getDailyTransit, getWeekTransits } from '@/lib/astrokline/daily-transit';
-import { MonthCalendarModal } from '@/components/astrokline/tools/month-calendar-modal';
+import { getDailyTransit, getWeekTransits, type NatalMoonInput } from '@/lib/astrokline/daily-transit';
+
 import { Heading } from '@/components/astrokline/ui/heading';
 import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { useRouter } from 'next/navigation';
@@ -49,7 +49,7 @@ export function DashboardClient({
   const [localHasData, setLocalHasData] = useState<boolean | null>(null);
   const [localProfile, setLocalProfile] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [calendarOpen, setCalendarOpen] = useState(false);
+
   const { open: openModal } = useBirthInfoModal();
   const { openCheckout } = useCheckout();
   const router = useRouter();
@@ -72,22 +72,28 @@ export function DashboardClient({
     const bd = parsed?.profile?.birthDate || birthDate || '2000-01-01';
     const yearPoint = klineData.find((p: any) => p.year === new Date().getFullYear());
     const yearScore = yearPoint?.score ?? 65;
-    return { parsed, klineData, bd, yearScore };
+    // Extract natal moon for Vedic transit engine
+    const profileMoon = parsed?.profile?.moon;
+    const birthYear = bd ? parseInt(bd.split('-')[0], 10) : 2000;
+    const natalMoon: NatalMoonInput = profileMoon
+      ? { sign: profileMoon.sign, degree: profileMoon.degree ?? 0, minute: profileMoon.minute ?? 0, birthYear }
+      : { sign: 'Aries', degree: 0, minute: 0, birthYear };
+    return { parsed, klineData, bd, yearScore, natalMoon };
   }, [klineResult, birthDate]);
 
   const weekTransits = useMemo(() => {
     if (!data) return [];
-    return getWeekTransits(data.yearScore, data.bd, selectedDate);
+    return getWeekTransits(data.yearScore, data.natalMoon, selectedDate);
   }, [data, selectedDate]);
 
   const todayTransit = useMemo(() => {
     if (!data) return null;
-    return getDailyTransit(data.yearScore, data.bd, selectedDate);
+    return getDailyTransit(data.yearScore, data.natalMoon, selectedDate);
   }, [data, selectedDate]);
 
   const getScoreForDate = (d: Date) => {
     if (!data) return 50;
-    return getDailyTransit(data.yearScore, data.bd, d).score;
+    return getDailyTransit(data.yearScore, data.natalMoon, d).score;
   };
 
   if (!mounted || localHasData === null) {
@@ -200,7 +206,7 @@ export function DashboardClient({
           <button onClick={() => shiftWeek(1)} className="p-1 text-white/40 hover:text-white">
             <ChevronRight className="h-4 w-4" />
           </button>
-          <button onClick={() => setCalendarOpen(true)} className="p-1.5 text-white/40 hover:text-white border border-white/10">
+          <button onClick={() => setSelectedDate(new Date())} className="p-1.5 text-white/40 hover:text-white border border-white/10" title="Go to today">
             <CalendarDays className="h-4 w-4" />
           </button>
         </div>
@@ -223,7 +229,7 @@ export function DashboardClient({
           </div>
 
           {/* Planet + Element */}
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-3">
             <div className="flex items-center gap-2 text-sm text-white/60">
               <span className="text-lg">{todayTransit.rulingPlanet.symbol}</span>
               <span>{todayTransit.rulingPlanet.name} in {todayTransit.transitSign}</span>
@@ -231,6 +237,35 @@ export function DashboardClient({
             <span className="text-xs text-white/30">·</span>
             <span className="text-sm text-white/40">{todayTransit.element} Day</span>
           </div>
+
+          {/* Vedic Panchang Strip */}
+          {todayTransit.vedic && (
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-4 pb-3 border-b border-white/5">
+              <span className="text-[10px] font-mono text-white/30 uppercase tracking-wider">☽ {todayTransit.vedic.transitNakshatra}</span>
+              <span className="text-[10px] font-mono text-white/25">|</span>
+              <span className={cn(
+                'text-[10px] font-mono uppercase tracking-wider',
+                todayTransit.vedic.taraBala.score >= 75 ? 'text-emerald-400/70' :
+                todayTransit.vedic.taraBala.score >= 40 ? 'text-amber-400/70' : 'text-rose-400/70'
+              )}>
+                {todayTransit.vedic.taraBala.name}
+              </span>
+              <span className="text-[10px] font-mono text-white/25">|</span>
+              <span className="text-[10px] font-mono text-white/30 uppercase tracking-wider">
+                {todayTransit.vedic.tithi.name} · {todayTransit.vedic.tithi.group}
+              </span>
+              {todayTransit.vedic.yoga.isSiddha && (
+                <span className="text-[9px] font-mono bg-emerald-500/15 text-emerald-400 px-1.5 py-0.5 uppercase tracking-wider">
+                  Siddha
+                </span>
+              )}
+              {todayTransit.vedic.yoga.isAmrita && (
+                <span className="text-[9px] font-mono bg-amber-500/15 text-amber-400 px-1.5 py-0.5 uppercase tracking-wider">
+                  Amrita
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Narrative */}
           <div className="text-sm text-white/60 leading-relaxed whitespace-pre-line">
@@ -330,14 +365,7 @@ export function DashboardClient({
         )}
       </div>
 
-      {/* Month Calendar Modal */}
-      <MonthCalendarModal
-        isOpen={calendarOpen}
-        onClose={() => setCalendarOpen(false)}
-        onSelectDate={setSelectedDate}
-        getScoreForDate={getScoreForDate}
-        selectedDate={selectedDate}
-      />
+
     </div>
   );
 }

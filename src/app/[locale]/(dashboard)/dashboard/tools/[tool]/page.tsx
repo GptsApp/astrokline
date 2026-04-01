@@ -2,7 +2,6 @@ import { getUserInfo } from '@/shared/models/user';
 import { getAstroUserTier } from '@/lib/astrokline/user-tier';
 import { getMyKline } from '@/shared/models/kline';
 import { EnergyTool } from '@/components/astrokline/tools/energy-tool';
-import { CalendarTool } from '@/components/astrokline/tools/calendar-tool';
 import { CompatibilityTool } from '@/components/astrokline/tools/compatibility-tool';
 import { ToolBreadcrumb } from '@/components/astrokline/tools/tool-breadcrumb';
 import { redirect } from 'next/navigation';
@@ -13,7 +12,6 @@ interface ToolPageProps {
 
 const TOOL_MAP: Record<string, { title: string; component: string }> = {
   energy: { title: 'Energy Forecast', component: 'energy' },
-  calendar: { title: 'Action Calendar', component: 'calendar' },
   compatibility: { title: 'Compatibility Check', component: 'compatibility' },
 };
 
@@ -38,9 +36,6 @@ export default async function DashboardToolPage({ params }: ToolPageProps) {
       <ToolBreadcrumb title={meta.title} />
       {meta.component === 'energy' && (
         <EnergyTool tier={tier} klineResult={myKline.klineResult} />
-      )}
-      {meta.component === 'calendar' && (
-        <CalendarTool tier={tier} klineResult={myKline.klineResult} />
       )}
       {meta.component === 'compatibility' && (
         <CompatibilityTool tier={tier} klineResult={myKline.klineResult} />

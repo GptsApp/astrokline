@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Home, Activity, TrendingUp, Calendar, User } from 'lucide-react';
+import { Home, Activity, TrendingUp, Users, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Link } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
@@ -10,7 +10,7 @@ const TABS = [
   { id: 'home', icon: Home, label: 'Home', href: '/dashboard' },
   { id: 'kline', icon: Activity, label: 'K-Line', href: '/dashboard/kline' },
   { id: 'energy', icon: TrendingUp, label: 'Energy', href: '/dashboard/tools/energy' },
-  { id: 'calendar', icon: Calendar, label: 'Calendar', href: '/dashboard/tools/calendar' },
+  { id: 'compatibility', icon: Users, label: 'Match', href: '/dashboard/tools/compatibility' },
   { id: 'me', icon: User, label: 'Me', href: '/settings/profile' },
 ];
 
@@ -25,7 +25,7 @@ export function MobileBottomTab() {
     if (cleanPath === '/dashboard') return 'home';
     if (cleanPath.startsWith('/dashboard/kline')) return 'kline';
     if (cleanPath.includes('/tools/energy')) return 'energy';
-    if (cleanPath.includes('/tools/calendar')) return 'calendar';
+    if (cleanPath.includes('/tools/compatibility')) return 'compatibility';
     if (cleanPath.startsWith('/settings')) return 'me';
     return 'home';
   };

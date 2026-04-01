@@ -3,7 +3,6 @@
 import React from 'react';
 import {
   TrendingUp,
-  Calendar,
   Users,
   ArrowRight,
   ChevronDown,
@@ -14,12 +13,10 @@ import {
 import { useAppContext } from '@/shared/contexts/app';
 import { Link } from '@/core/i18n/navigation';
 import { EnergyTool } from './energy-tool';
-import { CalendarTool } from './calendar-tool';
 import { CompatibilityTool } from './compatibility-tool';
 
 const TOOL_ICONS: Record<string, React.ReactNode> = {
   energy: <TrendingUp className="h-6 w-6" />,
-  calendar: <Calendar className="h-6 w-6" />,
   compatibility: <Users className="h-6 w-6" />,
 };
 
@@ -301,9 +298,6 @@ function ToolContent({
 }) {
   if (toolId === 'energy') {
     return <EnergyTool tier={tier} klineResult={klineResult} />;
-  }
-  if (toolId === 'calendar') {
-    return <CalendarTool tier={tier} klineResult={klineResult} />;
   }
   if (toolId === 'compatibility') {
     return <CompatibilityTool tier={tier} klineResult={klineResult} />;

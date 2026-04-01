@@ -42,7 +42,7 @@ const tiers = [
   {
     icon: TrendingUp,
     name: 'Lite',
-    highlight: 'AI Reading + Calendar + Synastry',
+    highlight: 'AI Reading + Energy Forecast + Synastry',
     color: 'text-primary',
   },
   {

@@ -57,9 +57,7 @@ export function InlineBirthForm() {
       const d = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
       setData((prev: BirthData) => {
         const newData = { ...prev, date: d };
-        if (newData.name) {
-          try { localStorage.setItem('astrokline_birth_data', JSON.stringify(newData)); } catch (e) {}
-        }
+        try { localStorage.setItem('astrokline_birth_data', JSON.stringify(newData)); } catch (e) {}
         return newData;
       });
     } else {
@@ -70,7 +68,6 @@ export function InlineBirthForm() {
   // Validation
   const validate = useCallback((): string => {
     if (step === 0) {
-      if (!data.name.trim()) return 'Please enter your name';
       if (!birthYear || !birthMonth || !birthDay) return 'Please complete your date of birth';
     } else if (step === 1) {
       if (!data.timeSlot) return 'Pick a time slot to get started';
@@ -89,7 +86,7 @@ export function InlineBirthForm() {
       setStep(1);
     } else {
       trackEvent('birth_modal_submit');
-      if (data.name && data.date && data.location) {
+      if (data.date && data.location) {
         try { localStorage.setItem('astrokline_birth_data', JSON.stringify(data)); } catch (e) {}
       }
       // Submit -> Navigate!
@@ -150,12 +147,12 @@ export function InlineBirthForm() {
           {step === 0 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Your Name</Label>
+                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Your Name <span className="text-white/20">(optional)</span></Label>
                 <Input
                   autoFocus
                   value={data.name}
                   onChange={(e) => { setData((d: BirthData) => ({ ...d, name: e.target.value })); setErrorMsg(''); }}
-                  placeholder="Enter your name"
+                  placeholder="Nickname or initials"
                   className="h-12 border-b border-white/10 bg-[#111] text-lg font-medium tracking-tight rounded-none focus-visible:border-primary/50 focus-visible:ring-0 px-4"
                 />
               </div>
