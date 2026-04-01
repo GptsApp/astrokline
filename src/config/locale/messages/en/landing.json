@@ -48,34 +48,13 @@
       ]
     },
     "auth_nav": {
-      "items": [
-        {
-          "title": "Dashboard",
-          "url": "/dashboard",
-          "icon": "LayoutDashboard"
-        },
-        {
-          "title": "K-Line",
-          "url": "/dashboard/kline",
-          "icon": "Activity"
-        }
-      ]
+      "items": []
     },
     "user_nav": {
       "items": [
         {
-          "title": "Dashboard",
-          "url": "/dashboard",
-          "icon": "LayoutDashboard"
-        },
-        {
-          "title": "K-Line",
-          "url": "/dashboard/kline",
-          "icon": "Activity"
-        },
-        {
           "title": "Settings",
-          "url": "/settings",
+          "url": "/settings/profile",
           "icon": "Settings"
         }
       ]
