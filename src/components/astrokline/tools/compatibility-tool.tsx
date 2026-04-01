@@ -3,26 +3,37 @@
 import React, { useState } from 'react';
 import { Users, ArrowRight, Heart, MessageCircle, Zap, Shield } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import { ScrollPicker } from '../ui/scroll-picker';
+import { PartnerBirthForm, PartnerBirthData } from './partner-birth-form';
+import { computeCompatibility, SynastryScore } from '@/lib/astrokline/compatibility-engine';
 
-function hashCode(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash |= 0;
+// Helper to build UTC date from given info.
+function buildUtcDate(dateStr: string, timeSlot: string, tzOffset: number | null): Date {
+  let [yyyy, mm, dd] = [2000, 1, 1];
+  if (dateStr) {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      yyyy = parseInt(parts[0], 10);
+      mm = parseInt(parts[1], 10);
+      dd = parseInt(parts[2], 10);
+    }
   }
-  return Math.abs(hash);
-}
 
-function computeCompatibility(birthDate1: string, birthDate2: string) {
-  const base = hashCode(birthDate1 + birthDate2);
-  const overall = 45 + (base % 45); // 45-89
-  const romance = 40 + (hashCode(birthDate1 + birthDate2 + 'romance') % 50);
-  const communication = 40 + (hashCode(birthDate1 + birthDate2 + 'comm') % 50);
-  const values = 40 + (hashCode(birthDate1 + birthDate2 + 'values') % 50);
-  const challenge = 20 + (hashCode(birthDate1 + birthDate2 + 'challenge') % 60);
+  // default to noon if unknown
+  let hour = 12;
+  if (timeSlot && timeSlot !== 'unknown' && timeSlot.includes('-')) {
+    hour = parseInt(timeSlot.split(':')[0], 10);
+  }
 
-  return { overall, romance, communication, values, challenge };
+  // Apply timezone approximation logically, or just build standard Local and assume it represents UTC for the engine since engine takes Date.
+  // Actually, if we just build Date(UTC), it's consistent.
+  let date = new Date(Date.UTC(yyyy, mm - 1, dd, hour, 0, 0));
+  
+  if (tzOffset !== null) {
+    // If tz is +480 (Asia/Shanghai), we subtract 480 mins to get UTC. 
+    // Wait, let's keep it simple: New Date(Date.UTC(...)) - tzOffset * 60000 ensures alignment.
+    date = new Date(date.getTime() + (tzOffset * 60000));
+  }
+  return date;
 }
 
 interface CompatibilityToolProps {
@@ -32,30 +43,27 @@ interface CompatibilityToolProps {
 
 export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps) {
   const data = typeof klineResult === 'string' ? JSON.parse(klineResult) : klineResult;
-  const myBirthDate = data?.profile?.birthDate || '2000-01-01';
+  const myDateStr = data?.profile?.date || data?.profile?.birthDate;
+  const myTimeSlot = data?.profile?.timeSlot;
+  const myTz = data?.profile?.timezoneValue || 0;
   const myName = data?.profile?.name || 'You';
 
   const [partnerName, setPartnerName] = useState('');
-  const [partnerBirthYear, setPartnerBirthYear] = useState('');
-  const [partnerBirthMonth, setPartnerBirthMonth] = useState('');
-  const [partnerBirthDay, setPartnerBirthDay] = useState('');
+  const [result, setResult] = useState<SynastryScore | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
 
-  const partnerBirth = partnerBirthYear && partnerBirthMonth && partnerBirthDay 
-    ? `${partnerBirthYear}-${partnerBirthMonth.padStart(2, '0')}-${partnerBirthDay.padStart(2, '0')}` 
-    : '';
-
-  const [result, setResult] = useState<ReturnType<typeof computeCompatibility> | null>(null);
-
-  const handleCheck = () => {
-    if (!partnerBirth) return;
-    setResult(computeCompatibility(myBirthDate, partnerBirth));
+  const handlePartnerSubmit = (pData: PartnerBirthData) => {
+    setIsCalculating(true);
+    setPartnerName(pData.name);
+    
+    // Simulate complex calculation time
+    setTimeout(() => {
+      const d1 = buildUtcDate(myDateStr, myTimeSlot, myTz);
+      const d2 = buildUtcDate(pData.date, pData.timeSlot, pData.timezoneValue);
+      setResult(computeCompatibility(d1, d2));
+      setIsCalculating(false);
+    }, 1200);
   };
-
-  const yearUpperBound = Math.max(new Date().getFullYear(), 2026);
-  const years = Array.from({ length: 102 }, (_, i) => String(yearUpperBound - i));
-  const months = Array.from({ length: 12 }, (_, i) => String(i + 1));
-  const maxDay = partnerBirthYear && partnerBirthMonth ? new Date(Number(partnerBirthYear), Number(partnerBirthMonth), 0).getDate() : 31;
-  const days = Array.from({ length: maxDay }, (_, i) => String(i + 1));
 
   const dimensions = result ? [
     { icon: Heart, label: 'Romance', score: result.romance, color: 'text-rose-400', bg: 'bg-rose-500' },
@@ -78,61 +86,10 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
         </div>
       </div>
 
-      {/* Input form */}
-      <div className="border border-white/5 bg-white/[0.02] p-6">
-        <p className="text-sm text-muted-foreground mb-4">
-          Enter the other person&apos;s details to see your astrological chemistry.
-        </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1.5">Their Name</label>
-            <input
-              type="text"
-              value={partnerName}
-              onChange={(e) => setPartnerName(e.target.value)}
-              placeholder="e.g. Alex"
-              className="w-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:border-primary/50 focus:outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1.5">Their Birth Date</label>
-            <div className="grid grid-cols-3 gap-3">
-              <ScrollPicker
-                items={years.map(y => ({ value: y, label: y }))}
-                value={partnerBirthYear}
-                onChange={setPartnerBirthYear}
-                placeholder="YYYY"
-              />
-              <ScrollPicker
-                items={months.map(m => ({ value: m, label: m.padStart(2, '0') }))}
-                value={partnerBirthMonth}
-                onChange={(v) => { setPartnerBirthMonth(v); setPartnerBirthDay(''); }}
-                placeholder="MM"
-                loop={true}
-              />
-              <ScrollPicker
-                items={days.map(d => ({ value: d, label: d.padStart(2, '0') }))}
-                value={partnerBirthDay}
-                onChange={setPartnerBirthDay}
-                placeholder="DD"
-                loop={true}
-              />
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={handleCheck}
-          disabled={!partnerBirth}
-          className={cn(
-            'mt-4 inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold transition-all',
-            partnerBirth
-              ? 'bg-primary text-primary-foreground hover:scale-105'
-              : 'bg-white/5 text-white/30 cursor-not-allowed'
-          )}
-        >
-          Check Compatibility <ArrowRight className="h-4 w-4" />
-        </button>
-      </div>
+      {/* Input form - Hidden when result exists */}
+      {!result && (
+        <PartnerBirthForm onSubmit={handlePartnerSubmit} isLoading={isCalculating} />
+      )}
 
       {/* Results */}
       {result && (
@@ -151,19 +108,41 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
           </div>
 
           {/* Dimension breakdown */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {dimensions.map((d) => (
-              <div key={d.label} className="border border-white/5 bg-white/[0.02] p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <d.icon className={cn('h-4 w-4', d.color)} />
-                  <span className="text-sm font-medium text-white">{d.label}</span>
-                  <span className={cn('ml-auto text-sm font-bold', d.color)}>{d.score}</span>
+              <div key={d.label} className="border border-white/5 bg-[#0a0a0d] p-5 shadow-xl relative overflow-hidden group">
+                {/* Decorative corner accent */}
+                <div className={cn("absolute -top-6 -right-6 w-16 h-16 rounded-full opacity-10 blur-xl", d.bg)} />
+                
+                <div className="flex items-center gap-3 mb-3">
+                  <div className={cn("p-2 rounded-sm bg-white/5", d.color)}>
+                    <d.icon className="h-4 w-4" />
+                  </div>
+                  <span className="text-xs uppercase tracking-widest font-mono text-white/50">{d.label}</span>
+                  <span className={cn('ml-auto text-xl font-bold font-mono', d.color)}>{d.score}</span>
                 </div>
-                <div className="h-1.5 bg-white/5 overflow-hidden">
-                  <div className={cn('h-full rounded-full', d.bg)} style={{ width: `${d.score}%` }} />
+                
+                <div className="h-1 bg-white/5 overflow-hidden mb-4 rounded-full">
+                  <div className={cn('h-full', d.bg)} style={{ width: `${d.score}%` }} />
                 </div>
+                
+                <p className="text-[13px] text-white/60 leading-relaxed font-mono">
+                  {d.label === 'Romance' && result.insights.romanceText}
+                  {d.label === 'Communication' && result.insights.communicationText}
+                  {d.label === 'Shared Values' && result.insights.valuesText}
+                  {d.label === 'Tension Points' && result.insights.challengeText}
+                </p>
               </div>
             ))}
+          </div>
+          
+          <div className="flex justify-center mt-8">
+            <button 
+              onClick={() => setResult(null)}
+              className="px-6 py-3 border border-white/10 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-white hover:border-white/30 transition-colors"
+            >
+              Analyze Another Profile
+            </button>
           </div>
         </div>
       )}
