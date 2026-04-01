@@ -94,12 +94,10 @@ export function ConsoleLayout({
       </div>
 
       {/* Main Content */}
-      <div className="container">
-        <div className="flex flex-wrap gap-8 py-8">
+      <div className="container max-w-7xl">
+        <div className="flex min-h-screen">
           {/* Left Sidebar (Desktop) */}
-          <div className="sticky top-24 hidden min-h-[calc(100vh-10rem)] w-48 flex-shrink-0 flex-col md:flex">
-            {/* Search Box (Commented out) */}
-
+          <div className="sticky top-24 hidden h-[calc(100vh-6rem)] w-56 flex-shrink-0 flex-col md:flex pr-8 py-8">
             <div className="flex-1">
               {/* Navigation Menu */}
               {renderNavItems(filteredItems)}
@@ -109,8 +107,14 @@ export function ConsoleLayout({
             {bottomNav && renderNavItems(bottomNav.items, true)}
           </div>
 
-          {/* Right Content Area */}
-          <div className="min-w-0 flex-1">{children}</div>
+          {/* Right Content Area with Divider and Distinct Background */}
+          <div className="min-w-0 flex-1 border-l border-white/10 bg-[#0a090d] relative shadow-2xl">
+            {/* Extremely subtle glow on the border */}
+            <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-primary/20 to-transparent pointer-events-none" />
+            <div className="p-4 md:p-10 lg:p-12 min-h-full">
+              {children}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@
   "nav": {
     "items": [
       {
-        "title": "Overview",
+        "title": "Dashboard",
         "url": "/dashboard",
         "icon": "Home"
       },

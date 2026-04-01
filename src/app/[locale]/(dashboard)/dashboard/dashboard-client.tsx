@@ -156,22 +156,33 @@ export function DashboardClient({
     <div className="mx-auto max-w-5xl space-y-4">
       {/* Greeting Bar */}
       <div className="flex items-center justify-between">
-        <div>
-          <span className="text-sm text-muted-foreground">
-            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-          </span>
-          <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-white font-medium">{displayName}</span>
+        <div className="flex flex-col md:flex-row md:items-end gap-3 md:gap-6">
+          <div className="flex items-center gap-4">
+            <span className="font-serif text-4xl text-white/90 tracking-tight">{displayName}</span>
             {(sunSign || moonSign) && (
-              <span className="text-xs text-muted-foreground/70">
+              <span className="text-lg text-white/50 tracking-wide font-medium">
                 {sunSign && `${sunSign} ☉`}{sunSign && moonSign && ' · '}{moonSign && `${moonSign} ☽`}
               </span>
             )}
           </div>
+          <span className="text-sm text-white/30 font-mono tracking-widest uppercase pb-1 md:border-l md:border-white/10 md:pl-6">
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+          </span>
         </div>
-        <span className="inline-flex items-center gap-1.5 border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
-          <CreditCard className="h-3 w-3" /> {tierLabel}
-        </span>
+        <button
+          onClick={() => {
+            if (isFree || userTier === 'STANDARD') {
+              openCheckout('pro');
+            }
+          }}
+          className="group relative inline-flex items-center justify-center gap-2 overflow-hidden border border-[#D4AF37]/30 bg-gradient-to-br from-[#1A1814] to-[#0A0905] px-6 py-2.5 transition-all hover:scale-105 hover:border-[#D4AF37]/60 hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] focus:outline-none"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#D4AF37]/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite] group-hover:via-[#D4AF37]/20" />
+          <CreditCard className="relative z-10 h-4 w-4 text-[#D4AF37]" />
+          <span className="relative z-10 font-bold uppercase tracking-widest text-[#D4AF37] text-xs">
+            {tierLabel}
+          </span>
+        </button>
       </div>
 
       {/* Week Navigator */}
@@ -191,14 +202,15 @@ export function DashboardClient({
                   onClick={() => setSelectedDate(w.date)}
                   className={cn(
                     'flex flex-col items-center gap-1 px-2 py-2 transition-all flex-1',
-                    sel ? 'bg-primary/10 ring-1 ring-primary/30' : 'hover:bg-white/5'
+                    sel && !tod ? 'bg-primary/10 ring-1 ring-primary/30' : '',
+                    tod ? 'bg-[#D4AF37] ring-1 ring-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'hover:bg-white/5'
                   )}
                 >
-                  <span className="text-[10px] font-mono text-white/30 uppercase">{DAY_SHORT[dayIdx]}</span>
-                  <span className={cn('text-lg font-bold', sel ? 'text-primary' : tod ? 'text-white' : 'text-white/60')}>
+                  <span className={cn('text-[10px] font-mono uppercase', tod ? 'text-black/60' : 'text-white/30')}>{DAY_SHORT[dayIdx]}</span>
+                  <span className={cn('text-lg font-bold', tod ? 'text-black' : sel ? 'text-primary' : 'text-white/60')}>
                     {w.date.getDate()}
                   </span>
-                  <span className={cn('h-1.5 w-1.5', w.transit.score >= 68 ? 'bg-emerald-500' : w.transit.score >= 42 ? 'bg-amber-500' : 'bg-rose-500')} />
+                  <span className={cn('h-1.5 w-1.5', tod && w.transit.score >= 68 ? 'bg-black' : tod && w.transit.score >= 42 ? 'bg-black/70' : tod ? 'bg-black/50' : w.transit.score >= 68 ? 'bg-emerald-500' : w.transit.score >= 42 ? 'bg-amber-500' : 'bg-rose-500')} />
                 </button>
               );
             })}
