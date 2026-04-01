@@ -12,6 +12,19 @@ function hashCode(str: string): number {
   return Math.abs(hash);
 }
 
+/**
+ * Mix hash bits for uniform distribution.
+ * Raw hashCode clusters on modulo ops; this de-correlates the bits
+ * so (mixHash(seed) % N) is roughly uniform for any small N.
+ */
+function mixHash(seed: number): number {
+  let h = seed | 0;
+  h = Math.imul((h >> 16) ^ h, 0x45d9f3b);
+  h = Math.imul((h >> 16) ^ h, 0x45d9f3b);
+  h = (h >> 16) ^ h;
+  return Math.abs(h);
+}
+
 // --- Data pools ---
 
 const PLANETS = [
@@ -121,14 +134,33 @@ export function getDailyTransit(
   const dateKey = targetDate.toISOString().slice(0, 10);
   const seed = hashCode(birthDate + dateKey);
 
-  // Score (same logic as daily-energy)
-  const variation = (seed % 25) - 12;
-  const score = Math.max(15, Math.min(95, yearScore + variation));
+  // Score — quantile-forced distribution
+  // Uses well-mixed hash to place each day into High/Neutral/Low buckets.
+  // yearScore tilts the bucket sizes:
+  //   ys=80 → ~40% High, ~47% Neutral, ~13% Low
+  //   ys=65 → ~28% High, ~50% Neutral, ~22% Low
+  //   ys=40 → ~18% High, ~40% Neutral, ~42% Low
+  const mixed = mixHash(seed);
+  const pct = mixed % 100;
+  const highPct = Math.max(10, Math.min(45, Math.round(10 + (yearScore - 20) * 0.4)));
+  const lowPct = Math.max(10, Math.min(45, Math.round(50 - (yearScore - 20) * 0.4)));
+  const subSeed = mixHash(seed + 7919);
+
+  let score: number;
+  if (pct < highPct) {
+    score = 68 + (subSeed % 25);          // 68-92
+  } else if (pct >= (100 - lowPct)) {
+    score = 18 + (subSeed % 24);          // 18-41
+  } else {
+    score = 42 + (subSeed % 26);          // 42-67
+  }
+  score = Math.max(15, Math.min(95, score));
+
   const label: DailyTransit['label'] =
-    score >= 70 ? 'High' : score >= 45 ? 'Neutral' : 'Low';
+    score >= 68 ? 'High' : score >= 42 ? 'Neutral' : 'Low';
   const labelColor =
-    score >= 70 ? 'text-emerald-400' :
-    score >= 45 ? 'text-amber-400' : 'text-rose-400';
+    score >= 68 ? 'text-emerald-400' :
+    score >= 42 ? 'text-amber-400' : 'text-rose-400';
 
   // Ruling planet & sign
   const planet = PLANETS[seed % PLANETS.length];

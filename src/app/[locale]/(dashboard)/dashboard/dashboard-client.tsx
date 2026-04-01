@@ -192,7 +192,7 @@ export function DashboardClient({
                   <span className={cn('text-lg font-bold', sel ? 'text-primary' : tod ? 'text-white' : 'text-white/60')}>
                     {w.date.getDate()}
                   </span>
-                  <span className={cn('h-1.5 w-1.5', w.transit.score >= 70 ? 'bg-emerald-500' : w.transit.score >= 45 ? 'bg-amber-500' : 'bg-rose-500')} />
+                  <span className={cn('h-1.5 w-1.5', w.transit.score >= 68 ? 'bg-emerald-500' : w.transit.score >= 42 ? 'bg-amber-500' : 'bg-rose-500')} />
                 </button>
               );
             })}

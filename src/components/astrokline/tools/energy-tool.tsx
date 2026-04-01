@@ -32,14 +32,36 @@ function hashCode(str: string): number {
   return Math.abs(hash);
 }
 
+function mixHash(seed: number): number {
+  let h = seed | 0;
+  h = Math.imul((h >> 16) ^ h, 0x45d9f3b);
+  h = Math.imul((h >> 16) ^ h, 0x45d9f3b);
+  h = (h >> 16) ^ h;
+  return Math.abs(h);
+}
+
 function generateMonthlyEnergy(yearScore: number, birthDate: string) {
   return MONTH_NAMES.map((name, i) => {
     const seed = hashCode(birthDate + '-month-' + i);
-    const variation = (seed % 21) - 10;
-    const score = Math.max(20, Math.min(95, yearScore + variation));
-    const label = score >= 70 ? 'Strong' : score >= 45 ? 'Steady' : 'Low';
-    const color = score >= 70 ? 'bg-emerald-500' : score >= 45 ? 'bg-amber-500' : 'bg-rose-500';
-    const textColor = score >= 70 ? 'text-emerald-400' : score >= 45 ? 'text-amber-400' : 'text-rose-400';
+    const mixed = mixHash(seed);
+    const pct = mixed % 100;
+    const highPct = Math.max(10, Math.min(45, Math.round(10 + (yearScore - 20) * 0.4)));
+    const lowPct = Math.max(10, Math.min(45, Math.round(50 - (yearScore - 20) * 0.4)));
+    const subSeed = mixHash(seed + 7919);
+
+    let score: number;
+    if (pct < highPct) {
+      score = 68 + (subSeed % 25);
+    } else if (pct >= (100 - lowPct)) {
+      score = 18 + (subSeed % 24);
+    } else {
+      score = 42 + (subSeed % 26);
+    }
+    score = Math.max(15, Math.min(95, score));
+
+    const label = score >= 68 ? 'Strong' : score >= 42 ? 'Steady' : 'Low';
+    const color = score >= 68 ? 'bg-emerald-500' : score >= 42 ? 'bg-amber-500' : 'bg-rose-500';
+    const textColor = score >= 68 ? 'text-emerald-400' : score >= 42 ? 'text-amber-400' : 'text-rose-400';
     return { name, score, label, color, textColor, advice: MONTH_ADVICE[i] };
   });
 }

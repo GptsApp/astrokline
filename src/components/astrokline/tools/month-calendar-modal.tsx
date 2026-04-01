@@ -17,8 +17,8 @@ interface MonthCalendarModalProps {
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function getScoreColor(score: number) {
-  if (score >= 70) return 'bg-emerald-500';
-  if (score >= 45) return 'bg-amber-500';
+  if (score >= 68) return 'bg-emerald-500';
+  if (score >= 42) return 'bg-amber-500';
   return 'bg-rose-500';
 }
 
