@@ -3,6 +3,7 @@
 import React from 'react';
 import { Calendar, ArrowRight, Lock, Check, X, Minus } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
+import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { cn } from '@/shared/lib/utils';
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -54,6 +55,7 @@ interface CalendarToolProps {
 }
 
 export function CalendarTool({ tier, klineResult }: CalendarToolProps) {
+  const { openCheckout } = useCheckout();
   const data = typeof klineResult === 'string' ? JSON.parse(klineResult) : klineResult;
   const klineData = data?.klineData || [];
   const birthDate = data?.profile?.birthDate || '2000-01-01';
@@ -133,9 +135,9 @@ export function CalendarTool({ tier, klineResult }: CalendarToolProps) {
           <Lock className="mx-auto h-5 w-5 text-primary mb-2" />
           <p className="text-sm font-medium text-white">Full 30-day calendar</p>
           <p className="text-xs text-muted-foreground mt-1">Upgrade to see detailed daily guidance for the month ahead</p>
-          <Link href="/pricing" className="mt-3 inline-flex items-center gap-1 text-sm text-primary font-semibold hover:underline">
-            See Plans <ArrowRight className="h-3 w-3" />
-          </Link>
+          <button onClick={() => openCheckout('lite')} className="mt-3 inline-flex items-center gap-1 text-sm text-primary font-semibold hover:underline">
+            Upgrade to Lite <ArrowRight className="h-3 w-3" />
+          </button>
         </div>
       )}
     </div>

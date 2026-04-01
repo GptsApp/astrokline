@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { headers } from 'next/headers';
 import { ReferralClaim } from '@/components/astrokline/shared/referral-claim';
 import { BirthInfoWrapper } from '@/components/astrokline/ui/birth-info-wrapper';
+import { CheckoutWrapper } from '@/components/astrokline/checkout/checkout-wrapper';
 import { getTranslations } from 'next-intl/server';
 
 import { redirect } from '@/core/i18n/navigation';
@@ -63,31 +64,33 @@ export default async function DashboardLayout({
   const Layout = await getThemeLayout('landing');
 
   return (
-    <BirthInfoWrapper>
-      <Layout header={header} footer={footer}>
-        <ConsoleLayout
-          title={tDashboard('title')}
-          nav={nav}
-          bottomNav={bottomNav}
-          className="bg-background astro-starfield min-h-screen py-16 md:py-20"
-        >
-          <ReferralClaim />
-          <LocaleDetector />
-          {header.topbanner && header.topbanner.text && (
-            <TopBanner
-              id="topbanner"
-              text={header.topbanner?.text}
-              buttonText={header.topbanner?.buttonText}
-              href={header.topbanner?.href}
-              target={header.topbanner?.target}
-              closable
-              rememberDismiss
-              dismissedExpiryDays={header.topbanner?.dismissedExpiryDays ?? 1}
-            />
-          )}
-          {children}
-        </ConsoleLayout>
-      </Layout>
-    </BirthInfoWrapper>
+    <CheckoutWrapper>
+      <BirthInfoWrapper>
+        <Layout header={header} footer={footer}>
+          <ConsoleLayout
+            title={tDashboard('title')}
+            nav={nav}
+            bottomNav={bottomNav}
+            className="bg-background astro-starfield min-h-screen py-16 md:py-20"
+          >
+            <ReferralClaim />
+            <LocaleDetector />
+            {header.topbanner && header.topbanner.text && (
+              <TopBanner
+                id="topbanner"
+                text={header.topbanner?.text}
+                buttonText={header.topbanner?.buttonText}
+                href={header.topbanner?.href}
+                target={header.topbanner?.target}
+                closable
+                rememberDismiss
+                dismissedExpiryDays={header.topbanner?.dismissedExpiryDays ?? 1}
+              />
+            )}
+            {children}
+          </ConsoleLayout>
+        </Layout>
+      </BirthInfoWrapper>
+    </CheckoutWrapper>
   );
 }

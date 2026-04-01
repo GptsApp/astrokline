@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
+import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { Heading } from "@/components/astrokline/ui/heading";
 
 interface KlineItem {
@@ -159,6 +160,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       ? 'LITE'
       : 'FREE';
   const { open: openBirthModal } = useBirthInfoModal();
+  const { openCheckout } = useCheckout();
 
   // View state: 'list' | 'detail'
   const [view, setView] = useState<'list' | 'detail'>('list');
@@ -466,12 +468,12 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
             klineData={klineData}
             transitDetails={transitDetails}
             tier={chartTier}
-            onActionGate={() => window.location.href = '/pricing'}
+            onActionGate={() => openCheckout('lite')}
             hideFloatingNav={true}
           />
         )}
       </div>
-      {profile && <ReportFooter profile={profile} tier={chartTier} onUpgradeClick={() => window.location.href = '/pricing'} />}
+      {profile && <ReportFooter profile={profile} tier={chartTier} onUpgradeClick={() => openCheckout(chartTier === 'FREE' ? 'lite' : 'pro')} />}
     </div>
   );
 }

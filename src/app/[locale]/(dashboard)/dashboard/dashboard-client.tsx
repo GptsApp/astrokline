@@ -16,6 +16,7 @@ import {
 import { getDailyTransit, getWeekTransits } from '@/lib/astrokline/daily-transit';
 import { MonthCalendarModal } from '@/components/astrokline/tools/month-calendar-modal';
 import { Heading } from '@/components/astrokline/ui/heading';
+import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/shared/lib/utils';
 
@@ -50,6 +51,7 @@ export function DashboardClient({
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [calendarOpen, setCalendarOpen] = useState(false);
   const { open: openModal } = useBirthInfoModal();
+  const { openCheckout } = useCheckout();
   const router = useRouter();
 
   useEffect(() => {
@@ -274,9 +276,9 @@ export function DashboardClient({
               <h3 className="text-xs font-bold text-white/60 uppercase tracking-wider">Best Hours</h3>
             </div>
             {!isPro && (
-              <Link href="/pricing" className="flex items-center gap-1 text-[10px] font-semibold text-primary">
+              <button onClick={() => openCheckout('pro')} className="flex items-center gap-1 text-[10px] font-semibold text-primary">
                 <Lock className="h-3 w-3" /> Pro Only
-              </Link>
+              </button>
             )}
           </div>
           <div className={cn('grid grid-cols-3 gap-3', !isPro && 'blur-[3px] select-none pointer-events-none')}>
@@ -322,9 +324,9 @@ export function DashboardClient({
           <span className="text-sm text-white/70">{tierLabel} Plan · Active</span>
         </div>
         {userTier !== 'PREMIUM' && (
-          <Link href="/pricing" className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
+          <button onClick={() => openCheckout(userTier === 'FREE' ? 'lite' : 'pro')} className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
             Upgrade {userTier === 'FREE' ? 'to Lite' : 'to Pro'} <ArrowRight className="h-3 w-3" />
-          </Link>
+          </button>
         )}
       </div>
 

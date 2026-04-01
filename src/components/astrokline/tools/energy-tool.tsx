@@ -3,6 +3,7 @@
 import React from 'react';
 import { TrendingUp, ArrowRight, Lock } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
+import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { cn } from '@/shared/lib/utils';
 
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -49,6 +50,7 @@ interface EnergyToolProps {
 }
 
 export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
+  const { openCheckout } = useCheckout();
   const data = typeof klineResult === 'string' ? JSON.parse(klineResult) : klineResult;
   const klineData = data?.klineData || [];
   const birthDate = data?.profile?.birthDate || '2000-01-01';
@@ -125,9 +127,9 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
           <Lock className="mx-auto h-5 w-5 text-primary mb-2" />
           <p className="text-sm font-medium text-white">See all 12 months</p>
           <p className="text-xs text-muted-foreground mt-1">Upgrade to Lite for the full year forecast</p>
-          <Link href="/pricing" className="mt-3 inline-flex items-center gap-1 text-sm text-primary font-semibold hover:underline">
-            See Plans <ArrowRight className="h-3 w-3" />
-          </Link>
+          <button onClick={() => openCheckout('lite')} className="mt-3 inline-flex items-center gap-1 text-sm text-primary font-semibold hover:underline">
+            Upgrade to Lite <ArrowRight className="h-3 w-3" />
+          </button>
         </div>
       )}
     </div>

@@ -4,6 +4,7 @@ import { trackEvent } from '@/lib/astrokline/track-event';
 import { Lock, Zap } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
 import { Heading } from "@/components/astrokline/ui/heading";
+import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 
 interface QuotaLimitModalProps {
   isOpen: boolean;
@@ -108,12 +109,7 @@ export function QuotaLimitModal({
               Upgrade Now
             </button>
           ) : (
-            <Link
-              href={`/pricing?highlight=${upgradePlan.name.toLowerCase()}`}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full py-2.5 text-center text-sm font-bold transition-all"
-            >
-              Upgrade Now
-            </Link>
+            <QuotaUpgradeButton tier={upgradePlan.name.toLowerCase() as 'lite' | 'pro'} />
           )}
         </div>
 
@@ -127,5 +123,21 @@ export function QuotaLimitModal({
         </button>
       </div>
     </div>
+  );
+}
+
+function QuotaUpgradeButton({ tier }: { tier: 'lite' | 'pro' }) {
+  const { openCheckout } = useCheckout();
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        trackEvent('premium_cta_click', { source: 'quota_modal' });
+        openCheckout(tier);
+      }}
+      className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full py-2.5 text-center text-sm font-bold transition-all"
+    >
+      Upgrade Now
+    </button>
   );
 }

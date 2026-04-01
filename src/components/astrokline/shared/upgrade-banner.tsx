@@ -6,6 +6,7 @@ import { Lock, Shield, Sparkles, TrendingUp } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
+import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 
 interface UpgradeBannerProps {
   context?: 'kline' | 'ideal-partner' | 'general';
@@ -58,6 +59,7 @@ export function UpgradeBanner({
   onUpgradeClick,
 }: UpgradeBannerProps) {
   const msg = contextMessages[context] || contextMessages.general;
+  const { openCheckout } = useCheckout();
 
   return (
     <motion.section
@@ -120,15 +122,17 @@ export function UpgradeBanner({
                 Compare Plans →
               </Button>
             ) : (
-              <Link href="/pricing">
-                <Button
-                  type="button"
-                  size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90  font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
-                >
-                  Compare Plans →
-                </Button>
-              </Link>
+              <Button
+                type="button"
+                size="lg"
+                onClick={() => {
+                  trackEvent('premium_cta_click', { source: 'upgrade_banner', context });
+                  openCheckout('lite');
+                }}
+                className="bg-primary text-primary-foreground hover:bg-primary/90  font-bold shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
+              >
+                Upgrade Now →
+              </Button>
             )}
 
             <p className="text-muted-foreground/50 mt-4 font-mono text-xs">
