@@ -66,22 +66,22 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
   };
 
   const dimensions = result ? [
-    { icon: Heart, label: 'Romance', score: result.romance, color: 'text-rose-400', bg: 'bg-rose-500' },
-    { icon: MessageCircle, label: 'Communication', score: result.communication, color: 'text-sky-400', bg: 'bg-sky-500' },
-    { icon: Shield, label: 'Shared Values', score: result.values, color: 'text-emerald-400', bg: 'bg-emerald-500' },
-    { icon: Zap, label: 'Tension Points', score: result.challenge, color: 'text-amber-400', bg: 'bg-amber-500' },
+    { icon: Heart, label: 'Romance', score: result.romance },
+    { icon: MessageCircle, label: 'Communication', score: result.communication },
+    { icon: Shield, label: 'Shared Values', score: result.values },
+    { icon: Zap, label: 'Tension Points', score: result.challenge },
   ] : [];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center bg-rose-500/10">
-            <Users className="h-5 w-5 text-rose-400" />
+          <div className="flex h-10 w-10 items-center justify-center border border-[#D4AF37]/20 bg-[#D4AF37]/10">
+            <Users className="h-5 w-5 text-[#D4AF37]" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Compatibility Check</h1>
-            <p className="text-xs text-muted-foreground">Synastry analysis based on real birth data</p>
+            <h1 className="text-2xl font-serif text-white">Compatibility Check</h1>
+            <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-[#D4AF37]/60">Synastry analysis based on real birth data</p>
           </div>
         </div>
       </div>
@@ -95,38 +95,35 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
       {result && (
         <div className="mt-8 space-y-6">
           {/* Overall score */}
-          <div className="border border-primary/20 bg-primary/5 p-6 text-center">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
+          <div className="border border-[#D4AF37]/20 bg-white/[0.02] p-8 text-center">
+            <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-mono mb-2">
               {myName} + {partnerName || 'Partner'}
             </p>
-            <p className="text-5xl font-bold text-white">{result.overall}<span className="text-xl text-muted-foreground">/100</span></p>
-            <p className={cn('mt-1 text-sm font-semibold',
-              result.overall >= 75 ? 'text-emerald-400' : result.overall >= 55 ? 'text-amber-400' : 'text-rose-400'
+            <p className="text-5xl font-mono text-white">{result.overall}<span className="text-xl text-[#D4AF37]/40">/100</span></p>
+            <p className={cn('mt-3 text-[10px] font-mono uppercase tracking-widest',
+              result.overall >= 75 ? 'text-[#D4AF37]' : result.overall >= 55 ? 'text-white/80' : 'text-white/40'
             )}>
-              {result.overall >= 75 ? 'Strong Connection' : result.overall >= 55 ? 'Promising Chemistry' : 'Growth Opportunity'}
+              [{result.overall >= 75 ? 'Strong Connection' : result.overall >= 55 ? 'Promising Chemistry' : 'Growth Opportunity'}]
             </p>
           </div>
 
           {/* Dimension breakdown */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {dimensions.map((d) => (
-              <div key={d.label} className="border border-white/5 bg-[#0a0a0d] p-5 shadow-xl relative overflow-hidden group">
-                {/* Decorative corner accent */}
-                <div className={cn("absolute -top-6 -right-6 w-16 h-16 rounded-full opacity-10 blur-xl", d.bg)} />
-                
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={cn("p-2 rounded-sm bg-white/5", d.color)}>
-                    <d.icon className="h-4 w-4" />
+              <div key={d.label} className="border border-white/10 bg-[#0a0a0d] p-5 shadow-xl relative overflow-hidden group">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 border border-white/10 bg-white/5">
+                    <d.icon className={cn("h-4 w-4", d.score >= 75 ? "text-[#D4AF37]" : "text-white/40")} />
                   </div>
-                  <span className="text-xs uppercase tracking-widest font-mono text-white/50">{d.label}</span>
-                  <span className={cn('ml-auto text-xl font-bold font-mono', d.color)}>{d.score}</span>
+                  <span className="text-[10px] uppercase tracking-widest font-mono text-white/50">{d.label}</span>
+                  <span className={cn('ml-auto text-xl font-mono', d.score >= 75 ? 'text-[#D4AF37]' : 'text-white')}>{d.score}</span>
                 </div>
                 
-                <div className="h-1 bg-white/5 overflow-hidden mb-4 rounded-full">
-                  <div className={cn('h-full', d.bg)} style={{ width: `${d.score}%` }} />
+                <div className="h-[2px] bg-white/5 overflow-hidden mb-5">
+                  <div className={cn('h-full', d.score >= 75 ? 'bg-[#D4AF37]' : 'bg-white/40')} style={{ width: `${d.score}%` }} />
                 </div>
                 
-                <p className="text-[13px] text-white/60 leading-relaxed font-mono">
+                <p className="text-[11px] text-white/40 leading-relaxed font-mono">
                   {d.label === 'Romance' && result.insights.romanceText}
                   {d.label === 'Communication' && result.insights.communicationText}
                   {d.label === 'Shared Values' && result.insights.valuesText}

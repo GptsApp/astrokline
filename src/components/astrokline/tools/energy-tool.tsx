@@ -50,9 +50,9 @@ function generateMonthlyEnergy(yearScore: number, birthDate: string) {
 }
 
 function scoreColor(s: number) {
-  if (s >= 68) return { bg: 'bg-emerald-500', text: 'text-emerald-400', dot: 'bg-emerald-400', glow: 'shadow-emerald-500/40' };
-  if (s >= 42) return { bg: 'bg-amber-500', text: 'text-amber-400', dot: 'bg-amber-400', glow: 'shadow-amber-500/40' };
-  return { bg: 'bg-rose-500', text: 'text-rose-400', dot: 'bg-rose-400', glow: 'shadow-rose-500/40' };
+  if (s >= 68) return { bg: 'bg-[#D4AF37]', text: 'text-[#D4AF37]', dot: 'bg-[#D4AF37]', glow: 'shadow-[#D4AF37]/40' };
+  if (s >= 42) return { bg: 'bg-white', text: 'text-white', dot: 'bg-white', glow: 'shadow-white/40' };
+  return { bg: 'bg-white/30', text: 'text-white/40', dot: 'bg-white/30', glow: 'shadow-white/10' };
 }
 
 interface EnergyToolProps { tier: string; klineResult: any; }
@@ -90,23 +90,23 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center bg-purple-500/10">
-            <TrendingUp className="h-5 w-5 text-purple-400" />
+          <div className="flex h-10 w-10 items-center justify-center border border-[#D4AF37]/20 bg-[#D4AF37]/10">
+            <TrendingUp className="h-5 w-5 text-[#D4AF37]" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Energy Forecast</h1>
-            <p className="text-xs text-muted-foreground">{currentYear} · Planetary Transit Analysis</p>
+            <h1 className="text-2xl font-serif text-white">Energy Forecast</h1>
+            <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-[#D4AF37]/60">{currentYear} · Planetary Transit Analysis</p>
           </div>
         </div>
       </div>
 
       {/* Year baseline */}
-      <div className="mb-8 border border-white/5 bg-white/[0.02] p-5">
-        <div className="flex items-baseline gap-2">
-          <span className="text-sm text-muted-foreground">Year baseline</span>
-          <span className="text-2xl font-bold text-white">{yearScore}</span>
-          <span className={cn('text-sm font-semibold', yearScore >= 70 ? 'text-emerald-400' : yearScore >= 45 ? 'text-amber-400' : 'text-rose-400')}>
-            {yearScore >= 70 ? 'Strong Year' : yearScore >= 45 ? 'Steady Year' : 'Rebuilding Year'}
+      <div className="mb-8 border border-white/10 bg-white/[0.02] p-5">
+        <div className="flex items-baseline gap-3">
+          <span className="text-[10px] uppercase tracking-widest font-mono text-white/50">Year baseline</span>
+          <span className="text-2xl font-mono text-white">{yearScore}</span>
+          <span className={cn('text-[10px] uppercase tracking-widest font-mono', yearScore >= 70 ? 'text-[#D4AF37]' : yearScore >= 45 ? 'text-white' : 'text-white/40')}>
+            [{yearScore >= 70 ? 'Strong Year' : yearScore >= 45 ? 'Steady Year' : 'Rebuilding Year'}]
           </span>
         </div>
       </div>
@@ -134,17 +134,17 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
             >
               {/* Timeline dot */}
               <div className={cn(
-                'absolute left-0 top-[7px] z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 bg-[#0a090d] transition-all duration-300',
-                isCurrent ? `${c.dot} border-transparent shadow-lg ${c.glow}` : 'border-white/10'
+                'absolute left-0 top-[7px] z-10 flex h-7 w-7 items-center justify-center border-2 bg-black transition-all duration-300',
+                isCurrent ? `${c.dot} border-[1px] border-[#D4AF37] ${c.glow}` : 'border-white/20'
               )}>
                 {!isCurrent && (
                   <span className={cn(
-                    'absolute inset-0 rounded-full',
+                    'absolute inset-0',
                     isLocked ? 'bg-white/5' : isPast ? `${c.dot}/30` : 'bg-white/5'
                   )} />
                 )}
-                {isCurrent && <span className="absolute inset-0 animate-ping rounded-full bg-current opacity-20" />}
-                <span className={cn('relative z-10 text-[9px] font-bold', isCurrent ? 'text-black' : isLocked ? 'text-white/30' : 'text-white/60')}>
+                {isCurrent && <span className="absolute inset-0 animate-ping bg-current opacity-20" />}
+                <span className={cn('relative z-10 font-mono text-[9px]', isCurrent ? 'text-black' : isLocked ? 'text-white/30' : 'text-white/60')}>
                   {i + 1}
                 </span>
               </div>
@@ -164,8 +164,8 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
                   'flex items-center gap-3 p-3 border transition-all duration-300',
                   isCurrent ? 'border-primary/30 bg-primary/5' : 'border-white/5 bg-white/[0.02] group-hover:bg-white/[0.04]'
                 )}>
-                  <span className="w-8 text-xs font-mono text-muted-foreground shrink-0">{m.name}</span>
-                  <span className={cn('text-lg font-bold tabular-nums', isLocked ? 'text-white/30' : 'text-white')}>{isLocked ? '--' : m.score}</span>
+                  <span className="w-8 text-[11px] font-mono text-white/40 shrink-0">{m.name}</span>
+                  <span className={cn('text-lg font-mono tabular-nums', isLocked ? 'text-white/30' : 'text-white')}>{isLocked ? '--' : m.score}</span>
 
                   {/* Score bar */}
                   <div className="flex-1 h-1.5 bg-white/5 overflow-hidden">
@@ -213,11 +213,11 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
       {isFree && (
         <div className="mt-6 ml-4 sm:ml-8 pl-10 relative">
           <div className="absolute left-3 top-0 h-8 w-px bg-gradient-to-b from-white/10 to-transparent" />
-          <div className="border border-primary/20 bg-primary/5 p-5 text-center">
-            <Lock className="mx-auto h-5 w-5 text-primary mb-2" />
-            <p className="text-sm font-medium text-white">Unlock Full Year Timeline</p>
-            <p className="text-xs text-muted-foreground mt-1">See all 12 months with detailed planetary analysis</p>
-            <button onClick={() => openCheckout('lite')} className="mt-3 inline-flex items-center gap-1 text-sm text-primary font-semibold hover:underline">
+          <div className="border border-[#D4AF37]/20 bg-[#D4AF37]/[0.02] p-6 text-center">
+            <Lock className="mx-auto h-5 w-5 text-[#D4AF37] mb-2" />
+            <p className="text-sm font-serif text-white uppercase tracking-wider">Unlock Full Year Timeline</p>
+            <p className="text-[10px] font-mono tracking-widest text-white/50 mt-1 uppercase">See all 12 months with detailed planetary analysis</p>
+            <button onClick={() => openCheckout('lite')} className="mt-4 inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#D4AF37] hover:text-[#D4AF37]/80 hover:bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-4 py-2 transition-all">
               Upgrade to Lite <ArrowRight className="h-3 w-3" />
             </button>
           </div>

@@ -101,29 +101,29 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
 
   return (
     <div className="relative w-full group max-w-lg mx-auto">
-      {/* Sci-Fi Tactical Corner Crosshairs - ROSE THEME */}
-      <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-rose-500/50 z-30 transition-all group-hover:border-rose-500 group-hover:scale-110" />
-      <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-rose-500/50 z-30 transition-all group-hover:border-rose-500 group-hover:scale-110" />
-      <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-rose-500/50 z-30 transition-all group-hover:border-rose-500 group-hover:scale-110" />
-      <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-rose-500/50 z-30 transition-all group-hover:border-rose-500 group-hover:scale-110" />
+      {/* Sci-Fi Tactical Corner Crosshairs - GOLD THEME */}
+      <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-[#D4AF37]/50 z-30 transition-all group-hover:border-[#D4AF37] group-hover:scale-110" />
+      <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-[#D4AF37]/50 z-30 transition-all group-hover:border-[#D4AF37] group-hover:scale-110" />
+      <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-[#D4AF37]/50 z-30 transition-all group-hover:border-[#D4AF37] group-hover:scale-110" />
+      <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-[#D4AF37]/50 z-30 transition-all group-hover:border-[#D4AF37] group-hover:scale-110" />
 
       {/* Terminal Grid Background inside the form */}
-      <div className="w-full border border-rose-500/20 bg-[#050505]/90 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+      <div className="w-full border border-white/10 bg-[#050505]/95 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
         
-        {/* Subtle rose radar sweep overlay */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-20">
-          <div className="absolute -inset-[100%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(244,63,94,0.3)_360deg)] animate-[spin_8s_linear_infinite]" />
+        {/* Subtle gold radar sweep overlay */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-10">
+          <div className="absolute -inset-[100%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(212,175,55,0.2)_360deg)] animate-[spin_8s_linear_infinite]" />
         </div>
 
         <div className="relative z-10 p-6 sm:p-8 flex flex-col min-h-[460px]">
           
           {/* Header & Steps */}
           <div className="mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-rose-500" />
+            <h2 className="text-xl sm:text-2xl font-serif text-white tracking-wide flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-[#D4AF37]" />
               Partner Profile
             </h2>
-            <p className="text-sm text-muted-foreground mt-1 tracking-wide font-mono">
+            <p className="text-[10px] text-[#D4AF37]/60 mt-1 tracking-[0.2em] uppercase font-mono">
               ASTROMETRIC CALIBRATION
             </p>
             
@@ -131,8 +131,8 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
               {STEP_META.map((m, idx) => (
                 <div key={m.id} className="flex-1">
                   <div className={cn(
-                    "h-1 transition-all duration-300",
-                    step >= idx ? "bg-rose-500" : "bg-white/10"
+                    "h-[2px] transition-all duration-300",
+                    step >= idx ? "bg-[#D4AF37]" : "bg-white/10"
                   )} />
                 </div>
               ))}
@@ -143,18 +143,18 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
           {step === 0 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Their Name <span className="text-white/20">(optional)</span></Label>
+                <Label className="text-[10px] uppercase tracking-widest text-[#D4AF37]/60 font-mono">Their Name <span className="text-white/20 tracking-normal text-xs capitalize">(optional)</span></Label>
                 <Input
                   autoFocus
                   value={data.name}
                   onChange={(e) => { setData(d => ({ ...d, name: e.target.value })); setErrorMsg(''); }}
                   placeholder="Nickname or initials"
-                  className="h-12 border-b border-white/10 bg-[#111] text-lg font-medium tracking-tight rounded-none focus-visible:border-rose-500/50 focus-visible:ring-0 px-4"
+                  className="h-12 border-b border-white/10 bg-[#111] text-lg font-mono tracking-tight rounded-none focus-visible:border-[#D4AF37]/50 focus-visible:ring-0 px-4"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Date of Birth</Label>
+                <Label className="text-[10px] uppercase tracking-widest text-[#D4AF37]/60 font-mono">Date of Birth</Label>
                 <div className="grid grid-cols-3 gap-3">
                   <ScrollPicker
                     items={years.map(y => ({ value: y, label: y }))}
@@ -184,18 +184,18 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">
-                  Time of Birth <span className="text-white/20">(optional)</span>
+                <Label className="text-[10px] uppercase tracking-widest text-[#D4AF37]/60 font-mono">
+                  Time of Birth <span className="text-white/20 tracking-normal text-xs capitalize">(optional)</span>
                 </Label>
                 <select 
-                  className="flex h-12 w-full appearance-none rounded-none border-b border-white/10 bg-[#111] px-4 text-base font-medium text-white transition-colors focus-visible:border-rose-500/50 focus-visible:outline-none"
+                  className="flex h-12 w-full appearance-none rounded-none border-b border-white/10 bg-[#111] px-4 font-mono text-base text-white transition-colors focus-visible:border-[#D4AF37]/50 focus-visible:outline-none"
                   value={data.timeSlot}
                   onChange={(e) => {
                     setData(d => ({ ...d, timeSlot: e.target.value }));
                     setErrorMsg('');
                   }}
                 >
-                  <option value="" disabled className="text-muted-foreground">Select an hour slot</option>
+                  <option value="" disabled className="text-white/40">Select an hour slot</option>
                   {TIME_SLOTS.map(t => (
                     <option key={t} value={t}>{t === 'unknown' ? "I don't know" : t}</option>
                   ))}
@@ -203,8 +203,8 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
               </div>
 
               <div className="space-y-2 relative z-50">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">
-                  City of Birth <span className="text-white/20">(optional)</span>
+                <Label className="text-[10px] uppercase tracking-widest text-[#D4AF37]/60 font-mono">
+                  City of Birth <span className="text-white/20 tracking-normal text-xs capitalize">(optional)</span>
                 </Label>
                 <div className="relative">
                   <LocationAutocomplete
@@ -228,7 +228,7 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
               <button
                 disabled={isLoading}
                 onClick={onBack}
-                className="h-14 px-6 flex items-center justify-center font-mono text-xs uppercase tracking-widest text-muted-foreground hover:text-white border border-white/10 hover:border-white/20 bg-transparent transition-colors flex-1 max-w-[120px]"
+                className="h-14 px-6 flex items-center justify-center font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white border border-white/10 hover:border-white/30 bg-transparent transition-colors flex-1 max-w-[120px]"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
@@ -236,13 +236,13 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
             <button
               disabled={isLoading}
               onClick={onNext}
-              className="group relative flex-1 h-14 bg-rose-600 hover:bg-rose-500 text-white font-mono text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden"
+              className="group relative flex-1 h-14 bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-black font-mono text-xs uppercase tracking-[0.2em] font-bold transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden"
             >
               <div className="absolute inset-0 translate-y-[100%] bg-white/20 transition-transform duration-300 group-hover:translate-y-[0%]" />
               <div className="relative z-10 flex items-center gap-3">
                 {isLoading ? (
                   <span className="flex items-center gap-2">
-                    <span className="h-4 w-4 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+                    <span className="h-4 w-4 rounded-full border-2 border-black/20 border-t-black animate-spin" />
                     CALCULATING...
                   </span>
                 ) : step === 0 ? (

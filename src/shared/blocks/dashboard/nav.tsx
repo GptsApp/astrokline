@@ -54,8 +54,8 @@ export function Nav({ nav, className }: { nav: NavType; className?: string }) {
                         (mounted &&
                           item?.url &&
                           pathname.startsWith(item?.url as string))
-                          ? 'bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/90 hover:text-sidebar-accent-foreground active:bg-sidebar-accent/90 active:text-sidebar-accent-foreground min-w-8 duration-200 ease-linear'
-                          : ''
+                          ? 'bg-[#D4AF37]/10 text-[#D4AF37] border-l-2 border-[#D4AF37] rounded-none hover:bg-[#D4AF37]/15 hover:text-[#D4AF37] min-w-8 duration-200 ease-linear font-medium tracking-wide'
+                          : 'text-white/50 hover:text-white hover:bg-white/[0.04] border-l-2 border-transparent rounded-none min-w-8 duration-200 ease-linear font-medium tracking-wide'
                       }`}
                     >
                       {item?.icon && <SmartIcon name={item.icon as string} />}
@@ -72,8 +72,8 @@ export function Nav({ nav, className }: { nav: NavType; className?: string }) {
                       (mounted &&
                         item?.url &&
                         pathname.startsWith(item?.url as string))
-                        ? 'bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/90 hover:text-sidebar-accent-foreground active:bg-sidebar-accent/90 active:text-sidebar-accent-foreground min-w-8 duration-200 ease-linear'
-                        : ''
+                        ? 'bg-[#D4AF37]/10 text-[#D4AF37] border-l-2 border-[#D4AF37] rounded-none hover:bg-[#D4AF37]/15 hover:text-[#D4AF37] min-w-8 duration-200 ease-linear font-medium tracking-wide'
+                        : 'text-white/50 hover:text-white hover:bg-white/[0.04] border-l-2 border-transparent rounded-none min-w-8 duration-200 ease-linear font-medium tracking-wide'
                     }`}
                   >
                     <Link
@@ -98,8 +98,8 @@ export function Nav({ nav, className }: { nav: NavType; className?: string }) {
                               subItem.is_active ||
                               (mounted &&
                                 pathname.endsWith(subItem.url as string))
-                                ? 'bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/90 hover:text-sidebar-accent-foreground active:bg-sidebar-accent/90 active:text-sidebar-accent-foreground min-w-8 duration-200 ease-linear'
-                                : ''
+                                ? 'bg-[#D4AF37]/5 text-[#D4AF37] border-l-2 border-[#D4AF37]/50 rounded-none hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] min-w-8 duration-200 ease-linear font-medium tracking-wide text-xs'
+                                : 'text-white/40 hover:text-white/80 hover:bg-white/[0.02] border-l-2 border-transparent rounded-none min-w-8 duration-200 ease-linear font-medium tracking-wide text-xs'
                             }`}
                           >
                             <Link
