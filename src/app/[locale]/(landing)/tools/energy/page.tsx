@@ -22,8 +22,13 @@ export default async function EnergyPage({
   setRequestLocale(locale);
 
   const user = await getUserInfo();
-  const tier = user ? await getAstroUserTier(user) : 'GUEST';
-  const myKline = user ? await getMyKline(user.id) : null;
+  if (user) {
+    const { redirect } = await import('next/navigation');
+    redirect('/dashboard/tools/energy');
+  }
+
+  const tier = 'GUEST';
+  const myKline: any = null;
 
   return (
     <ToolPageShell
