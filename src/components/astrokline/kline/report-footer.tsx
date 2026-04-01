@@ -70,7 +70,7 @@ export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profi
             <button
               type="button"
               onClick={() => {
-                trackEvent('invite_friend_click', { location: 'footer' });
+                trackEvent('share_button_click', { action: 'invite' });
                 window.location.href = '/dashboard/invite';
               }}
               className={`flex w-full items-center justify-center gap-2 bg-[#D4AF37] py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all hover:scale-[1.02] hover:bg-[#FCDD73] ${
