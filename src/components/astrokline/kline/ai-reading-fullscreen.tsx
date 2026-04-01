@@ -477,7 +477,7 @@ export function AiReadingFullscreen({
                       shadow behaviors.
                     </p>
                     <Link
-                      href="/pricing"
+                      href="/pricing?highlight=lite"
                       className="bg-primary hover:bg-primary/90 mt-6 inline-flex w-full items-center justify-center gap-2 py-3 text-sm font-bold text-white transition-all"
                     >
                       View Premium Plans <ChevronRight className="h-4 w-4" />
@@ -647,7 +647,7 @@ export function AiReadingFullscreen({
 
                 <div className="pt-12 pb-8 text-center">
                   <Link
-                    href="/pricing"
+                    href="/pricing?highlight=pro"
                     className="bg-primary/20 border-primary/50 hover:bg-primary/30 inline-flex w-full items-center justify-center gap-2 border px-8 py-3 text-sm font-bold text-white transition-all sm:w-auto"
                   >
                     Book 1-on-1 Consultation{' '}

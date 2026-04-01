@@ -1,6 +1,7 @@
 'use client';
 
 import { Heading } from "@/components/astrokline/ui/heading";
+import { useAppContext } from '@/shared/contexts/app';
 
 import { useMemo } from 'react';
 import {
@@ -335,6 +336,7 @@ export function InteractiveChart({
   profileName,
   onActionGate,
 }: Props) {
+  const { setAuthModalType, setIsShowSignModal } = useAppContext();
   const currentYear = new Date().getFullYear();
   const visibleStartAge = currentYear - 1 - birthYear;
   const visibleEndAge = currentYear + 2 - birthYear;
@@ -454,11 +456,8 @@ export function InteractiveChart({
                   if (onActionGate) {
                     onActionGate('interactive_chart_unlock', 'FREE');
                   } else {
-                    if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
-                      (window as any).setAuthModalType('sign-up');
-                      const el = document.querySelector('[data-auth-trigger]');
-                      if (el) (el as HTMLElement).click();
-                    }
+                    setAuthModalType('sign-up');
+                    setIsShowSignModal(true);
                   }
                 }}
                 className="bg-primary hover:bg-primary/90 flex items-center gap-2 px-8 py-3 font-bold text-black transition-all hover:scale-105"

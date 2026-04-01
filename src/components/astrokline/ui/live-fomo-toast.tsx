@@ -66,7 +66,7 @@ export function LiveFomoToast() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-[100] flex flex-col gap-3 pointer-events-none">
+    <div className="fixed bottom-20 left-4 z-[45] flex flex-col gap-3 pointer-events-none lg:bottom-4 lg:z-[100]">
       {/* Live Online Users Badge */}
       <div className="bg-black/90 border border-white/10 backdrop-blur-xl px-3 py-2 flex items-center justify-center gap-2 shadow-2xl w-fit">
         <div className="relative flex h-2 w-2">

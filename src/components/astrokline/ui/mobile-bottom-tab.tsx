@@ -8,9 +8,9 @@ import { cn } from '@/shared/lib/utils';
 
 const TABS = [
   { id: 'home', icon: Home, label: 'Home', href: '/dashboard' },
-  { id: 'kline', icon: Activity, label: 'K-Line', href: '/kline' },
-  { id: 'energy', icon: TrendingUp, label: 'Energy', href: '/tools/energy' },
-  { id: 'calendar', icon: Calendar, label: 'Calendar', href: '/tools/calendar' },
+  { id: 'kline', icon: Activity, label: 'K-Line', href: '/dashboard/kline' },
+  { id: 'energy', icon: TrendingUp, label: 'Energy', href: '/dashboard/tools/energy' },
+  { id: 'calendar', icon: Calendar, label: 'Calendar', href: '/dashboard/tools/calendar' },
   { id: 'me', icon: User, label: 'Me', href: '/settings/profile' },
 ];
 
@@ -22,10 +22,10 @@ export function MobileBottomTab() {
     // Strip locale prefix (e.g., /en/dashboard → /dashboard)
     const cleanPath = pathname.replace(/^\/[a-z]{2}(?=\/)/, '');
 
-    if (cleanPath === '/dashboard' || cleanPath === '/dashboard/kline') return 'home';
-    if (cleanPath === '/kline' || cleanPath.startsWith('/kline/')) return 'kline';
-    if (cleanPath === '/tools/energy') return 'energy';
-    if (cleanPath === '/tools/calendar') return 'calendar';
+    if (cleanPath === '/dashboard') return 'home';
+    if (cleanPath.startsWith('/dashboard/kline')) return 'kline';
+    if (cleanPath.includes('/tools/energy')) return 'energy';
+    if (cleanPath.includes('/tools/calendar')) return 'calendar';
     if (cleanPath.startsWith('/settings')) return 'me';
     return 'home';
   };

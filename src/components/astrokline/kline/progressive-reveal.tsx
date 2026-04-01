@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { Sparkles } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
@@ -8,6 +9,8 @@ interface Props {
   children: React.ReactNode;
   /** Percentage of content height to show before fading (0-100) */
   revealPercent?: number;
+  /** Minimum content height (px) for percentage mode. Below this, full mask is used. */
+  minContentHeight?: number;
   onUpgrade?: () => void;
   className?: string;
 }
@@ -19,18 +22,33 @@ interface Props {
 export function ProgressiveReveal({
   children,
   revealPercent = 40,
+  minContentHeight = 200,
   onUpgrade,
   className,
 }: Props) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [isShort, setIsShort] = useState(false);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setIsShort(contentRef.current.scrollHeight < minContentHeight);
+    }
+  }, [children, minContentHeight]);
+
+  // For short content, use a fixed small reveal to prevent paywall bypass
+  const effectivePercent = isShort ? 20 : revealPercent;
+  const maskEnd = isShort ? '30%' : '50%';
+
   return (
     <div className={cn('relative overflow-hidden', className)}>
       {/* Content — fully rendered but masked */}
       <div
+        ref={contentRef}
         className="pointer-events-none select-none"
         style={{
-          maxHeight: `${revealPercent}vh`,
-          WebkitMaskImage: `linear-gradient(to bottom, black 50%, transparent 100%)`,
-          maskImage: `linear-gradient(to bottom, black 50%, transparent 100%)`,
+          maxHeight: `${effectivePercent}vh`,
+          WebkitMaskImage: `linear-gradient(to bottom, black ${maskEnd}, transparent 100%)`,
+          maskImage: `linear-gradient(to bottom, black ${maskEnd}, transparent 100%)`,
         }}
       >
         {children}
@@ -55,3 +73,4 @@ export function ProgressiveReveal({
     </div>
   );
 }
+

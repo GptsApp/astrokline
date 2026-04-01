@@ -11,6 +11,21 @@
         "title": "My Charts",
         "url": "/dashboard/kline",
         "icon": "Activity"
+      },
+      {
+        "title": "Energy Forecast",
+        "url": "/dashboard/tools/energy",
+        "icon": "TrendingUp"
+      },
+      {
+        "title": "Action Calendar",
+        "url": "/dashboard/tools/calendar",
+        "icon": "Calendar"
+      },
+      {
+        "title": "Compatibility",
+        "url": "/dashboard/tools/compatibility",
+        "icon": "Users"
       }
     ]
   },

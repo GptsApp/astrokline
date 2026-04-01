@@ -22,8 +22,8 @@ const TIME_SLOTS = [
 ];
 
 const STEP_META = [
-  { id: 0, label: 'Identity', icon: User },
-  { id: 1, label: 'Coordinates', icon: MapPin },
+  { id: 0, label: 'About You', icon: User },
+  { id: 1, label: 'Details', icon: MapPin },
 ];
 
 export function InlineBirthForm() {
@@ -70,11 +70,11 @@ export function InlineBirthForm() {
   // Validation
   const validate = useCallback((): string => {
     if (step === 0) {
-      if (!data.name.trim()) return 'Enter your name to begin';
-      if (!birthYear || !birthMonth || !birthDay) return 'Incomplete date of birth';
+      if (!data.name.trim()) return 'Please enter your name';
+      if (!birthYear || !birthMonth || !birthDay) return 'Please complete your date of birth';
     } else if (step === 1) {
-      if (!data.timeSlot) return 'Birth time is required for planetary precision';
-      if (!data.location.trim() || data.lat === null || data.lon === null) return 'A valid geo-location is required';
+      if (!data.timeSlot) return 'Pick a time slot to get started';
+      if (!data.location.trim() || data.lat === null || data.lon === null) return 'Please select your birth city';
     }
     return '';
   }, [step, data, birthYear, birthMonth, birthDay]);
@@ -128,15 +128,15 @@ export function InlineBirthForm() {
         {/* Blinking Data Recording Indicator */}
         <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
           <span className="h-1.5 w-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_#ef4444]" />
-          <span className="text-[8px] font-mono text-muted-foreground/50 tracking-widest uppercase">REC_ENCRYPTED</span>
+          <span className="text-[8px] font-mono text-muted-foreground/50 tracking-widest uppercase">SECURE</span>
         </div>
       
         <div className="p-8 relative z-10">
           <div className="mb-6 flex flex-col justify-start">
-            <Heading level={3} variant="card" className="pr-24">Input Coordinates</Heading>
+            <Heading level={3} variant="card" className="pr-24">Start Your Reading</Heading>
             <div className="flex items-center gap-3 mt-2">
               <p className="text-[10px] tracking-[0.2em] text-primary uppercase font-mono">
-                {step === 0 ? 'Temporal Origin' : 'Spatial Fix'} {"//"} 0{step + 1}.02
+                {step === 0 ? 'Your Birthday' : 'Time & Place'} {"//"} Step 0{step + 1}
               </p>
               <div className="flex gap-1.5">
                 {STEP_META.map(s => (
@@ -150,7 +150,7 @@ export function InlineBirthForm() {
           {step === 0 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Target Subject / Name</Label>
+                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Your Name</Label>
                 <Input
                   autoFocus
                   value={data.name}
@@ -161,7 +161,7 @@ export function InlineBirthForm() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Date of Origin</Label>
+                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Date of Birth</Label>
                 <div className="grid grid-cols-3 gap-3">
                   <ScrollPicker
                     items={years.map(y => ({ value: y, label: y }))}
@@ -191,9 +191,9 @@ export function InlineBirthForm() {
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Temporal Apex / Time</Label>
+                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Birth Time</Label>
                 <ScrollPicker
-                  items={TIME_SLOTS.map(slot => ({ value: slot, label: slot === 'unknown' ? "UNKNOWN TIME" : slot }))}
+                  items={TIME_SLOTS.map(slot => ({ value: slot, label: slot === 'unknown' ? "I don't know" : slot }))}
                   value={data.timeSlot}
                   onChange={(v) => { setData((d: BirthData) => ({ ...d, timeSlot: v })); setErrorMsg(''); }}
                   placeholder="Select time range"
@@ -202,13 +202,13 @@ export function InlineBirthForm() {
                 />
                 <div className="min-h-[20px] pt-1">
                   {data.timeSlot === 'unknown' && (
-                    <p className="text-[10px] text-primary/70 uppercase tracking-wider font-mono">Defaulting to 12:00 PM standard ascendant.</p>
+                    <p className="text-[10px] text-primary/70 uppercase tracking-wider font-mono">We'll use 12:00 PM as default — still accurate for your timeline.</p>
                   )}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Spatial Fix / Location</Label>
+                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Birth Place</Label>
                 <div className="relative">
                   <LocationAutocomplete
                     value={data.location}
@@ -240,7 +240,7 @@ export function InlineBirthForm() {
             onClick={onNext}
             className="flex-1 h-14 bg-primary text-primary-foreground font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(212,175,55,0.2)]"
           >
-            {step === 0 ? "Establish Target" : "Generate AstroKline"}
+            {step === 0 ? "Next Step" : "See My Timeline"}
             {step === 1 ? <Sparkles className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
           </button>
         </div>
@@ -249,7 +249,7 @@ export function InlineBirthForm() {
             <div className="text-center mt-5 flex justify-center items-center gap-2 opacity-50">
                <span className="w-4 h-4 border border-white/20 flex items-center justify-center text-[8px] font-mono">i</span>
                <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest">
-                 100% SECURE. DATA IS VOLATILE AND UNSTORED.
+                 Your data is encrypted and never stored.
                </p>
             </div>
           )}

@@ -109,7 +109,7 @@ export function QuotaLimitModal({
             </button>
           ) : (
             <Link
-              href="/pricing"
+              href={`/pricing?highlight=${upgradePlan.name.toLowerCase()}`}
               className="bg-primary text-primary-foreground hover:bg-primary/90 block w-full py-2.5 text-center text-sm font-bold transition-all"
             >
               Upgrade Now
