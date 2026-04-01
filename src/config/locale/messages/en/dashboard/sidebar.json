@@ -21,6 +21,11 @@
         "title": "Compatibility",
         "url": "/dashboard/tools/compatibility",
         "icon": "Users"
+      },
+      {
+        "title": "Invite Friends",
+        "url": "/dashboard/invite",
+        "icon": "Gift"
       }
     ]
   },

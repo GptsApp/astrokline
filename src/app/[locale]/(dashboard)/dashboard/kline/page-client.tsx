@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { SharedKlineResult } from '@/components/astrokline/kline/shared-kline-result';
-import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { ExportPdfButton } from '@/components/astrokline/kline/export-pdf-button';
 import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
 import { ReferralCard } from '@/components/astrokline/kline/referral-card';
@@ -22,8 +22,6 @@ import {
 } from '@/lib/astrokline/mock-astrology-data';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 import {
-  ArrowLeft,
-  Lock,
   Plus,
   Share2,
   Sparkles,
@@ -48,108 +46,6 @@ interface KlineItem {
 }
 
 // ──────────────────────────────────────
-//  KLine Card for List View
-// ──────────────────────────────────────
-function KlineCard({
-  kline,
-  onView,
-  onDelete,
-}: {
-  kline: KlineItem;
-  onView: () => void;
-  onDelete: () => void;
-}) {
-  const profile = kline.klineResult?.profile;
-  const sunSign = profile?.sun?.sign || '—';
-  const moonSign = profile?.moon?.sign || '—';
-  const [shareStatus, setShareStatus] = useState<'idle' | 'loading' | 'copied'>(
-    'idle'
-  );
-
-  const handleShare = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShareStatus('loading');
-    try {
-      const res = await fetch('/api/kline/share', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ klineId: kline.id }),
-      });
-      const data = await res.json();
-      if (data.success && data.data?.shareUrl) {
-        await navigator.clipboard.writeText(data.data.shareUrl);
-        setShareStatus('copied');
-        setTimeout(() => setShareStatus('idle'), 2000);
-      }
-    } catch {
-      setShareStatus('idle');
-    }
-  };
-
-  return (
-    <div
-      className="group hover:border-primary/30 relative cursor-pointer  border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all hover:bg-white/8 hover:shadow-[0_0_30px_rgba(212,175,55,0.08)]"
-      onClick={onView}
-    >
-      {kline.isSelf && (
-        <div className="bg-primary/20 border-primary/40 text-primary absolute -top-2.5 left-4 flex items-center gap-1 border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase">
-          <Star className="h-3 w-3" /> My Chart
-        </div>
-      )}
-
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-3">
-          <div className="bg-primary/10 border-primary/20 flex h-10 w-10 shrink-0 items-center justify-center border">
-            <User className="text-primary/70 h-5 w-5" />
-          </div>
-          <div className="min-w-0">
-            <Heading level={3} className="text-foreground truncate text-base font-bold">
-              {kline.label || 'Unnamed'}
-            </Heading>
-            <p className="text-muted-foreground mt-0.5 text-xs">
-              {sunSign} ☉ · {moonSign} ☽ · {kline.birthDate}
-            </p>
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex items-center gap-1 opacity-0 transition-all group-hover:opacity-100">
-          <button
-            onClick={handleShare}
-            className={cn(
-              ' p-2 transition-all',
-              shareStatus === 'copied'
-                ? 'bg-green-500/10 text-green-400'
-                : 'text-muted-foreground hover:bg-purple-500/10 hover:text-purple-400'
-            )}
-            title={shareStatus === 'copied' ? 'Copied!' : 'Share'}
-          >
-            <Share2 className="h-4 w-4" />
-          </button>
-          {!kline.isSelf && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete();
-              }}
-              className="text-muted-foreground  p-2 transition-all hover:bg-red-500/10 hover:text-red-400"
-              title="Delete"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="text-muted-foreground mt-3 flex items-center justify-between text-xs">
-        <span>{kline.birthPlace}</span>
-        <span>{new Date(kline.createdAt).toLocaleDateString()}</span>
-      </div>
-    </div>
-  );
-}
-
-// ──────────────────────────────────────
 //  Main Dashboard Component
 // ──────────────────────────────────────
 export function DashboardKlineClient({ userTier }: { userTier: string }) {
@@ -162,21 +58,17 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
   const { open: openBirthModal } = useBirthInfoModal();
   const { openCheckout } = useCheckout();
 
-  // View state: 'list' | 'detail'
-  const [view, setView] = useState<'list' | 'detail'>('list');
+  // Tab View State
+  const [activeKlineId, setActiveKlineId] = useState<string | null>(null);
   const [klines, setKlines] = useState<KlineItem[]>([]);
   const [isLoadingList, setIsLoadingList] = useState(true);
   const [isCalculating, setIsCalculating] = useState(false);
 
   // Detail view state
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number | undefined>(
-    undefined
-  );
+  const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
   const [klineData, setKlineData] = useState<DestinyScorePoint[]>([]);
-          const [transitDetails, setTransitDetails] = useState<
-    Record<number, TransitEvent[]>
-  >({});
+  const [transitDetails, setTransitDetails] = useState<Record<number, TransitEvent[]>>({});
   const [dataReady, setDataReady] = useState(false);
   const animationDoneRef = useRef(false);
 
@@ -189,13 +81,30 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
     userTier: 'FREE',
   });
 
+  // Share status
+  const [shareStatus, setShareStatus] = useState<Record<string, 'idle' | 'loading' | 'copied'>>({});
+
   // Fetch KLine list
   const fetchKlines = useCallback(async () => {
     setIsLoadingList(true);
     try {
       const res = await fetch('/api/kline/list');
       const data = await res.json();
-      if (data.success) setKlines(data.data || []);
+      if (data.success && data.data) {
+        setKlines(data.data);
+        // Automatically select "My Chart" or the first one if not set
+        if (data.data.length > 0) {
+          const defaultTab = data.data.find((k: KlineItem) => k.isSelf) || data.data[0];
+          // We set the active tab using functional logic to avoid stale closures
+          setActiveKlineId((prev) => {
+            if (!prev) {
+               applyKlineData(defaultTab);
+               return defaultTab.id;
+            }
+            return prev;
+          });
+        }
+      }
     } catch (err) {
       console.error('Failed to fetch KLines:', err);
     } finally {
@@ -207,7 +116,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
     fetchKlines();
   }, [fetchKlines]);
 
-  // Auto-migrate localStorage data from pre-signup session
+  // Auto-migrate localStorage data
   useEffect(() => {
     const cached = getSavedKlineResult();
     const birthData = getSavedBirthData();
@@ -221,50 +130,78 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         .then((data) => {
           if (data.success) {
             clearSavedKlineResult();
-            fetchKlines(); // Refresh list
+            fetchKlines();
           }
         })
         .catch((err) => console.error('Auto-migrate error:', err));
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // View a saved KLine
-  const handleViewKline = useCallback((kline: KlineItem) => {
+  // Apply KLine Data to state
+  const applyKlineData = (kline: KlineItem) => {
     if (kline.klineResult?.profile) {
       setProfile(kline.klineResult.profile);
-      setKlineData(
-        Array.isArray(kline.klineResult.klineData)
-          ? kline.klineResult.klineData
-          : []
-      );
+      setKlineData(Array.isArray(kline.klineResult.klineData) ? kline.klineResult.klineData : []);
       setTransitDetails(kline.klineResult.transitDetails ?? {});
-                              setSelectedYear(undefined);
-      setView('detail');
+      setSelectedYear(undefined);
     }
+  };
+
+  // View a saved KLine
+  const handleViewKline = useCallback((kline: KlineItem) => {
+    setActiveKlineId(kline.id);
+    applyKlineData(kline);
   }, []);
 
   // Delete a KLine
   const handleDeleteKline = useCallback(async (klineId: string) => {
-    if (
-      !confirm(
-        'Are you sure you want to delete this KLine? This cannot be undone.'
-      )
-    )
-      return;
+    if (!confirm('Are you sure you want to delete this KLine? This cannot be undone.')) return;
     try {
-      const res = await fetch(`/api/kline/delete?id=${klineId}`, {
-        method: 'DELETE',
-      });
+      const res = await fetch(`/api/kline/delete?id=${klineId}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
-        setKlines((prev) => prev.filter((k) => k.id !== klineId));
+        setKlines((prev) => {
+          const updated = prev.filter((k) => k.id !== klineId);
+          if (activeKlineId === klineId) {
+            if (updated.length > 0) {
+               handleViewKline(updated[0]);
+            } else {
+               setActiveKlineId(null);
+               setProfile(null);
+            }
+          }
+          return updated;
+        });
       }
     } catch (err) {
       console.error('Failed to delete KLine:', err);
     }
-  }, []);
+  }, [activeKlineId, handleViewKline]);
 
-  // New KLine query (check quota first)
+  // Share a KLine
+  const handleShare = async (e: React.MouseEvent, klineId: string) => {
+    e.stopPropagation();
+    setShareStatus((prev) => ({ ...prev, [klineId]: 'loading' }));
+    try {
+      const res = await fetch('/api/kline/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ klineId }),
+      });
+      const data = await res.json();
+      if (data.success && data.data?.shareUrl) {
+        await navigator.clipboard.writeText(data.data.shareUrl);
+        setShareStatus((prev) => ({ ...prev, [klineId]: 'copied' }));
+        setTimeout(() => setShareStatus((prev) => ({ ...prev, [klineId]: 'idle' })), 2000);
+      } else {
+        setShareStatus((prev) => ({ ...prev, [klineId]: 'idle' }));
+      }
+    } catch {
+      setShareStatus((prev) => ({ ...prev, [klineId]: 'idle' }));
+    }
+  };
+
+  // New KLine query
   const handleNewQuery = useCallback(async () => {
     try {
       const res = await fetch('/api/kline/quota');
@@ -286,15 +223,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         const response = await fetch('/api/astrology/natal-chart', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            year,
-            month,
-            day,
-            timeSlot: birthData.timeSlot,
-            timezone,
-            latitude: birthData.lat,
-            longitude: birthData.lon,
-          }),
+          body: JSON.stringify({ year, month, day, timeSlot: birthData.timeSlot, timezone, latitude: birthData.lat, longitude: birthData.lon }),
         });
         const result = await response.json();
         if (result.success && result.data) {
@@ -310,8 +239,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
             transitDetails: result.reportData?.transitDetails ?? {},
           };
 
-          // Save to DB
-          await fetch('/api/kline/save', {
+          const saveRes = await fetch('/api/kline/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -325,9 +253,16 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
               klineResult: cachedResult,
             }),
           });
-
-          // Refresh list
-          await fetchKlines();
+          
+          if (saveRes.ok) {
+             const saveJson = await saveRes.json();
+             await fetchKlines();
+             if (saveJson.data?.id) {
+                // Instantly select the new chart
+                setActiveKlineId(saveJson.data.id);
+                applyKlineData({ id: saveJson.data.id, klineResult: cachedResult } as any);
+             }
+          }
         }
       } catch (err) {
         console.error('Query error:', err);
@@ -339,141 +274,187 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
 
   const handleLoaderComplete = useCallback(() => {
     animationDoneRef.current = true;
-    if (dataReady) {
-      setIsCalculating(false);
-    }
+    if (dataReady) setIsCalculating(false);
   }, [dataReady]);
 
   useEffect(() => {
-    if (dataReady && animationDoneRef.current && isCalculating) {
-      setIsCalculating(false);
-    }
+    if (dataReady && animationDoneRef.current && isCalculating) setIsCalculating(false);
   }, [dataReady, isCalculating]);
 
-  // ── LIST VIEW ──
-  if (view === 'list') {
+  // Loading skeleton
+  if (isLoadingList && klines.length === 0) {
     return (
-      <div className="space-y-6 pb-24">
-        {isCalculating && (
-          <div className="bg-background/95 fixed inset-0 z-[200] flex items-center justify-center backdrop-blur-xl">
-            <AstrologyLoader
-              isLoading={isCalculating}
-              onComplete={handleLoaderComplete}
-              durationMs={5000}
-            />
-          </div>
-        )}
-
-        {/* Header */}
-        <div className="flex flex-col items-center justify-between gap-4  border border-white/10 bg-white/5 p-5 backdrop-blur-md sm:flex-row">
-          <div>
-            <Heading level={2} className="flex items-center gap-2 text-xl font-bold text-white">
-              <Sparkles className="text-primary h-5 w-5" /> My K-Line Collection
-            </Heading>
-            <p className="text-muted-foreground mt-1 text-sm">
-              {klines.length === 0
-                ? 'No charts yet. Create your first one!'
-                : `${klines.length} chart${klines.length > 1 ? 's' : ''} saved`}
-            </p>
-          </div>
-          <button
-            onClick={handleNewQuery}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 flex shrink-0 items-center gap-2 px-5 py-2.5 text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all hover:scale-105"
-          >
-            <Plus className="h-4 w-4" /> New Query
-          </button>
-        </div>
-
-        {/* List */}
-        {isLoadingList ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="border-primary/30 border-t-primary h-8 w-8 animate-spin border-2" />
-          </div>
-        ) : klines.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="bg-primary/10 border-primary/20 mb-4 flex h-16 w-16 items-center justify-center border">
-              <Sparkles className="text-primary/50 h-7 w-7" />
-            </div>
-            <Heading level={3} className="text-foreground mb-2 text-lg font-bold">
-              No Charts Yet
-            </Heading>
-            <p className="text-muted-foreground mb-6 max-w-sm text-sm">
-              Enter your birth details to generate your personal K-Line, or
-              query a friend&apos;s chart.
-            </p>
-            <button
-              onClick={handleNewQuery}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 px-6 py-2.5 text-sm font-bold transition-all"
-            >
-              <Plus className="h-4 w-4" /> Create First Chart
-            </button>
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {klines.map((kline) => (
-              <KlineCard
-                key={kline.id}
-                kline={kline}
-                onView={() => handleViewKline(kline)}
-                onDelete={() => handleDeleteKline(kline.id)}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Referral Card */}
-        <ReferralCard />
-
-        <QuotaLimitModal
-          isOpen={showQuotaModal}
-          onClose={() => setShowQuotaModal(false)}
-          used={quotaInfo.used}
-          total={quotaInfo.total}
-          isLifetime={quotaInfo.isLifetime}
-          userTier={quotaInfo.userTier}
-        />
+      <div className="flex h-64 items-center justify-center">
+        <div className="border-t-[#D4AF37] h-8 w-8 animate-spin rounded-full border-2 border-white/20" />
       </div>
     );
   }
 
-  // ── DETAIL VIEW ──
+  // ── EMPTY STATE ──
+  if (klines.length === 0) {
+     return (
+       <div className="space-y-6 pb-24">
+         <div className="flex flex-col items-center justify-center py-20 text-center">
+           <div className="bg-[#D4AF37]/10 border-[#D4AF37]/30 mb-4 flex h-16 w-16 items-center justify-center border">
+             <Sparkles className="text-[#D4AF37] h-7 w-7" />
+           </div>
+           <Heading level={3} className="text-foreground mb-2 text-lg font-bold">
+             No Charts Yet
+           </Heading>
+           <p className="text-muted-foreground mb-6 max-w-sm text-sm">
+             Enter your birth details to generate your personal K-Line, or query a friend&apos;s chart.
+           </p>
+           <button
+             onClick={handleNewQuery}
+             className="bg-[#D4AF37] text-black hover:bg-[#D4AF37]/90 flex items-center gap-2 px-6 py-2.5 text-sm font-bold transition-all"
+           >
+             <Plus className="h-4 w-4" /> Create First Chart
+           </button>
+         </div>
+       </div>
+     );
+  }
+
+  // ── UNIFIED TAB VIEW ──
   return (
-    <div className="space-y-12 pb-24">
-      {/* Toolbar */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 pb-24">
+      {/* Astrology Loader Overlay */}
+      {isCalculating && (
+        <div className="bg-background/95 fixed inset-0 z-[200] flex items-center justify-center backdrop-blur-xl">
+          <AstrologyLoader isLoading={isCalculating} onComplete={handleLoaderComplete} durationMs={5000} />
+        </div>
+      )}
+
+      {/* ── TOP HORIZONTAL TAB BAR ── */}
+      <div className="flex w-full items-end gap-2 overflow-x-auto border-b border-white/10 pb-0 pt-4 scrollbar-hide">
+        {klines.map((kline) => {
+          const isActive = activeKlineId === kline.id;
+          const sunSign = kline.klineResult?.profile?.sun?.sign || '—';
+          const moonSign = kline.klineResult?.profile?.moon?.sign || '—';
+          const currentShareStatus = shareStatus[kline.id] || 'idle';
+          
+          return (
+            <button
+              key={kline.id}
+              onClick={() => handleViewKline(kline)}
+              className={cn(
+                "group relative flex shrink-0 items-center justify-between gap-3 overflow-hidden border transition-all text-left",
+                isActive 
+                  ? "bg-[#15131A] border-white/10 shadow-[inset_0_2px_15px_rgba(212,175,55,0.08)] border-b-transparent z-10 px-5 pt-4 pb-3"
+                  : "bg-white/[0.02] border-white/5 hover:bg-white/[0.06] text-white/50 border-b-transparent px-5 pt-3 pb-2 -mb-[1px] opacity-70 hover:opacity-100"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                {/* Tab Icon */}
+                <div className={cn("flex h-8 w-8 items-center justify-center shrink-0 border", isActive ? 'border-[#D4AF37]/30 bg-[#D4AF37]/10' : 'border-white/10 bg-white/5')}>
+                  {kline.isSelf ? (
+                     <Star className={cn("h-4 w-4", isActive ? "text-[#D4AF37]" : "text-white/40")} />
+                  ) : (
+                     <User className={cn("h-4 w-4", isActive ? "text-[#D4AF37]" : "text-white/40")} />
+                  )}
+                </div>
+                
+                <div className="flex flex-col items-start whitespace-nowrap">
+                  <div className="flex items-center gap-2 max-w-[120px] md:max-w-none">
+                     <span className={cn("font-serif font-bold transition-all truncate", isActive ? "text-lg text-white" : "text-sm text-white/70 group-hover:text-white/90")}>
+                       {kline.label || 'Unnamed'}
+                     </span>
+                     {kline.isSelf && <span className={cn("text-[9px] font-mono tracking-widest uppercase", isActive ? "text-[#D4AF37]" : "text-white/30")}>(My Chart)</span>}
+                  </div>
+                  
+                  {/* Expandable Details when active */}
+                  {isActive && (
+                     <motion.div 
+                       initial={{ height: 0, opacity: 0 }}
+                       animate={{ height: "auto", opacity: 1 }}
+                       transition={{ duration: 0.3, ease: 'easeOut' }}
+                       className="mt-1 flex items-center gap-1.5 font-mono text-[10px] text-white/50"
+                     >
+                       <span>{sunSign} ☉ · {moonSign} ☽</span>
+                       <span className="w-1 h-1 rounded-full bg-white/20" />
+                       <span>{kline.birthDate}</span>
+                     </motion.div>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Buttons purely visible when active AND hovered */}
+              {isActive && (
+                <div className="ml-4 flex shrink-0 items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                   <span 
+                      className={cn("p-1.5 transition-colors cursor-pointer rounded-full", currentShareStatus === 'copied' ? 'text-green-400 bg-green-400/10' : 'hover:text-[#D4AF37] hover:bg-white/5')} 
+                      onClick={(e) => handleShare(e, kline.id)}
+                      title="Share Profile"
+                   >
+                     <Share2 className="h-3.5 w-3.5"/>
+                   </span>
+                   {!kline.isSelf && (
+                     <span 
+                       className="p-1.5 hover:text-red-400 hover:bg-white/5 transition-colors cursor-pointer rounded-full" 
+                       onClick={(e) => { e.stopPropagation(); handleDeleteKline(kline.id); }}
+                       title="Delete Profile"
+                     >
+                       <Trash2 className="h-3.5 w-3.5"/>
+                     </span>
+                   )}
+                </div>
+              )}
+            </button>
+          )
+        })}
+        
+        {/* New Query Button as Tab */}
         <button
-          onClick={() => setView('list')}
-          className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm transition-colors"
+          onClick={handleNewQuery}
+          className="group flex h-[42px] shrink-0 items-center gap-2 px-4 transition-all hover:bg-white/5 -mb-[1px]"
         >
-          <ArrowLeft className="h-4 w-4" /> Back to Collection
+          <Plus className="h-4 w-4 text-white/40 group-hover:text-[#D4AF37] transition-colors" />
         </button>
+      </div>
+
+      {/* ── TOOLBAR ── */}
+      <div className="flex items-center justify-between border-b border-white/5 pb-4">
+         <div /> {/* spacing */}
         {isPremium ? (
-          <ExportPdfButton
-            targetId="kline-report"
-            fileName={`kline-${profile?.name || 'report'}`}
-          />
+          <ExportPdfButton targetId="kline-report" fileName={`kline-${profile?.name || 'report'}`} />
         ) : (
-          <a
-            href="/settings/billing"
-            className="text-primary hover:border-primary/30 flex items-center gap-2 border border-white/10 bg-white/5 px-4 py-2 text-sm transition-all"
-          >
-            Upgrade to export PDF
+          <a href="/settings/billing" className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
+            Upgrade to Export PDF
           </a>
         )}
       </div>
+
+      {/* ── CHART RENDER ── */}
       <div id="kline-report">
         {profile && (
-          <SharedKlineResult
-            profile={profile}
-            klineData={klineData}
-            transitDetails={transitDetails}
-            tier={chartTier}
-            onActionGate={() => openCheckout('lite')}
-            hideFloatingNav={true}
-          />
+          <motion.div
+            key={activeKlineId} // Forces re-mount animation when switching tabs
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <SharedKlineResult
+              profile={profile}
+              klineData={klineData}
+              transitDetails={transitDetails}
+              tier={chartTier}
+              onActionGate={() => openCheckout('lite')}
+              hideFloatingNav={true}
+            />
+          </motion.div>
         )}
       </div>
+      
       {profile && <ReportFooter profile={profile} tier={chartTier} onUpgradeClick={() => openCheckout(chartTier === 'FREE' ? 'lite' : 'pro')} />}
+
+      <QuotaLimitModal
+        isOpen={showQuotaModal}
+        onClose={() => setShowQuotaModal(false)}
+        used={quotaInfo.used}
+        total={quotaInfo.total}
+        isLifetime={quotaInfo.isLifetime}
+        userTier={quotaInfo.userTier}
+      />
     </div>
   );
 }

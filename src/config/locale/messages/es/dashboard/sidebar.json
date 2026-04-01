@@ -11,6 +11,11 @@
         "title": "K-Line",
         "url": "/dashboard/kline",
         "icon": "Activity"
+      },
+      {
+        "title": "Invite Friends",
+        "url": "/dashboard/invite",
+        "icon": "Gift"
       }
     ]
   },

@@ -179,7 +179,7 @@ export function SharedKlineResult({
     <>
     <div className="w-full">
       {/* ── 1. K-LINE CHART & PROFILE RIBBON ── */}
-      <ReportSection id="kline-hero" divider={false} className="w-full overflow-hidden px-0 py-0 pb-8 pt-12 md:pt-16">
+      <ReportSection id="kline-hero" divider={false} className="w-full overflow-visible px-0 py-0 pb-8 pt-12 md:pt-16">
         <InteractiveChart
           data={klineData}
           transitDetails={transitDetails}

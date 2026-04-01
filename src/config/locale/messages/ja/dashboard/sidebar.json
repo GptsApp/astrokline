@@ -11,6 +11,11 @@
         "title": "K-Line",
         "url": "/dashboard/kline",
         "icon": "Activity"
+      },
+      {
+        "title": "招待する",
+        "url": "/dashboard/invite",
+        "icon": "Gift"
       }
     ]
   },

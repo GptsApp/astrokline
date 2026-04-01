@@ -19,6 +19,7 @@ import { Heading } from '@/components/astrokline/ui/heading';
 import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/shared/lib/utils';
+import { ReferralCard } from '@/components/astrokline/kline/referral-card';
 
 interface DashboardClientProps {
   userName?: string;
@@ -39,7 +40,7 @@ const QUICK_LINKS = [
   { icon: TrendingUp, label: 'Energy', href: '/dashboard/tools/energy', color: 'text-purple-400', bg: 'bg-purple-400/10' },
   { icon: Activity, label: 'Charts', href: '/dashboard/kline', color: 'text-amber-400', bg: 'bg-amber-400/10' },
   { icon: Users, label: 'Compatibility', href: '/dashboard/tools/compatibility', color: 'text-rose-400', bg: 'bg-rose-400/10' },
-  { icon: Gift, label: 'Invite', href: '/dashboard', color: 'text-purple-400', bg: 'bg-purple-400/10' },
+  { icon: Gift, label: 'Invite', href: '/dashboard/invite', color: 'text-purple-400', bg: 'bg-purple-400/10' },
 ];
 
 export function DashboardClient({
@@ -376,7 +377,6 @@ export function DashboardClient({
           </button>
         )}
       </div>
-
 
     </div>
   );
