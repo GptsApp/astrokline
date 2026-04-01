@@ -1,32 +1,23 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
-  TrendingUp,
-  Calendar,
-  Users,
-  Activity,
-  ArrowRight,
-  Compass,
-  Plus,
-  CreditCard,
-  Gauge,
+  TrendingUp, Calendar, Users, Activity, ArrowRight,
+  Compass, Plus, CreditCard, ChevronLeft, ChevronRight,
+  CalendarDays, Lock, Check, X, Clock, Gauge, Gift,
 } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
 import {
-  getSavedBirthData,
-  getSavedKlineResult,
-  useBirthInfoModal,
+  getSavedBirthData, getSavedKlineResult, useBirthInfoModal,
 } from '@/components/astrokline/ui/birth-info-context';
 import {
-  getDailyEnergy,
-  extractCurrentYearScore,
-  extractSunSign,
-  extractMoonSign,
-  type DailyEnergy,
+  extractCurrentYearScore, extractSunSign, extractMoonSign,
 } from '@/lib/astrokline/daily-energy';
+import { getDailyTransit, getWeekTransits } from '@/lib/astrokline/daily-transit';
+import { MonthCalendarModal } from '@/components/astrokline/tools/month-calendar-modal';
 import { Heading } from '@/components/astrokline/ui/heading';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/shared/lib/utils';
 
 interface DashboardClientProps {
   userName?: string;
@@ -38,66 +29,26 @@ interface DashboardClientProps {
 }
 
 const TIER_LABELS: Record<string, string> = {
-  FREE: 'Free',
-  STANDARD: 'Lite',
-  PREMIUM: 'Pro',
+  FREE: 'Free', STANDARD: 'Lite', PREMIUM: 'Pro',
 };
 
-const TOOLS = [
-  {
-    id: 'energy',
-    icon: TrendingUp,
-    label: 'Energy Forecast',
-    desc: 'Monthly energy peaks & dips',
-    href: '/dashboard/tools/energy',
-    color: 'text-purple-400',
-    borderColor: 'border-purple-400/20 hover:border-purple-400/40',
-    bgColor: 'bg-purple-400/10',
-  },
-  {
-    id: 'calendar',
-    icon: Calendar,
-    label: 'Action Calendar',
-    desc: 'Daily guidance for your chart',
-    href: '/dashboard/tools/calendar',
-    color: 'text-emerald-400',
-    borderColor: 'border-emerald-400/20 hover:border-emerald-400/40',
-    bgColor: 'bg-emerald-400/10',
-  },
-  {
-    id: 'charts',
-    icon: Activity,
-    label: 'My Charts',
-    desc: '',
-    href: '/dashboard/kline',
-    color: 'text-amber-400',
-    borderColor: 'border-amber-400/20 hover:border-amber-400/40',
-    bgColor: 'bg-amber-400/10',
-  },
-  {
-    id: 'compatibility',
-    icon: Users,
-    label: 'Compatibility',
-    desc: 'Chemistry with anyone',
-    href: '/dashboard/tools/compatibility',
-    color: 'text-rose-400',
-    borderColor: 'border-rose-400/20 hover:border-rose-400/40',
-    bgColor: 'bg-rose-400/10',
-  },
+const DAY_SHORT = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const QUICK_LINKS = [
+  { icon: TrendingUp, label: 'Energy', href: '/dashboard/tools/energy', color: 'text-purple-400', bg: 'bg-purple-400/10' },
+  { icon: Activity, label: 'Charts', href: '/dashboard/kline', color: 'text-amber-400', bg: 'bg-amber-400/10' },
+  { icon: Users, label: 'Compatibility', href: '/dashboard/tools/compatibility', color: 'text-rose-400', bg: 'bg-rose-400/10' },
+  { icon: Gift, label: 'Invite', href: '/dashboard', color: 'text-purple-400', bg: 'bg-purple-400/10' },
 ];
 
 export function DashboardClient({
-  userName,
-  userTier,
-  hasKline,
-  klineResult,
-  birthDate,
-  chartCount,
+  userName, userTier, hasKline, klineResult, birthDate, chartCount,
 }: DashboardClientProps) {
   const [mounted, setMounted] = useState(false);
   const [localHasData, setLocalHasData] = useState<boolean | null>(null);
   const [localProfile, setLocalProfile] = useState<any>(null);
-  const [energy, setEnergy] = useState<DailyEnergy | null>(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const { open: openModal } = useBirthInfoModal();
   const router = useRouter();
 
@@ -105,20 +56,37 @@ export function DashboardClient({
     setMounted(true);
     const savedBirth = getSavedBirthData();
     setLocalHasData(!!savedBirth || hasKline);
-
     if (savedBirth) {
       const klineRes = getSavedKlineResult();
       if (klineRes?.profile) setLocalProfile(klineRes.profile);
     }
+  }, [hasKline]);
 
-    // Calculate daily energy
-    if (klineResult && birthDate) {
-      const yearScore = extractCurrentYearScore(klineResult);
-      if (yearScore !== null) {
-        setEnergy(getDailyEnergy(yearScore, birthDate));
-      }
-    }
-  }, [hasKline, klineResult, birthDate]);
+  // Derived data
+  const data = useMemo(() => {
+    if (!klineResult) return null;
+    const parsed = typeof klineResult === 'string' ? JSON.parse(klineResult) : klineResult;
+    const klineData = parsed?.klineData || [];
+    const bd = parsed?.profile?.birthDate || birthDate || '2000-01-01';
+    const yearPoint = klineData.find((p: any) => p.year === new Date().getFullYear());
+    const yearScore = yearPoint?.score ?? 65;
+    return { parsed, klineData, bd, yearScore };
+  }, [klineResult, birthDate]);
+
+  const weekTransits = useMemo(() => {
+    if (!data) return [];
+    return getWeekTransits(data.yearScore, data.bd, selectedDate);
+  }, [data, selectedDate]);
+
+  const todayTransit = useMemo(() => {
+    if (!data) return null;
+    return getDailyTransit(data.yearScore, data.bd, selectedDate);
+  }, [data, selectedDate]);
+
+  const getScoreForDate = (d: Date) => {
+    if (!data) return 50;
+    return getDailyTransit(data.yearScore, data.bd, d).score;
+  };
 
   if (!mounted || localHasData === null) {
     return (
@@ -128,20 +96,23 @@ export function DashboardClient({
     );
   }
 
-  // Extract profile data
   const sunSign = extractSunSign(klineResult) || localProfile?.sun?.sign;
   const moonSign = extractMoonSign(klineResult) || localProfile?.moon?.sign;
   const tierLabel = TIER_LABELS[userTier] || 'Free';
   const displayName = userName || localProfile?.name || 'Traveler';
+  const isFree = userTier === 'FREE';
+  const isPro = userTier === 'PREMIUM';
 
-  // Dynamic chart count desc
-  const chartsDesc = chartCount > 0
-    ? `${chartCount} chart${chartCount > 1 ? 's' : ''} saved`
-    : 'View saved charts';
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const selectedStr = selectedDate.toISOString().slice(0, 10);
+  const isToday = todayStr === selectedStr;
 
-  const toolsWithDynamicDesc = TOOLS.map(t =>
-    t.id === 'charts' ? { ...t, desc: chartsDesc } : t
-  );
+  // Week navigation
+  const shiftWeek = (dir: number) => {
+    const d = new Date(selectedDate);
+    d.setDate(d.getDate() + dir * 7);
+    setSelectedDate(d);
+  };
 
   // --- EMPTY STATE ---
   if (!localHasData) {
@@ -161,14 +132,10 @@ export function DashboardClient({
               with energy forecasts, action calendar, and more.
             </p>
             <button
-              onClick={() => openModal(() => {
-                setLocalHasData(true);
-                router.refresh();
-              })}
+              onClick={() => openModal(() => { setLocalHasData(true); router.refresh(); })}
               className="inline-flex items-center gap-2 bg-primary px-8 py-4 font-bold text-primary-foreground shadow-lg transition-all hover:scale-105"
             >
-              <Plus className="h-5 w-5" />
-              Create My K-Line
+              <Plus className="h-5 w-5" /> Create My K-Line
             </button>
           </div>
         </div>
@@ -176,91 +143,174 @@ export function DashboardClient({
     );
   }
 
-  // --- FULL DASHBOARD ---
+  // --- TODAY-FIRST DASHBOARD ---
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
-      {/* Energy Banner */}
-      <div className="relative overflow-hidden border border-white/5 bg-[#15131A]/60 p-6 md:p-8 backdrop-blur-xl">
-        <div className="pointer-events-none absolute top-0 right-0 h-48 w-48 bg-primary/5 blur-[80px]" />
-
-        <div className="relative z-10">
-          {/* Greeting + Tier */}
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-sm text-muted-foreground">
-              {energy?.greeting || 'Welcome'}, {displayName}
-            </span>
-            <span className="inline-flex items-center gap-1.5 border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
-              <CreditCard className="h-3 w-3" />
-              {tierLabel}
-            </span>
+    <div className="mx-auto max-w-5xl space-y-4">
+      {/* Greeting Bar */}
+      <div className="flex items-center justify-between">
+        <div>
+          <span className="text-sm text-muted-foreground">
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+          </span>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="text-white font-medium">{displayName}</span>
+            {(sunSign || moonSign) && (
+              <span className="text-xs text-muted-foreground/70">
+                {sunSign && `${sunSign} ☉`}{sunSign && moonSign && ' · '}{moonSign && `${moonSign} ☽`}
+              </span>
+            )}
           </div>
+        </div>
+        <span className="inline-flex items-center gap-1.5 border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
+          <CreditCard className="h-3 w-3" /> {tierLabel}
+        </span>
+      </div>
 
-          {/* Signs */}
-          {(sunSign || moonSign) && (
-            <p className="text-xs text-muted-foreground/70 mb-4">
-              {sunSign && `${sunSign} Sun`}
-              {sunSign && moonSign && ' · '}
-              {moonSign && `${moonSign} Moon`}
-            </p>
-          )}
-
-          {/* Energy Score */}
-          {energy ? (
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-3">
-                <div className="flex h-14 w-14 items-center justify-center border border-white/10 bg-white/5">
-                  <Gauge className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-white">{energy.score}</span>
-                    <span className={`text-sm font-semibold ${energy.labelColor}`}>
-                      {energy.label}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                  </p>
-                </div>
-              </div>
-              <div className="hidden sm:block border-l border-white/10 pl-6">
-                <p className="text-sm text-white/60 italic leading-relaxed max-w-xs">
-                  &ldquo;{energy.message}&rdquo;
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <div className="flex h-14 w-14 items-center justify-center border border-white/10 bg-white/5">
-                <Activity className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <p className="text-lg font-semibold text-white">Your Dashboard</p>
-                <p className="text-xs text-muted-foreground">Your cosmic tools at a glance</p>
-              </div>
-            </div>
-          )}
+      {/* Week Navigator */}
+      <div className="border border-white/5 bg-[#15131A]/60 p-4 backdrop-blur-xl">
+        <div className="flex items-center gap-2">
+          <button onClick={() => shiftWeek(-1)} className="p-1 text-white/40 hover:text-white">
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div className="flex flex-1 justify-between">
+            {weekTransits.map((w) => {
+              const dayIdx = (w.date.getDay() + 6) % 7;
+              const sel = w.dateStr === selectedStr;
+              const tod = w.dateStr === todayStr;
+              return (
+                <button
+                  key={w.dateStr}
+                  onClick={() => setSelectedDate(w.date)}
+                  className={cn(
+                    'flex flex-col items-center gap-1 px-2 py-2 transition-all flex-1',
+                    sel ? 'bg-primary/10 ring-1 ring-primary/30' : 'hover:bg-white/5'
+                  )}
+                >
+                  <span className="text-[10px] font-mono text-white/30 uppercase">{DAY_SHORT[dayIdx]}</span>
+                  <span className={cn('text-lg font-bold', sel ? 'text-primary' : tod ? 'text-white' : 'text-white/60')}>
+                    {w.date.getDate()}
+                  </span>
+                  <span className={cn('h-1.5 w-1.5', w.transit.score >= 70 ? 'bg-emerald-500' : w.transit.score >= 45 ? 'bg-amber-500' : 'bg-rose-500')} />
+                </button>
+              );
+            })}
+          </div>
+          <button onClick={() => shiftWeek(1)} className="p-1 text-white/40 hover:text-white">
+            <ChevronRight className="h-4 w-4" />
+          </button>
+          <button onClick={() => setCalendarOpen(true)} className="p-1.5 text-white/40 hover:text-white border border-white/10">
+            <CalendarDays className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
-      {/* 4-Grid Tools */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
-        {toolsWithDynamicDesc.map((tool) => (
+      {/* Today's Transit Card */}
+      {todayTransit && (
+        <div className="border border-white/5 bg-[#15131A]/60 p-6 backdrop-blur-xl">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-white">
+                {selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+              </span>
+              {isToday && <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5">TODAY</span>}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={cn('text-2xl font-bold', todayTransit.labelColor)}>{todayTransit.score}</span>
+              <span className={cn('text-xs font-semibold', todayTransit.labelColor)}>{todayTransit.label}</span>
+            </div>
+          </div>
+
+          {/* Planet + Element */}
+          <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-2 text-sm text-white/60">
+              <span className="text-lg">{todayTransit.rulingPlanet.symbol}</span>
+              <span>{todayTransit.rulingPlanet.name} in {todayTransit.transitSign}</span>
+            </div>
+            <span className="text-xs text-white/30">·</span>
+            <span className="text-sm text-white/40">{todayTransit.element} Day</span>
+          </div>
+
+          {/* Narrative */}
+          <div className="text-sm text-white/60 leading-relaxed whitespace-pre-line">
+            {todayTransit.narrative}
+          </div>
+        </div>
+      )}
+
+      {/* DO / DON'T */}
+      {todayTransit && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="border border-emerald-500/10 bg-emerald-500/[0.02] p-5">
+            <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">Do</h3>
+            <div className="space-y-2.5">
+              {todayTransit.doList.map((item, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <Check className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-white/60">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="border border-rose-500/10 bg-rose-500/[0.02] p-5">
+            <h3 className="text-xs font-bold text-rose-400 uppercase tracking-wider mb-3">Don&apos;t</h3>
+            <div className="space-y-2.5">
+              {todayTransit.dontList.map((item, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <X className="h-4 w-4 text-rose-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-white/60">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Best Hours */}
+      {todayTransit && (
+        <div className={cn('border p-5', isPro ? 'border-white/5 bg-[#15131A]/40' : 'border-primary/10 bg-primary/[0.02]')}>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-white/40" />
+              <h3 className="text-xs font-bold text-white/60 uppercase tracking-wider">Best Hours</h3>
+            </div>
+            {!isPro && (
+              <Link href="/pricing" className="flex items-center gap-1 text-[10px] font-semibold text-primary">
+                <Lock className="h-3 w-3" /> Pro Only
+              </Link>
+            )}
+          </div>
+          <div className={cn('grid grid-cols-3 gap-3', !isPro && 'blur-[3px] select-none pointer-events-none')}>
+            <div className="border border-emerald-500/10 p-3">
+              <span className="text-[10px] font-bold text-emerald-400">🟢 PEAK</span>
+              <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.peak.range}</p>
+              <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.peak.activity}</p>
+            </div>
+            <div className="border border-amber-500/10 p-3">
+              <span className="text-[10px] font-bold text-amber-400">🟡 NEUTRAL</span>
+              <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.neutral.range}</p>
+              <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.neutral.activity}</p>
+            </div>
+            <div className="border border-rose-500/10 p-3">
+              <span className="text-[10px] font-bold text-rose-400">🔴 LOW</span>
+              <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.low.range}</p>
+              <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.low.activity}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Access */}
+      <div className="grid grid-cols-4 gap-2">
+        {QUICK_LINKS.map((link) => (
           <Link
-            key={tool.id}
-            href={tool.href}
-            className={`group flex flex-col gap-3 border p-5 sm:p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${tool.borderColor} bg-[#15131A]/40 backdrop-blur-sm`}
+            key={link.label}
+            href={link.href}
+            className="group flex flex-col items-center gap-1.5 border border-white/5 bg-[#15131A]/40 p-3 transition-all hover:border-white/10"
           >
-            <div className={`flex h-10 w-10 items-center justify-center ${tool.bgColor}`}>
-              <tool.icon className={`h-5 w-5 ${tool.color}`} />
+            <div className={cn('flex h-8 w-8 items-center justify-center', link.bg)}>
+              <link.icon className={cn('h-4 w-4', link.color)} />
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-white/90">{tool.label}</h3>
-              <p className="mt-0.5 text-xs text-white/40 leading-relaxed">{tool.desc}</p>
-            </div>
-            <span className={`mt-auto flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity ${tool.color}`}>
-              Open <ArrowRight className="h-3 w-3" />
-            </span>
+            <span className="text-[10px] font-medium text-white/50">{link.label}</span>
           </Link>
         ))}
       </div>
@@ -269,20 +319,23 @@ export function DashboardClient({
       <div className="flex items-center justify-between border border-white/5 bg-[#15131A]/40 px-6 py-4 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <CreditCard className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm text-white/70">
-            {tierLabel} Plan · Active
-          </span>
+          <span className="text-sm text-white/70">{tierLabel} Plan · Active</span>
         </div>
         {userTier !== 'PREMIUM' && (
-          <Link
-            href="/pricing"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
-          >
-            Upgrade {userTier === 'FREE' ? 'to Lite' : 'to Pro'}
-            <ArrowRight className="h-3 w-3" />
+          <Link href="/pricing" className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
+            Upgrade {userTier === 'FREE' ? 'to Lite' : 'to Pro'} <ArrowRight className="h-3 w-3" />
           </Link>
         )}
       </div>
+
+      {/* Month Calendar Modal */}
+      <MonthCalendarModal
+        isOpen={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+        onSelectDate={setSelectedDate}
+        getScoreForDate={getScoreForDate}
+        selectedDate={selectedDate}
+      />
     </div>
   );
 }

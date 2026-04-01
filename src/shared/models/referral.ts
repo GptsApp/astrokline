@@ -47,12 +47,33 @@ export async function getOrCreateReferralCode(userId: string): Promise<string> {
 }
 
 /**
- * Process a referral when a new user signs up with a referral code
+ * Process a referral when a new user signs up with a referral code.
+ * Includes anti-abuse: lifetime cap (10), daily cap (3), self-referral block.
  */
+
+const DISPOSABLE_DOMAINS = new Set([
+  'tempmail.com','guerrillamail.com','throwaway.email','mailinator.com',
+  'yopmail.com','10minutemail.com','trashmail.com','disposablemail.com',
+  'fakeinbox.com','sharklasers.com','guerrillamailblock.com','grr.la',
+  'dispostable.com','maildrop.cc','harakirimail.com',
+]);
+
+const LIFETIME_CAP = 10;
+const DAILY_CAP = 3;
+
+export function isDisposableEmail(email: string): boolean {
+  const domain = email.split('@')[1]?.toLowerCase();
+  return DISPOSABLE_DOMAINS.has(domain || '');
+}
+
 export async function processReferral(
   referralCode: string,
-  newUserId: string
+  newUserId: string,
+  newUserEmail?: string
 ): Promise<boolean> {
+  // Block disposable emails
+  if (newUserEmail && isDisposableEmail(newUserEmail)) return false;
+
   // Find the referral
   const [referral] = await db()
     .select()
@@ -67,6 +88,27 @@ export async function processReferral(
 
   if (!referral) return false;
   if (referral.referrerId === newUserId) return false; // Can't refer yourself
+
+  // Lifetime cap: check total completed referrals for this referrer
+  const allCompleted = await db()
+    .select()
+    .from(userReferrals)
+    .where(
+      and(
+        eq(userReferrals.referrerId, referral.referrerId),
+        eq(userReferrals.status, 'completed')
+      )
+    );
+
+  if (allCompleted.length >= LIFETIME_CAP) return false;
+
+  // Daily cap: check referrals completed today
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayCompleted = allCompleted.filter(
+    (r: typeof allCompleted[number]) => r.createdAt && new Date(r.createdAt) >= todayStart
+  );
+  if (todayCompleted.length >= DAILY_CAP) return false;
 
   // Mark as completed
   await db()
