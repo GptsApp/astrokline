@@ -418,9 +418,9 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         {isPremium ? (
           <ExportPdfButton targetId="kline-report" fileName={`kline-${profile?.name || 'report'}`} />
         ) : (
-          <a href="/settings/billing" className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
+          <button onClick={() => openCheckout('pro')} className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
             Upgrade to Export PDF
-          </a>
+          </button>
         )}
       </div>
 

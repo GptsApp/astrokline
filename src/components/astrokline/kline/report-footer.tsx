@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { trackEvent } from '@/lib/astrokline/track-event';
-import { Download, Share2, Sparkles } from 'lucide-react';
+import { Download, Share2, Sparkles, Users } from 'lucide-react';
 import { Heading } from "@/components/astrokline/ui/heading";
 
 export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profile: UserProfile; tier?: string; onUpgradeClick?: () => void }) {
@@ -51,43 +51,34 @@ export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profi
             <button
               type="button"
               onClick={() => {
-                if (!canSave) {
-                  if (onUpgradeClick) onUpgradeClick();
-                  else alert('Upgrade to Lite or Pro to save your report.');
+                if (!canSave && onUpgradeClick) {
+                  onUpgradeClick();
                   return;
                 }
-                trackEvent('share_button_click', { action: 'download' });
+                if (!canSave) {
+                  alert('Upgrade to Pro to export PDF.');
+                  return;
+                }
+                trackEvent('share_button_click', { action: 'export_pdf' });
                 window.print();
               }}
-              className="flex w-full items-center justify-center gap-2  bg-[#D4AF37] py-3.5 text-sm font-bold text-black transition-colors hover:bg-[#FCDD73]"
+              className="flex w-full items-center justify-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/10 py-3.5 text-sm font-bold text-[#D4AF37] transition-all hover:bg-[#D4AF37]/20 hover:border-[#D4AF37]/50"
             >
               <Download className="h-4 w-4" />
-              <span>{canSave ? 'Save My Report' : 'Upgrade to Save'}</span>
+              <span>{canSave ? 'Export Report PDF' : 'Upgrade to Export PDF'}</span>
             </button>
             <button
               type="button"
-              onClick={async () => {
-                trackEvent('share_button_click', { action: 'share' });
-                const shareData = {
-                  title: 'My AstroKline Reading',
-                  text: 'Check out my personalized timing curve on AstroKline!',
-                  url: window.location.href,
-                };
-                try {
-                  if (navigator.share) {
-                    await navigator.share(shareData);
-                  } else {
-                    await navigator.clipboard.writeText(window.location.href);
-                    alert('Link copied to clipboard!');
-                  }
-                } catch { /* user cancelled */ }
+              onClick={() => {
+                trackEvent('invite_friend_click', { location: 'footer' });
+                window.location.href = '/dashboard/invite';
               }}
-              className={`flex w-full items-center justify-center gap-2  border border-white/10 bg-white/5 py-3.5 text-sm font-medium text-white transition-colors hover:border-[#D4AF37]/50 hover:bg-[#111015]/80 ${
-                showSharePrompt ? 'ring-[#D4AF37]/40 animate-pulse ring-2' : ''
+              className={`flex w-full items-center justify-center gap-2 bg-[#D4AF37] py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all hover:scale-[1.02] hover:bg-[#FCDD73] ${
+                showSharePrompt ? 'ring-[#D4AF37]/60 animate-pulse ring-4 ring-offset-4 ring-offset-[#15131A]' : ''
               }`}
             >
-              <Share2 className="h-4 w-4" />
-              <span>Share With a Friend</span>
+              <Users className="h-4 w-4" />
+              <span>Invite Friends to Try AstroKline</span>
             </button>
             {showSharePrompt && (
               <p className="text-[#D4AF37] animate-in fade-in font-mono text-[10px] tracking-widest uppercase duration-500">

@@ -108,7 +108,7 @@ export function AiReadingPanels({
 }: Props) {
   const [insight, setInsight] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeModule, setActiveModule] = useState<ModuleKeys | null>(null);
+  const [activeModule, setActiveModule] = useState<ModuleKeys | null>('summary');
 
   const containerRef = useRef<HTMLDivElement>(null);
 

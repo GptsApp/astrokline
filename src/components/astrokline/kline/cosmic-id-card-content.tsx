@@ -66,8 +66,8 @@ export function CosmicIdCardContent({ profile, klineData, cardRef }: Props) {
       className="relative overflow-hidden border border-[#D4AF37]/20 bg-[#08080F] shadow-[0_0_80px_rgba(212,175,55,0.08)]"
       style={{ width: '380px' }}
     >
-      {/* Glow effect top */}
-      <div className="pointer-events-none absolute -top-20 left-1/2 h-40 w-60 -translate-x-1/2 rounded-full bg-[#D4AF37]/10 blur-[60px]" />
+      {/* Glow effect top (html2canvas friendly) */}
+      <div className="pointer-events-none absolute -top-20 left-1/2 h-40 w-60 -translate-x-1/2" style={{ background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0) 70%)' }} />
       {/* Dot pattern */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '16px 16px' }} />
 
@@ -82,10 +82,10 @@ export function CosmicIdCardContent({ profile, klineData, cardRef }: Props) {
       </div>
 
       {/* Cosmic Power Score — THE BIG NUMBER */}
-      <div className="relative z-10 px-5 pt-6 pb-4 text-center">
-        <p className="mb-1 font-mono text-[8px] font-bold tracking-[0.4em] text-white/30 uppercase">Cosmic Power Score</p>
-        <div className="relative inline-block">
-          <span className="font-serif text-6xl font-bold text-[#D4AF37]" style={{ textShadow: '0 0 40px rgba(212,175,55,0.3)' }}>
+      <div className="relative z-10 px-5 pt-6 pb-4 flex flex-col items-center text-center">
+        <p className="mb-1 font-mono text-[8px] font-bold tracking-[0.4em] text-white/30 uppercase w-full text-center">Cosmic Power Score</p>
+        <div className="relative flex justify-center w-full">
+          <span className="font-serif text-6xl font-bold text-[#D4AF37] text-center" style={{ textShadow: '0 0 40px rgba(212,175,55,0.3)' }}>
             {powerScore}
           </span>
         </div>
@@ -110,7 +110,7 @@ export function CosmicIdCardContent({ profile, klineData, cardRef }: Props) {
           <span className="font-mono text-[7px] font-bold tracking-[0.2em] text-white/25 uppercase">100-Year Destiny Curve</span>
           <span className="font-mono text-[9px] text-white/40">Peak <span className="font-bold text-[#D4AF37]">{peakScore}</span> · {peakYear}</span>
         </div>
-        <KlineSparkline data={klineData} width={340} height={45} />
+        <KlineSparkline data={klineData} width={316} height={45} />
       </div>
 
       {/* Dimension Rankings — the viral hook */}
