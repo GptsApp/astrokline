@@ -119,13 +119,17 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
           
           {/* Header & Steps */}
           <div className="mb-6">
-            <h2 className="text-xl sm:text-2xl font-serif text-white tracking-wide flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-[#D4AF37]" />
-              Partner Profile
-            </h2>
-            <p className="text-[10px] text-[#D4AF37]/60 mt-1 tracking-[0.2em] uppercase font-mono">
-              ASTROMETRIC CALIBRATION
-            </p>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-rose-400/20 bg-rose-400/10">
+                <Sparkles className="h-5 w-5 text-rose-400" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-serif text-white tracking-wide">Partner Profile</h2>
+                <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-rose-400/70">
+                  Astrometric Calibration
+                </p>
+              </div>
+            </div>
             
             <div className="mt-6 flex gap-2">
               {STEP_META.map((m, idx) => (

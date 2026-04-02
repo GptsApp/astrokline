@@ -90,12 +90,12 @@ export function EnergyTool({ tier, klineResult }: EnergyToolProps) {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center border border-[#D4AF37]/20 bg-[#D4AF37]/10">
-            <TrendingUp className="h-5 w-5 text-[#D4AF37]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-purple-400/20 bg-purple-400/10">
+            <TrendingUp className="h-5 w-5 text-purple-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-serif text-white">Energy Forecast</h1>
-            <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-[#D4AF37]/60">{currentYear} · Planetary Transit Analysis</p>
+            <h1 className="text-2xl font-serif text-white tracking-wide">Energy Forecast</h1>
+            <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-purple-400/70">{currentYear} · Planetary Transit Analysis</p>
           </div>
         </div>
       </div>

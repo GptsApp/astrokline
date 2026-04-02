@@ -90,11 +90,11 @@ const plans: Plan[] = [
     period: '/mo',
     description: 'Full strategic intelligence. Every tool unlocked.',
     features: [
-      { text: 'Exact planetary transit details & advice', highlight: 'transit details' },
+      { text: 'Full transit analysis with personalized guidance', highlight: 'personalized guidance' },
       { text: '5-Year Strategic Master Plan', highlight: '5-Year' },
       { text: 'Strengths & Blindspots deep analysis', highlight: 'Strengths & Blindspots' },
       { text: 'Unlimited chart generations', highlight: 'Unlimited' },
-      { text: 'HD PDF Life Book export (50+ pages)', highlight: '50+ pages' },
+      { text: 'HD PDF Life Book export', highlight: 'HD PDF' },
       { text: 'Life Radar, Destiny Reading, Next 30 Days' },
       { text: 'Priority access to every new release' },
       { text: 'VIP priority support' },

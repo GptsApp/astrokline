@@ -50,6 +50,8 @@ export function ResultClient({
   const [isInitializing, setIsInitializing] = useState(true);
   const [klineData, setKlineData] = useState<DestinyScorePoint[]>([]);
   const [transitDetails, setTransitDetails] = useState<Record<number, TransitEvent[]>>({});
+  const [radarData, setRadarData] = useState<any[] | null>(null);
+  const [next30Days, setNext30Days] = useState<any | null>(null);
 
   // Registration nudge & quota modal state
   const [showNudge, setShowNudge] = useState(false);
@@ -102,6 +104,8 @@ export function ResultClient({
       setProfile(savedResult.profile as UserProfile);
       setKlineData(savedResult.klineData as DestinyScorePoint[]);
       setTransitDetails((savedResult.transitDetails as Record<number, TransitEvent[]>) ?? {});
+      setRadarData((savedResult as any).radarData ?? null);
+      setNext30Days((savedResult as any).next30Days ?? null);
       setIsInitializing(false);
       return true;
     };
@@ -182,7 +186,9 @@ export function ResultClient({
         klineData={klineData} 
         transitDetails={transitDetails} 
         tier={tier} 
-        onActionGate={handleActionGate} 
+        onActionGate={handleActionGate}
+        radarData={radarData}
+        next30Days={next30Days}
       />
 
       <ReportSection id="report-footer" className="pb-12">

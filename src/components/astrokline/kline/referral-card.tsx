@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Check, Copy, Gift, Users, Target, Award, ArrowRight } from 'lucide-react';
-import { Heading } from '@/components/astrokline/ui/heading';
 import { cn } from '@/shared/lib/utils';
 
 const MILESTONES = [
@@ -66,13 +65,13 @@ export function ReferralCard() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent" />
       
       {/* Header */}
-      <div className="mb-6 flex items-center gap-4">
-        <div className="flex h-10 w-10 items-center justify-center border border-[#D4AF37]/20 bg-[#D4AF37]/10">
-          <Gift className="h-5 w-5 text-[#D4AF37]" />
+      <div className="mb-6 flex items-center gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-emerald-400/20 bg-emerald-400/10">
+          <Gift className="h-5 w-5 text-emerald-400" />
         </div>
         <div>
-          <Heading level={3} className="text-lg font-serif tracking-wide text-white">Invite & Earn</Heading>
-          <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-[#D4AF37]/60">
+          <h1 className="text-2xl font-serif tracking-wide text-white">Invite & Earn</h1>
+          <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-emerald-400/70">
             +1 query for each friend who joins
           </p>
         </div>

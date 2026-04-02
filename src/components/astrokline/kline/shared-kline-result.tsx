@@ -8,6 +8,9 @@ import { ArrowRight, Briefcase, Coins, Heart, Leaf, Sparkles, TrendingUp, Users 
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
+import { FiveYearPlan } from '@/components/astrokline/kline/five-year-plan';
+import { LifeRadar } from '@/components/astrokline/kline/life-radar';
+import { Next30Days } from '@/components/astrokline/kline/next-30-days';
 import { CosmicIdCard } from '@/components/astrokline/kline/cosmic-id-card';
 import { AskChartPanel } from '@/components/astrokline/kline/ask-chart-panel';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
@@ -87,13 +90,14 @@ function DimensionPreviewRow({
 }
 
 
-function ActionableFutureCliffhanger({ onActionGate, tier, profile }: any) {
+function ActionableFutureCliffhanger({ onActionGate, tier, profile, klineData, transitDetails }: any) {
   if (tier === 'PRO') {
     return (
-      <div className="mx-auto mt-16 max-w-4xl px-4 py-8 pb-24 text-center">
-         <p className="text-white/40">You are on the PRO tier. Your full 5-year outlook is unlocked.</p>
-         {/* Insert real PRO content here */}
-      </div>
+      <FiveYearPlan
+        klineData={klineData}
+        transitDetails={transitDetails}
+        profileName={profile?.name}
+      />
     );
   }
 
@@ -140,6 +144,8 @@ interface SharedKlineResultProps {
   tier: string;
   onActionGate: (context?: string, tier?: string) => void;
   hideFloatingNav?: boolean;
+  radarData?: any[] | null;
+  next30Days?: any | null;
 }
 
 export function SharedKlineResult({
@@ -148,6 +154,8 @@ export function SharedKlineResult({
   transitDetails,
   tier,
   onActionGate,
+  radarData,
+  next30Days,
 }: SharedKlineResultProps) {
   const t = useTranslations('pages.index.page.sections.kline_result.page_client');
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
@@ -281,7 +289,7 @@ export function SharedKlineResult({
 
       {/* ── 4. CLIFFHANGER — moved up from position 7 for max conversion ── */}
       <ReportSection id="future-cliffhanger" divider={false} className="w-full">
-         <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} profile={profile} />
+         <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} profile={profile} klineData={klineData} transitDetails={transitDetails} />
       </ReportSection>
 
       {/* ── 5. AI DEEP READING (LITE+ only, hidden for FREE to avoid lock fatigue) ── */}
@@ -293,6 +301,18 @@ export function SharedKlineResult({
             onActionGate={onActionGate}
             selectedYear={selectedYear}
           />
+        </ReportSection>
+      )}
+
+      {/* ── 5b. PRO EXCLUSIVE: Life Radar + Next 30 Days ── */}
+      {tier === 'PRO' && radarData && radarData.length > 0 && (
+        <ReportSection id="life-radar" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
+          <LifeRadar data={radarData} />
+        </ReportSection>
+      )}
+      {tier === 'PRO' && next30Days && (
+        <ReportSection id="next-30-days" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
+          <Next30Days data={next30Days} />
         </ReportSection>
       )}
 

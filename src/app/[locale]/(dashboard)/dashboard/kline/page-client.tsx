@@ -50,6 +50,7 @@ interface KlineItem {
 // ──────────────────────────────────────
 export function DashboardKlineClient({ userTier }: { userTier: string }) {
   const isPremium = userTier === 'PREMIUM';
+  const canExport = isPremium || userTier === 'STANDARD';
   const chartTier = isPremium
     ? 'PRO'
     : userTier === 'STANDARD'
@@ -69,6 +70,8 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
   const [klineData, setKlineData] = useState<DestinyScorePoint[]>([]);
   const [transitDetails, setTransitDetails] = useState<Record<number, TransitEvent[]>>({});
+  const [radarData, setRadarData] = useState<any[] | null>(null);
+  const [next30Days, setNext30Days] = useState<any | null>(null);
   const [dataReady, setDataReady] = useState(false);
   const animationDoneRef = useRef(false);
 
@@ -143,6 +146,8 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       setProfile(kline.klineResult.profile);
       setKlineData(Array.isArray(kline.klineResult.klineData) ? kline.klineResult.klineData : []);
       setTransitDetails(kline.klineResult.transitDetails ?? {});
+      setRadarData(kline.klineResult.radarData ?? null);
+      setNext30Days(kline.klineResult.next30Days ?? null);
       setSelectedYear(undefined);
     }
   };
@@ -415,10 +420,10 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       {/* ── TOOLBAR ── */}
       <div className="flex items-center justify-between border-b border-white/5 pb-4">
          <div /> {/* spacing */}
-        {isPremium ? (
+        {canExport ? (
           <ExportPdfButton targetId="kline-report" fileName={`kline-${profile?.name || 'report'}`} />
         ) : (
-          <button onClick={() => openCheckout('pro')} className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
+          <button onClick={() => openCheckout('lite')} className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
             Upgrade to Export PDF
           </button>
         )}
@@ -440,6 +445,8 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
               tier={chartTier}
               onActionGate={() => openCheckout('lite')}
               hideFloatingNav={true}
+              radarData={radarData}
+              next30Days={next30Days}
             />
           </motion.div>
         )}

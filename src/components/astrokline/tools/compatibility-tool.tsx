@@ -76,12 +76,12 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center border border-[#D4AF37]/20 bg-[#D4AF37]/10">
-            <Users className="h-5 w-5 text-[#D4AF37]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-rose-400/20 bg-rose-400/10">
+            <Users className="h-5 w-5 text-rose-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-serif text-white">Compatibility Check</h1>
-            <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-[#D4AF37]/60">Synastry analysis based on real birth data</p>
+            <h1 className="text-2xl font-serif text-white tracking-wide">Compatibility Check</h1>
+            <p className="mt-1 text-[10px] uppercase font-mono tracking-widest text-rose-400/70">Synastry analysis based on real birth data</p>
           </div>
         </div>
       </div>
