@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { ArrowRight, Briefcase, Coins, Heart, Leaf, Sparkles, TrendingUp, Users } from 'lucide-react';
@@ -183,6 +183,57 @@ export function SharedKlineResult({
     }
   };
 
+  // ── P4: AI Key Year Insights Prefetch ──
+  const [aiYearInsights, setAiYearInsights] = useState<Record<number, { aiSummary: string; aiAdvice: string }>>({});
+
+  const prefetchAiInsights = useCallback(async () => {
+    if (!profile || !klineData?.length || !transitDetails) return;
+    // Only for paid tiers
+    const paidTiers = ['LITE', 'PRO', 'PREMIUM', 'STANDARD'];
+    if (!paidTiers.includes(tier.toUpperCase())) return;
+
+    // Find top 8 peak/crossroads years with transit data
+    const keyYears = klineData
+      .filter(d => (d.isPeak || d.isCrossroads) && transitDetails[d.year]?.length > 0)
+      .sort((a, b) => Math.abs(b.score - 55) - Math.abs(a.score - 55))
+      .slice(0, 8)
+      .map(d => {
+        const t = transitDetails[d.year][0];
+        return {
+          year: d.year,
+          score: d.score,
+          stage: d.stage,
+          transitTitle: t.title,
+          transitPlanet: t.planet,
+          transitAspect: t.aspect,
+          transitTheme: t.theme,
+          targetSign: profile.sun?.sign || 'Aries',
+          targetHouse: 1,
+        };
+      });
+
+    if (keyYears.length === 0) return;
+
+    try {
+      const res = await fetch('/api/astrology/key-year-insights', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile, keyYears }),
+      });
+      if (!res.ok) return;
+      const { insights } = await res.json();
+      if (Array.isArray(insights)) {
+        const map: Record<number, { aiSummary: string; aiAdvice: string }> = {};
+        insights.forEach((i: any) => { if (i.year && i.aiSummary) map[i.year] = i; });
+        setAiYearInsights(map);
+      }
+    } catch {}
+  }, [profile, klineData, transitDetails, tier]);
+
+  useEffect(() => {
+    prefetchAiInsights();
+  }, [prefetchAiInsights]);
+
   return (
     <>
     <div className="w-full">
@@ -197,6 +248,7 @@ export function SharedKlineResult({
           profileName={profile?.name}
           tier={tier as any}
           onActionGate={onActionGate}
+          aiYearInsights={aiYearInsights}
         />
       </ReportSection>
 

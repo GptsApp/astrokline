@@ -51,6 +51,7 @@ type Props = {
   isSimulation?: boolean;
   profileName?: string;
   onActionGate?: (context: string, tier: AppTier) => void;
+  aiYearInsights?: Record<number, { aiSummary: string; aiAdvice: string }>;
 };
 
 // Generate candle data with natural bull/bear patterns and NO gaps between candles.
@@ -336,6 +337,7 @@ export function InteractiveChart({
   isSimulation = false,
   profileName,
   onActionGate,
+  aiYearInsights,
 }: Props) {
   const { setAuthModalType, setIsShowSignModal } = useAppContext();
   const currentYear = new Date().getFullYear();
@@ -612,6 +614,7 @@ export function InteractiveChart({
                       transitDetails={transitDetails}
                       tier={tier}
                       onActionGate={onActionGate}
+                      aiYearInsights={aiYearInsights}
                     />
                   }
                   cursor={{
@@ -713,7 +716,7 @@ function getComprehensiveReading(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate }: any) => {
+const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate, aiYearInsights }: any) => {
   if (!active || !payload?.length) return null;
 
   const d = payload[0]?.payload;
@@ -912,11 +915,12 @@ const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate }: 
 
           {/* Comprehensive Reading */}
           <div className="border-b border-white/5 bg-[#D4AF37]/[0.02] px-4 py-2.5">
-            <p className="mb-1 font-mono text-[8px] tracking-widest text-[#D4AF37]/40 uppercase">
+            <p className="mb-1 flex items-center gap-1.5 font-mono text-[8px] tracking-widest text-[#D4AF37]/40 uppercase">
               Year Summary
+              {aiYearInsights?.[d.year] && <span className="text-[#D4AF37] text-[7px] normal-case tracking-normal">✨ AI Enhanced</span>}
             </p>
             <p className="text-[11px] leading-relaxed text-white/60">
-              {reading}
+              {aiYearInsights?.[d.year]?.aiSummary || reading}
             </p>
           </div>
 
