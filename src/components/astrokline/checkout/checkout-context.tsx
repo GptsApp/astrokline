@@ -6,9 +6,12 @@ import { useAppContext } from '@/shared/contexts/app';
 type CheckoutTier = 'lite' | 'pro';
 type CheckoutStage = 'confirm' | 'processing' | 'redirecting' | 'waiting' | 'success' | 'error';
 
+type CheckoutBilling = 'monthly' | 'yearly';
+
 interface CheckoutState {
   isOpen: boolean;
   tier: CheckoutTier;
+  billing: CheckoutBilling;
   stage: CheckoutStage;
   error?: string;
   checkoutUrl?: string;
@@ -19,15 +22,29 @@ interface CheckoutContextType {
   state: CheckoutState;
   openCheckout: (tier: CheckoutTier) => void;
   closeCheckout: () => void;
+  setBilling: (billing: CheckoutBilling) => void;
   startPayment: () => Promise<void>;
 }
 
 const TIER_CONFIG = {
   lite: {
-    productId: 'standard-monthly',
     title: 'Lite',
-    price: '$39.9',
-    unit: '/ month',
+    monthly: {
+      productId: 'standard-monthly',
+      price: '$39.9',
+      unit: '/ month',
+      originalPrice: null,
+      tip: 'Billed monthly',
+      saveLabel: undefined as string | undefined,
+    },
+    yearly: {
+      productId: 'standard-yearly',
+      price: '$19.9',
+      originalPrice: '$39.9',
+      unit: '/ month',
+      tip: 'Billed yearly at $238.8',
+      saveLabel: 'Save 50%',
+    },
     features: [
       'Career, Wealth, Love & Health AI reading',
       'Full-Year Energy Forecast with planetary analysis',
@@ -37,10 +54,23 @@ const TIER_CONFIG = {
     ],
   },
   pro: {
-    productId: 'premium-monthly',
     title: 'Pro',
-    price: '$79.9',
-    unit: '/ month',
+    monthly: {
+      productId: 'premium-monthly',
+      price: '$79.9',
+      unit: '/ month',
+      originalPrice: null,
+      tip: 'Billed monthly',
+      saveLabel: undefined as string | undefined,
+    },
+    yearly: {
+      productId: 'premium-yearly',
+      price: '$39.9',
+      originalPrice: '$79.9',
+      unit: '/ month',
+      tip: 'Billed yearly at $478.8',
+      saveLabel: 'Save 50%',
+    },
     features: [
       '"Ask Your Chart" — AI chat with birth chart',
       'Best Hours — daily peak/low time analysis',
@@ -54,6 +84,7 @@ const TIER_CONFIG = {
 const defaultState: CheckoutState = {
   isOpen: false,
   tier: 'lite',
+  billing: 'yearly',
   stage: 'confirm',
 };
 
@@ -61,12 +92,13 @@ const CheckoutContext = createContext<CheckoutContextType>({
   state: defaultState,
   openCheckout: () => {},
   closeCheckout: () => {},
+  setBilling: () => {},
   startPayment: async () => {},
 });
 
 export const useCheckout = () => useContext(CheckoutContext);
 export { TIER_CONFIG };
-export type { CheckoutTier, CheckoutStage, CheckoutState };
+export type { CheckoutTier, CheckoutBilling, CheckoutStage, CheckoutState };
 
 export function CheckoutProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<CheckoutState>(defaultState);
@@ -77,17 +109,22 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
       setIsShowSignModal(true);
       return;
     }
-    setState({ isOpen: true, tier, stage: 'confirm' });
+    setState({ isOpen: true, tier, billing: 'yearly', stage: 'confirm' });
   }, [user, setIsShowSignModal]);
 
   const closeCheckout = useCallback(() => {
     setState(defaultState);
   }, []);
 
+  const setBilling = useCallback((billing: CheckoutBilling) => {
+    setState(prev => ({ ...prev, billing }));
+  }, []);
+
   const startPayment = useCallback(async () => {
     if (!user?.id) return;
 
     const config = TIER_CONFIG[state.tier];
+    const plan = config[state.billing];
     setState(prev => ({ ...prev, stage: 'processing' }));
 
     try {
@@ -95,7 +132,7 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          product_id: config.productId,
+          product_id: plan.productId,
           currency: 'USD',
           locale: 'en',
         }),
@@ -166,7 +203,7 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <CheckoutContext.Provider value={{ state, openCheckout, closeCheckout, startPayment }}>
+    <CheckoutContext.Provider value={{ state, openCheckout, closeCheckout, setBilling, startPayment }}>
       {children}
     </CheckoutContext.Provider>
   );

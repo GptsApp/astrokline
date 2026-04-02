@@ -6,11 +6,12 @@ import { useCheckout, TIER_CONFIG } from './checkout-context';
 import { cn } from '@/shared/lib/utils';
 
 export function CheckoutModal() {
-  const { state, closeCheckout, startPayment } = useCheckout();
+  const { state, closeCheckout, setBilling, startPayment } = useCheckout();
 
   if (!state.isOpen) return null;
 
   const config = TIER_CONFIG[state.tier];
+  const plan = config[state.billing];
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm">
@@ -28,17 +29,44 @@ export function CheckoutModal() {
         {/* CONFIRM STAGE */}
         {state.stage === 'confirm' && (
           <div className="p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center bg-primary/10 border border-primary/20">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-primary/10 border border-primary/20">
                 <CreditCard className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <h2 className="text-lg font-bold text-white">Upgrade to {config.title}</h2>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-2xl font-bold text-primary">{config.price}</span>
-                  <span className="text-xs text-white/40">{config.unit}</span>
+                  <span className="text-2xl font-bold text-primary">{plan.price}</span>
+                  <span className="text-xs text-white/40">{plan.unit}</span>
                 </div>
               </div>
+            </div>
+
+            {/* Toggle switch */}
+            <div className="flex items-center justify-between border-y border-white/5 py-4 mb-5">
+               <div className="flex items-center gap-3">
+                 <span className={cn("text-xs transition-colors", state.billing === 'monthly' ? "text-white font-bold" : "text-white/40 font-medium")}>
+                   Monthly
+                 </span>
+                 <button
+                   onClick={() => setBilling(state.billing === 'monthly' ? 'yearly' : 'monthly')}
+                   className="relative flex h-[22px] w-10 items-center bg-primary focus:outline-none"
+                 >
+                   <span
+                     className={cn(
+                       "inline-block h-4 w-4 bg-[#15131A] transition-transform duration-200",
+                       state.billing === 'yearly' ? "translate-x-5" : "translate-x-1"
+                     )}
+                   />
+                 </button>
+                 <span className={cn("text-xs transition-colors", state.billing === 'yearly' ? "text-white font-bold" : "text-white/40 font-medium")}>
+                   Yearly
+                 </span>
+               </div>
+               
+               <div className="text-[10px] font-bold text-primary border border-primary/30 px-1.5 py-0.5 whitespace-nowrap">
+                 {plan.saveLabel || 'Billed monthly'}
+               </div>
             </div>
 
             <div className="border border-white/5 bg-white/[0.02] p-4 mb-5">
