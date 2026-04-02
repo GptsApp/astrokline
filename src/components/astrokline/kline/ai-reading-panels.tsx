@@ -194,8 +194,10 @@ export function AiReadingPanels({
               shadow: data.warnings,
             };
             setInsight(mapped);
-            // Write to localStorage cache
-            setCachedInsight(cacheKey, data);
+            // Write to localStorage cache — only for real AI results
+            if (!data._fallback) {
+              setCachedInsight(cacheKey, data);
+            }
           } else if (isMounted && retryCount < maxRetries) {
             retryCount++;
             setTimeout(fetchInsight, 2000);

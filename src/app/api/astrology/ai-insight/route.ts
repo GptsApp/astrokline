@@ -109,8 +109,8 @@ export async function POST(request: NextRequest) {
     // ── 2. Cache miss — call Gemini ──
     const insight = await generatePersonalityInsight(profile);
 
-    // ── 3. Write to D1 cache (non-blocking) ──
-    if (db) {
+    // ── 3. Write to D1 cache (non-blocking) — only cache real AI results ──
+    if (db && !insight._fallback) {
       writeCache(db, cacheKey, insight).catch(() => {});
     }
 

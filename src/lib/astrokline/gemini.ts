@@ -1,4 +1,5 @@
 import { UserProfile } from './mock-astrology-data';
+import { getRichFallbackInsight } from './rich-fallback-insight';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 const GEMINI_API_URL =
@@ -100,6 +101,7 @@ export async function generatePersonalityInsight(
   warnings: string;
   nickname: string;
   coreQuote: string;
+  _fallback?: boolean;
 }> {
   const userPrompt = `## Core Chart Data
 ${formatProfileForPrompt(profile)}
@@ -145,7 +147,7 @@ You MUST STRICTLY output a valid JSON object. Do not include markdown code block
     return response;
   } catch (error) {
     console.error('Gemini personality insight failed. Details:', error);
-    return getFallbackInsight(profile);
+    return { ...getFallbackInsight(profile), _fallback: true };
   }
 }
 
@@ -335,34 +337,7 @@ export async function callGeminiJson<T = any>(userPrompt: string): Promise<T> {
 
 // ─── Fallback (when API fails) ───
 function getFallbackInsight(profile: UserProfile) {
-  const sun = profile.sun.sign;
-  const moon = profile.moon.sign;
-  const rising = profile.rising.sign;
-
-  const dominantElement =
-    profile.elements.fire > 30
-      ? 'Fire'
-      : profile.elements.earth > 30
-        ? 'Earth'
-        : profile.elements.air > 30
-          ? 'Air'
-          : 'Water';
-
-  const weakestElement = Object.entries(profile.elements).sort(
-    (a, b) => a[1] - b[1]
-  )[0][0];
-
-  return {
-    nickname: `The Heart of ${sun}`,
-    coreQuote: `Driven by ${sun}, feeling through ${moon}, masked as ${rising}.`,
-    summary: `Your Sun in ${sun} (House ${profile.sun.house}) grants you the core driving force unique to the ${sun} archetype. Your Moon in ${moon} (House ${profile.moon.house}) paints your emotional inner world with ${moon}'s psychic colors, while your Ascendant in ${rising} serves as the first mask you wear when interacting with the world. The combination of these three forms a unique symphony of personality—there is a fascinating tension between your internal reality and external presentation.\\n\\nYour deepest emotional needs often subtly contrast with the image you project to others. This is not a contradiction, but the sheer richness of your persona. As you learn to embrace this complexity, you will discover it is the source of your greatest strength.`,
-    career: `You demonstrate an intense inner drive in your career, particularly in realms requiring ${dominantElement === 'Fire' ? 'pioneering action' : dominantElement === 'Earth' ? 'stable construction' : dominantElement === 'Air' ? 'communication and collaboration' : 'emotional resonance'}. Leverage your chart's unique configurations to carve out an undeniable professional niche.`,
-    relationships: `In matters of the heart, you crave a partner who can simultaneously understand the inner emotional currents of your ${moon} Moon while actively supporting the external ambitions of your ${sun} Sun. Learning to reveal authentic vulnerability in intimacy is a critical evolutionary lesson for you.`,
-    wealth: `Your wealth codes are hidden within your core talents. Avoid impulsive investments; instead, establish financial habits that resonate deeply with the energetic signature of your natal chart. Abundance will then become a natural byproduct of your alignment.`,
-    health: `Your natal chart suggests a strong need for psychosomatic balance. As a soul that burns through significant energy, establishing grounding daily recharging rituals is absolutely vital to your longevity.`,
-    strengths: `Your elemental distribution reveals Fire ${profile.elements.fire}% / Earth ${profile.elements.earth}% / Air ${profile.elements.air}% / Water ${profile.elements.water}%, indicating you possess an innate, devastating advantage in ${dominantElement === 'Earth' ? 'practical execution' : dominantElement === 'Water' ? 'emotional intuition' : dominantElement === 'Fire' ? 'decisive action' : 'analytical thinking'}.`,
-    warnings: `Pay close attention to balancing your energetic distribution. Your weakest element is ${weakestElement}. It is highly recommended that you consciously direct more focus and remedial actions into this specific sector of your life to prevent systemic burnout.`,
-  };
+  return getRichFallbackInsight(profile);
 }
 
 // ─── P4: AI-Enhanced Key Year Insights ───
