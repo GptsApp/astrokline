@@ -257,9 +257,12 @@ export async function callGeminiJson<T = any>(userPrompt: string): Promise<T> {
 
   let response: Response;
   try {
-    response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+    response = await fetch(GEMINI_API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY,
+      },
       signal: controller.signal,
       body: JSON.stringify({
         contents: [
