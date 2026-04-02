@@ -364,3 +364,55 @@ function getFallbackInsight(profile: UserProfile) {
     warnings: `Pay close attention to balancing your energetic distribution. Your weakest element is ${weakestElement}. It is highly recommended that you consciously direct more focus and remedial actions into this specific sector of your life to prevent systemic burnout.`,
   };
 }
+
+// ─── P4: AI-Enhanced Key Year Insights ───
+export interface KeyYearInput {
+  year: number;
+  score: number;
+  stage: string;
+  transitTitle: string;
+  transitPlanet: string;
+  transitAspect: string;
+  transitTheme: string;
+  targetSign: string;
+  targetHouse: number;
+}
+
+export interface KeyYearInsight {
+  year: number;
+  aiSummary: string;
+  aiAdvice: string;
+}
+
+export async function generateKeyYearInsights(
+  profile: UserProfile,
+  keyYears: KeyYearInput[]
+): Promise<KeyYearInsight[]> {
+  if (keyYears.length === 0) return [];
+
+  const yearDetails = keyYears.map(y =>
+    `- Year ${y.year} (Score: ${y.score}, Stage: ${y.stage}): ${y.transitTitle}. ` +
+    `${y.transitPlanet} ${y.transitAspect} natal ${y.targetSign} (House ${y.targetHouse}). Theme: ${y.transitTheme}.`
+  ).join('\n');
+
+  const prompt = `## User Birth Chart
+${formatProfileForPrompt(profile)}
+
+## Key Life Years to Analyze
+The following are the MOST SIGNIFICANT years in this person's 100-year timeline. For each year, provide a deeply personal, precise 2-3 sentence summary and 1 sentence of actionable advice. Reference their specific natal placements.
+
+${yearDetails}
+
+## Output Format
+Return a JSON array. Each element: { "year": number, "aiSummary": "...", "aiAdvice": "..." }
+ONLY output the JSON array, no markdown.`;
+
+  try {
+    const result = await callGeminiJson<KeyYearInsight[]>(prompt);
+    return Array.isArray(result) ? result : [];
+  } catch (error) {
+    console.error('AI key year insights failed:', error);
+    return [];
+  }
+}
+
