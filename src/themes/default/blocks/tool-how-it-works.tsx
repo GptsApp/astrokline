@@ -1,7 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
-
 import { SmartIcon } from '@/shared/blocks/common';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
@@ -33,20 +29,14 @@ export function ToolHowItWorks({
       )}
     >
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <div className="mb-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-6 text-3xl font-bold md:text-5xl">
-              {section.title || 'How to use'}{' '}
-              <span className="text-primary">{section.highlight_text}</span>
-            </h2>
-            <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-              {section.description}
-            </p>
-          </motion.div>
+        <div className="mb-20 text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <h2 className="mb-6 text-3xl font-bold md:text-5xl">
+            {section.title || 'How to use'}{' '}
+            <span className="text-primary">{section.highlight_text}</span>
+          </h2>
+          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+            {section.description}
+          </p>
         </div>
 
         <div className="relative grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-12">
@@ -54,13 +44,10 @@ export function ToolHowItWorks({
           <div className="via-primary/30 absolute top-[60px] right-[15%] left-[15%] z-0 hidden h-[1px] bg-gradient-to-r from-transparent to-transparent md:block" />
 
           {steps.map((step: any, index: number) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className="relative z-10 flex flex-col items-center text-center"
+              className="relative z-10 flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both"
+              style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className="group relative mb-8 flex h-[120px] w-[120px] items-center justify-center border border-white/10 bg-[#15131A] shadow-xl">
                 <div className="from-primary/40 absolute inset-[-4px] bg-gradient-to-br to-transparent opacity-0 blur-[10px] transition-opacity duration-500 group-hover:opacity-100" />
@@ -87,7 +74,7 @@ export function ToolHowItWorks({
               <p className="text-muted-foreground leading-relaxed break-words">
                 {step.description}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

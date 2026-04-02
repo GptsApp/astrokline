@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next';
 import { envConfigs } from '@/config';
 import { defaultLocale, locales } from '@/config/locale';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const appUrl = envConfigs.app_url.replace(/\/$/, '');
   const now = new Date();
 
@@ -22,6 +22,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/about', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/blog', changeFrequency: 'weekly', priority: 0.7 },
   ];
+
+  // Dynamic blog post pages
+  try {
+    const { getPosts } = await import('@/shared/models/post');
+    const posts = await getPosts({});
+    if (posts?.length) {
+      for (const post of posts) {
+        const slug = post.slug || post.url?.split('/').pop();
+        if (slug) {
+          pages.push({
+            path: `/blog/${slug}`,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+          });
+        }
+      }
+    }
+  } catch {
+    // Blog posts unavailable — skip silently
+  }
 
   // Zodiac sign pages for programmatic SEO
   const zodiacSigns = [

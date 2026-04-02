@@ -22,9 +22,11 @@ async function getD1(): Promise<any | null> {
 }
 
 /**
- * Ensure the cache table exists (idempotent).
+ * Ensure the cache table exists (idempotent, runs only once per process).
  */
+let _cacheTableReady = false;
 async function ensureCacheTable(db: any): Promise<void> {
+  if (_cacheTableReady) return;
   try {
     await db.prepare(`
       CREATE TABLE IF NOT EXISTS ai_insight_cache (
@@ -34,6 +36,7 @@ async function ensureCacheTable(db: any): Promise<void> {
         expires_at INTEGER NOT NULL
       )
     `).run();
+    _cacheTableReady = true;
   } catch {
     // Table might already exist or DB is read-only — skip silently
   }
@@ -84,6 +87,16 @@ export async function POST(request: NextRequest) {
   if (limited) return limited;
 
   try {
+    // ── Auth check: prevent unauthenticated Gemini API abuse ──
+    const { getSignUser } = await import('@/shared/models/user');
+    const user = await getSignUser();
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const profile = body.profile as UserProfile;
 

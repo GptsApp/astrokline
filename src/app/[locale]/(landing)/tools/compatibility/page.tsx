@@ -7,9 +7,9 @@ import { ToolPageShell } from '@/components/astrokline/tools/tool-page-shell';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Compatibility Check | AstroKline',
-    description: 'Discover your astrological chemistry with anyone. Synastry analysis based on both birth charts reveals attraction, tension, and long-term potential.',
-    keywords: ['zodiac compatibility', 'synastry', 'birth chart match', 'astrology compatibility', 'relationship astrology'],
+    title: 'Free Astrology Compatibility by Date of Birth | Synastry K-Line',
+    description: 'Discover deep astrology compatibility by date of birth. Our synastry K-Line chart maps your relationship friction, romantic peaks, and long-term synergy perfectly.',
+    keywords: ['astrology compatibility', 'astrology compatibility by date of birth', 'astrology synastry', 'synastry K-line', 'birth chart compatibility'],
   };
 }
 

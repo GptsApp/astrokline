@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 import { SmartIcon } from '@/shared/blocks/common';
 import { cn } from '@/shared/lib/utils';
@@ -28,11 +26,7 @@ export function ToolShowcase({
     >
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="mb-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both" style={{ animationDelay: '100ms' }}>
             {section.headline && (
               <div className="bg-primary/10 text-primary mb-6 inline-flex items-center px-4 py-2 text-sm font-medium">
                 <SmartIcon
@@ -48,7 +42,7 @@ export function ToolShowcase({
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
               {section.description}
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* CSS-only infinite marquee */}
@@ -65,9 +59,11 @@ export function ToolShowcase({
                 className="group hover:border-primary/30 relative aspect-video w-[300px] flex-shrink-0 cursor-pointer overflow-hidden  border border-white/5 bg-[#15131A] shadow-2xl transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.15)] md:w-[450px]"
               >
                 {item.image ? (
-                  <img
+                  <Image
                     src={item.image.src}
                     alt={item.image.alt || item.title}
+                    width={450}
+                    height={253}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 ) : (

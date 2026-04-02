@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
 import { Heading } from "@/components/astrokline/ui/heading";
+import { InsightSection, AstroTextParser } from './insight-section';
 
 interface InsightData {
   nickname: string;
@@ -41,72 +42,7 @@ interface Props {
   onClose: () => void;
 }
 
-// ─── Custom Astrology Text Renderer ───
-// Converts simple markdown-like bold (**text**) and lists (- text) into styled React nodes
-const AstroTextParser = ({ text }: { text: string }) => {
-  if (!text) return null;
-
-  const normalized = text.replace(/\\n/g, '\n');
-  const lines = normalized.split('\n');
-
-  return (
-    <div className="space-y-4">
-      {lines.map((line, i) => {
-        const trimmed = line.trim();
-        if (!trimmed) return null;
-
-        // Render List Items
-        if (trimmed.startsWith('- ')) {
-          const content = trimmed.slice(2);
-          return (
-            <div
-              key={i}
-              className="relative flex gap-2 text-[15px] leading-relaxed text-white/70"
-            >
-              <span className="text-primary mt-1.5">•</span>
-              <p>{renderInlineStyle(content)}</p>
-            </div>
-          );
-        }
-
-        // Render Normal P
-        return (
-          <p
-            key={i}
-            className="text-[15px] leading-8 whitespace-pre-wrap text-white/70"
-          >
-            {renderInlineStyle(trimmed)}
-          </p>
-        );
-      })}
-    </div>
-  );
-};
-
-const renderInlineStyle = (text: string) => {
-  const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return (
-        <span
-          key={i}
-          className="border-primary/30 border-b pb-[1px] font-bold tracking-wide text-white"
-          style={{ textShadow: '0 0 10px rgba(139,92,246,0.3)' }}
-        >
-          {part.slice(2, -2)}
-        </span>
-      );
-    }
-    if (part.startsWith('*') && part.endsWith('*')) {
-      return (
-        <span key={i} className="text-primary/80 italic">
-          {part.slice(1, -1)}
-        </span>
-      );
-    }
-    return part;
-  });
-};
+// AstroTextParser and InsightSection are now imported from ./insight-section
 
 export function AiReadingFullscreen({
   profile,
@@ -153,6 +89,7 @@ export function AiReadingFullscreen({
     if (isOpen && !insight && !loading && !error) {
       handleGenerate();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- handleGenerate is guarded by loading/insight checks
   }, [isOpen, insight, loading, error]);
 
   async function handleGenerate() {
@@ -400,64 +337,12 @@ export function AiReadingFullscreen({
 
             {/* Section 2: Career */}
             {insight.career && (
-              <>
-                <div className="border-t border-white/5" />
-                <motion.section
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: '-100px' }}
-                  transition={{ duration: 0.6 }}
-                  className="space-y-5"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center  border border-blue-500/20 bg-blue-500/10 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
-                      <Briefcase className="h-5 w-5 text-blue-400" />
-                    </div>
-                    <div>
-                      <Heading level={2} variant="card" className="text-xl text-white/90">
-                        Career & Ambition
-                      </Heading>
-                      <p className="mt-1 font-mono text-[11px] tracking-[0.2em] text-blue-400/50 uppercase">
-                        10th House / Midheaven Analysis
-                      </p>
-                    </div>
-                  </div>
-                  <div className="pl-[52px]">
-                    <AstroTextParser text={insight.career} />
-                  </div>
-                </motion.section>
-              </>
+              <InsightSection icon={Briefcase} title="Career & Ambition" subtitle="10th House / Midheaven Analysis" text={insight.career} iconColor="blue" />
             )}
 
             {/* Section 3: Wealth */}
             {insight.wealth && (
-              <>
-                <div className="border-t border-white/5" />
-                <motion.section
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: '-100px' }}
-                  transition={{ duration: 0.6 }}
-                  className="space-y-5"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center  border border-emerald-500/20 bg-emerald-500/10 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                      <Coins className="h-5 w-5 text-emerald-400" />
-                    </div>
-                    <div>
-                      <Heading level={2} variant="card" className="text-xl text-white/90">
-                        Wealth & Abundance
-                      </Heading>
-                      <p className="mt-1 font-mono text-[11px] tracking-[0.2em] text-emerald-400/50 uppercase">
-                        2nd & 8th House Financial Blueprint
-                      </p>
-                    </div>
-                  </div>
-                  <div className="pl-[52px]">
-                    <AstroTextParser text={insight.wealth} />
-                  </div>
-                </motion.section>
-              </>
+              <InsightSection icon={Coins} title="Wealth & Abundance" subtitle="2nd & 8th House Financial Blueprint" text={insight.wealth} iconColor="emerald" />
             )}
 
             {/* From Section 4 onwards, apply Free User Blur Overlay if not premium */}
@@ -523,126 +408,22 @@ export function AiReadingFullscreen({
               <>
                 {/* Section 4: Love */}
                 {insight.relationships && (
-                  <>
-                    <div className="border-t border-white/5" />
-                    <motion.section
-                      initial={{ y: 20, opacity: 0 }}
-                      whileInView={{ y: 0, opacity: 1 }}
-                      viewport={{ once: true, margin: '-100px' }}
-                      transition={{ duration: 0.6 }}
-                      className="space-y-5"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center  border border-rose-500/20 bg-rose-500/10 shadow-[0_0_20px_rgba(244,63,94,0.1)]">
-                          <Heart className="h-5 w-5 text-rose-400" />
-                        </div>
-                        <div>
-                          <Heading level={2} variant="card" className="text-xl text-white/90">
-                            Love & Connections
-                          </Heading>
-                          <p className="mt-1 font-mono text-[11px] tracking-[0.2em] text-rose-400/50 uppercase">
-                            Venus-Mars / 7th House Dynamics
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-[52px]">
-                        <AstroTextParser text={insight.relationships} />
-                      </div>
-                    </motion.section>
-                  </>
+                  <InsightSection icon={Heart} title="Love & Connections" subtitle="Venus-Mars / 7th House Dynamics" text={insight.relationships} iconColor="rose" />
                 )}
 
                 {/* Section 5: Health */}
                 {insight.health && (
-                  <>
-                    <div className="border-t border-white/5" />
-                    <motion.section
-                      initial={{ y: 20, opacity: 0 }}
-                      whileInView={{ y: 0, opacity: 1 }}
-                      viewport={{ once: true, margin: '-100px' }}
-                      transition={{ duration: 0.6 }}
-                      className="space-y-5"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center  border border-teal-500/20 bg-teal-500/10 shadow-[0_0_20px_rgba(20,184,166,0.1)]">
-                          <Activity className="h-5 w-5 text-teal-400" />
-                        </div>
-                        <div>
-                          <Heading level={2} variant="card" className="text-xl text-white/90">
-                            Energy & Vitality
-                          </Heading>
-                          <p className="mt-1 font-mono text-[11px] tracking-[0.2em] text-teal-400/50 uppercase">
-                            6th House / Mars-Saturn Influence
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-[52px]">
-                        <AstroTextParser text={insight.health} />
-                      </div>
-                    </motion.section>
-                  </>
+                  <InsightSection icon={Activity} title="Energy & Vitality" subtitle="6th House / Mars-Saturn Influence" text={insight.health} iconColor="teal" />
                 )}
 
                 {/* Section 6: Superpowers */}
                 {insight.strengths && (
-                  <>
-                    <div className="border-t border-white/5" />
-                    <motion.section
-                      initial={{ y: 20, opacity: 0 }}
-                      whileInView={{ y: 0, opacity: 1 }}
-                      viewport={{ once: true, margin: '-100px' }}
-                      transition={{ duration: 0.6 }}
-                      className="space-y-5"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 border-primary/20 flex h-10 w-10 items-center justify-center  border shadow-[0_0_20px_rgba(139,92,246,0.1)]">
-                          <Shield className="text-primary h-5 w-5" />
-                        </div>
-                        <div>
-                          <Heading level={2} variant="card" className="text-xl text-white/90">
-                            Your Superpowers
-                          </Heading>
-                          <p className="text-primary/50 mt-1 font-mono text-[11px] tracking-[0.2em] uppercase">
-                            Core Strengths & Gifts
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-[52px]">
-                        <AstroTextParser text={insight.strengths} />
-                      </div>
-                    </motion.section>
-                  </>
+                  <InsightSection icon={Shield} title="Your Superpowers" subtitle="Core Strengths & Gifts" text={insight.strengths} iconColor="primary" />
                 )}
 
                 {/* Section 7: Shadow Work */}
                 {insight.warnings && (
-                  <>
-                    <div className="border-t border-white/5" />
-                    <motion.section
-                      initial={{ y: 20, opacity: 0 }}
-                      whileInView={{ y: 0, opacity: 1 }}
-                      viewport={{ once: true, margin: '-100px' }}
-                      transition={{ duration: 0.6 }}
-                      className="space-y-5"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center  border border-amber-500/20 bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.1)]">
-                          <AlertTriangle className="h-5 w-5 text-amber-400" />
-                        </div>
-                        <div>
-                          <Heading level={2} variant="card" className="text-xl text-white/90">
-                            Shadow Work
-                          </Heading>
-                          <p className="mt-1 font-mono text-[11px] tracking-[0.2em] text-amber-500/50 uppercase">
-                            Blind Spots & Growth Areas
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-[52px]">
-                        <AstroTextParser text={insight.warnings} />
-                      </div>
-                    </motion.section>
-                  </>
+                  <InsightSection icon={AlertTriangle} title="Shadow Work" subtitle="Blind Spots & Growth Areas" text={insight.warnings} iconColor="amber" />
                 )}
 
                 <div className="pt-12 pb-8 text-center">

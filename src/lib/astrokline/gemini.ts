@@ -6,6 +6,10 @@ const GEMINI_API_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 const GEMINI_TIMEOUT_MS = 25000;
 
+if (!GEMINI_API_KEY) {
+  console.warn('[AstroKline] ⚠️ GEMINI_API_KEY is not set. AI insights will use fallback responses.');
+}
+
 // ─── System Prompt ───
 const ASTRO_SYSTEM_PROMPT = `You are AstroKline's Chief Astrological Analyst and a Master Depth Psychologist, possessing 20 years of real-world Western astrology and clinical therapeutic experience.
 You are an expert in planetary aspects, house systems (Placidus), Essential Dignities, and timing techniques.

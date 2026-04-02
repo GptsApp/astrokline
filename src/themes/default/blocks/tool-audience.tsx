@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 
 import { SmartIcon } from '@/shared/blocks/common';
 import { cn } from '@/shared/lib/utils';
@@ -30,11 +30,7 @@ export function ToolAudience({
     >
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="mb-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both" style={{ animationDelay: '100ms' }}>
             <h2 className="mb-6 text-3xl font-bold md:text-5xl">
               Who is{' '}
               <span className="text-primary">
@@ -45,7 +41,7 @@ export function ToolAudience({
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
               {section.description}
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* Desktop Tabs / Mobile Scroll */}
@@ -73,72 +69,68 @@ export function ToolAudience({
 
         {/* Tab Content Area */}
         <div className="relative min-h-[400px] w-full">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 1.05, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 grid grid-cols-1 items-center gap-12 md:grid-cols-2"
-            >
-              <div className="space-y-6">
-                <div className="bg-primary/10 text-primary mb-4 inline-flex items-center gap-2 px-4 py-2">
+          <div
+            key={activeTab}
+            className="absolute inset-0 grid grid-cols-1 items-center gap-12 md:grid-cols-2 animate-in fade-in zoom-in-95 duration-300"
+          >
+            <div className="space-y-6">
+              <div className="bg-primary/10 text-primary mb-4 inline-flex items-center gap-2 px-4 py-2">
+                <SmartIcon
+                  name={tabs[activeTab].icon || 'Star'}
+                  className="h-5 w-5"
+                />
+                <span className="font-bold">{tabs[activeTab].title}</span>
+              </div>
+              <h3 className="text-foreground text-3xl font-bold md:text-4xl">
+                {tabs[activeTab].headline}
+              </h3>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                {tabs[activeTab].description}
+              </p>
+
+              {tabs[activeTab].benefits && (
+                <ul className="space-y-4 pt-6">
+                  {tabs[activeTab].benefits.map(
+                    (benefit: string, i: number) => (
+                      <li key={i} className="flex items-start gap-4">
+                        <div className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center">
+                          <SmartIcon
+                            name="CheckCircle"
+                            className="text-primary h-5 w-5"
+                          />
+                        </div>
+                        <span className="text-foreground leading-relaxed">
+                          {benefit}
+                        </span>
+                      </li>
+                    )
+                  )}
+                </ul>
+              )}
+            </div>
+
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden  border border-white/10 bg-[#15131A] shadow-2xl md:aspect-[4/3]">
+              {tabs[activeTab].image ? (
+                <Image
+                  src={tabs[activeTab].image.src}
+                  alt={tabs[activeTab].image.alt || tabs[activeTab].title}
+                  width={500}
+                  height={375}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full flex-col items-center justify-center border-t border-white/5 bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] p-12 text-center">
                   <SmartIcon
-                    name={tabs[activeTab].icon || 'Star'}
-                    className="h-5 w-5"
+                    name={tabs[activeTab].icon || 'Image'}
+                    className="mb-6 h-24 w-24 text-white/5"
                   />
-                  <span className="font-bold">{tabs[activeTab].title}</span>
+                  <p className="font-mono text-sm text-white/20">
+                    {tabs[activeTab].title} Interface Preview...
+                  </p>
                 </div>
-                <h3 className="text-foreground text-3xl font-bold md:text-4xl">
-                  {tabs[activeTab].headline}
-                </h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">
-                  {tabs[activeTab].description}
-                </p>
-
-                {tabs[activeTab].benefits && (
-                  <ul className="space-y-4 pt-6">
-                    {tabs[activeTab].benefits.map(
-                      (benefit: string, i: number) => (
-                        <li key={i} className="flex items-start gap-4">
-                          <div className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center">
-                            <SmartIcon
-                              name="CheckCircle"
-                              className="text-primary h-5 w-5"
-                            />
-                          </div>
-                          <span className="text-foreground leading-relaxed">
-                            {benefit}
-                          </span>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                )}
-              </div>
-
-              <div className="relative flex aspect-square items-center justify-center overflow-hidden  border border-white/10 bg-[#15131A] shadow-2xl md:aspect-[4/3]">
-                {tabs[activeTab].image ? (
-                  <img
-                    src={tabs[activeTab].image.src}
-                    alt={tabs[activeTab].image.alt || tabs[activeTab].title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center border-t border-white/5 bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] p-12 text-center">
-                    <SmartIcon
-                      name={tabs[activeTab].icon || 'Image'}
-                      className="mb-6 h-24 w-24 text-white/5"
-                    />
-                    <p className="font-mono text-sm text-white/20">
-                      {tabs[activeTab].title} Interface Preview...
-                    </p>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>

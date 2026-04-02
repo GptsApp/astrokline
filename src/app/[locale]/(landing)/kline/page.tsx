@@ -6,11 +6,11 @@ import { getUserInfo } from '@/shared/models/user';
 import { KlineClient } from './page-client';
 
 export const generateMetadata = getMetadata({
-  title: 'Free AI Natal Tool: Timing Map & K-Line Reading', // ' | AstroKline' will be auto-appended by seo.ts
+  title: '2026 Astrology Predictions & Transit Chart | Your Personal K-Line', // ' | AstroKline' will be auto-appended by seo.ts
   description:
-    'Get a free personalized AI birth chart K-Line reading based on precise Swiss Ephemeris data. Discover exact career, relationship, and life turning points.',
+    'Generate your personalized astrology predictions for 2026. Astrokline maps your planetary transits, Dashas, and Sade Sati into an interactive, readable K-Line chart.',
   keywords:
-    'birth chart reading, natal chart analysis, astrology K-Line, AI astrology reading, free birth chart, astrology timing chart, destiny chart, life turning points, career astrology, relationship timing',
+    'astrology predictions for 2026, astrology transit calculator, financial astrology, vedic astrology predictions, predictive astrology, transit chart',
   canonicalUrl: '/kline',
 });
 

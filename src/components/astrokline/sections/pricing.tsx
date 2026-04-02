@@ -145,15 +145,13 @@ export function Pricing() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
-  const { setIsShowSignModal } = useAppContext();
+  const { setIsShowSignModal, setAuthModalType } = useAppContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const handleAuthRequired = () => {
-    if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
-      (window as any).setAuthModalType('sign-in');
-    }
+    setAuthModalType('sign-in');
     setIsShowSignModal(true);
   };
 
@@ -232,10 +230,10 @@ export function Pricing() {
           <div className="text-muted-foreground/70 mb-10 flex flex-wrap justify-center gap-4 font-mono text-xs">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-2 w-2 animate-pulse bg-emerald-400" />
-              342 people viewing plans right now
+              {Math.floor(280 + Math.random() * 140)} people viewing plans right now
             </span>
             <span className="hidden sm:inline">·</span>
-            <span>1,247 upgraded this week</span>
+            <span>{Math.floor(1100 + Math.random() * 300)} upgraded this week</span>
           </div>
 
           {/* ── Pill Switcher ── */}

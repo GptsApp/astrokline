@@ -124,7 +124,7 @@ export function InlineBirthForm() {
         
         {/* Blinking Data Recording Indicator */}
         <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-          <span className="h-1.5 w-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_#ef4444]" />
+          <span className="h-1.5 w-1.5 bg-red-500 rounded-full shadow-[0_0_5px_#ef4444]" />
           <span className="text-[8px] font-mono text-muted-foreground/50 tracking-widest uppercase">SECURE</span>
         </div>
       

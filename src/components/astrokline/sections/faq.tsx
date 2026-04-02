@@ -26,7 +26,7 @@ export function FAQ() {
     },
     {
       question: "Do I need my exact birth time?",
-      answer: "For the most accurate results, yes. Your birth time determines your Rising Sign and House placements, which govern specific areas like career, wealth, and relationships. If you only know the date, your chart will still show the major trends — just with less precision on life-area breakdowns."
+      answer: "For the most accurate results, yes. Like the most advanced Vedic astrology calculators, your birth time determines your Rising Sign and planetary Dashas. If you only know the date of birth, your chart will still show major predictive astrology trends and general astrology compatibility—just with less precision on specific life-area breakdowns."
     },
     {
       question: "Is my data safe?",

@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 import { SmartIcon } from '@/shared/blocks/common';
 import { cn } from '@/shared/lib/utils';
@@ -26,11 +24,7 @@ export function ToolFeatures({
     >
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="mb-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both" style={{ animationDelay: '100ms' }}>
             {section.headline && (
               <div className="bg-primary/10 text-primary mb-6 inline-flex items-center px-4 py-2 text-sm font-medium">
                 {section.headline}
@@ -44,7 +38,7 @@ export function ToolFeatures({
                 {section.description}
               </p>
             )}
-          </motion.div>
+          </div>
         </div>
 
         <div className="space-y-32">
@@ -60,12 +54,12 @@ export function ToolFeatures({
                 )}
               >
                 {/* Text Side */}
-                <motion.div
-                  initial={{ opacity: 0, x: isReversed ? 50 : -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="flex-1 space-y-8"
+                <div
+                  className={cn(
+                    "flex-1 space-y-8 animate-in fade-in duration-700 fill-mode-both",
+                    isReversed ? "slide-in-from-right-12" : "slide-in-from-left-12"
+                  )}
+                  style={{ animationDelay: '200ms' }}
                 >
                   <div className="mb-6 flex h-16 w-16 items-center justify-center  border border-white/10 bg-white/5">
                     {feature.icon ? (
@@ -108,23 +102,22 @@ export function ToolFeatures({
                       ))}
                     </ul>
                   )}
-                </motion.div>
+                </div>
 
                 {/* Media/Image Side */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="w-full flex-1"
+                <div
+                  className="w-full flex-1 animate-in fade-in zoom-in-95 duration-700 fill-mode-both"
+                  style={{ animationDelay: '300ms' }}
                 >
                   <div className="group relative flex aspect-[4/3] items-center justify-center overflow-hidden  border border-white/10 bg-[#15131A] shadow-2xl">
                     <div className="from-primary/5 absolute inset-0 bg-gradient-to-br to-transparent opacity-50" />
                     {feature.image ? (
-                      <img
+                      <Image
                         src={feature.image.src}
                         alt={feature.image.alt || feature.title}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        width={800}
+                        height={600}
+                        className="h-full w-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
                       />
                     ) : (
                       <div className="p-8 text-center">
@@ -133,7 +126,7 @@ export function ToolFeatures({
                       </div>
                     )}
                   </div>
-                </motion.div>
+                </div>
               </div>
             );
           })}

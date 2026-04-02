@@ -71,6 +71,7 @@ const nextConfig = {
   },
   experimental: {
     mdxRs: false,
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons', 'recharts', '@visx/visx'],
   },
 };
 
