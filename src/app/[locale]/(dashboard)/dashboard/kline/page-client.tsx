@@ -430,7 +430,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       </div>
 
       {/* ── CHART RENDER ── */}
-      <div id="kline-report">
+      <div id="kline-report" className="bg-[#0A0A0F]">
         {profile && (
           <motion.div
             key={activeKlineId} // Forces re-mount animation when switching tabs
