@@ -2,7 +2,7 @@ import { UserProfile } from './mock-astrology-data';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 const GEMINI_API_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 const GEMINI_TIMEOUT_MS = 25000;
 
 // ─── System Prompt ───
