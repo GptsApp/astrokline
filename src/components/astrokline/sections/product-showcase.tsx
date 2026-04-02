@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import {
   CalendarDays,
   TrendingUp,
-  Activity,
   Users,
   Sparkles,
 } from 'lucide-react';
@@ -13,6 +12,10 @@ import {
   ProductShowcaseCard,
   type ProductFeature,
 } from './product-showcase-card';
+import { DailyMockup } from './mockups/daily-mockup';
+
+import { EnergyMockup } from './mockups/energy-mockup';
+import { CompatibilityMockup } from './mockups/compatibility-mockup';
 
 const FEATURES: ProductFeature[] = [
   {
@@ -28,28 +31,11 @@ const FEATURES: ProductFeature[] = [
       'Vedic Panchang integration — Nakshatra, Tithi & Tara Bala',
       'Peak / Neutral / Low hour windows for optimal timing',
     ],
-    image: '/images/landing-daily-horoscope.png',
+    mockup: <DailyMockup />,
     cta: 'See Today\'s Guidance →',
     ctaHref: '#pricing',
   },
-  {
-    icon: Activity,
-    iconColor: 'text-[#D4AF37]',
-    iconBg: 'bg-[#D4AF37]/10',
-    label: 'Astro K-Line',
-    title: 'Your Entire Life,\nOne Strategic Curve.',
-    description:
-      'We map 100 years of planetary transits against your birth chart and render it as a K-Line — the same visual language used in financial markets. See your peak decades, challenging years, and optimal action windows at a glance.',
-    benefits: [
-      '100-year timeline with candlestick-style visualization',
-      'AI-powered narrative for every major transit period',
-      'Exportable PDF dossier with deep personality analysis',
-    ],
-    image: '/images/landing-kline-chart.png',
-    cta: 'Generate My K-Line — Free',
-    ctaHref: '#pricing',
-    reversed: true,
-  },
+
   {
     icon: TrendingUp,
     iconColor: 'text-purple-400',
@@ -63,9 +49,10 @@ const FEATURES: ProductFeature[] = [
       'Ruling planet + thematic insight for each month',
       'Free users see 3 months; upgrade unlocks the full year',
     ],
-    image: '/images/landing-energy-forecast.png',
+    mockup: <EnergyMockup />,
     cta: 'View Energy Timeline',
     ctaHref: '#pricing',
+    reversed: true,
   },
   {
     icon: Users,
@@ -80,10 +67,9 @@ const FEATURES: ProductFeature[] = [
       'Four-dimension breakdown with narrative insights',
       'Works for romantic, business, or any partnership',
     ],
-    image: '/images/landing-compatibility-check.png',
+    mockup: <CompatibilityMockup />,
     cta: 'Check Compatibility',
     ctaHref: '#pricing',
-    reversed: true,
   },
 ];
 
@@ -94,7 +80,6 @@ export function ProductShowcase() {
       aria-labelledby="product-showcase-heading"
       className="relative overflow-hidden bg-[#050505] py-28 md:py-36"
     >
-      {/* Background texture */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.02]"
         style={{
@@ -105,7 +90,6 @@ export function ProductShowcase() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -128,13 +112,12 @@ export function ProductShowcase() {
             </span>
           </Heading>
           <p className="mx-auto max-w-2xl text-base text-white/50 leading-relaxed md:text-lg">
-            Four powerful tools, one unified dashboard. Each backed by
+            Three powerful tools beyond the K-Line. Each backed by
             real planetary data and professional-grade astronomical
             calculations.
           </p>
         </motion.div>
 
-        {/* Feature Cards */}
         <div className="space-y-24 md:space-y-36">
           {FEATURES.map((feature, i) => (
             <ProductShowcaseCard key={i} feature={feature} index={i} />

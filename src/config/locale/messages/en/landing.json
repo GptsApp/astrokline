@@ -42,7 +42,38 @@
       ]
     },
     "auth_nav": {
-      "items": []
+      "items": [
+        {
+          "title": "Dashboard",
+          "url": "/dashboard",
+          "icon": "LayoutDashboard"
+        },
+        {
+          "title": "K-Line",
+          "url": "/kline"
+        },
+        {
+          "title": "Tools",
+          "children": [
+            {
+              "title": "Energy Forecast",
+              "url": "/tools/energy",
+              "icon": "TrendingUp",
+              "description": "Monthly energy peaks and dips"
+            },
+            {
+              "title": "Compatibility",
+              "url": "/tools/compatibility",
+              "icon": "Users",
+              "description": "Chemistry analysis with anyone"
+            }
+          ]
+        },
+        {
+          "title": "Pricing",
+          "url": "/pricing"
+        }
+      ]
     },
     "user_nav": {
       "items": [

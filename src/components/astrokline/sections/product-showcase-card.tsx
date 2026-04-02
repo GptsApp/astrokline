@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import Image from 'next/image';
+import type { ReactNode } from 'react';
 import { cn } from '@/shared/lib/utils';
 
 export interface ProductFeature {
@@ -14,7 +14,7 @@ export interface ProductFeature {
   title: string;
   description: string;
   benefits: string[];
-  image: string;
+  mockup: ReactNode;
   cta: string;
   ctaHref: string;
   reversed?: boolean;
@@ -41,51 +41,30 @@ export function ProductShowcaseCard({
         reversed && 'lg:[direction:rtl] lg:*:[direction:ltr]'
       )}
     >
-      {/* Image Side */}
+      {/* Mockup Side */}
       <motion.div
         whileHover={{ scale: 1.02, y: -4 }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         className="relative group"
       >
-        {/* Ambient glow */}
         <div
           className={cn(
-            'absolute -inset-4 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none',
+            'absolute -inset-4 blur-3xl opacity-15 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none',
             feature.iconBg
           )}
         />
-        {/* Image container */}
-        <div className="relative overflow-hidden border border-white/10 bg-[#0A0A0A] shadow-2xl">
-          <Image
-            src={feature.image}
-            alt={feature.title}
-            width={640}
-            height={400}
-            className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-            loading="lazy"
-          />
-          {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent pointer-events-none" />
-          {/* Floating badge */}
-          <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5">
-            <Icon className={cn('h-3.5 w-3.5', feature.iconColor)} />
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/80">
-              {feature.label}
-            </span>
-          </div>
+        <div className="relative">
+          {feature.mockup}
         </div>
       </motion.div>
 
       {/* Text Side */}
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-3">
-          <div
-            className={cn(
-              'flex h-11 w-11 shrink-0 items-center justify-center border',
-              feature.iconBg,
-              feature.iconColor.replace('text-', 'border-') + '/30'
-            )}
-          >
+          <div className={cn(
+            'flex h-11 w-11 shrink-0 items-center justify-center border',
+            feature.iconBg, feature.iconColor.replace('text-', 'border-') + '/30'
+          )}>
             <Icon className={cn('h-5 w-5', feature.iconColor)} />
           </div>
           <span className={cn('text-[10px] font-mono uppercase tracking-[0.2em]', feature.iconColor)}>
@@ -101,7 +80,6 @@ export function ProductShowcaseCard({
           {feature.description}
         </p>
 
-        {/* Benefits */}
         <ul className="space-y-3">
           {feature.benefits.map((b, i) => (
             <motion.li
@@ -118,7 +96,6 @@ export function ProductShowcaseCard({
           ))}
         </ul>
 
-        {/* CTA */}
         <a
           href={feature.ctaHref}
           className={cn(
