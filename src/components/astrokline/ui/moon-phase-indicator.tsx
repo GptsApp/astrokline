@@ -107,7 +107,7 @@ export function MoonPhaseIndicator() {
   if (!moonData) return null;
 
   return (
-    <div className="hidden items-center gap-1.5 border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-[11px] text-white/50 select-none lg:flex">
+    <div className="hidden items-center gap-1.5 px-2 font-mono text-[10px] text-white/30 select-none lg:flex" aria-label="Current moon phase"  role="status">
       <MoonIcon phaseIndex={moonData.phaseIndex} />
       <span className="tracking-wide">
         {moonData.phase} in {moonData.sign}

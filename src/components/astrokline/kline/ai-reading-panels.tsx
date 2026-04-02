@@ -1,6 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import {
+  getInsightCacheKey,
+  getCachedInsight,
+  setCachedInsight,
+} from '@/lib/astrokline/ai-insight-cache';
 import type {
   TransitEvent,
   UserProfile,
@@ -126,15 +131,51 @@ export function AiReadingPanels({
     return false;
   };
 
-  // Fetch the massive AI Reading payload silently if FREE+
+  // Loading phase for animated progress
+  const [loadingPhase, setLoadingPhase] = useState(0);
+  const phaseTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const startLoadingPhases = () => {
+    phaseTimers.current.forEach(clearTimeout);
+    phaseTimers.current = [];
+    setLoadingPhase(0);
+    phaseTimers.current.push(setTimeout(() => setLoadingPhase(1), 2000));
+    phaseTimers.current.push(setTimeout(() => setLoadingPhase(2), 5000));
+    phaseTimers.current.push(setTimeout(() => setLoadingPhase(3), 10000));
+  };
+
+  const stopLoadingPhases = () => {
+    phaseTimers.current.forEach(clearTimeout);
+    phaseTimers.current = [];
+  };
+
+  // Fetch with localStorage cache layer
   useEffect(() => {
-    if (tier === 'GUEST' || tier === 'FREE') return; // Guests and Free users don't get AI hits to save costs
+    if (tier === 'GUEST' || tier === 'FREE') return;
     let isMounted = true;
     let retryCount = 0;
     const maxRetries = 2;
 
+    // ── 1. Check localStorage cache first ──
+    const cacheKey = getInsightCacheKey(profile);
+    const cached = getCachedInsight(cacheKey);
+    if (cached) {
+      setInsight({
+        summary: cached.summary,
+        career: cached.career,
+        wealth: cached.wealth,
+        love: cached.relationships ?? cached.love,
+        health: cached.health,
+        strengths: cached.strengths,
+        shadow: cached.warnings ?? cached.shadow,
+      });
+      return; // No API call needed!
+    }
+
+    // ── 2. Cache miss — fetch from API ──
     const fetchInsight = () => {
       setIsLoading(true);
+      startLoadingPhases();
       fetch('/api/astrology/ai-insight', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -143,18 +184,19 @@ export function AiReadingPanels({
         .then((res) => res.json())
         .then((data) => {
           if (isMounted && data && !data.error) {
-            // Map backend keys to our modules
-            setInsight({
+            const mapped = {
               summary: data.summary,
               career: data.career,
               wealth: data.wealth,
-              love: data.relationships, // Backend returns 'relationships'
+              love: data.relationships,
               health: data.health,
               strengths: data.strengths,
-              shadow: data.warnings, // Backend returns 'warnings'
-            });
+              shadow: data.warnings,
+            };
+            setInsight(mapped);
+            // Write to localStorage cache
+            setCachedInsight(cacheKey, data);
           } else if (isMounted && retryCount < maxRetries) {
-            // Retry on empty response
             retryCount++;
             setTimeout(fetchInsight, 2000);
             return;
@@ -169,7 +211,10 @@ export function AiReadingPanels({
           }
         })
         .finally(() => {
-          if (isMounted) setIsLoading(false);
+          if (isMounted) {
+            setIsLoading(false);
+            stopLoadingPhases();
+          }
         });
     };
 
@@ -177,6 +222,7 @@ export function AiReadingPanels({
 
     return () => {
       isMounted = false;
+      stopLoadingPhases();
     };
   }, [profile, tier]);
 
@@ -369,10 +415,35 @@ export function AiReadingPanels({
                     
                     <div className="relative z-10 border-t border-white/[0.04] px-6 pt-2 pb-8">
                       {isLoading ? (
-                        <div className="flex animate-pulse flex-col gap-3">
-                          <div className="h-4 w-3/4 bg-white/[0.04]" />
-                          <div className="h-4 w-5/6 bg-white/[0.04]" />
-                          <div className="h-4 w-1/2 bg-white/[0.04]" />
+                        <div className="flex flex-col items-center gap-4 py-8">
+                          {/* Animated progress */}
+                          <div className="relative h-1 w-full max-w-xs overflow-hidden bg-white/[0.04]">
+                            <div
+                              className="absolute inset-y-0 left-0 bg-[#D4AF37]/60 transition-all duration-1000 ease-out"
+                              style={{ width: `${[15, 40, 70, 92][loadingPhase]}%` }}
+                            />
+                          </div>
+                          <div className="flex items-center gap-2 text-white/40">
+                            <Sparkles className="h-4 w-4 animate-pulse text-[#D4AF37]/50" />
+                            <span className="text-sm transition-opacity duration-500">
+                              {[
+                                'Reading your birth chart...',
+                                'Analyzing planetary aspects...',
+                                'Writing your personalized insight...',
+                                'Almost there, crafting final details...',
+                              ][loadingPhase]}
+                            </span>
+                          </div>
+                          {/* Shimmer skeleton */}
+                          <div className="mt-2 w-full space-y-3">
+                            {[0.75, 0.9, 0.6, 0.85, 0.5].map((w, i) => (
+                              <div
+                                key={i}
+                                className="h-3.5 animate-pulse bg-white/[0.03]"
+                                style={{ width: `${w * 100}%`, animationDelay: `${i * 150}ms` }}
+                              />
+                            ))}
+                          </div>
                         </div>
                       ) : (
                         <div className="prose prose-invert prose-sm prose-p:leading-relaxed prose-p:text-white/60 prose-strong:text-white/90 prose-h3:text-[#D4AF37] prose-h3:font-normal prose-h3:text-xs prose-h3:tracking-widest prose-h3:uppercase prose-h3:mt-8 prose-h3:mb-4 max-w-none">
