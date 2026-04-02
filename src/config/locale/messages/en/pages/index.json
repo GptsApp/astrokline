@@ -4,6 +4,7 @@
       "hero",
       "kline-preview",
       "features",
+      "methodology",
       "testimonials",
       "how-it-works",
       "pricing",
@@ -27,10 +28,10 @@
         },
         "tip": "Powered by the same astronomical data used by NASA and professional astrologers worldwide",
         "social_proof": {
-           "quote": "\"I saw my 2019 burnout on the chart before I even told them about it. The data is eerily accurate.\"",
-           "author": "— Verified User",
-           "avatar": "/images/avatars/diverse/hero_casual_1.webp",
-           "readers": "Trusted by <strong className=\"font-bold text-white\">12,000+</strong> users worldwide"
+          "quote": "\"I saw my 2019 burnout on the chart before I even told them about it. The data is eerily accurate.\"",
+          "author": "— Verified User",
+          "avatar": "/images/avatars/diverse/hero_casual_1.webp",
+          "readers": "Trusted by <strong className=\"font-bold text-white\">12,000+</strong> users worldwide"
         },
         "questions": {
           "q1": "Is 2026 the right year to make my move?",
@@ -68,8 +69,16 @@
           "title": "Transit Navigator",
           "desc": "Track the exact timing of critical planetary transits like Jupiter Returns and Saturn crossings before they hit.",
           "items": [
-            { "title": "Jupiter Trine Sun", "time": "Starts in 3 months", "stat": "+8 Momentum" },
-            { "title": "Saturn Conjunction", "time": "Peak pressure in {year}", "stat": "-4 Friction" }
+            {
+              "title": "Jupiter Trine Sun",
+              "time": "Starts in 3 months",
+              "stat": "+8 Momentum"
+            },
+            {
+              "title": "Saturn Conjunction",
+              "time": "Peak pressure in {year}",
+              "stat": "-4 Friction"
+            }
           ]
         },
         "card3": {
@@ -331,9 +340,18 @@
           "reading_title": "Your Timing Curve",
           "teaser_hook": "Your curve highlights a major shift around <strong>{year}</strong>. Tap the chart to explore what's coming.",
           "bands": {
-            "expansion": { "label": "Growth Window", "summary": "Momentum is on your side. This is a great time to start new projects, take visible action, and build on what's working." },
-            "protection": { "label": "Recharge Window", "summary": "The timeline favors consolidation. Protect your resources, refine your approach, and prepare for the next growth phase." },
-            "build": { "label": "Preparation Window", "summary": "A steady period for learning, planning, and building the foundation for your next big move." }
+            "expansion": {
+              "label": "Growth Window",
+              "summary": "Momentum is on your side. This is a great time to start new projects, take visible action, and build on what's working."
+            },
+            "protection": {
+              "label": "Recharge Window",
+              "summary": "The timeline favors consolidation. Protect your resources, refine your approach, and prepare for the next growth phase."
+            },
+            "build": {
+              "label": "Preparation Window",
+              "summary": "A steady period for learning, planning, and building the foundation for your next big move."
+            }
           },
           "cards": {
             "highest_point": {

@@ -2,6 +2,7 @@
 
 import { Heading } from "@/components/astrokline/ui/heading";
 import { useAppContext } from '@/shared/contexts/app';
+import { getPersonalizedReading } from '@/lib/astrokline/transit-templates';
 
 import { useMemo } from 'react';
 import {
@@ -704,24 +705,11 @@ function getYearRuler(year: number): { planet: string; glyph: string } {
 // Comprehensive rating text
 function getComprehensiveReading(
   score: number,
-  stage: string,
-  change: number
+  _stage: string,
+  change: number,
+  mainTransit: { planet: string; aspect: string; theme: string; title: string } | null
 ): string {
-  if (score >= 85 && change > 0)
-    return 'This is one of your strongest years. Momentum is building naturally — a great time for big decisions, new projects, and stepping into the spotlight.';
-  if (score >= 85)
-    return 'A powerful year with strong energy, though growth may feel more gradual. Focus on refining what\'s already working.';
-  if (score >= 70 && change > 0)
-    return 'Things are picking up. You\'re entering a period where effort pays off more than usual. Lean into the opportunities you see.';
-  if (score >= 70)
-    return 'A solid year overall. Some minor friction may slow things down temporarily, but the foundation is strong.';
-  if (score >= 55 && change > 0)
-    return 'Energy is shifting in your favor. Small wins are starting to add up. Stay consistent and watch for emerging opportunities.';
-  if (score >= 55)
-    return 'A transitional year. Stay flexible and avoid overcommitting. Adaptability is your biggest asset right now.';
-  if (score >= 40)
-    return 'A year that asks for patience and discipline. Focus on what truly matters and let go of what isn\'t serving you.';
-  return 'A tough but transformative year. The challenges you face now are building the foundation for something better ahead.';
+  return getPersonalizedReading(score, change, mainTransit);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -741,7 +729,7 @@ const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate }: 
   const ruler = getYearRuler(d.year);
   const currentYear = new Date().getFullYear();
   const age = d.year - (d.year - (d.age ?? 0));
-  const reading = getComprehensiveReading(d.score, d.stage, change);
+  const reading = getComprehensiveReading(d.score, d.stage, change, mainTransit);
 
   // Four Palace sub-scores derived from base score + stage + ruler influences
   const stageBonus: Record<

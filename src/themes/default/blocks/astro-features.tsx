@@ -2,8 +2,8 @@
 
 import dynamic from 'next/dynamic';
 
-const Features = dynamic(
-  () => import('@/components/astrokline/sections/features').then(m => m.Features)
+const ProductShowcase = dynamic(
+  () => import('@/components/astrokline/sections/product-showcase').then(m => m.ProductShowcase)
 );
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
@@ -17,7 +17,7 @@ export function AstroFeatures({
 }) {
   return (
     <div className={cn(section.className, className)}>
-      <Features />
+      <ProductShowcase />
     </div>
   );
 }

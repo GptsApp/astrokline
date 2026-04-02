@@ -4,6 +4,12 @@ import {
   type PlanetPosition,
 } from '@/lib/astrology/engine';
 
+import {
+  getTransitTitle,
+  getTransitDescription,
+  getTransitAdvice,
+} from './transit-templates';
+
 import type {
   DestinyReading,
   DestinyScorePoint,
@@ -313,29 +319,10 @@ function buildTransitTitle(
   planet: string,
   aspect: string,
   target: TargetPoint,
-  theme: Theme
+  theme: Theme,
+  year: number = new Date().getFullYear()
 ) {
-  const positive = ['Trine', 'Sextile'].includes(aspect);
-
-  if (planet === 'Jupiter' && positive) {
-    return `Jupiter Opens Your ${theme} Window`;
-  }
-  if (planet === 'Saturn' && aspect === 'Square') {
-    return `Saturn Tests the ${theme} Structure`;
-  }
-  if (planet === 'Pluto' && ['Conjunction', 'Opposition'].includes(aspect)) {
-    return `Pluto Forces a ${theme} Reset`;
-  }
-  if (planet === 'Uranus' && positive) {
-    return `Uranus Sparks a ${theme} Breakthrough`;
-  }
-  if (planet === 'Neptune') {
-    return positive
-      ? `Neptune Softens Your ${target.name} Lens`
-      : `Neptune Fog Touches ${target.name}`;
-  }
-
-  return `${planet} ${aspect}s Your ${target.name}`;
+  return getTransitTitle(planet, aspect, theme, target, year);
 }
 
 function buildTransitDescription(
@@ -346,37 +333,17 @@ function buildTransitDescription(
   theme: Theme,
   orbDistance: number
 ) {
-  return `In ${year}, transiting ${transit.name} in ${transit.sign} forms a ${aspect.toLowerCase()} to your natal ${target.name} in ${target.sign} (House ${target.house}). This presses directly on your ${theme.toLowerCase()} axis, so the year tends to feel more fated, visible, and consequential than average. Orb ${round(
-    orbDistance
-  )}° means the pressure is strong enough to show up in concrete decisions rather than only mood.`;
+  return getTransitDescription(year, transit.name, transit.sign, aspect, target, orbDistance);
 }
 
 function buildTransitAdvice(
   theme: Theme,
   aspect: string,
-  target: TargetPoint
+  target: TargetPoint,
+  planet: string = 'Saturn',
+  year: number = new Date().getFullYear()
 ) {
-  if (theme === 'Career') {
-    return aspect === 'Square' || aspect === 'Opposition'
-      ? `Reduce scattered commitments and let your ${target.name} carry one strategic priority. This year rewards disciplined positioning more than reactive hustle.`
-      : `Make the opportunity visible. Publish, pitch, or renegotiate while your ${target.name} is supported instead of waiting for perfect certainty.`;
-  }
-
-  if (theme === 'Wealth') {
-    return aspect === 'Square' || aspect === 'Opposition'
-      ? `Protect cash flow, cap downside, and avoid vanity spending. This cycle asks for cleaner financial structure before expansion.`
-      : `Convert momentum into durable assets. Raise rates, formalize terms, and keep surplus money working instead of idle.`;
-  }
-
-  if (theme === 'Love') {
-    return aspect === 'Square' || aspect === 'Opposition'
-      ? `Slow the conversation down and do not negotiate from emotional overflow. Boundaries matter more than reassurance when ${target.name} is under stress.`
-      : `Say the important thing directly. This is a year for clearer intimacy, not passive telepathy.`;
-  }
-
-  return aspect === 'Square' || aspect === 'Opposition'
-    ? `Treat this as a growth checkpoint. Simplify your commitments and respond with structure rather than intensity.`
-    : `Lean into deliberate reinvention. The chart is giving you room to upgrade how you think, act, and position yourself.`;
+  return getTransitAdvice(planet, aspect, theme, target, year);
 }
 
 function pickStage(score: number, previousScore: number, events: TransitEvent[]) {
@@ -472,7 +439,7 @@ function buildYearEvents(
       candidates.push({
         id: `t-${year}-${candidates.length + 1}`,
         year,
-        title: buildTransitTitle(transit.name, nearestAspect.aspect, target, theme),
+        title: buildTransitTitle(transit.name, nearestAspect.aspect, target, theme, year),
         theme,
         description: buildTransitDescription(
           year,
@@ -489,7 +456,7 @@ function buildYearEvents(
         ),
         planet: transit.name,
         aspect: nearestAspect.aspect,
-        advice: buildTransitAdvice(theme, nearestAspect.aspect, target),
+        advice: buildTransitAdvice(theme, nearestAspect.aspect, target, transit.name, year),
         phase:
           nearestAspect.orbDistance < 1
             ? 'Exact'
