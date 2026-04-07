@@ -57,7 +57,7 @@ export function enrichStoredKlineResult(
     return result ?? null;
   }
 
-  const profile = result?.profile
+  const baseProfile = result?.profile
     ? result.profile
     : apiToProfile(chart, {
         name: birthData.name,
@@ -66,7 +66,13 @@ export function enrichStoredKlineResult(
         location: birthData.location,
       });
 
-  if (userTier === 'PREMIUM') {
+  // Always use birthData.name (from kline.label) as the authoritative name
+  const profile = {
+    ...baseProfile,
+    name: birthData.name || baseProfile.name,
+  };
+
+  if (userTier === 'PREMIUM' || userTier === 'STANDARD') {
     const fullReport = buildFullPersonalizedReport(chart, birthData.date, profile);
 
     return {
@@ -78,6 +84,8 @@ export function enrichStoredKlineResult(
         overallAverageScore: fullReport.overallAverageScore,
       },
       ...fullReport,
+      // Life Radar is PREMIUM-only
+      radarData: userTier === 'PREMIUM' ? fullReport.radarData : undefined,
     };
   }
 
@@ -100,15 +108,9 @@ export function enrichStoredKlineResult(
     },
     klineData: timeline.klineData,
     transitDetails: timeline.transitDetails,
-    radarData: hasPremiumDashboardData(result) ? result?.radarData ?? null : undefined,
-    destinyReading: hasPremiumDashboardData(result)
-      ? result?.destinyReading ?? null
-      : undefined,
-    next30Days: hasPremiumDashboardData(result)
-      ? result?.next30Days ?? null
-      : undefined,
-    currentEnergy: hasPremiumDashboardData(result)
-      ? result?.currentEnergy ?? null
-      : undefined,
+    radarData: undefined,
+    destinyReading: undefined,
+    next30Days: undefined,
+    currentEnergy: undefined,
   };
 }

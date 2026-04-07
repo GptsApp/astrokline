@@ -42,7 +42,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "Generate My Chart — Free",
+              "title": "Reveal My Stars — Free ✨",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -78,7 +78,7 @@
           {
             "title": "Pro",
             "description": "Your complete strategic intelligence dossier. Ask Your Chart anything, explore Time Travel, and get deep transit analysis for every turning point.",
-            "label": "Built for Decision Makers",
+            "label": "For Deep Self-Discovery",
             "features_title": "Everything in Lite, plus",
             "features": [
               "\"Ask Your Chart\" — AI chat with your birth chart",
@@ -122,7 +122,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "Generate My Chart — Free",
+              "title": "Reveal My Stars — Free ✨",
               "url": "/pricing"
             },
             "product_id": "free-yearly",

@@ -13,6 +13,11 @@
         "icon": "Activity"
       },
       {
+        "title": "Ask Chart",
+        "url": "/dashboard/ask-chart",
+        "icon": "MessageCircle"
+      },
+      {
         "title": "Energy Forecast",
         "url": "/dashboard/tools/energy",
         "icon": "TrendingUp"

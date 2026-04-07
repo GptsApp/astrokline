@@ -103,155 +103,130 @@ export function InlineBirthForm() {
   const days = Array.from({ length: maxDay }, (_, i) => String(i + 1));
 
   return (
-    <div className="relative w-full group">
-      {/* Sci-Fi Tactical Corner Crosshairs */}
-      <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-primary/50 z-30 transition-all group-hover:border-primary group-hover:scale-110" />
-      <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-primary/50 z-30 transition-all group-hover:border-primary group-hover:scale-110" />
-      <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-primary/50 z-30 transition-all group-hover:border-primary group-hover:scale-110" />
-      <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-primary/50 z-30 transition-all group-hover:border-primary group-hover:scale-110" />
-
-      {/* Terminal Grid Background inside the form */}
-      <div className="w-full border border-white/10 bg-[#050505]/90 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
-        
-        {/* Subtle Scanlines */}
-        <div 
-          className="absolute inset-0 opacity-[0.015] pointer-events-none mix-blend-overlay z-0" 
-          style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1px, #FFF 1px, #FFF 2px)', backgroundSize: '100% 4px' }} 
-        />
-
-        {/* Impeccable Structural Top Banner */}
-        <div className="h-1 w-full bg-gradient-to-r from-primary/20 via-primary to-primary/20 relative z-10" />
-        
-        {/* Blinking Data Recording Indicator */}
-        <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-          <span className="h-1.5 w-1.5 bg-red-500 rounded-full shadow-[0_0_5px_#ef4444]" />
-          <span className="text-[8px] font-mono text-muted-foreground/50 tracking-widest uppercase">SECURE</span>
+    <>
+      {/* Step indicator - client interactive */}
+      <div className="flex items-center gap-3 mt-2 mb-6">
+        <p className="text-[10px] tracking-[0.2em] text-primary uppercase font-mono">
+          {step === 0 ? 'Your Birthday' : 'Time & Place'} {"//"} Step 0{step + 1}
+        </p>
+        <div className="flex gap-1.5">
+          {STEP_META.map(s => (
+            <div key={s.id} className={cn("h-1 w-6 transition-all duration-500", step >= s.id ? "bg-primary shadow-[0_0_5px_rgba(212,175,55,0.5)]" : "bg-white/10")} />
+          ))}
         </div>
-      
-        <div className="p-8 relative z-10">
-          <div className="mb-6 flex flex-col justify-start">
-            <Heading level={3} variant="card" className="pr-24">Start Your Reading</Heading>
-            <div className="flex items-center gap-3 mt-2">
-              <p className="text-[10px] tracking-[0.2em] text-primary uppercase font-mono">
-                {step === 0 ? 'Your Birthday' : 'Time & Place'} {"//"} Step 0{step + 1}
-              </p>
-              <div className="flex gap-1.5">
-                {STEP_META.map(s => (
-                  <div key={s.id} className={cn("h-1 w-6 transition-all duration-500", step >= s.id ? "bg-primary shadow-[0_0_5px_rgba(212,175,55,0.5)]" : "bg-white/10")} />
-                ))}
-              </div>
+      </div>
+
+      <div className="min-h-[280px]">
+        {step === 0 && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Your Name <span className="text-white/20">(optional)</span></Label>
+              <Input
+                autoFocus
+                value={data.name}
+                onChange={(e) => { setData((d: BirthData) => ({ ...d, name: e.target.value })); setErrorMsg(''); }}
+                placeholder="Nickname or initials"
+                className="h-12 border-b border-white/10 bg-[#111] text-lg font-medium tracking-tight rounded-none focus-visible:border-primary/50 focus-visible:ring-0 px-4"
+              />
             </div>
-          </div>
 
-        <div className="min-h-[280px]">
-          {step === 0 && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-              <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Your Name <span className="text-white/20">(optional)</span></Label>
-                <Input
-                  autoFocus
-                  value={data.name}
-                  onChange={(e) => { setData((d: BirthData) => ({ ...d, name: e.target.value })); setErrorMsg(''); }}
-                  placeholder="Nickname or initials"
-                  className="h-12 border-b border-white/10 bg-[#111] text-lg font-medium tracking-tight rounded-none focus-visible:border-primary/50 focus-visible:ring-0 px-4"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Date of Birth</Label>
-                <div className="grid grid-cols-3 gap-3">
-                  <ScrollPicker
-                    items={years.map(y => ({ value: y, label: y }))}
-                    value={birthYear}
-                    onChange={(v) => { setBirthYear(v); setErrorMsg(''); }}
-                    placeholder="YYYY"
-                  />
-                  <ScrollPicker
-                    items={months.map(m => ({ value: m, label: m.padStart(2, '0') }))}
-                    value={birthMonth}
-                    onChange={(v) => { setBirthMonth(v); setBirthDay(''); setErrorMsg(''); }}
-                    placeholder="MM"
-                    loop={true}
-                  />
-                  <ScrollPicker
-                    items={days.map(d => ({ value: d, label: d.padStart(2, '0') }))}
-                    value={birthDay}
-                    onChange={(v) => { setBirthDay(v); setErrorMsg(''); }}
-                    placeholder="DD"
-                    loop={true}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {step === 1 && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-              <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Birth Time</Label>
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Date of Birth</Label>
+              <div className="grid grid-cols-3 gap-3">
                 <ScrollPicker
-                  items={TIME_SLOTS.map(slot => ({ value: slot, label: slot === 'unknown' ? "I don't know" : slot }))}
-                  value={data.timeSlot}
-                  onChange={(v) => { setData((d: BirthData) => ({ ...d, timeSlot: v })); setErrorMsg(''); }}
-                  placeholder="Select time range"
-                  visibleCount={3}
+                  items={years.map(y => ({ value: y, label: y }))}
+                  value={birthYear}
+                  onChange={(v) => { setBirthYear(v); setErrorMsg(''); }}
+                  placeholder="YYYY"
+                />
+                <ScrollPicker
+                  items={months.map(m => ({ value: m, label: m.padStart(2, '0') }))}
+                  value={birthMonth}
+                  onChange={(v) => { setBirthMonth(v); setBirthDay(''); setErrorMsg(''); }}
+                  placeholder="MM"
                   loop={true}
                 />
-                <div className="min-h-[20px] pt-1">
-                  {data.timeSlot === 'unknown' && (
-                    <p className="text-[10px] text-primary/70 uppercase tracking-wider font-mono">We'll use 12:00 PM as default — still accurate for your timeline.</p>
-                  )}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Birth Place</Label>
-                <div className="relative">
-                  <LocationAutocomplete
-                    value={data.location}
-                    onChange={(name: string, lat: number, lon: number) => { setData((d: BirthData) => ({ ...d, location: name, lat, lon })); setErrorMsg(''); }}
-                  />
-                </div>
+                <ScrollPicker
+                  items={days.map(d => ({ value: d, label: d.padStart(2, '0') }))}
+                  value={birthDay}
+                  onChange={(v) => { setBirthDay(v); setErrorMsg(''); }}
+                  placeholder="DD"
+                  loop={true}
+                />
               </div>
             </div>
-          )}
-        </div>
-
-        {errorMsg && (
-          <div className="mt-4 flex items-center gap-2 border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs text-amber-400">
-            <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-            <span className="font-mono uppercase tracking-wide">{errorMsg}</span>
           </div>
         )}
 
-        <div className="mt-6 flex gap-3">
-          {step > 0 && (
-            <button
-              onClick={onBack}
-              className="flex h-14 w-14 items-center justify-center border border-white/20 bg-transparent text-foreground hover:bg-white/5 transition-colors shrink-0"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </button>
-          )}
-          <button
-            onClick={onNext}
-            className="flex-1 h-14 bg-primary text-primary-foreground font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(212,175,55,0.2)]"
-          >
-            {step === 0 ? "Next Step" : "See My Timeline"}
-            {step === 1 ? <Sparkles className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-          </button>
-        </div>
-
-          {step === 1 && (
-            <div className="text-center mt-5 flex justify-center items-center gap-2 opacity-50">
-               <span className="w-4 h-4 border border-white/20 flex items-center justify-center text-[8px] font-mono">i</span>
-               <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest">
-                 Your data is encrypted and never stored.
-               </p>
+        {step === 1 && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Birth Time</Label>
+              <ScrollPicker
+                items={TIME_SLOTS.map(slot => ({ value: slot, label: slot === 'unknown' ? "I don't know" : slot }))}
+                value={data.timeSlot}
+                onChange={(v) => { setData((d: BirthData) => ({ ...d, timeSlot: v })); setErrorMsg(''); }}
+                placeholder="Select time range"
+                visibleCount={3}
+                loop={true}
+              />
+              <div className="min-h-[20px] pt-1">
+                {data.timeSlot === 'unknown' && (
+                  <p className="text-[10px] text-primary/70 uppercase tracking-wider font-mono">We'll use 12:00 PM as default — still accurate for your timeline.</p>
+                )}
+              </div>
             </div>
-          )}
-        </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-widest text-muted-foreground font-mono">Birth Place</Label>
+              <div className="relative">
+                <LocationAutocomplete
+                  value={data.location}
+                  onChange={(name: string, lat: number, lon: number) => { setData((d: BirthData) => ({ ...d, location: name, lat, lon })); setErrorMsg(''); }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+
+      {errorMsg && (
+        <div className="mt-4 flex items-center gap-2 border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs text-amber-400">
+          <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+          <span className="font-mono uppercase tracking-wide">{errorMsg}</span>
+        </div>
+      )}
+
+      <div className="mt-6 flex gap-3">
+        {step > 0 && (
+          <button
+            onClick={onBack}
+            className="flex h-14 w-14 items-center justify-center border border-white/20 bg-transparent text-foreground hover:bg-white/5 transition-colors shrink-0"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+        )}
+        <button
+          onClick={onNext}
+          className="flex-1 h-14 bg-primary text-primary-foreground font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_35px_rgba(212,175,55,0.5)] hover:scale-[1.02] active:scale-[0.98] animate-[glow-pulse_2s_ease-in-out_infinite]"
+          style={{
+            // @ts-ignore -- CSS custom animation
+            animation: 'glow-pulse 2s ease-in-out infinite',
+          }}
+        >
+          {step === 0 ? "Continue ✨" : "Reveal My Stars ✨"}
+          {step === 1 ? <Sparkles className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+        </button>
+      </div>
+
+      {step === 1 && (
+        <div className="text-center mt-5 flex justify-center items-center gap-2 opacity-50">
+           <span className="w-4 h-4 border border-white/20 flex items-center justify-center text-[8px] font-mono">i</span>
+           <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest">
+             Your data is encrypted and never stored.
+           </p>
+        </div>
+      )}
+    </>
   );
 }

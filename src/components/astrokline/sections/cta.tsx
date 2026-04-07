@@ -25,7 +25,7 @@ export function CTA() {
            transition={{ duration: 0.6, ease: "easeOut" }}
            className="flex flex-col items-center"
         >
-          <Heading level={1} id="cta-heading" className="mb-6">
+          <Heading level={2} id="cta-heading" className="mb-6">
             Your next turning point is<br/>
             <span className="text-primary italic font-light mt-2 block">already on the map.</span>
           </Heading>
@@ -45,7 +45,7 @@ export function CTA() {
               });
             }}
           >
-            Generate My Chart — Free
+            Reveal My Stars — Free ✨
             <ArrowRight className="ml-3 w-5 h-5 shrink-0" aria-hidden="true" />
           </Button>
           

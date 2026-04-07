@@ -12,7 +12,7 @@ import { FiveYearPlan } from '@/components/astrokline/kline/five-year-plan';
 import { LifeRadar } from '@/components/astrokline/kline/life-radar';
 import { Next30Days } from '@/components/astrokline/kline/next-30-days';
 import { CosmicIdCard } from '@/components/astrokline/kline/cosmic-id-card';
-import { AskChartPanel } from '@/components/astrokline/kline/ask-chart-panel';
+import { AskChartPanel, InlineAskChartEntry } from '@/components/astrokline/kline/ask-chart-panel';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { cn } from '@/shared/lib/utils';
 import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
@@ -159,6 +159,8 @@ export function SharedKlineResult({
 }: SharedKlineResultProps) {
   const t = useTranslations('pages.index.page.sections.kline_result.page_client');
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
+  const [askChartOpen, setAskChartOpen] = useState(false);
+  const [validatePastOpen, setValidatePastOpen] = useState(false);
 
   const birthYear = parseInt(profile?.birthDate?.split('-')[0] || '1990', 10);
   const currentYear = new Date().getFullYear();
@@ -275,6 +277,16 @@ export function SharedKlineResult({
           </div>
         </motion.div>
       </ReportSection>
+
+      {/* ── 2b. INLINE ASK CHART ENTRY (mobile only) ── */}
+      <div className="mx-auto w-full max-w-4xl px-4 py-3 md:px-8">
+        <InlineAskChartEntry
+          tier={tier}
+          onActionGate={onActionGate}
+          onOpenChat={() => setAskChartOpen(true)}
+          onValidatePast={() => setValidatePastOpen(true)}
+        />
+      </div>
 
       {/* ── 3. FOUR-DIMENSION LIFE PREVIEW ── */}
       <ReportSection id="kline-insights" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
@@ -419,8 +431,15 @@ export function SharedKlineResult({
       </ReportSection>
     </div>
 
-    {/* ── FLOATING: ASK YOUR CHART ── */}
-    <AskChartPanel profile={profile} tier={tier} onActionGate={onActionGate} />
+    {/* ── FLOATING: ASK YOUR CHART (desktop FAB + mobile full-screen panel) ── */}
+    <AskChartPanel
+      profile={profile}
+      tier={tier}
+      onActionGate={onActionGate}
+      externalOpen={askChartOpen}
+      onExternalClose={() => { setAskChartOpen(false); setValidatePastOpen(false); }}
+      externalValidatePast={validatePastOpen}
+    />
     </>
   );
 }

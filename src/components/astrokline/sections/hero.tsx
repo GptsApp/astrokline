@@ -304,7 +304,7 @@ export function Hero() {
                     data-ai-action="generate-kline"
                     className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 w-full  px-4 font-bold whitespace-nowrap shadow-[0_0_20px_-5px_var(--primary)] transition-all hover:shadow-[0_0_30px_-5px_var(--primary)]"
                   >
-                    Generate My K-Line
+                    Reveal My Timeline ✨
                     <ArrowRight className="ml-2 h-4 w-4 shrink-0" aria-hidden="true" />
                   </Button>
                 </div>

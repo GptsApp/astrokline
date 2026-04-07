@@ -338,17 +338,17 @@ export function KlineClient({
         <div className="relative flex flex-col justify-center border-b border-white/5 bg-[#050505] px-6 py-32 md:px-12">
           <div className="relative z-10 w-full max-w-4xl space-y-8">
             <Heading level={1} className="font-serif text-5xl tracking-normal text-white/95 md:text-7xl lg:text-8xl lg:leading-[1.1]">
-              100-Year<br/>
-              Risk & Momentum Map
+              Your 100-Year<br/>
+              Life Timeline
             </Heading>
             <p className="max-w-prose text-lg font-light leading-relaxed tracking-wide text-white/50 md:text-2xl">
-              Identify your exact low-margin-of-error windows, high-volatility expansion periods, and strategic turning points. Built exclusively for decision makers.
+              See when your biggest opportunities, turning points, and growth windows arrive — mapped from the stars. Created for anyone ready to understand their path.
             </p>
             <button
               onClick={handleGetMyKline}
               className="group relative inline-flex h-14 items-center justify-center gap-4 bg-[#D4AF37] px-10 text-sm font-bold tracking-[0.1em] text-black uppercase transition-transform hover:scale-105 active:scale-95"
             >
-              Initialize Natal Coordinates
+              Reveal My Timeline ✨
               <ArrowUp className="h-4 w-4 rotate-45 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </button>
 
@@ -376,10 +376,10 @@ export function KlineClient({
                   </div>
                   <div className="text-left leading-tight">
                     <p className="text-xs font-bold text-white/80">
-                      Quant Method
+                      Vedic + Western
                     </p>
                     <p className="text-[10px] text-zinc-500">
-                      Quantitative Method
+                      Blended Approach
                     </p>
                   </div>
                 </div>
@@ -434,7 +434,7 @@ export function KlineClient({
                 Strong Windows (Push)
               </Heading>
               <p className="text-sm leading-relaxed text-white/50">
-                The cosmic wind is at your back. This is when you launch, invest, ask for the promotion, or make the big move. Effort yields maximum return.
+                The cosmic wind is at your back. This is when you shine — launch something new, say yes to opportunities, or take the leap you’ve been dreaming of.
               </p>
             </div>
 
@@ -446,7 +446,7 @@ export function KlineClient({
                 Weak Windows (Protect)
               </Heading>
               <p className="text-sm leading-relaxed text-white/50">
-                Friction is high. Pushing forward now burns capital and energy. This is your time to protect assets, heal, restructure, and avoid risky gambles.
+                Friction is high. Pushing forward now drains your energy. This is your time to rest, reflect, heal, and let the universe prepare you for what’s next.
               </p>
             </div>
 
@@ -520,7 +520,7 @@ export function KlineClient({
                   onClick={handleGetMyKline}
                   className="text-primary hover:text-primary/80 flex cursor-pointer items-center gap-2 font-bold transition-colors"
                 >
-                  Generate my K-Line{' '}
+                  See my timeline{' '}
                   <ArrowUp className="h-4 w-4 rotate-45" />
                 </button>
               </div>
@@ -585,11 +585,11 @@ export function KlineClient({
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <Binary className="h-3 w-3" /> Orb-Decay Algorithms
+              <Binary className="h-3 w-3" /> Advanced Transit Scoring
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <Cpu className="h-3 w-3" /> Ptolemaic Geometric Scoring
+              <Cpu className="h-3 w-3" /> Classical Aspect Analysis
             </span>
           </div>
         </div>

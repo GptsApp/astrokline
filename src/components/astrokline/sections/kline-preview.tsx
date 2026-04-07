@@ -19,7 +19,7 @@ export function InteractiveKLineFake() {
             <Sparkles className="h-4 w-4" />
             <span>Interactive K-Line Preview</span>
           </div>
-          <Heading level={2} className="mb-4">
+          <Heading level={2} variant="section" className="mb-4">
             Your chart, visualized as a K-Line.
           </Heading>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg">

@@ -100,7 +100,7 @@ export function KlineMockup() {
 
       {/* Bottom CTA */}
       <div className="mt-2 text-center">
-        <span className="text-[9px] font-mono uppercase tracking-[0.15em] text-primary/60">Unlock the live engine →</span>
+        <span className="text-[9px] font-mono uppercase tracking-[0.15em] text-primary/60">See my full timeline →</span>
       </div>
     </div>
   );

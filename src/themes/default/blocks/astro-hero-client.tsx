@@ -5,17 +5,17 @@ import { cn } from '@/shared/lib/utils';
 import { InlineBirthForm } from '@/components/astrokline/ui/inline-birth-form';
 
 const SOCIAL_PROOFS = [
-  { label: 'NASA JPL Planetary Data' },
-  { label: '100-Year Trajectory Mapping' },
-  { label: '0.001° Calculation Precision' },
+  { label: 'Based on NASA Planetary Data' },
+  { label: 'Your 100-Year Life Map' },
+  { label: 'Swiss Precision Astrology' },
 ];
 
 const LIVE_ACTIONS = [
-  { id: 1, user: 'Alex M.', loc: 'New York', action: 'just generated their timing curve' },
-  { id: 2, user: 'Jenna L.', loc: 'London', action: 'discovered a peak year at age 34' },
-  { id: 3, user: 'Ravi K.', loc: 'Singapore', action: 'saved their 5-year strategic plan' },
-  { id: 4, user: 'Sofia E.', loc: 'Madrid', action: 'just generated their timing curve' },
-  { id: 5, user: 'Tom W.', loc: 'Sydney', action: 'unlocked a deep reading for 2027' },
+  { id: 1, action: '✨ A new life timeline was just revealed' },
+  { id: 2, action: '🌙 Peak year discovered — age 34' },
+  { id: 3, action: '💫 100-year life reading completed' },
+  { id: 4, action: '❤️ Two charts just checked their compatibility' },
+  { id: 5, action: '🔮 Deep reading for 2027 unlocked' },
 ];
 
 export function SyncActiveTicker() {
@@ -39,7 +39,7 @@ export function SyncActiveTicker() {
     >
       <div className="flex items-center gap-2 px-3 py-1 border border-primary/20 bg-primary/5">
         <span className="h-1.5 w-1.5 bg-[#4ade80] opacity-80 shadow-[0_0_8px_#4ade80]" />
-        <span className="text-primary font-bold text-[10px]">SYNC ACTIVE</span>
+        <span className="text-primary font-bold text-[10px]">✨ LIVE</span>
       </div>
       <span className="text-foreground/20">/</span>
       <div className="relative h-6 overflow-hidden flex-1 min-w-[200px]">
@@ -51,7 +51,7 @@ export function SyncActiveTicker() {
               i === proofIndex ? "translate-y-0 opacity-100" : i < proofIndex ? "-translate-y-full opacity-0" : "translate-y-full opacity-0"
             )}
           >
-            [ ENGINE ] {proof.label}
+            ✧ {proof.label}
           </span>
         ))}
       </div>
@@ -89,11 +89,9 @@ export function LiveActionTicker() {
                  i === actionIndex ? "translate-y-0 opacity-100" : i < actionIndex ? "-translate-y-full opacity-0" : "translate-y-full opacity-0"
                )}
              >
-               <span className="text-foreground font-bold">{action.user}</span> 
-               <span className="text-muted-foreground/60 mx-2">[{action.loc}]</span> 
-               <span className="text-primary/90">{action.action}</span>
-               <span className="ml-4 opacity-30">{"///"}</span>
-               <span className="text-muted-foreground/40 text-[9px] ml-4 hidden sm:inline-block">LIVE LATENCY: 14ms</span>
+                <span className="text-primary/90">{action.action}</span>
+                <span className="ml-4 opacity-30">{"///"}</span>
+                <span className="text-muted-foreground/40 text-[9px] ml-4 hidden sm:inline-block">LIVE</span>
              </div>
            ))}
          </div>
@@ -115,5 +113,29 @@ export function FadeInStats({ children, className }: { children: React.ReactNode
     <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-1000 fill-mode-both", className)} style={{ animationDelay: '400ms' }}>
       {children}
     </div>
+  );
+}
+
+export function OnlineCount() {
+  const [count, setCount] = useState(1204);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(prev => {
+        const change = Math.floor(Math.random() * 5) - 2;
+        return Math.max(800, prev + change);
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="text-sm font-bold text-foreground font-mono tracking-wide flex items-center gap-2">
+      <span className="relative flex h-2 w-2">
+        <span className="absolute inline-flex h-full w-full bg-green-400 opacity-75 animate-ping" />
+        <span className="relative inline-flex h-2 w-2 bg-green-500" />
+      </span>
+      {count.toLocaleString()}
+    </span>
   );
 }

@@ -3,6 +3,7 @@ import { callGeminiJson } from '@/lib/astrokline/gemini';
 
 import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
 import { getSignUser } from '@/shared/models/user';
+import { getAstroUserTier } from '@/lib/astrokline/user-tier';
 
 export const maxDuration = 60;
 
@@ -10,6 +11,11 @@ export async function POST(req: Request) {
   const user = await getSignUser();
   if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const tier = await getAstroUserTier(user);
+  if (tier === 'FREE') {
+    return NextResponse.json({ error: 'Requires subscription' }, { status: 403 });
   }
 
   const limited = enforceMinIntervalRateLimit(req, {

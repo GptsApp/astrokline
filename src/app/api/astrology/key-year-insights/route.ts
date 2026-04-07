@@ -3,6 +3,7 @@ import { generateKeyYearInsights, type KeyYearInput } from '@/lib/astrokline/gem
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { getServerCacheKey } from '@/lib/astrokline/ai-insight-cache';
 import { getSignUser } from '@/shared/models/user';
+import { getAstroUserTier } from '@/lib/astrokline/user-tier';
 
 const CACHE_TTL = 90 * 24 * 60 * 60; // 90 days
 
@@ -18,6 +19,11 @@ export async function POST(request: Request) {
   const user = await getSignUser();
   if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const tier = await getAstroUserTier(user);
+  if (tier === 'FREE') {
+    return NextResponse.json({ error: 'Requires subscription' }, { status: 403 });
   }
 
   try {

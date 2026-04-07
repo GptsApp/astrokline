@@ -50,13 +50,7 @@
     /* Impeccable: Sharp, non-generic borders */
     --radius: 0rem;
     
-    /* Reduced, more elegant shadows since dark mode uses surface colors for depth, not shadows */
-    --shadow-x: 0px;
-    --shadow-y: 2px;
-    --shadow-blur: 4px;
-    --shadow-spread: 0px;
-    --shadow-opacity: 0.1;
-    --shadow-color: oklch(0 0 0);
+    /* Shadow presets for dark mode */
     --shadow-2xs: 0px 1px 2px 0px oklch(0 0 0 / 0.05);
     --shadow-xs: 0px 1px 2px 0px oklch(0 0 0 / 0.1);
     --shadow-sm: 0px 2px 4px 0px oklch(0 0 0 / 0.1);
@@ -66,7 +60,6 @@
     --shadow-xl: 0px 20px 25px -5px oklch(0 0 0 / 0.2);
     --shadow-2xl: 0px 25px 50px -12px oklch(0 0 0 / 0.3);
     
-    --tracking-normal: 0em;
     --spacing: 0.25rem;
   }
 
@@ -198,49 +191,7 @@
   animation: astro-twinkle 4s ease-in-out infinite alternate;
 }
 
-/* Cosmic gradient for section backgrounds */
-.astro-cosmic-section {
-  position: relative;
-  background: linear-gradient(
-    180deg,
-    rgba(212, 175, 55, 0.03) 0%,
-    transparent 40%,
-    transparent 60%,
-    rgba(212, 175, 55, 0.02) 100%
-  );
-}
-
-.astro-cosmic-section::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(212, 175, 55, 0.15),
-    transparent
-  );
-}
-
-/* Deep space section (darker, more contrast) */
-.astro-deep-space {
-  position: relative;
-  background: radial-gradient(
-    ellipse at 50% 100%,
-    rgba(212, 175, 55, 0.05) 0%,
-    transparent 50%
-  );
-}
-
-/* Gold glow accent on feature cards */
-.astro-cosmic-section [class*='border'] {
-  border-color: rgba(212, 175, 55, 0.08);
-}
-
-/* Twinkle animation */
+/* Twinkle animation (used by .astro-starfield) */
 @keyframes astro-twinkle {
   0% {
     opacity: 0.6;
@@ -249,70 +200,6 @@
     opacity: 1;
   }
 }
-
-/* Subtle breathing glow for CTA sections */
-.astro-cta-glow {
-  position: relative;
-  overflow: hidden;
-}
-
-.astro-cta-glow::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(
-    circle,
-    rgba(212, 175, 55, 0.08) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  animation: astro-breathe 6s ease-in-out infinite;
-}
-
-@keyframes astro-breathe {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 35s linear infinite;
-}
-
-/* ═══════════════════════════════════════════
-   Astrokline Typography Utilities
-   Standardized micro-text sizes to replace
-   scattered text-[9px] / text-[10px] / text-[11px]
-   ═══════════════════════════════════════════ */
-.text-micro {
-  font-size: 10px;
-  line-height: 1.4;
-}
-
-.text-label-sm {
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 /* Testimonials infinite scroll */
 @keyframes scroll-left {
   0% { transform: translateX(0); }
@@ -327,4 +214,14 @@
 }
 .animate-scroll-right {
   animation: scroll-right 40s linear infinite;
+}
+
+/* CTA button breathing glow */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(212, 175, 55, 0.55), 0 0 60px rgba(212, 175, 55, 0.15);
+  }
 }

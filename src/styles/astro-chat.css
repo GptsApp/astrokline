@@ -1,0 +1,244 @@
+/* ── AstroKline Chat Dark Theme Override for @chatscope/chat-ui-kit ── */
+/* Force all chatscope elements to dark theme */
+
+/* Root container reset */
+.astro-chat-scope,
+.astro-chat-scope * {
+  --cs-main-color: transparent;
+}
+
+.astro-chat-scope .cs-main-container {
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Chat container */
+.astro-chat-scope .cs-chat-container {
+  border: none !important;
+  background: transparent !important;
+}
+
+.astro-chat-scope .cs-chat-container .cs-message-input {
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Message list */
+.astro-chat-scope .cs-message-list {
+  background: transparent !important;
+  padding: 16px !important;
+}
+
+.astro-chat-scope .cs-message-list__scroll-wrapper {
+  padding: 0 !important;
+}
+
+/* Messages — common */
+.astro-chat-scope .cs-message {
+  margin-bottom: 12px !important;
+  background: transparent !important;
+}
+
+.astro-chat-scope .cs-message__content-wrapper {
+  max-width: 85% !important;
+}
+
+/* Incoming messages (AI) */
+.astro-chat-scope .cs-message--incoming .cs-message__content {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 14px 14px 14px 4px !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  padding: 14px 18px !important;
+  font-size: 13px !important;
+  line-height: 1.65 !important;
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+}
+
+/* Outgoing messages (User) */
+.astro-chat-scope .cs-message--outgoing .cs-message__content {
+  background: rgba(212, 175, 55, 0.12) !important;
+  border: 1px solid rgba(212, 175, 55, 0.18) !important;
+  border-radius: 14px 14px 4px 14px !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  padding: 14px 18px !important;
+  font-size: 13px !important;
+  line-height: 1.65 !important;
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+}
+
+/* Message input area — FORCE DARK */
+.astro-chat-scope .cs-message-input {
+  background: rgba(12, 12, 24, 0.95) !important;
+  border: none !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 0 !important;
+  padding: 8px 12px !important;
+  margin: 0 !important;
+}
+
+.astro-chat-scope .cs-message-input__content-editor-wrapper {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  margin: 4px 0 !important;
+}
+
+.astro-chat-scope .cs-message-input__content-editor-wrapper:focus-within {
+  border-color: rgba(212, 175, 55, 0.3) !important;
+}
+
+.astro-chat-scope .cs-message-input__content-editor {
+  color: white !important;
+  font-size: 13px !important;
+  min-height: 24px !important;
+  background: transparent !important;
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+}
+
+.astro-chat-scope .cs-message-input__content-editor[data-placeholder]::before {
+  color: rgba(255, 255, 255, 0.2) !important;
+  font-style: normal !important;
+}
+
+/* Content editable inside input */
+.astro-chat-scope .cs-message-input__content-editor-container {
+  background: transparent !important;
+}
+
+/* Send button */
+.astro-chat-scope .cs-button--send,
+.astro-chat-scope .cs-message-input .cs-button {
+  color: #D4AF37 !important;
+  font-size: 1.1em !important;
+  align-self: center !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.astro-chat-scope .cs-button--send:hover,
+.astro-chat-scope .cs-message-input .cs-button:hover {
+  color: #e8c84a !important;
+}
+
+.astro-chat-scope .cs-button--send:disabled,
+.astro-chat-scope .cs-message-input .cs-button:disabled {
+  color: rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Typing indicator */
+.astro-chat-scope .cs-typing-indicator {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 14px !important;
+  padding: 10px 16px !important;
+}
+
+.astro-chat-scope .cs-typing-indicator__text {
+  color: rgba(255, 255, 255, 0.4) !important;
+  font-size: 12px !important;
+}
+
+.astro-chat-scope .cs-typing-indicator__dot {
+  background-color: rgba(212, 175, 55, 0.5) !important;
+}
+
+/* Remove avatar space since we don't use avatars */
+.astro-chat-scope .cs-message__avatar {
+  display: none !important;
+}
+
+/* Message separator */
+.astro-chat-scope .cs-message-separator {
+  color: rgba(255, 255, 255, 0.2) !important;
+  background: transparent !important;
+}
+
+.astro-chat-scope .cs-message-separator::before,
+.astro-chat-scope .cs-message-separator::after {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Scrollbar */
+.astro-chat-scope ::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.astro-chat-scope ::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.astro-chat-scope ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 4px !important;
+}
+
+.astro-chat-scope ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ── Kill any remaining white backgrounds ── */
+.astro-chat-scope div,
+.astro-chat-scope section,
+.astro-chat-scope article {
+  background-color: transparent;
+}
+
+/* Markdown rendering inside messages */
+.astro-chat-scope .astro-md p {
+  margin: 4px 0;
+}
+
+.astro-chat-scope .astro-md ul,
+.astro-chat-scope .astro-md ol {
+  padding-left: 16px;
+  margin: 6px 0;
+}
+
+.astro-chat-scope .astro-md li {
+  margin: 2px 0;
+}
+
+.astro-chat-scope .astro-md strong {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.astro-chat-scope .astro-md em {
+  color: rgba(212, 175, 55, 0.8);
+}
+
+.astro-chat-scope .astro-md code {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.astro-chat-scope .astro-md blockquote {
+  border-left: 3px solid rgba(212, 175, 55, 0.3);
+  padding-left: 12px;
+  margin: 8px 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Reset any toolbar or extra UI chatscope might add ── */
+.astro-chat-scope .cs-message-input__tools {
+  background: transparent !important;
+}
+
+.astro-chat-scope .cs-message-input__tools .cs-button {
+  display: none !important;
+}
+
+.astro-chat-scope .cs-message-input__tools .cs-button--send {
+  display: flex !important;
+}
+
+/* ── Conversation header if any ── */
+.astro-chat-scope .cs-conversation-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: white !important;
+}

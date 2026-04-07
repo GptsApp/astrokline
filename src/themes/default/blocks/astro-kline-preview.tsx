@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Sparkles, BarChart3 } from 'lucide-react';
 
 import dynamic from 'next/dynamic';
@@ -44,18 +43,15 @@ export function AstroKlinePreview({
             <span className="h-px w-8 bg-primary"></span>
           </div>
           
-          <Heading level={2} variant="section" className="text-4xl md:text-5xl leading-[1.1]">
-            {section.title || 'Your 100-Year Timing Curve.'}
+          <Heading level={2} variant="section">
+            {section.title || 'Your Life Timeline — 100 Years at a Glance.'}
           </Heading>
         </div>
 
-        {/* Full-Width Chart — the hero of this section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, ease: [0.19, 1.0, 0.22, 1.0] }}
-          className="w-full bg-card border border-foreground/5 p-4 sm:p-6"
+        {/* Full-Width Chart */}
+        <div
+          className="w-full bg-card border border-foreground/5 p-4 sm:p-6 animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both"
+          style={{ animationDelay: '200ms' }}
         >
           <div className="pointer-events-auto min-h-[550px]">
             <InteractiveChart
@@ -68,11 +64,11 @@ export function AstroKlinePreview({
               isSimulation={true}
             />
           </div>
-        </motion.div>
+        </div>
 
         {/* Single CTA */}
         <a href="#pricing" className="mt-8 text-primary hover:text-foreground transition-colors inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider relative group">
-          Unlock the Live Engine
+          See My Full Timeline →
           <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full"></span>
         </a>
 

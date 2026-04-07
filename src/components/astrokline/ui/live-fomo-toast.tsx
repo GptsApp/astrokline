@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Zap } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
 
 const MESSAGES = [
   "S.L. from London just unlocked their Destiny Blueprint",
@@ -15,16 +15,6 @@ const MESSAGES = [
   "J.M. from Toronto just unlocked their career trajectory",
   "A user in Seoul is mapping their next decade",
   "L.W. in Amsterdam just downloaded their PDF report",
-  "A user in Dubai just started their first reading",
-  "R.H. from Paris just discovered their peak year",
-  "A user in Mumbai is exploring their planetary transits",
-  "K.S. in Stockholm just shared their chart",
-  "A user in São Paulo just generated their relationship map",
-  "N.G. from Melbourne just unlocked a hidden talent window",
-  "A user in Bangkok is calculating their Jupiter Return",
-  "C.Z. in Vancouver just saved their annual forecast",
-  "A user in Lagos just completed their first K-Line",
-  "T.A. from Zurich just upgraded their reading to Premium",
 ];
 
 export function LiveFomoToast() {
@@ -34,10 +24,9 @@ export function LiveFomoToast() {
 
   useEffect(() => {
     setMounted(true);
-    // Randomly fluctuate online user count
     const interval = setInterval(() => {
       setOnlineCount(prev => {
-        const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
+        const change = Math.floor(Math.random() * 5) - 2;
         return Math.max(800, prev + change);
       });
     }, 5000);
@@ -45,20 +34,14 @@ export function LiveFomoToast() {
   }, []);
 
   useEffect(() => {
-    // Randomly show toasts
     const showToast = () => {
       const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
       setCurrentMessage(msg);
-      
-      // Hide after 4 seconds
       setTimeout(() => setCurrentMessage(null), 4000);
-      
-      // Schedule next toast (between 10s and 25s)
       const nextTime = Math.floor(Math.random() * 15000) + 10000;
       setTimeout(showToast, nextTime);
     };
 
-    // First toast after 5s
     const initialTimer = setTimeout(showToast, 5000);
     return () => clearTimeout(initialTimer);
   }, []);
@@ -70,30 +53,26 @@ export function LiveFomoToast() {
       {/* Live Online Users Badge */}
       <div className="bg-black/90 border border-white/10 backdrop-blur-xl px-3 py-2 flex items-center justify-center gap-2 shadow-2xl w-fit">
         <div className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full bg-green-400 opacity-75"></span>
+          <span className="absolute inline-flex h-full w-full bg-green-400 opacity-75"></span>
           <span className="relative inline-flex h-2 w-2 bg-green-500"></span>
         </div>
         <span className="text-xs font-mono text-white/70 tracking-widest uppercase"><strong className="text-white font-bold">{onlineCount}</strong> online</span>
       </div>
 
       {/* Notification Toast */}
-      <AnimatePresence>
-        {currentMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="bg-[#0A0A0A]/95 backdrop-blur-2xl border border-[#D4AF37]/20 shadow-[0_0_30px_rgba(212,175,55,0.1)]  px-4 py-3 max-w-[280px] flex gap-3 items-center"
-          >
-            <div className="bg-[#D4AF37]/10 p-1.5 shrink-0">
-              <Zap className="w-3.5 h-3.5 text-[#D4AF37]" />
-            </div>
-            <p className="text-xs font-medium text-white/80 leading-snug">
-              {currentMessage}
-            </p>
-          </motion.div>
+      <div
+        className={cn(
+          "bg-[#0A0A0A]/95 backdrop-blur-2xl border border-[#D4AF37]/20 shadow-[0_0_30px_rgba(212,175,55,0.1)] px-4 py-3 max-w-[280px] flex gap-3 items-center transition-all duration-500",
+          currentMessage ? "translate-y-0 opacity-100 scale-100" : "translate-y-4 opacity-0 scale-95 pointer-events-none"
         )}
-      </AnimatePresence>
+      >
+        <div className="bg-[#D4AF37]/10 p-1.5 shrink-0">
+          <Zap className="w-3.5 h-3.5 text-[#D4AF37]" />
+        </div>
+        <p className="text-xs font-medium text-white/80 leading-snug">
+          {currentMessage}
+        </p>
+      </div>
     </div>
   );
 }

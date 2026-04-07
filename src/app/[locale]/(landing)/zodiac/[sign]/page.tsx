@@ -137,7 +137,7 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
               href="/kline"
               className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-12 items-center  px-6 text-sm font-semibold"
             >
-              Generate My K-Line Free →
+              Reveal My Stars ✨ →
             </Link>
             <Link
               href="/kline"

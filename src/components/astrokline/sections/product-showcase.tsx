@@ -28,7 +28,7 @@ const FEATURES: ProductFeature[] = [
       'Get a personalized daily energy score based on real planetary transits through your natal chart. See what to do, what to avoid, and when your peak hours arrive.',
     benefits: [
       'Daily energy score with actionable Do / Don\'t lists',
-      'Vedic Panchang integration — Nakshatra, Tithi & Tara Bala',
+      'Ancient Vedic timing wisdom — daily lunar guidance',
       'Peak / Neutral / Low hour windows for optimal timing',
     ],
     mockup: <DailyMockup />,
@@ -43,7 +43,7 @@ const FEATURES: ProductFeature[] = [
     label: 'Energy Forecast',
     title: 'Plan Your Year\nMonth by Month.',
     description:
-      'See how each month of the year scores based on your personal planetary transits. Expand any month to reveal the ruling planet, theme, and strategic insight — so you know when to push and when to pause.',
+      'See how each month of the year scores based on your personal planetary transits. Expand any month to reveal the ruling planet, theme, and personal insight — so you know when to push and when to pause.',
     benefits: [
       '12-month energy timeline with animated score bars',
       'Ruling planet + thematic insight for each month',
@@ -61,9 +61,9 @@ const FEATURES: ProductFeature[] = [
     label: 'Compatibility',
     title: 'Decode Any\nRelationship.',
     description:
-      'Enter a partner\'s birth data and our synastry engine compares planetary aspects across both charts. Get a multi-dimensional score covering romance, communication, shared values, and tension points.',
+      'Enter a partner\'s birth data and we compare planetary aspects across both charts. Get a multi-dimensional score covering romance, communication, shared values, and tension points.',
     benefits: [
-      'Real synastry analysis — not generic sign matching',
+      'Real birth chart comparison — not generic zodiac matching',
       'Four-dimension breakdown with narrative insights',
       'Works for romantic, business, or any partnership',
     ],
@@ -102,19 +102,19 @@ export function ProductShowcase() {
           </div>
           <Heading
             level={2}
+            variant="section"
             id="product-showcase-heading"
-            className="mb-6 text-4xl leading-[1.1] text-white md:text-5xl lg:text-6xl"
+            className="mb-6"
           >
             Everything You Need to{' '}
             <br className="hidden md:block" />
-            <span className="bg-gradient-to-r from-[#D4AF37] via-[#FCDD73] to-[#8B7321] bg-clip-text text-transparent">
+            <span className="text-primary italic font-light">
               Master Your Timeline.
             </span>
           </Heading>
           <p className="mx-auto max-w-2xl text-base text-white/50 leading-relaxed md:text-lg">
-            Three powerful tools beyond the K-Line. Each backed by
-            real planetary data and professional-grade astronomical
-            calculations.
+            Three essential insights to help you navigate
+            love, timing, and self-discovery.
           </p>
         </motion.div>
 

@@ -59,7 +59,7 @@
         "engine": "The Astrokline Engine",
         "title1": "A Dashboard For",
         "title2": "Your Timeline.",
-        "description": "We don't do vague horoscopes. We use exact ephemeris data to plot your life's momentum, friction, and turning points into a clear, tactical chart.",
+        "description": "Go beyond generic horoscopes. We use exact ephemeris data to plot your life's momentum, friction, and turning points into a clear, personal timeline.",
         "card1": {
           "title": "Full-Life K-Line Map",
           "desc": "Visualize decades of energy peaks and valleys. Instantly know if you are in a high-momentum push phase or a high-friction protective phase.",
@@ -143,7 +143,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "Generate My Chart — Free",
+              "title": "Reveal My Stars — Free ✨",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -221,7 +221,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "Generate My Chart — Free",
+              "title": "Reveal My Stars — Free ✨",
               "url": "/pricing"
             },
             "product_id": "free-yearly",

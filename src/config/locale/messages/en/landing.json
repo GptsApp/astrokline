@@ -28,6 +28,12 @@
               "url": "/tools/compatibility",
               "icon": "Users",
               "description": "Chemistry analysis with anyone"
+            },
+            {
+              "title": "12 Astrology Houses",
+              "url": "/houses/1st-house",
+              "icon": "Library",
+              "description": "Chart planets and predict transits"
             }
           ]
         },
@@ -66,6 +72,12 @@
               "url": "/tools/compatibility",
               "icon": "Users",
               "description": "Chemistry analysis with anyone"
+            },
+            {
+              "title": "12 Astrology Houses",
+              "url": "/houses/1st-house",
+              "icon": "Library",
+              "description": "Chart planets and predict transits"
             }
           ]
         },

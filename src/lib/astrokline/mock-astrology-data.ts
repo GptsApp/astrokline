@@ -305,25 +305,26 @@ function generateAdvancedTransits(): Record<number, TransitEvent[]> {
   const planets = ['Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Mars', 'Venus'];
   const aspects = ['Trine', 'Square', 'Conjunction', 'Opposition', 'Sextile'];
   
-  for (let year = 2023; year <= 2045; year++) {
+  // Cover full 100-year range so preview tooltips are consistent
+  for (let year = 1920; year <= 2100; year++) {
     details[year] = [];
     for (let i = 0; i < 2; i++) {
         const theme = themes[(year + i) % themes.length];
         const planet = planets[(year + i) % planets.length];
         const aspect = aspects[(year + i) % aspects.length];
         const isPositive = ['Trine', 'Sextile', 'Conjunction'].includes(aspect);
-        const score = isPositive ? (Math.floor(Math.random() * 4) + 6) : -(Math.floor(Math.random() * 4) + 6);
+        const score = isPositive ? (Math.floor(Math.abs(Math.sin(year * 9301 + i) * 4)) + 6) : -(Math.floor(Math.abs(Math.sin(year * 9301 + i) * 4)) + 6);
         
         details[year].push({
           id: `t-${year}-${i}`,
           year: year,
           title: `The ${planet} ${aspect} Phase`,
           theme: theme,
-          description: `As ${planet} moves into a ${aspect} geometry with your natal placements, the ${theme} sector undergoes massive restructuring. ${isPositive ? 'This is a period of friction-less expansion. The cosmos is actively removing barriers to entry.' : 'This introduces significant cosmic friction, forcing you to shed dead weight and rebuild your foundations.'}`,
+          description: `As ${planet} moves into a ${aspect} geometry with your natal placements, the ${theme} sector undergoes ${isPositive ? 'powerful expansion. The cosmos is actively opening doors and creating momentum in this area of your life.' : 'deep transformation, asking you to release what no longer serves you and rebuild on stronger foundations.'}`,
           impactScore: score,
           planet: planet,
           aspect: aspect,
-          advice: isPositive ? 'Accelerate all plans. Do not wait for perfection. The universe is actively facilitating your dominance in this sphere.' : 'Consolidate and protect your core assets. Do not initiate uncalculated risks. Fall back to your foundational strengths.'
+          advice: isPositive ? 'Lean into this energy. Say yes to opportunities, take the leap, and trust that the universe is supporting your growth right now.' : 'Take things slow. This is a time for rest, reflection, and inner work. Let the universe prepare you for what\'s next.'
         });
     }
   }

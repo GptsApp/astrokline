@@ -34,7 +34,12 @@ type ModuleKeys =
   | 'love'
   | 'health'
   | 'strengths'
-  | 'shadow';
+  | 'shadow'
+  | 'roots'
+  | 'karma'
+  | 'drive'
+  | 'legacy'
+  | 'transformation';
 
 interface ModuleConfig {
   id: ModuleKeys;
@@ -102,6 +107,46 @@ const MODULES: ModuleConfig[] = [
     shortDesc: 'Recurring habits that hold you back.',
     lockedTeaser: 'Everyone has blind spots. Your chart reveals a recurring pattern that may be quietly limiting your growth. Awareness is the first step.',
   },
+  {
+    id: 'roots',
+    title: 'Home & Roots',
+    icon: '🏡',
+    requiredTier: 'PRO',
+    shortDesc: 'Ancestral patterns and foundational security.',
+    lockedTeaser: 'Your 4th house reveals deep-seated emotional foundations and ancestral karma. Discover what truly makes you feel secure.',
+  },
+  {
+    id: 'karma',
+    title: 'Karma & Past',
+    icon: '🔮',
+    requiredTier: 'PRO',
+    shortDesc: 'Spiritual debts and soul-level purpose.',
+    lockedTeaser: 'Your chart holds a strong karmic signature. Uncover the spiritual lessons you are meant to resolve in this lifetime.',
+  },
+  {
+    id: 'drive',
+    title: 'Inner Drive',
+    icon: '🚀',
+    requiredTier: 'PRO',
+    shortDesc: 'Raw motivation and communication style.',
+    lockedTeaser: 'The 3rd house dictates your courage and how you exert will. Learn how to harness your raw psychological horsepower.',
+  },
+  {
+    id: 'legacy',
+    title: 'Legacy & Creation',
+    icon: '👶',
+    requiredTier: 'PRO',
+    shortDesc: 'Creative output, children, and speculations.',
+    lockedTeaser: 'Your creative and speculative karma is unique. See what your chart says about your legacy, offspring, and creative risks.',
+  },
+  {
+    id: 'transformation',
+    title: 'Transformation (Crisis)',
+    icon: '⚡',
+    requiredTier: 'PRO',
+    shortDesc: 'Sudden changes, rebirth, and hidden wealth.',
+    lockedTeaser: 'The 8th house governs sudden life shocks and profound rebirths. Forewarned is forearmed—understand your transformative cycles.',
+  },
 ];
 
 export function AiReadingPanels({
@@ -114,6 +159,7 @@ export function AiReadingPanels({
   const [insight, setInsight] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeModule, setActiveModule] = useState<ModuleKeys | null>('summary');
+  const [astroSystem, setAstroSystem] = useState<'PARASHARA'|'JAIMINI'>('PARASHARA');
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -298,7 +344,43 @@ export function AiReadingPanels({
         </p>
       </div>
 
-      <div className="mx-auto w-full max-w-4xl space-y-4">
+      {/* Jaimini High-Dimensional Toggle */}
+      <div className="mx-auto flex w-full justify-center mb-4">
+        <div className="flex bg-[#0A0A0F]/80 border border-white/5 p-1 rounded">
+          <button 
+             onClick={() => setAstroSystem('PARASHARA')}
+             className={cn("px-4 py-1.5 text-[10px] sm:text-xs font-mono tracking-widest transition-colors uppercase", astroSystem === 'PARASHARA' ? "bg-white/10 text-white font-bold" : "text-white/40")}
+          >
+             Parashara
+          </button>
+          <button 
+             onClick={() => setAstroSystem('JAIMINI')}
+             className={cn("px-4 py-1.5 text-[10px] sm:text-xs font-mono tracking-widest transition-colors flex items-center gap-1.5 uppercase", astroSystem === 'JAIMINI' ? "bg-[#D4AF37]/20 text-[#D4AF37] font-bold" : "text-white/40")}
+          >
+             <span className="text-[10px] -mt-0.5">🪷</span> Jaimini
+          </button>
+        </div>
+      </div>
+
+      <div className="mx-auto w-full max-w-4xl space-y-4 relative">
+        {/* Jaimini Pro-Exclusive Overlay */}
+        {tier !== 'PRO' && astroSystem === 'JAIMINI' && (
+           <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-auto">
+             <div className="bg-[#050505]/90 border border-[#D4AF37]/50 p-8 text-center shadow-[0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-xl max-w-sm mt-10">
+               <span className="text-4xl mb-4 block animate-pulse">🪷</span>
+               <Heading level={3} className="text-[#D4AF37] mb-3 text-lg font-serif">The Soul Perspective</Heading>
+               <p className="text-xs text-white/70 mb-8 leading-relaxed font-mono">
+                 Jaimini astrology abandons material interpretations to reveal your Karakamsha—your absolute soul purpose.<br/><br/>This high-dimensional analysis requires PRO access.
+               </p>
+               <button onClick={() => onActionGate?.('jaimini', 'PRO')} className="bg-[#D4AF37] px-8 py-3 text-black font-bold uppercase text-[10px] tracking-[0.2em] hover:bg-[#D4AF37]/90 transition-colors shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                 Unlock Soul Insight
+               </button>
+             </div>
+           </div>
+        )}
+
+        {/* Content Wrapper that blurs when Jaimini is selected but user is not Pro */}
+        <div className={cn("flex flex-col space-y-4 transition-all duration-1000", astroSystem === 'JAIMINI' && tier !== 'PRO' ? "blur-md opacity-40 select-none pointer-events-none" : "")}>
         {tier === 'PRO' && selectedYear && yearFocusEvent && (
           <div className=" border border-[#D4AF37]/20 bg-[#D4AF37]/[0.03] p-6 lg:p-8">
             <div className="mb-3 flex items-center gap-2 font-mono text-[9px] font-bold tracking-[0.2em] text-[#D4AF37] uppercase">
@@ -469,6 +551,7 @@ export function AiReadingPanels({
             </div>
           );
         })}
+        </div>
       </div>
     </div>
   );

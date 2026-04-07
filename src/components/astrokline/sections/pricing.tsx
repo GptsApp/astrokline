@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Check,
@@ -150,6 +150,15 @@ export function Pricing() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
+  const [socialStats, setSocialStats] = useState({ viewing: 320, upgraded: 1250 });
+
+  useEffect(() => {
+    setSocialStats({
+      viewing: Math.floor(280 + Math.random() * 140),
+      upgraded: Math.floor(1100 + Math.random() * 300),
+    });
+  }, []);
+
   const handleAuthRequired = () => {
     setAuthModalType('sign-in');
     setIsShowSignModal(true);
@@ -218,7 +227,7 @@ export function Pricing() {
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* ── Header ── */}
         <div className="mb-16 text-center">
-          <Heading level={2} className="mb-4">
+          <Heading level={2} variant="section" className="mb-4">
             Plans & Pricing
           </Heading>
           <p className="text-muted-foreground mx-auto mb-6 max-w-2xl text-lg">
@@ -230,10 +239,10 @@ export function Pricing() {
           <div className="text-muted-foreground/70 mb-10 flex flex-wrap justify-center gap-4 font-mono text-xs">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-2 w-2 animate-pulse bg-emerald-400" />
-              {Math.floor(280 + Math.random() * 140)} people viewing plans right now
+              {socialStats.viewing} people viewing plans right now
             </span>
             <span className="hidden sm:inline">·</span>
-            <span>{Math.floor(1100 + Math.random() * 300)} upgraded this week</span>
+            <span>{socialStats.upgraded} upgraded this week</span>
           </div>
 
           {/* ── Pill Switcher ── */}

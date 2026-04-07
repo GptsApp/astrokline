@@ -18,7 +18,7 @@ export function FAQ() {
     },
     {
       question: "What exactly is a K-Line?",
-      answer: "A K-Line is a timing curve — inspired by financial charts — that maps your life energy over 100 years. Peaks show years of natural momentum and opportunity. Dips show years of friction where you should protect, not push. It's the simplest way to see your life's big picture at a glance."
+      answer: "A K-Line is your personal life timeline that maps your energy over 100 years. Peaks show years of natural momentum and opportunity. Dips show years of friction where you should protect, not push. It's the simplest way to see your life's big picture at a glance."
     },
     {
       question: "Is my score fixed? Can I change my future?",
@@ -26,7 +26,7 @@ export function FAQ() {
     },
     {
       question: "Do I need my exact birth time?",
-      answer: "For the most accurate results, yes. Like the most advanced Vedic astrology calculators, your birth time determines your Rising Sign and planetary Dashas. If you only know the date of birth, your chart will still show major predictive astrology trends and general astrology compatibility—just with less precision on specific life-area breakdowns."
+      answer: "For the most accurate results, yes. Like the most advanced Vedic astrology calculators, your birth time determines your Rising Sign and planetary Dashas (time periods ruled by specific planets). If you only know the date of birth, your chart will still show major predictive astrology trends and general astrology compatibility—just with less precision on specific life-area breakdowns."
     },
     {
       question: "Is my data safe?",
@@ -38,7 +38,7 @@ export function FAQ() {
     },
     {
       question: "How accurate is the calculation?",
-      answer: "We use Swiss Ephemeris (DE431), the same astronomical dataset used by NASA for planetary positions. All calculations are precise to 0.001° and can be independently verified. This is professional-grade astronomy, not guesswork."
+      answer: "We use Swiss Ephemeris (DE431), the same astronomical dataset used by NASA for planetary positions. All calculations are precise to 0.001° and trusted by astrologers worldwide. This is research-grade astronomical precision, not guesswork."
     }
   ];
 
@@ -69,8 +69,8 @@ export function FAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <Heading level={2} id="faq-heading" className="mb-4">
-              Frequently Asked <span className="text-primary">Questions</span>.
+            <Heading level={2} variant="section" id="faq-heading" className="mb-4">
+              Frequently Asked <span className="text-primary italic font-light">Questions</span>.
             </Heading>
             <p className="text-muted-foreground text-lg">
               Everything you need to know about interpreting your life&apos;s K-Line.

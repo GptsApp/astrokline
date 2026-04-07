@@ -143,7 +143,12 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
   // Apply KLine Data to state
   const applyKlineData = (kline: KlineItem) => {
     if (kline.klineResult?.profile) {
-      setProfile(kline.klineResult.profile);
+      // Use kline.label as authoritative name to avoid inconsistency
+      const profileWithLabel = {
+        ...kline.klineResult.profile,
+        name: kline.label || kline.klineResult.profile.name || 'Unknown',
+      };
+      setProfile(profileWithLabel);
       setKlineData(Array.isArray(kline.klineResult.klineData) ? kline.klineResult.klineData : []);
       setTransitDetails(kline.klineResult.transitDetails ?? {});
       setRadarData(kline.klineResult.radarData ?? null);
@@ -421,7 +426,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       <div className="flex items-center justify-between border-b border-white/5 pb-4">
          <div /> {/* spacing */}
         {canExport ? (
-          <ExportPdfButton targetId="kline-report" fileName={`kline-${profile?.name || 'report'}`} />
+          <ExportPdfButton klineId={activeKlineId || ''} fileName={`kline-${profile?.name || 'report'}`} />
         ) : (
           <button onClick={() => openCheckout('lite')} className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
             Upgrade to Export PDF

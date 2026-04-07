@@ -33,11 +33,40 @@ import {
   Rectangle,
   ReferenceDot,
   ReferenceLine,
+  ReferenceArea,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
+
+// --- MOCK DASHA LOGIC ---
+const mockDashaPeriods = [
+  { planet: 'Sun', length: 6, color: 'url(#dashaGlowSun)' },
+  { planet: 'Moon', length: 10, color: 'url(#dashaGlowMoon)' },
+  { planet: 'Mars', length: 7, color: 'url(#dashaGlowMars)' },
+  { planet: 'Rahu', length: 18, color: 'url(#dashaGlowRahu)' },
+  { planet: 'Jupiter', length: 16, color: 'url(#dashaGlowJupiter)' },
+  { planet: 'Saturn', length: 19, color: 'url(#dashaGlowSaturn)' },
+  { planet: 'Mercury', length: 17, color: 'url(#dashaGlowMercury)' },
+  { planet: 'Ketu', length: 7, color: 'url(#dashaGlowKetu)' },
+  { planet: 'Venus', length: 20, color: 'url(#dashaGlowVenus)' },
+];
+
+function calculateDashaStrip(birthYear: number) {
+  let currentStart = birthYear;
+  // using Mars as baseline start for mock realism
+  let startIdx = 2; 
+  let results = [];
+  for (let i = 0; i < 15; i++) {
+     const p = mockDashaPeriods[(startIdx + i) % mockDashaPeriods.length];
+     results.push({ ...p, startAge: currentStart - birthYear, endAge: currentStart + p.length - birthYear });
+     currentStart += p.length;
+     if (currentStart - birthYear > 100) break;
+  }
+  return results;
+}
+// ------------------------
 
 type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';
 
@@ -344,6 +373,8 @@ export function InteractiveChart({
   const visibleStartAge = currentYear - 1 - birthYear;
   const visibleEndAge = currentYear + 2 - birthYear;
 
+  const dashaStrip = useMemo(() => calculateDashaStrip(birthYear), [birthYear]);
+
   const chartData1 = useMemo(() => {
     if (tier === 'GUEST') {
       return data.map((d) => {
@@ -493,6 +524,15 @@ export function InteractiveChart({
                     <stop offset="0%" stopColor="#D4AF37" stopOpacity={0.08} />
                     <stop offset="100%" stopColor="#D4AF37" stopOpacity={0} />
                   </linearGradient>
+                  <linearGradient id="dashaGlowSun" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#fbbf24" stopOpacity={0}/><stop offset="100%" stopColor="#fbbf24" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowMoon" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#e2e8f0" stopOpacity={0}/><stop offset="100%" stopColor="#e2e8f0" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowMars" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#f87171" stopOpacity={0}/><stop offset="100%" stopColor="#f87171" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowRahu" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#a78bfa" stopOpacity={0}/><stop offset="100%" stopColor="#a78bfa" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowJupiter" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#fde047" stopOpacity={0}/><stop offset="100%" stopColor="#fde047" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowSaturn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#60a5fa" stopOpacity={0}/><stop offset="100%" stopColor="#60a5fa" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowMercury" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#34d399" stopOpacity={0}/><stop offset="100%" stopColor="#34d399" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowKetu" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#94a3b8" stopOpacity={0}/><stop offset="100%" stopColor="#94a3b8" stopOpacity={0.1}/></linearGradient>
+                  <linearGradient id="dashaGlowVenus" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#f472b6" stopOpacity={0}/><stop offset="100%" stopColor="#f472b6" stopOpacity={0.1}/></linearGradient>
                 </defs>
 
                 <XAxis
@@ -520,6 +560,48 @@ export function InteractiveChart({
                   interval={0}
                   width={30}
                 />
+
+                {/* Dasha Strip Layer */}
+                {dashaStrip.map(ds => (
+                  <ReferenceArea 
+                    key={`dasha-${ds.planet}`}
+                    xAxisId={0}
+                    yAxisId={0}
+                    x1={ds.startAge}
+                    x2={ds.endAge}
+                    y1={0}
+                    y2={30}
+                    fill={tier === 'PRO' ? ds.color : 'url(#areaGlow)'}
+                    strokeOpacity={0}
+                  />
+                ))}
+                {/* Dasha Dividers and Text (PRO only) */}
+                {tier === 'PRO' && dashaStrip.map((ds, i) => (
+                  <ReferenceLine
+                    key={`dsh-div-${ds.planet}-${i}`}
+                    x={ds.startAge}
+                    stroke="rgba(212,175,55,0.4)"
+                    strokeDasharray="3 4"
+                    strokeWidth={1}
+                  />
+                ))}
+                {tier === 'PRO' && dashaStrip.map(ds => (
+                  <ReferenceLine
+                    key={`lbl-${ds.planet}`}
+                    x={Math.round((ds.startAge + ds.endAge)/2)}
+                    stroke="none"
+                    label={{
+                      position: 'insideBottom',
+                      value: `${ds.planet}`,
+                      fill: 'rgba(255,255,255,0.25)',
+                      fontSize: 8,
+                      offset: 6,
+                      fontFamily: 'monospace',
+                      fontWeight: 700,
+                      textAnchor: 'middle'
+                    }}
+                  />
+                ))}
 
                 {/* Current Age Line & Bubble */}
                 {currentAge >= 0 && currentAge <= 100 && (
@@ -783,6 +865,19 @@ const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate, ai
 
   return (
     <div className="relative z-40 max-w-[calc(100vw-24px)] min-w-[280px] border border-white/10 bg-[#050505] shadow-2xl sm:max-w-[420px] sm:min-w-[340px]">
+      {/* ── Annual Destiny Card (At top of tooltip) ── */}
+      {aiYearInsights?.[d.year] && (
+        <div className="border-b border-[#D4AF37]/20 bg-[#D4AF37]/5 px-4 py-2">
+          <p className="flex items-center gap-1.5 font-mono text-[8px] font-bold tracking-widest text-[#D4AF37] uppercase">
+            <Sparkles className="h-2.5 w-2.5" />
+            Destiny Anchor — {d.year}
+          </p>
+          <p className="mt-1 text-xs italic leading-relaxed text-white/90">
+            "{aiYearInsights[d.year].aiSummary}"
+          </p>
+        </div>
+      )}
+
       <div className="border-b border-white/5 bg-transparent px-4 py-3">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -944,14 +1039,32 @@ const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate, ai
                 {mainTransit.description}
               </p>
 
-              {/* LITE gets summary, PRO gets deep Swiss Ephemeris transit block */}
-              {tier === 'LITE' ? (
-                <p className=" bg-white/5 p-2 text-[11px] text-white/70 italic">
-                Upgrade to PRO to see exact planetary alignments, personalized
-                advice, and year-by-year action plans.
-              </p>
+              {/* Transit Logic Layer */}
+              {tier === 'LITE' && d.year !== currentYear ? (
+                // LITE Time-Lock for history/future
+                <div className="relative mt-2 flex flex-col items-center justify-center overflow-hidden rounded border border-white/5 bg-white/[0.02] p-4 text-center">
+                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[4px]" />
+                  <div className="relative z-10 flex flex-col items-center">
+                    <Lock className="mb-1.5 h-4 w-4 text-[#D4AF37]/60" />
+                    <p className="text-[10px] font-bold text-white/90">Temporal Lock</p>
+                    <p className="mt-1 max-w-[200px] text-[9px] leading-relaxed text-white/50">
+                      You are viewing a timeline outside the current year. Upgrade to PRO to unlock full planetary trajectories and past/future validation.
+                    </p>
+                    <button 
+                      onClick={() => onActionGate?.('time_travel', 'PRO')}
+                      className="mt-3 bg-[#D4AF37]/10 px-3 py-1 font-mono text-[9px] font-bold text-[#D4AF37] uppercase tracking-widest border border-[#D4AF37]/20 hover:bg-[#D4AF37]/20 transition-colors"
+                    >
+                      Unlock Pro
+                    </button>
+                  </div>
+                </div>
+              ) : tier === 'LITE' && d.year === currentYear ? (
+                <p className=" bg-white/5 p-2 text-[11px] text-white/70 italic mt-2">
+                  Upgrade to PRO to see exact planetary alignments, personalized
+                  advice, and year-by-year action plans.
+                </p>
               ) : (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="mt-2 grid grid-cols-2 gap-2">
                   <div className=" border border-white/5 bg-white/5 p-2">
                     <div className="mb-0.5 flex items-center gap-1">
                       <Target className="h-3 w-3 text-[#D4AF37]" />

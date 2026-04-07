@@ -124,9 +124,9 @@ export function LocationAutocomplete({
       {/* Input with status icon */}
       <div className="relative">
         {isSelected ? (
-          <CheckCircle2 className="pointer-events-none absolute top-2.5 left-3 z-10 h-4 w-4 text-emerald-400" />
+          <CheckCircle2 className="pointer-events-none absolute top-1/2 -translate-y-1/2 left-3 z-10 h-4 w-4 text-emerald-400" />
         ) : (
-          <Search className="text-muted-foreground pointer-events-none absolute top-2.5 left-3 z-10 h-4 w-4" />
+          <Search className="text-muted-foreground pointer-events-none absolute top-1/2 -translate-y-1/2 left-3 z-10 h-4 w-4" />
         )}
         <Input
           id="location"

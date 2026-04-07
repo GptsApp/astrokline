@@ -3,11 +3,17 @@ import { generateSynergyReading } from '@/lib/astrokline/gemini';
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
 import { getSignUser } from '@/shared/models/user';
+import { getAstroUserTier } from '@/lib/astrokline/user-tier';
 
 export async function POST(request: NextRequest) {
   const user = await getSignUser();
   if (!user) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const tier = await getAstroUserTier(user);
+  if (tier === 'FREE') {
+    return NextResponse.json({ error: 'Requires subscription' }, { status: 403 });
   }
 
   const limited = enforceMinIntervalRateLimit(request, {

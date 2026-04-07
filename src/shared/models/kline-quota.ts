@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, lt, sql } from 'drizzle-orm';
 
 import { db } from '@/core/db';
 import { userKlineQuota } from '@/config/db/schema';
@@ -141,7 +141,7 @@ export async function checkQuota(
 }
 
 /**
- * Consume one quota unit
+ * Consume one quota unit atomically
  */
 export async function consumeQuota(
   userId: string,
@@ -150,22 +150,31 @@ export async function consumeQuota(
   const quota = await getOrInitQuota(userId, userTier);
   const limits = QUOTA_LIMITS[userTier] || QUOTA_LIMITS.FREE;
 
-  const used = limits.isLifetime ? quota.lifetimeUsed : quota.usedCount;
-  if (used >= quota.totalLimit) return false;
-
   if (limits.isLifetime) {
-    await db()
+    const [updated] = await db()
       .update(userKlineQuota)
-      .set({ lifetimeUsed: quota.lifetimeUsed + 1 })
-      .where(eq(userKlineQuota.userId, userId));
+      .set({ lifetimeUsed: sql`${userKlineQuota.lifetimeUsed} + 1` })
+      .where(
+        and(
+          eq(userKlineQuota.userId, userId),
+          lt(userKlineQuota.lifetimeUsed, quota.totalLimit)
+        )
+      )
+      .returning();
+    return !!updated;
   } else {
-    await db()
+    const [updated] = await db()
       .update(userKlineQuota)
-      .set({ usedCount: quota.usedCount + 1 })
-      .where(eq(userKlineQuota.userId, userId));
+      .set({ usedCount: sql`${userKlineQuota.usedCount} + 1` })
+      .where(
+        and(
+          eq(userKlineQuota.userId, userId),
+          lt(userKlineQuota.usedCount, quota.totalLimit)
+        )
+      )
+      .returning();
+    return !!updated;
   }
-
-  return true;
 }
 
 /**

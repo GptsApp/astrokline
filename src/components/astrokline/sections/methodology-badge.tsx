@@ -61,13 +61,13 @@ export function MethodologyBadge() {
           <p className="text-primary/70 mb-3 font-mono text-xs tracking-[0.3em] uppercase">
             Built on Real Astronomy
           </p>
-          <Heading level={2} className="mb-3">
-            Professional-Grade{' '}
-            <span className="text-primary">Methodology.</span>
+          <Heading level={2} variant="section" className="mb-3">
+            Trusted{' '}
+            <span className="text-primary italic font-light">Methodology.</span>
           </Heading>
           <p className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed">
-            AstroKline uses the same astronomical engine trusted by professional
-            astrologers worldwide. Every calculation is transparent, precise,
+            AstroKline uses the same astronomical precision trusted by
+            astrologers worldwide. Every calculation is transparent, exact,
             and verifiable.
           </p>
         </motion.div>

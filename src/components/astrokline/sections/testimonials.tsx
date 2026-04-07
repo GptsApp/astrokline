@@ -152,7 +152,7 @@ export function Testimonials() {
       <div className="relative z-10">
         <div className="text-center mb-12 px-6">
           <Heading level={2} variant="section" className="mb-3">
-            Trusted by Decision Makers
+            Trusted by People Who Trust the Stars
           </Heading>
           <p className="text-sm text-muted-foreground">Real users. Real turning points. Real results.</p>
         </div>

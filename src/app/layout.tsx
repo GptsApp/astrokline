@@ -3,8 +3,8 @@ import '@/config/style/global.css';
 import { ReactNode } from 'react';
 import {
   JetBrains_Mono,
-  Playfair_Display,
-  Inter,
+  Cormorant_Garamond,
+  Jost,
 } from 'next/font/google';
 import { getLocale, setRequestLocale } from 'next-intl/server';
 
@@ -17,16 +17,17 @@ import { getAffiliateService } from '@/shared/services/affiliate';
 import { getAnalyticsService } from '@/shared/services/analytics';
 import { getCustomerService } from '@/shared/services/customer_service';
 
-const inter = Inter({
+const jost = Jost({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
   preload: true,
 });
 
-const playfairDisplay = Playfair_Display({
+const cormorantGaramond = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-serif',
   display: 'swap',
   preload: true,
@@ -151,7 +152,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`dark ${inter.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable}`}
+      className={`dark ${jost.variable} ${cormorantGaramond.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
       style={{ colorScheme: 'dark' }}
     >
@@ -196,7 +197,7 @@ export default async function RootLayout({
       </head>
       <body
         suppressHydrationWarning
-        className="overflow-x-hidden bg-background text-foreground"
+        className="overflow-x-hidden bg-background text-foreground font-sans"
       >
         <UtmCapture />
 

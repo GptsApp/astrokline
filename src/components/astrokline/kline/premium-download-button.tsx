@@ -38,8 +38,8 @@ export function PremiumDownloadButton({ profile, klineData, transitDetails, tier
 
   if (!isMounted) return <DownloadLoadingButton />;
 
-  const paidTiers = ['PRO', 'PREMIUM', 'premium', 'LITE', 'STANDARD', 'standard'];
-  if (!paidTiers.includes(tier)) {
+  const paidTiers = ['PRO', 'PREMIUM', 'LITE', 'STANDARD'];
+  if (!paidTiers.includes(tier.toUpperCase())) {
     return (
       <Button 
         onClick={onUpgradeClick}

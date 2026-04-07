@@ -29,11 +29,11 @@ export function Features() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl mb-6 leading-[1.1] text-white"
+            className="mb-6"
             id="features-heading"
           >
             {t("title1")} <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FCDD73] to-[#8B7321]">{t("title2")}</span>
+            <span className="text-primary italic font-light">{t("title2")}</span>
           </Heading>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

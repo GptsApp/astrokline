@@ -20,7 +20,7 @@ export function HowItWorks({ section }: { section?: Section }) {
     {
       icon: Compass,
       title: '2. We Calculate Transits',
-      desc: 'Our engine maps planetary movements against your natal chart.',
+      desc: 'We map planetary movements against your natal chart.',
     },
     {
       icon: LineChart,
@@ -36,7 +36,7 @@ export function HowItWorks({ section }: { section?: Section }) {
     >
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <Heading level={2} className="mb-4">
+          <Heading level={2} variant="section" className="mb-4">
             {section?.title || 'Three Steps'}
           </Heading>
           <p className="text-muted-foreground text-lg">
@@ -82,7 +82,7 @@ export function HowItWorks({ section }: { section?: Section }) {
             onClick={() => open((birthData) => { router.push('/kline'); })}
             className="group border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary relative flex items-center gap-3 border px-8 py-3 font-medium shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all hover:shadow-[0_0_25px_rgba(212,175,55,0.15)]"
           >
-            <span>See My Timing Map</span>
+            <span>Show Me My Stars ✨</span>
             <div className="h-2 w-2 animate-pulse bg-emerald-500" />
           </button>
         </div>
