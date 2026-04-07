@@ -34,9 +34,12 @@ export async function middleware(request: NextRequest) {
         isValidLocale ? `/${locale}/sign-in` : '/sign-in',
         request.url
       );
-      // Add the current path (including search params) as callback - use relative path for multi-language support
+      // Validate callback path to prevent open redirect
       const callbackPath = pathWithoutLocale + request.nextUrl.search;
-      signInUrl.searchParams.set('callbackUrl', callbackPath);
+      // Only allow relative paths that start with /
+      if (callbackPath.startsWith('/') && !callbackPath.startsWith('//')) {
+        signInUrl.searchParams.set('callbackUrl', callbackPath);
+      }
       return NextResponse.redirect(signInUrl);
     }
 

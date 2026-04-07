@@ -13,12 +13,8 @@ export async function POST(req: Request) {
       return respErr('chatId is required');
     }
 
-    if (!page) {
-      page = 1;
-    }
-    if (!limit) {
-      limit = 30;
-    }
+    page = Math.max(Math.floor(Number(page) || 1), 1);
+    limit = Math.min(Math.max(Math.floor(Number(limit) || 30), 1), 100);
 
     const user = await getUserInfo();
     if (!user) {
@@ -42,7 +38,7 @@ export async function POST(req: Request) {
       hasMore: page * limit < total,
     });
   } catch (e: any) {
-    console.log('get chat messages failed:', e);
-    return respErr(`get chat messages failed: ${e.message}`);
+    console.error('get chat messages failed:', e);
+    return respErr('get chat messages failed');
   }
 }

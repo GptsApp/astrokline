@@ -2,10 +2,16 @@ import { NextResponse } from 'next/server';
 import { callGeminiJson } from '@/lib/astrokline/gemini';
 
 import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
+import { getSignUser } from '@/shared/models/user';
 
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
+  const user = await getSignUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
   const limited = enforceMinIntervalRateLimit(req, {
     intervalMs: 10000,
     keyPrefix: 'destiny-reading',
@@ -127,7 +133,7 @@ Output the JSON only, no explanation, no markdown code block.`;
   } catch (error: any) {
     console.error('Destiny Reading Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate destiny reading' },
+      { error: 'Failed to generate destiny reading' },
       { status: 500 }
     );
   }

@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { generateKeyYearInsights, type KeyYearInput } from '@/lib/astrokline/gemini';
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { getServerCacheKey } from '@/lib/astrokline/ai-insight-cache';
-
-export const runtime = 'edge';
+import { getSignUser } from '@/shared/models/user';
 
 const CACHE_TTL = 90 * 24 * 60 * 60; // 90 days
 
@@ -16,6 +15,11 @@ async function getD1(): Promise<any | null> {
 }
 
 export async function POST(request: Request) {
+  const user = await getSignUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
   try {
     const { profile, keyYears } = await request.json() as {
       profile: UserProfile;

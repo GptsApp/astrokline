@@ -157,6 +157,11 @@ export async function consumeCredits({
   metadata?: string;
   tx?: any;
 }) {
+  // Validate credits is a positive integer to prevent negative credit exploits
+  if (!Number.isFinite(credits) || credits <= 0 || !Number.isInteger(credits)) {
+    throw new Error('Credits must be a positive integer');
+  }
+
   const currentTime = new Date();
 
   // consume credits

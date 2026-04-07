@@ -158,6 +158,11 @@ export async function POST(req: Request) {
       // If no currencies list exists, fallback to default (already set above)
     }
 
+    // Validate checkout amount is positive
+    if (!checkoutAmount || checkoutAmount <= 0 || !Number.isFinite(checkoutAmount)) {
+      return respErr('invalid pricing amount');
+    }
+
     // get payment interval
     const paymentInterval: PaymentInterval =
       pricingItem.interval || PaymentInterval.ONE_TIME;

@@ -39,12 +39,14 @@ function getTrustedOrigins() {
     }
   });
 
-  [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3001',
-  ].forEach((origin) => origins.add(origin));
+  if (process.env.NODE_ENV === 'development') {
+    [
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3001',
+    ].forEach((origin) => origins.add(origin));
+  }
 
   return Array.from(origins);
 }
@@ -122,6 +124,12 @@ async function resolveAuthBaseUrl(request?: Request) {
 
 // Static auth options - NO database connection
 // This ensures zero database calls during build time
+if (process.env.NODE_ENV === 'production' && !envConfigs.auth_secret) {
+  throw new Error(
+    'AUTH_SECRET environment variable is required in production. Generate one with: openssl rand -base64 32'
+  );
+}
+
 const authOptions = {
   appName: envConfigs.app_name,
   secret: envConfigs.auth_secret,

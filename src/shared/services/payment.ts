@@ -156,6 +156,14 @@ export async function handleCheckoutSuccess({
     return;
   }
 
+  // Re-fetch order inside the logic to minimize race window
+  // The actual protection is the optimistic lock in updateOrderInTransaction
+  const freshOrder = await findOrderByOrderNo(orderNo);
+  if (!freshOrder || freshOrder.status === OrderStatus.PAID) {
+    console.log(`Order ${orderNo} already processed (re-check), skipping`);
+    return;
+  }
+
   if (order.paymentType === PaymentType.SUBSCRIPTION) {
     if (!session.subscriptionId || !session.subscriptionInfo) {
       throw new Error('subscription id or subscription info not found');

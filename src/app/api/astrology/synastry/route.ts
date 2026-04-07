@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateSynergyReading } from '@/lib/astrokline/gemini';
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
+import { getSignUser } from '@/shared/models/user';
 
 export async function POST(request: NextRequest) {
+  const user = await getSignUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
   const limited = enforceMinIntervalRateLimit(request, {
     intervalMs: 10000,
     keyPrefix: 'synastry',
