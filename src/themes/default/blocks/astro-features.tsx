@@ -3,7 +3,8 @@
 import dynamic from 'next/dynamic';
 
 const ProductShowcase = dynamic(
-  () => import('@/components/astrokline/sections/product-showcase').then(m => m.ProductShowcase)
+  () => import('@/components/astrokline/sections/product-showcase').then(m => m.ProductShowcase),
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> }
 );
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';

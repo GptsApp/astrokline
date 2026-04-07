@@ -17,7 +17,7 @@ export function ToolCrossLinks({
   const tools = [
     {
       id: 'kline',
-      title: 'K-Line',
+      title: 'Life Curve',
       description:
         'Turn your birth-chart data into a personal timing map.',
       icon: LineChart,

@@ -1,11 +1,24 @@
 import { Star } from 'lucide-react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 import { InlineBirthForm } from '@/components/astrokline/ui/inline-birth-form';
 import { Heading } from '@/components/astrokline/ui/heading';
-import { SyncActiveTicker, LiveActionTicker, OnlineCount } from './astro-hero-client';
+
+const SyncActiveTicker = dynamic(
+  () => import('./astro-hero-client').then(m => ({ default: m.SyncActiveTicker })),
+  { loading: () => <div className="h-8" /> }
+);
+const LiveActionTicker = dynamic(
+  () => import('./astro-hero-client').then(m => ({ default: m.LiveActionTicker })),
+  { loading: () => <div className="h-10" /> }
+);
+const OnlineCount = dynamic(
+  () => import('./astro-hero-client').then(m => ({ default: m.OnlineCount })),
+  { loading: () => <span className="text-sm font-bold font-mono tracking-wide">1,204</span> }
+);
 
 // Server-side pure CSS animation wrappers (no JS hydration needed)
 function FadeInText({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -119,7 +132,7 @@ export function AstroHero({
                  </div>
                  <div className="p-8 relative z-10">
                    <div className="mb-6 flex flex-col justify-start">
-                      <Heading level={3} variant="card" className="pr-24">Reveal Your Timeline ✨</Heading>
+                      <Heading level={2} variant="card" className="pr-24">Reveal Your Timeline ✨</Heading>
                    </div>
                    <InlineBirthForm />
                  </div>

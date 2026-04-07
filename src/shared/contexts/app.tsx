@@ -13,7 +13,6 @@ import {
   useState,
 } from 'react';
 
-import { getAuthClient } from '@/core/auth/client';
 import { envConfigs } from '@/config';
 import { User } from '@/shared/models/user';
 
@@ -125,6 +124,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const showOneTap = useCallback(async (configs: Record<string, string>) => {
     try {
+      const { getAuthClient } = await import('@/core/auth/client');
       const authClient = getAuthClient(configs);
       await authClient.oneTap({
         callbackURL: '/',

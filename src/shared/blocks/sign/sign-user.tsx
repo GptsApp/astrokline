@@ -148,6 +148,7 @@ export function SignUser({
             <Button
               variant="ghost"
               className="relative h-10 w-10 p-0"
+              aria-label="User menu"
             >
               <Avatar>
                 <AvatarImage

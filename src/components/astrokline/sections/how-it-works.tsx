@@ -79,7 +79,7 @@ export function HowItWorks({ section }: { section?: Section }) {
         <div className="mt-20 flex justify-center">
           <button
             type="button"
-            onClick={() => open((birthData) => { router.push('/kline'); })}
+            onClick={() => open((birthData) => { router.push('/kline/result'); })}
             className="group border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary relative flex items-center gap-3 border px-8 py-3 font-medium shadow-[0_0_15px_rgba(212,175,55,0.05)] transition-all hover:shadow-[0_0_25px_rgba(212,175,55,0.15)]"
           >
             <span>Show Me My Stars ✨</span>

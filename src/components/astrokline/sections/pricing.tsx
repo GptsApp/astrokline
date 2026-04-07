@@ -48,7 +48,7 @@ const plans: Plan[] = [
     period: '/mo',
     description: 'Start free and keep your first chart.',
     features: [
-      { text: 'Full 100-year K-Line curve' },
+      { text: 'Full 100-year Life Curve' },
       { text: 'Overall destiny score & trend direction' },
       { text: '1 chart generation for life', highlight: '1' },
       { text: 'Year details blurred — upgrade to reveal' },
@@ -154,8 +154,8 @@ export function Pricing() {
 
   useEffect(() => {
     setSocialStats({
-      viewing: Math.floor(280 + Math.random() * 140),
-      upgraded: Math.floor(1100 + Math.random() * 300),
+      viewing: 347,
+      upgraded: 1284,
     });
   }, []);
 
@@ -232,7 +232,7 @@ export function Pricing() {
           </Heading>
           <p className="text-muted-foreground mx-auto mb-6 max-w-2xl text-lg">
             Choose the depth of your astrology chart reading. From a birth chart
-            preview, to a comprehensive K-Line blueprint of your cosmic destiny.
+            preview, to a comprehensive Life Curve blueprint of your cosmic destiny.
           </p>
 
           {/* Social proof for pricing */}

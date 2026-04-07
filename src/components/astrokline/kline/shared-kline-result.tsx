@@ -278,6 +278,22 @@ export function SharedKlineResult({
         </motion.div>
       </ReportSection>
 
+      {/* ── 2a. SOCIAL PROOF BAR ── */}
+      {(tier === 'GUEST' || tier === 'FREE') && (
+        <div className="mx-auto w-full max-w-4xl px-4 md:px-8">
+          <div className="flex items-center justify-center gap-3 border border-[#D4AF37]/10 bg-[#D4AF37]/[0.03] px-4 py-2.5">
+            <div className="flex -space-x-1.5">
+              {['🇺🇸', '🇬🇧', '🇦🇺', '🇨🇦'].map((f) => (
+                <span key={f} className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[10px]">{f}</span>
+              ))}
+            </div>
+            <p className="text-[11px] text-white/50">
+              <span className="font-bold text-[#D4AF37]/80">14,283</span> people have mapped their timeline this month
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ── 2b. INLINE ASK CHART ENTRY (mobile only) ── */}
       <div className="mx-auto w-full max-w-4xl px-4 py-3 md:px-8">
         <InlineAskChartEntry
@@ -424,6 +440,36 @@ export function SharedKlineResult({
           ))}
         </div>
       </ReportSection>
+
+      {/* ── 6b. VIRAL SHARE PROMPT (GUEST/FREE) ── */}
+      {(tier === 'GUEST' || tier === 'FREE') && (
+        <ReportSection id="share-prompt" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
+          <div className="relative overflow-hidden border border-[#D4AF37]/15 bg-gradient-to-r from-[#D4AF37]/[0.04] to-transparent p-6 md:p-8">
+            <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center border border-[#D4AF37]/20 bg-[#D4AF37]/10">
+                <Users className="h-6 w-6 text-[#D4AF37]" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-bold text-white/80">Know someone who needs this?</p>
+                <p className="mt-1 text-xs text-white/40">Share your reading — when 3 friends sign up through your link, you unlock Lite features free for a month.</p>
+              </div>
+              <button
+                onClick={() => {
+                  const url = `${window.location.origin}/kline/result?ref=${encodeURIComponent(firstName)}`;
+                  if (navigator.share) {
+                    navigator.share({ title: `${firstName}'s Cosmic Timeline`, url });
+                  } else {
+                    navigator.clipboard.writeText(url);
+                  }
+                }}
+                className="shrink-0 flex items-center gap-2 bg-[#D4AF37] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-black hover:scale-105 transition-transform"
+              >
+                <ArrowRight className="h-3.5 w-3.5" /> Share My Reading
+              </button>
+            </div>
+          </div>
+        </ReportSection>
+      )}
 
       {/* ── 7. COSMIC ID CARD — moved to end (share after being wowed) ── */}
       <ReportSection id="cosmic-id" divider={false} className="mx-auto w-full max-w-4xl px-4 py-12 md:px-8">

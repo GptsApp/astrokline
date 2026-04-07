@@ -17,10 +17,10 @@ export function InteractiveKLineFake() {
         <div className="mb-12 text-center">
           <div className="bg-primary/10 border-primary/20 text-primary mb-4 inline-flex items-center gap-2 border px-3 py-1 text-sm font-medium">
             <Sparkles className="h-4 w-4" />
-            <span>Interactive K-Line Preview</span>
+            <span>Interactive Life Curve</span>
           </div>
           <Heading level={2} variant="section" className="mb-4">
-            Your chart, visualized as a K-Line.
+            Your chart, visualized as a Life Curve.
           </Heading>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
             See your long-term timing curve in a format that is easy to read,
@@ -44,7 +44,7 @@ export function InteractiveKLineFake() {
                 UPLIFTING
               </span>
               <span className="text-primary bg-primary/10 border-primary/20  border px-3 py-1 text-xs font-bold">
-                ASTRO K-LINE SCORE: 88
+                ASTRO LIFE CURVE: 88
               </span>
             </div>
           </div>
@@ -222,7 +222,7 @@ export function InteractiveKLineFake() {
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 items-center gap-2  px-8 text-lg font-bold shadow-[0_0_30px_-5px_var(--primary)] transition-all hover:scale-105 hover:shadow-[0_0_50px_-5px_var(--primary)]"
           >
             <LockOpen className="h-5 w-5" />
-            Unlock Your Full K-Line — Free
+            Unlock Your Full Life Curve — Free
           </Link>
           <p className="font-mono text-xs text-white/30">
             No credit card required · Takes 30 seconds

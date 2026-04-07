@@ -48,7 +48,7 @@ export function MobileStickyCta() {
         className="w-full max-w-[400px] h-14 bg-primary text-primary-foreground font-bold shadow-[0_10px_40px_-10px_rgba(212,175,55,0.5)] flex items-center justify-center gap-2 group relative overflow-hidden backdrop-blur-md border border-primary/20"
       >
         <Sparkles className="w-5 h-5" />
-        <span className="text-lg tracking-tight">Get My Risk-Control Map</span>
+        <span className="text-lg tracking-tight">Reveal My Stars ✨</span>
         <ArrowRight className="w-5 h-5 ml-1 mt-0.5" />
       </button>
     </div>

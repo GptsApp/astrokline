@@ -1,9 +1,13 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 
-import { Pricing as ThemePricing } from './pricing';
+const ThemePricing = dynamic(
+  () => import('./pricing').then(m => ({ default: m.Pricing })),
+  { ssr: false, loading: () => <div className="min-h-[500px]" /> }
+);
 
 export function AstroPricing({
   section,

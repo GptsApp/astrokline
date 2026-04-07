@@ -8,7 +8,7 @@ import { cn } from '@/shared/lib/utils';
 
 const TABS = [
   { id: 'home', icon: Home, label: 'Home', href: '/dashboard' },
-  { id: 'kline', icon: Activity, label: 'K-Line', href: '/dashboard/kline' },
+  { id: 'kline', icon: Activity, label: 'Life Curve', href: '/dashboard/kline' },
   { id: 'energy', icon: TrendingUp, label: 'Energy', href: '/dashboard/tools/energy' },
   { id: 'compatibility', icon: Users, label: 'Match', href: '/dashboard/tools/compatibility' },
   { id: 'me', icon: User, label: 'Me', href: '/settings/profile' },

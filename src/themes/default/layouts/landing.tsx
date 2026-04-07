@@ -21,7 +21,7 @@ export default async function LandingLayout({
   return (
     <div className="h-screen w-screen">
       <Header header={header} />
-      {children}
+      <main>{children}</main>
       <Footer footer={footer} />
     </div>
   );

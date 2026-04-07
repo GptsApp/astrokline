@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { Sparkles, BarChart3 } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -9,11 +8,34 @@ const InteractiveChart = dynamic(
   () => import('@/components/astrokline/kline/interactive-chart').then(m => m.InteractiveChart),
   { ssr: false, loading: () => <div className="h-[400px] w-full bg-foreground/5" /> }
 );
-import { MOCK_KLINE_DATA, MOCK_TRANSIT_DETAILS } from '@/lib/astrokline/mock-astrology-data';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 
 import { Heading } from '@/components/astrokline/ui/heading';
+
+function LazyChart({ selectedYear, onNodeClick }: { selectedYear?: number; onNodeClick: (year: number) => void }) {
+  const [mockData, setMockData] = useState<any>(null);
+  
+  useEffect(() => {
+    import('@/lib/astrokline/mock-astrology-data').then(m => {
+      setMockData({ data: m.MOCK_KLINE_DATA, transitDetails: m.MOCK_TRANSIT_DETAILS });
+    });
+  }, []);
+
+  if (!mockData) return <div className="h-[550px] bg-foreground/5 animate-pulse" />;
+
+  return (
+    <InteractiveChart
+      data={mockData.data}
+      transitDetails={mockData.transitDetails}
+      onNodeClick={onNodeClick}
+      selectedYear={selectedYear}
+      birthYear={1990}
+      tier="PRO"
+      isSimulation={true}
+    />
+  );
+}
 
 export function AstroKlinePreview({
   section,
@@ -23,9 +45,28 @@ export function AstroKlinePreview({
   className?: string;
 }) {
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
+      ref={sectionRef}
       id={section.id || 'kline-preview'}
       className={cn(
         'py-24 md:py-32 relative bg-background border-t border-foreground/10',
@@ -54,15 +95,7 @@ export function AstroKlinePreview({
           style={{ animationDelay: '200ms' }}
         >
           <div className="pointer-events-auto min-h-[550px]">
-            <InteractiveChart
-              data={MOCK_KLINE_DATA}
-              transitDetails={MOCK_TRANSIT_DETAILS}
-              onNodeClick={(year) => setSelectedYear(year)}
-              selectedYear={selectedYear}
-              birthYear={1990}
-              tier="PRO"
-              isSimulation={true}
-            />
+            {isVisible ? <LazyChart selectedYear={selectedYear} onNodeClick={(year: number) => setSelectedYear(year)} /> : <div className="h-[550px] bg-foreground/5" />}
           </div>
         </div>
 

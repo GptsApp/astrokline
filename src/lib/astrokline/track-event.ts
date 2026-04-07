@@ -35,7 +35,11 @@ export type FunnelEvent =
   | 'share_prompt_shown'
   | 'share_button_click'
   // Mobile
-  | 'mobile_sticky_cta_click';
+  | 'mobile_sticky_cta_click'
+  // Exit Intent & Sticky
+  | 'exit_intent_shown'
+  | 'exit_intent_signup_clicked'
+  | 'sticky_upgrade_bar_click';
 
 declare global {
   interface Window {

@@ -17,12 +17,12 @@ export function FAQ() {
       answer: "Daily horoscopes use only your Sun sign — 1 of 12 generic patterns. AstroKline uses your exact birth time, date, and location to calculate the precise planetary geometry unique to you. The result is a personalized timing curve no generic horoscope could ever produce."
     },
     {
-      question: "What exactly is a K-Line?",
-      answer: "A K-Line is your personal life timeline that maps your energy over 100 years. Peaks show years of natural momentum and opportunity. Dips show years of friction where you should protect, not push. It's the simplest way to see your life's big picture at a glance."
+      question: "What exactly is a Life Curve?",
+      answer: "A Life Curve is your personal life timeline that maps your energy over 100 years. Peaks show years of natural momentum and opportunity. Dips show years of friction where you should protect, not push. It's the simplest way to see your life's big picture at a glance."
     },
     {
       question: "Is my score fixed? Can I change my future?",
-      answer: "No — your score is a weather forecast, not a sentence. A dip means headwinds, not failure. A peak means tailwinds, not guaranteed success. You always retain free will. The K-Line simply helps you choose when to push and when to pause."
+      answer: "No — your score is a weather forecast, not a sentence. A dip means headwinds, not failure. A peak means tailwinds, not guaranteed success. You always retain free will. The Life Curve simply helps you choose when to push and when to pause."
     },
     {
       question: "Do I need my exact birth time?",
@@ -73,7 +73,7 @@ export function FAQ() {
               Frequently Asked <span className="text-primary italic font-light">Questions</span>.
             </Heading>
             <p className="text-muted-foreground text-lg">
-              Everything you need to know about interpreting your life&apos;s K-Line.
+              Everything you need to know about interpreting your Life Curve.
             </p>
           </motion.div>
         </div>

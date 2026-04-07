@@ -98,7 +98,7 @@ export function Footer() {
         <div className="text-muted-foreground flex flex-col items-center justify-between border-t border-white/5 pt-8 text-xs md:flex-row">
           <p>
             © {new Date().getFullYear()} AstroKline. AI-powered astrology meets
-            K-Line precision. All rights reserved.
+            Cosmic precision. All rights reserved.
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-4 md:mt-0">
             <span className="text-muted-foreground/50 flex items-center gap-1 font-mono text-[10px]">

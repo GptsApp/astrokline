@@ -1,23 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Menu, X } from 'lucide-react';
 
 import { Link, usePathname, useRouter } from '@/core/i18n/navigation';
 import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
-import { MoonPhaseIndicator } from '@/components/astrokline/ui/moon-phase-indicator';
-import {
-  BrandLogo,
-  SignUser,
-  SmartIcon,
-} from '@/shared/blocks/common';
+import { BrandLogo } from '@/shared/blocks/common/brand-logo';
+import { SmartIcon } from '@/shared/blocks/common/smart-icon';
 import { LocaleSelector } from '@/shared/blocks/common/locale-selector';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/shared/components/ui/accordion';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -31,8 +22,26 @@ import { cn } from '@/shared/lib/utils';
 import { NavItem } from '@/shared/types/blocks/common';
 import { Header as HeaderType } from '@/shared/types/blocks/landing';
 import { useAppContext } from '@/shared/contexts/app';
-import { useSession } from '@/core/auth/client';
-import { MobileBottomTab } from '@/components/astrokline/ui/mobile-bottom-tab';
+
+// Lazy-load heavy components that aren't needed for initial paint
+const SignUser = dynamic(
+  () => import('@/shared/blocks/sign/sign-user').then(m => ({ default: m.SignUser })),
+  { ssr: false }
+);
+const MobileBottomTab = dynamic(
+  () => import('@/components/astrokline/ui/mobile-bottom-tab').then(m => ({ default: m.MobileBottomTab })),
+  { ssr: false }
+);
+const MoonPhaseIndicator = dynamic(
+  () => import('@/components/astrokline/ui/moon-phase-indicator').then(m => ({ default: m.MoonPhaseIndicator })),
+  { ssr: false }
+);
+
+// Lazy-load Accordion (only used in mobile menu)
+const Accordion = dynamic(() => import('@/shared/components/ui/accordion').then(m => ({ default: m.Accordion })), { ssr: false });
+const AccordionContent = dynamic(() => import('@/shared/components/ui/accordion').then(m => ({ default: m.AccordionContent })), { ssr: false });
+const AccordionItem = dynamic(() => import('@/shared/components/ui/accordion').then(m => ({ default: m.AccordionItem })), { ssr: false });
+const AccordionTrigger = dynamic(() => import('@/shared/components/ui/accordion').then(m => ({ default: m.AccordionTrigger })), { ssr: false });
 
 // For Next.js hydration mismatch warning, conditionally render NavigationMenuTrigger only after mount to avoid inconsistency between server/client render
 function NavigationMenuTrigger(
@@ -56,9 +65,9 @@ export function Header({ header }: { header: HeaderType }) {
   const pathname = usePathname();
   const { open } = useBirthInfoModal();
   const router = useRouter();
-  const { setIsShowSignModal } = useAppContext();
-  const { data: session } = useSession();
-  const isLoggedIn = !!(session?.user);
+  const { setIsShowSignModal, user } = useAppContext();
+  // Derive login state from AppContext user (populated by fetchUserInfo) or cookie hint
+  const isLoggedIn = !!user || (typeof document !== 'undefined' && document.cookie.includes('better-auth.session_token'));
 
   useEffect(() => {
     // Listen to scroll event to enable header styles on scroll
@@ -102,39 +111,41 @@ export function Header({ header }: { header: HeaderType }) {
               const isAuthLink = url.includes('/sign-in') || url.includes('/sign-up') || url.includes('/login');
 
               return (
-                <NavigationMenuLink key={idx} asChild>
-                  {isAuthLink ? (
-                    <button
-                      onClick={() => {
-                        if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
-                          (window as any).setAuthModalType(url.includes('up') ? 'sign-up' : 'sign-in');
-                        }
-                        setIsShowSignModal(true);
-                      }}
-                      className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm cursor-pointer ${
-                        item.is_active || pathname.endsWith(url)
-                          ? 'bg-muted/40 text-muted-foreground'
-                          : ''
-                      }`}
-                    >
-                      {item.icon && <SmartIcon name={item.icon as string} />}
-                      {item.title}
-                    </button>
-                  ) : (
-                    <Link
-                      href={url}
-                      target={item.target || '_self'}
-                      className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm ${
-                        item.is_active || pathname.endsWith(url)
-                          ? 'bg-muted/40 text-muted-foreground'
-                          : ''
-                      }`}
-                    >
-                      {item.icon && <SmartIcon name={item.icon as string} />}
-                      {item.title}
-                    </Link>
-                  )}
-                </NavigationMenuLink>
+                <NavigationMenuItem key={idx}>
+                  <NavigationMenuLink asChild>
+                    {isAuthLink ? (
+                      <button
+                        onClick={() => {
+                          if (typeof window !== 'undefined' && (window as any).setAuthModalType) {
+                            (window as any).setAuthModalType(url.includes('up') ? 'sign-up' : 'sign-in');
+                          }
+                          setIsShowSignModal(true);
+                        }}
+                        className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm cursor-pointer ${
+                          item.is_active || pathname.endsWith(url)
+                            ? 'bg-muted/40 text-muted-foreground'
+                            : ''
+                        }`}
+                      >
+                        {item.icon && <SmartIcon name={item.icon as string} />}
+                        {item.title}
+                      </button>
+                    ) : (
+                      <Link
+                        href={url}
+                        target={item.target || '_self'}
+                        className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm ${
+                          item.is_active || pathname.endsWith(url)
+                            ? 'bg-muted/40 text-muted-foreground'
+                            : ''
+                        }`}
+                      >
+                        {item.icon && <SmartIcon name={item.icon as string} />}
+                        {item.title}
+                      </Link>
+                    )}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               );
             }
 

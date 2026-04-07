@@ -102,7 +102,15 @@ const nextConfig = {
         ...config.optimization,
         splitChunks: {
           ...config.optimization?.splitChunks,
-          maxSize: 20 * 1024 * 1024, // 20 MiB max per chunk to stay under CF 25 MiB limit
+          maxInitialRequests: 15,
+          cacheGroups: {
+            recharts: {
+              test: /[\\/]node_modules[\\/](recharts|d3-.*)[\\/]/,
+              name: 'vendor-recharts',
+              priority: 20,
+              chunks: 'async',
+            },
+          },
         },
       };
     }
@@ -110,7 +118,22 @@ const nextConfig = {
   },
   experimental: {
     mdxRs: false,
-    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons', 'recharts', '@visx/visx'],
+    optimizePackageImports: [
+      'lucide-react',
+      'framer-motion',
+      '@radix-ui/react-icons',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-navigation-menu',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tabs',
+      'recharts',
+      '@visx/visx',
+      'better-auth',
+      'zod',
+    ],
   },
 };
 

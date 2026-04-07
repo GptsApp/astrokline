@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, MapPin, Sparkles, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/core/i18n/navigation';
@@ -10,8 +11,12 @@ import { Label } from '@/shared/components/ui/label';
 import { cn } from '@/shared/lib/utils';
 import { Heading } from '@/components/astrokline/ui/heading';
 import { useBirthInfoModal, type BirthData } from './birth-info-context';
-import { LocationAutocomplete } from './location-autocomplete';
 import { ScrollPicker } from './scroll-picker';
+
+const LocationAutocomplete = dynamic(
+  () => import('./location-autocomplete').then(m => ({ default: m.LocationAutocomplete })),
+  { ssr: false, loading: () => <div className="h-12 border-b border-white/10 bg-[#111] animate-pulse" /> }
+);
 
 const TIME_SLOTS = [
   '00:00-01:00', '01:00-02:00', '02:00-03:00', '03:00-04:00', '04:00-05:00', '05:00-06:00',

@@ -12,11 +12,11 @@ const REVIEWS = [
     author: "Sarah T.", title: "Tech Founder", avatar: "/images/avatars/sarah.webp", rating: 5.0,
   },
   {
-    quote: "In proprietary trading, timing is the only alpha left. This K-Line provides a macroscopic energy map that pure TA often misses.",
+    quote: "In proprietary trading, timing is the only alpha left. This Life Curve provides a macroscopic energy map that pure TA often misses.",
     author: "Michael R.", title: "Prop Trader", avatar: "/images/avatars/marcus.webp", rating: 4.8,
   },
   {
-    quote: "Knowing when to push and when to protect assets is everything. This K-Line is now a mandatory part of my quarterly planning.",
+    quote: "Knowing when to push and when to protect assets is everything. This Life Curve is now a mandatory part of my quarterly planning.",
     author: "Elena M.", title: "Venture Partner", avatar: "/images/avatars/elena.webp", rating: 4.5,
   },
   {
@@ -48,7 +48,7 @@ const REVIEWS = [
     author: "Carlos D.", title: "Strategy Consultant", avatar: "/images/avatars/diverse/human_4.webp", rating: 4.5,
   },
   {
-    quote: "My 2024 K-Line peak aligned perfectly with my best revenue quarter ever. I'm a believer now.",
+    quote: "My 2024 Life Curve peak aligned perfectly with my best revenue quarter ever. I'm a believer now.",
     author: "Rachel F.", title: "E-commerce Owner", avatar: "/images/avatars/diverse/human_5.webp", rating: 5.0,
   },
   {

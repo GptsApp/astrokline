@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SharedKlineResult } from '@/components/astrokline/kline/shared-kline-result';
 import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
 import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
@@ -27,8 +27,31 @@ import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
 import { Heading } from "@/components/astrokline/ui/heading";
 import { useAppContext } from '@/shared/contexts/app';
+import { Lock } from 'lucide-react';
 
 type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';
+
+function StickyUpgradeBar({ tier, onUpgrade }: { tier: AppTier; onUpgrade: () => void }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const handler = () => setVisible(window.scrollY > 800);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+  if (!visible) return null;
+  return (
+    <div className="fixed bottom-0 inset-x-0 z-50 border-t border-[#D4AF37]/20 bg-black/90 backdrop-blur-xl px-4 py-3 flex items-center justify-between gap-3 md:justify-center md:gap-6 animate-in slide-in-from-bottom-4">
+      <p className="text-xs text-white/60 hidden sm:block">
+        <Lock className="inline h-3 w-3 mr-1 text-[#D4AF37]/60" />
+        {tier === 'GUEST' ? 'Sign up to save your chart & unlock insights' : 'Upgrade to see your full 100-year timeline'}
+      </p>
+      <button onClick={onUpgrade} className="shrink-0 bg-[#D4AF37] px-5 py-2 text-xs font-bold uppercase tracking-wider text-black hover:scale-105 transition-transform flex items-center gap-1.5">
+        <Sparkles className="h-3.5 w-3.5" />
+        {tier === 'GUEST' ? 'Unlock Free' : 'Upgrade Now'}
+      </button>
+    </div>
+  );
+}
 
 export function ResultClient({
   userTier,
@@ -58,6 +81,84 @@ export function ResultClient({
   const [showQuotaModal, setShowQuotaModal] = useState(false);
   const [quotaInfo] = useState({ used: 0, total: 2, isLifetime: true, userTier: 'FREE' });
   const [showPricingInline, setShowPricingInline] = useState(false);
+  const nudgeTriggered = useRef(false);
+
+  // Trigger registration nudge for guest users after 45 seconds OR scrolling past paywall
+  useEffect(() => {
+    if (tier !== 'GUEST' || nudgeTriggered.current) return;
+    const timer = setTimeout(() => {
+      if (nudgeTriggered.current) return;
+      nudgeTriggered.current = true;
+      setShowNudge(true);
+    }, 45000);
+
+    // Also trigger when user scrolls past the paywall cliffhanger
+    const scrollHandler = () => {
+      if (nudgeTriggered.current) return;
+      const paywall = document.getElementById('future-cliffhanger');
+      if (paywall) {
+        const rect = paywall.getBoundingClientRect();
+        if (rect.bottom < 0) {
+          nudgeTriggered.current = true;
+          setShowNudge(true);
+        }
+      }
+    };
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', scrollHandler);
+    };
+  }, [tier]);
+
+  // Exit-intent capture: show nudge when mouse leaves viewport (desktop) or tab loses focus
+  const [showExitIntent, setShowExitIntent] = useState(false);
+  const exitIntentShown = useRef(false);
+  useEffect(() => {
+    if (tier !== 'GUEST' || isLoggedIn) return;
+    const mouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !exitIntentShown.current && !nudgeTriggered.current) {
+        exitIntentShown.current = true;
+        setShowExitIntent(true);
+        trackEvent('exit_intent_shown');
+      }
+    };
+    document.addEventListener('mouseleave', mouseLeave);
+    return () => document.removeEventListener('mouseleave', mouseLeave);
+  }, [tier, isLoggedIn]);
+
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+
+  const handleDirectCheckout = async (productId: string) => {
+    if (!isLoggedIn) {
+      setShowPricingInline(false);
+      setAuthModalType('sign-up');
+      setIsShowSignModal(true);
+      return;
+    }
+    try {
+      setCheckoutLoading(productId);
+      trackEvent('pricing_plan_click', { plan: productId, source: 'inline_modal' });
+      const res = await fetch('/api/payment/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: productId, currency: 'USD', locale: 'en' }),
+      });
+      const { code, data, message } = await res.json();
+      if (message === 'no auth, please sign in') {
+        setAuthModalType('sign-in');
+        setIsShowSignModal(true);
+        return;
+      }
+      if (code !== 0 || !data?.checkoutUrl) throw new Error(message || 'Checkout failed');
+      window.location.href = data.checkoutUrl;
+    } catch (e) {
+      console.error('Checkout failed:', e);
+    } finally {
+      setCheckoutLoading(null);
+    }
+  };
 
   const { setAuthModalType, setIsShowSignModal } = useAppContext();
   const [pricingModalContext, setPricingModalContext] = useState({ title: 'Upgrade Your Reading', icon: ShieldCheck as any });
@@ -218,13 +319,14 @@ export function ResultClient({
                 </div>
               )}
               {[
-                { name: 'Lite', price: '$39.9', desc: 'Full tooltip details + Career, Wealth, Love & Health AI reading + 5 charts/mo', id: 'standard', hidden: tier === 'LITE' || tier === 'PRO' },
-                { name: 'Pro', price: '$79.9', desc: 'Transit details + 5-Year Strategic Plan + Unlimited charts + PDF export', id: 'premium', featured: true, hidden: tier === 'PRO' },
+                { name: 'Lite', price: '$19.9/mo', desc: 'Full tooltip details + Career, Wealth, Love & Health AI reading + 5 charts/mo', id: 'standard-yearly', hidden: tier === 'LITE' || tier === 'PRO', featured: false },
+                { name: 'Pro', price: '$39.9/mo', desc: 'Transit details + 5-Year Strategic Plan + Unlimited charts + PDF export', id: 'premium-yearly', featured: true, hidden: tier === 'PRO' },
               ].filter(p => !p.hidden).map((plan) => (
-                <a key={plan.id} href={`/pricing`} onClick={() => trackEvent('pricing_plan_click', { plan: plan.id, source: 'inline_modal' })} className={cn('block  border p-5 transition-all hover:scale-[1.02]', plan.featured ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-white/10 bg-white/[0.02] hover:border-white/20')}>
-                  <div className="mb-2 flex items-center justify-between"><Heading level={4} className="text-foreground font-bold">{plan.name}</Heading><span className="text-primary text-lg font-bold">{plan.price}</span></div>
+                <button key={plan.id} onClick={() => handleDirectCheckout(plan.id)} disabled={!!checkoutLoading} className={cn('block w-full text-left border p-5 transition-all hover:scale-[1.02]', plan.featured ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-white/10 bg-white/[0.02] hover:border-white/20')}>
+                  <div className="mb-2 flex items-center justify-between"><Heading level={4} className="text-foreground font-bold">{plan.name}</Heading><span className="text-primary text-lg font-bold">{checkoutLoading === plan.id ? '...' : plan.price}</span></div>
                   <p className="text-muted-foreground text-xs">{plan.desc}</p>
-                </a>
+                  <p className="text-[10px] text-[#D4AF37]/50 mt-2 font-mono uppercase tracking-wider">Billed yearly · Save 50% · 7-day money-back</p>
+                </button>
               ))}
             </div>
             
@@ -232,7 +334,20 @@ export function ResultClient({
               <button 
                 onClick={() => {
                   trackEvent('share_to_unlock_clicked');
-                  // Trigger share modal
+                  setShowPricingInline(false);
+                  if (navigator.share) {
+                    navigator.share({
+                      title: 'AstroKline — My Cosmic Timing Map',
+                      text: 'I just mapped my 100-year timing curve. See yours free:',
+                      url: window.location.origin + '/kline',
+                    }).catch(() => {});
+                  } else {
+                    navigator.clipboard.writeText(
+                      `I just mapped my 100-year timing curve on AstroKline! See yours free: ${window.location.origin}/kline`
+                    ).then(() => {
+                      alert('Link copied! Share it to unlock a free report.');
+                    }).catch(() => {});
+                  }
                 }}
                 className="w-full flex items-center justify-center gap-2 py-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-colors"
               >
@@ -242,6 +357,35 @@ export function ResultClient({
             </div>
           </div>
         </div>
+      )}
+      {/* ── EXIT-INTENT MODAL (GUEST only) ── */}
+      {showExitIntent && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center animate-in fade-in" onClick={() => setShowExitIntent(false)}>
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+          <div className="relative mx-4 w-full max-w-sm border border-[#D4AF37]/20 bg-[#0a0a12] p-8 text-center shadow-[0_0_80px_rgba(212,175,55,0.1)]" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setShowExitIntent(false)} className="absolute top-3 right-3 text-white/30 hover:text-white/60 text-lg">✕</button>
+            <Sparkles className="mx-auto mb-3 h-8 w-8 text-[#D4AF37]" />
+            <Heading level={3} className="text-xl font-bold text-white mb-2">Don't Lose Your Reading</Heading>
+            <p className="text-sm text-white/50 mb-6">Your chart took real calculations. Sign up in 10 seconds to save it forever — free.</p>
+            <button
+              onClick={() => {
+                setShowExitIntent(false);
+                setAuthModalType('sign-up');
+                setIsShowSignModal(true);
+                trackEvent('exit_intent_signup_clicked');
+              }}
+              className="w-full bg-[#D4AF37] py-3 text-sm font-bold uppercase tracking-wider text-black hover:scale-105 transition-transform"
+            >
+              Save My Chart — It's Free
+            </button>
+            <p className="mt-3 text-[10px] text-white/25 font-mono">No credit card · Takes 10 seconds</p>
+          </div>
+        </div>
+      )}
+
+      {/* ── FLOATING STICKY UPGRADE BAR (GUEST/FREE) ── */}
+      {(tier === 'GUEST' || tier === 'FREE') && (
+        <StickyUpgradeBar tier={tier} onUpgrade={() => handleActionGate('sticky_bar_upgrade', tier === 'GUEST' ? 'FREE' : 'LITE')} />
       )}
     </div>
   );

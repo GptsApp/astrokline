@@ -1,7 +1,8 @@
 import dynamic from 'next/dynamic';
 
 const HowItWorks = dynamic(
-  () => import('@/components/astrokline/sections/how-it-works').then(m => m.HowItWorks)
+  () => import('@/components/astrokline/sections/how-it-works').then(m => m.HowItWorks),
+  { loading: () => <div className="min-h-[400px]" /> }
 );
 
 import { Section } from '@/shared/types/blocks/landing';

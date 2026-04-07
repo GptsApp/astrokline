@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale, getMessages } from 'next-intl/server';
 
@@ -9,6 +10,27 @@ import { AppContextProvider } from '@/shared/contexts/app';
 import { getMetadata } from '@/shared/lib/seo';
 
 export const generateMetadata = getMetadata();
+
+function filterMessages(messages: Record<string, any>, pathname: string): Record<string, any> {
+  // Admin routes need admin + common namespaces
+  if (pathname.includes('/admin')) {
+    const { ai, activity, ...rest } = messages;
+    return rest;
+  }
+  // Chat routes need ai + common namespaces
+  if (pathname.includes('/chat')) {
+    const { admin, settings, activity, ...rest } = messages;
+    return rest;
+  }
+  // Dashboard/settings routes need dashboard + settings + common
+  if (pathname.includes('/dashboard') || pathname.includes('/settings')) {
+    const { admin, ai, activity, ...rest } = messages;
+    return rest;
+  }
+  // Landing/auth and other routes: only need common, landing, pages, pricing
+  const { admin, ai, settings, activity, dashboard, ...rest } = messages;
+  return rest;
+}
 
 export default async function LocaleLayout({
   children,
@@ -24,9 +46,12 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '/';
+  const clientMessages = filterMessages(messages as Record<string, any>, pathname);
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider messages={clientMessages}>
       <ThemeProvider>
         <AppContextProvider>
           {children}

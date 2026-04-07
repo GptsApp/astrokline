@@ -45,7 +45,7 @@ export function Hero() {
   });
 
   return (
-    <section aria-label="Birth chart K-Line generator" className="bg-background relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
+    <section aria-label="Birth chart Life Curve generator" className="bg-background relative flex items-center justify-center overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
       {/* Background Glow & Particles */}
       <div className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 opacity-60 blur-[120px]" />
 
@@ -179,7 +179,7 @@ export function Hero() {
             {/* Form Content (Unmasked to allow autocomplete dropdown overflow) */}
             <div className="relative z-30 overflow-visible p-6 md:p-8">
               <form
-                aria-label="Generate your birth chart K-Line"
+                aria-label="Generate your birth chart Life Curve"
                 data-testid="hero-kline-form"
                 className="grid grid-cols-1 items-end gap-4 overflow-visible md:grid-cols-5"
                 onSubmit={(e) => {

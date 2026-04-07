@@ -96,7 +96,7 @@ function FloatingNav() {
   };
   const items = [
     { id: 'destiny-summary', icon: ArrowUp, label: 'Profile' },
-    { id: 'kline-hero', icon: BarChart3, label: 'K-Line' },
+    { id: 'kline-hero', icon: BarChart3, label: 'Life Curve' },
     { id: 'life-stages', icon: Layers, label: 'Stages' },
     { id: 'natal-chart', icon: Star, label: 'Natal' },
     { id: 'ai-insight', icon: Brain, label: 'AI Reading' },

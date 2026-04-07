@@ -376,17 +376,20 @@ export function InteractiveChart({
   const dashaStrip = useMemo(() => calculateDashaStrip(birthYear), [birthYear]);
 
   const chartData1 = useMemo(() => {
-    if (tier === 'GUEST') {
+    if (tier === 'GUEST' || tier === 'FREE') {
+      const freeWindow = tier === 'FREE' ? 3 : 2;
       return data.map((d) => {
         const age = d.year - birthYear;
         // Keep actual data for current year window
-        if (age >= visibleStartAge && age <= visibleEndAge) return d;
-        // Inject random noise for the rest to prevent inspect-element attacks
+        if (age >= visibleStartAge && age <= visibleEndAge + (freeWindow - 2)) return d;
+        // Keep past years real but blur future
+        if (d.year <= currentYear) return d;
+        // Inject random noise for future to prevent inspect-element attacks
         return { ...d, score: 50 + Math.sin(d.year * 123) * 15 };
       });
     }
     return data;
-  }, [data, tier, birthYear, visibleStartAge, visibleEndAge]);
+  }, [data, tier, birthYear, visibleStartAge, visibleEndAge, currentYear]);
 
   const candleData = useMemo(
     () => generateCandleData(chartData1),
@@ -498,6 +501,22 @@ export function InteractiveChart({
               >
                 <Sparkles className="h-4 w-4" /> See My Full Timeline
               </button>
+            </div>
+          </div>
+        )}
+
+        {tier === 'FREE' && (
+          <div className="pointer-events-none absolute right-0 top-32 bottom-0 z-20 w-[40%]">
+            <div className="absolute inset-0 bg-gradient-to-l from-background via-background/60 to-transparent backdrop-blur-[2px]" />
+            <div className="pointer-events-auto absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center">
+              <button
+                type="button"
+                onClick={() => onActionGate?.('chart_future_unlock', 'LITE')}
+                className="flex items-center gap-2 bg-[#D4AF37]/90 px-5 py-2.5 text-xs font-bold text-black uppercase tracking-wider shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:scale-105 transition-all"
+              >
+                <Lock className="h-3.5 w-3.5" /> Unlock Future
+              </button>
+              <p className="mt-2 text-[9px] text-white/40 font-mono text-center">See your full 100-year map</p>
             </div>
           </div>
         )}

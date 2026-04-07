@@ -6,8 +6,9 @@ import { trackEvent } from '@/lib/astrokline/track-event';
 import { Download, Share2, Sparkles, Users } from 'lucide-react';
 import { Heading } from "@/components/astrokline/ui/heading";
 
-export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profile: UserProfile; tier?: string; onUpgradeClick?: () => void }) {
+export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick, klineId }: { profile: UserProfile; tier?: string; onUpgradeClick?: () => void; klineId?: string }) {
   const [showSharePrompt, setShowSharePrompt] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const canSave = tier === 'LITE' || tier === 'PRO' || tier === 'PREMIUM' || tier === 'STANDARD';
 
   // Auto-prompt share after 30 seconds on page
@@ -50,22 +51,45 @@ export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profi
           <div className="flex flex-col gap-3">
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
                 if (!canSave && onUpgradeClick) {
                   onUpgradeClick();
                   return;
                 }
                 if (!canSave) {
-                  alert('Upgrade to Pro to export PDF.');
+                  if (onUpgradeClick) onUpgradeClick();
                   return;
                 }
                 trackEvent('share_button_click', { action: 'export_pdf' });
-                window.print();
+                if (klineId) {
+                  setIsExporting(true);
+                  try {
+                    const res = await fetch(`/api/kline/export-pdf?id=${klineId}`);
+                    if (res.ok) {
+                      const blob = await res.blob();
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `${profile.name || 'AstroKline'}-Life-Report.pdf`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    } else {
+                      // Fallback to browser print if API unavailable
+                      window.print();
+                    }
+                  } catch {
+                    window.print();
+                  } finally {
+                    setIsExporting(false);
+                  }
+                } else {
+                  window.print();
+                }
               }}
               className="flex w-full items-center justify-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/10 py-3.5 text-sm font-bold text-[#D4AF37] transition-all hover:bg-[#D4AF37]/20 hover:border-[#D4AF37]/50"
             >
               <Download className="h-4 w-4" />
-              <span>{canSave ? 'Export Report PDF' : 'Upgrade to Export PDF'}</span>
+              <span>{canSave ? (isExporting ? 'Generating PDF...' : 'Export Report PDF') : 'Upgrade to Export PDF'}</span>
             </button>
             <button
               type="button"

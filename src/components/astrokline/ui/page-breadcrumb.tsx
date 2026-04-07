@@ -8,7 +8,7 @@ import { useLocale } from 'next-intl';
 
 // Route name dictionary for smart mapping
 const ROUTE_NAMES: Record<string, Record<string, string>> = {
-  kline: { en: 'K-Line', zh: 'K-Line' },
+  kline: { en: 'Life Curve', zh: '命运曲线' },
   settings: { en: 'Settings', zh: 'Settings' },
   pricing: { en: 'Pricing', zh: 'Pricing' },
   faq: { en: 'FAQ', zh: 'FAQ' },

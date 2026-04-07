@@ -65,7 +65,7 @@ export function DailyMockup() {
       {/* Do / Don't */}
       <div className="grid grid-cols-2 gap-2">
         <div className="border border-emerald-500/10 bg-emerald-500/[0.02] p-3">
-          <h4 className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-2">Do</h4>
+          <div className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-2">Do</div>
           <div className="space-y-1.5">
             {['Start new projects', 'Network with allies', 'Trust bold instincts'].map((t, i) => (
               <div key={i} className="flex items-start gap-1.5">
@@ -76,7 +76,7 @@ export function DailyMockup() {
           </div>
         </div>
         <div className="border border-rose-500/10 bg-rose-500/[0.02] p-3">
-          <h4 className="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-2">Don&apos;t</h4>
+          <div className="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-2">Don&apos;t</div>
           <div className="space-y-1.5">
             {['Rush financial choices', 'Ignore subtle cues', 'Overcommit energy'].map((t, i) => (
               <div key={i} className="flex items-start gap-1.5">
