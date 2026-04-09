@@ -33,7 +33,11 @@ export default async function DashboardLayout({
     if (requestUrl) {
       try {
         const url = new URL(requestUrl);
-        callbackUrl = `${url.pathname}${url.search}`;
+        // Only allow same-origin paths to prevent open redirect
+        const path = `${url.pathname}${url.search}`;
+        if (path.startsWith('/') && !path.startsWith('//')) {
+          callbackUrl = path;
+        }
       } catch {
         callbackUrl = fallbackPath;
       }
@@ -72,6 +76,8 @@ export default async function DashboardLayout({
             nav={nav}
             bottomNav={bottomNav}
             className="bg-background astro-starfield min-h-screen py-16 md:py-20"
+            userName={user?.name || undefined}
+            userEmail={user?.email || undefined}
           >
             <ReferralClaim />
             <LocaleDetector />
