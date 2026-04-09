@@ -16,6 +16,7 @@ export type FunnelEvent =
   | 'birth_modal_abandon'
   // Layer 3 – KLine Result
   | 'kline_result_loaded'
+  | 'result_ask_chart_open'
   | 'registration_nudge_shown'
   | 'registration_nudge_signup_click'
   | 'registration_nudge_dismiss'
