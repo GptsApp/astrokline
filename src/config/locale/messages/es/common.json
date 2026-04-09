@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "AstroKline — Personal Timing Map",
-    "description": "Generate a personal K-Line from your birth chart and see when to push, pause, and protect.",
-    "keywords": "astrokline, astrology chart, birth chart, natal chart, horoscope, destiny chart, K-line, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast, personalized astrology, star chart analysis"
+    "description": "Genera una Curva de Vida personal a partir de tu carta natal y descubre cuándo avanzar, pausar o protegerte.",
+    "keywords": "astrokline, astrology chart, birth chart, natal chart, horoscope, destiny chart, curva de vida, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast, personalized astrology, star chart analysis"
   },
   "sign": {
     "sign_in_title": "Sign In",

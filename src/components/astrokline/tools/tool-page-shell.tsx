@@ -251,7 +251,7 @@ function GuestLanding({
   );
 }
 
-/* ── No K-Line Data State ── */
+/* ── No Chart Data State ── */
 function NoKlineState({
   toolTitle,
   toolDescription,
@@ -268,13 +268,13 @@ function NoKlineState({
         <h1 className="text-2xl font-bold text-foreground">{toolTitle}</h1>
         <p className="mt-3 text-muted-foreground">{toolDescription}</p>
         <p className="mt-6 text-sm text-muted-foreground">
-          Generate your K-Line first to unlock this tool.
+          Generate your chart first to unlock this tool.
         </p>
         <Link
           href="/kline"
           className="mt-6 inline-flex items-center gap-2 bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:scale-105"
         >
-          Generate K-Line
+          Create My Chart
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>

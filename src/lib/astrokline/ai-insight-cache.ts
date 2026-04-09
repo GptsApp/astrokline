@@ -10,6 +10,22 @@
 
 const LS_PREFIX = 'ai_insight_';
 
+export interface AiInsightData {
+  nickname?: string;
+  coreQuote?: string;
+  summary?: string;
+  career?: string;
+  wealth?: string;
+  relationships?: string;
+  love?: string;
+  health?: string;
+  strengths?: string;
+  warnings?: string;
+  shadow?: string;
+  _cached?: boolean;
+  _fallback?: boolean;
+}
+
 export function getInsightCacheKey(profile: {
   sun?: { sign: string };
   moon?: { sign: string };

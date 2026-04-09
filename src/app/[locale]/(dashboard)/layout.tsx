@@ -8,10 +8,10 @@ import { getTranslations } from 'next-intl/server';
 import { redirect } from '@/core/i18n/navigation';
 import { defaultLocale } from '@/config/locale';
 import { getThemeLayout } from '@/core/theme';
-import { LocaleDetector, TopBanner } from '@/shared/blocks/common';
+import { getAstroUserTier } from '@/lib/astrokline/user-tier';
+import { LocaleDetector } from '@/shared/blocks/common';
 import { ConsoleLayout } from '@/shared/blocks/console/layout';
 import { getUserInfo } from '@/shared/models/user';
-import { Footer, Header } from '@/shared/types/blocks/landing';
 
 export default async function DashboardLayout({
   children,
@@ -59,40 +59,25 @@ export default async function DashboardLayout({
 
   const tDashboard = await getTranslations('dashboard.sidebar');
   const nav = tDashboard.raw('nav');
-  const bottomNav = tDashboard.raw('bottom_nav');
 
-  const tLanding = await getTranslations('landing');
-  const header: Header = tLanding.raw('header');
-  const footer: Footer = tLanding.raw('footer');
+  const userTier = await getAstroUserTier(user);
 
-  const Layout = await getThemeLayout('landing');
+  const Layout = await getThemeLayout('dashboard');
 
   return (
     <CheckoutWrapper>
       <BirthInfoWrapper>
-        <Layout header={header} footer={footer}>
+        <Layout>
           <ConsoleLayout
             title={tDashboard('title')}
             nav={nav}
-            bottomNav={bottomNav}
-            className="bg-background astro-starfield min-h-screen py-16 md:py-20"
+            className="bg-background astro-starfield"
             userName={user?.name || undefined}
             userEmail={user?.email || undefined}
+            userTier={userTier}
           >
             <ReferralClaim />
             <LocaleDetector />
-            {header.topbanner && header.topbanner.text && (
-              <TopBanner
-                id="topbanner"
-                text={header.topbanner?.text}
-                buttonText={header.topbanner?.buttonText}
-                href={header.topbanner?.href}
-                target={header.topbanner?.target}
-                closable
-                rememberDismiss
-                dismissedExpiryDays={header.topbanner?.dismissedExpiryDays ?? 1}
-              />
-            )}
             {children}
           </ConsoleLayout>
         </Layout>

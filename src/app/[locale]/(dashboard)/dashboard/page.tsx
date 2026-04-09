@@ -17,7 +17,7 @@ export default async function DashboardOverviewPage({
   const user = await getUserInfo();
   const userTier = await getAstroUserTier(user);
 
-  // Get user's own K-Line (isSelf = true)
+  // Get user's own chart (isSelf = true)
   const myKline = user ? await getMyKline(user.id) : null;
 
   // Get count of saved charts

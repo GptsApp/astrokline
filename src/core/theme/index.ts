@@ -1,5 +1,5 @@
 import { envConfigs } from '@/config';
-import { defaultTheme } from '@/config/theme';
+import { defaultTheme } from '@/shared/blocks/common/theme';
 
 /**
  * get active theme

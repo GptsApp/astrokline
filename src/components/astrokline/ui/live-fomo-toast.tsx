@@ -6,7 +6,7 @@ import { cn } from '@/shared/lib/utils';
 
 const MESSAGES = [
   "S.L. from London just unlocked their Destiny Blueprint",
-  "M.K. in New York just saved their 2026 K-Line",
+  "M.K. in New York just saved their 2026 life curve",
   "A user in Singapore is generating their 100-Year Map",
   "E.R. from Berlin just upgraded to Pro",
   "D.C. in San Francisco just uncovered a major 'Weak Window'",

@@ -3,6 +3,7 @@ import { and, desc, eq } from 'drizzle-orm';
 
 import { db } from '@/core/db';
 import { userKlines } from '@/config/db/schema';
+import { resolveUpdatedKlineIsSelf } from '@/shared/lib/kline-ownership';
 
 export type UserKline = typeof userKlines.$inferSelect;
 export type NewUserKline = typeof userKlines.$inferInsert;
@@ -71,7 +72,7 @@ export async function saveKline(
       .set({
         label: data.label,
         klineResult: data.klineResult,
-        isSelf: data.isSelf ?? existing.isSelf,
+        isSelf: resolveUpdatedKlineIsSelf(existing.isSelf, data.isSelf),
       })
       .where(eq(userKlines.id, existing.id))
       .returning();
@@ -127,6 +128,33 @@ export async function getMyKline(userId: string): Promise<UserKline | null> {
     .where(and(eq(userKlines.userId, userId), eq(userKlines.isSelf, true)))
     .limit(1);
   return result || null;
+}
+
+export async function getUserKlineById(
+  userId: string,
+  klineId: string
+): Promise<UserKline | null> {
+  const [result] = await db()
+    .select()
+    .from(userKlines)
+    .where(and(eq(userKlines.userId, userId), eq(userKlines.id, klineId)))
+    .limit(1);
+
+  return result || null;
+}
+
+export async function updateKlineResult(
+  userId: string,
+  klineId: string,
+  klineResult: unknown
+): Promise<UserKline | null> {
+  const [updated] = await db()
+    .update(userKlines)
+    .set({ klineResult })
+    .where(and(eq(userKlines.userId, userId), eq(userKlines.id, klineId)))
+    .returning();
+
+  return updated || null;
 }
 
 /**

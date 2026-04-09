@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { Home, Activity, TrendingUp, Users, User } from 'lucide-react';
+import { LayoutDashboard, Activity, TrendingUp, Users, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Link } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 
 const TABS = [
-  { id: 'home', icon: Home, label: 'Home', href: '/dashboard' },
+  { id: 'home', icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
   { id: 'kline', icon: Activity, label: 'Life Curve', href: '/dashboard/kline' },
   { id: 'energy', icon: TrendingUp, label: 'Energy', href: '/dashboard/tools/energy' },
   { id: 'compatibility', icon: Users, label: 'Match', href: '/dashboard/tools/compatibility' },

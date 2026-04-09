@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   TrendingUp, Calendar, Users, Activity, ArrowRight,
   Compass, Plus, CreditCard, ChevronLeft, ChevronRight,
@@ -8,18 +8,29 @@ import {
 } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
 import {
-  getSavedBirthData, getSavedKlineResult, useBirthInfoModal,
+  getSavedKlineResult,
+  saveKlineResult,
+  useBirthInfoModal,
+  type BirthData,
 } from '@/components/astrokline/ui/birth-info-context';
 import {
   extractCurrentYearScore, extractSunSign, extractMoonSign,
 } from '@/lib/astrokline/daily-energy';
 import { getDailyTransit, getWeekTransits, type NatalMoonInput } from '@/lib/astrokline/daily-transit';
+import {
+  buildNatalChartPayload,
+  enrichBirthDataWithTimezone,
+} from '@/lib/astrokline/birth-timezone';
+import { apiToProfile } from '@/lib/astrokline/profile-transform';
 
 import { Heading } from '@/components/astrokline/ui/heading';
+import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
 import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { useRouter } from 'next/navigation';
+import { hasUsableKlineData } from '@/shared/lib/kline-ownership';
 import { cn } from '@/shared/lib/utils';
 import { ReferralCard } from '@/components/astrokline/kline/referral-card';
+import { toAppTier, tierDisplayName, tierAtLeast } from '@/lib/astrokline/tier-utils';
 
 interface DashboardClientProps {
   userName?: string;
@@ -49,6 +60,8 @@ export function DashboardClient({
   const [mounted, setMounted] = useState(false);
   const [localHasData, setLocalHasData] = useState<boolean | null>(null);
   const [localProfile, setLocalProfile] = useState<any>(null);
+  const [localKlineResult, setLocalKlineResult] = useState<any>(null);
+  const [isCreatingChart, setIsCreatingChart] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const { open: openModal } = useBirthInfoModal();
@@ -57,18 +70,95 @@ export function DashboardClient({
 
   useEffect(() => {
     setMounted(true);
-    const savedBirth = getSavedBirthData();
-    setLocalHasData(!!savedBirth || hasKline);
-    if (savedBirth) {
-      const klineRes = getSavedKlineResult();
-      if (klineRes?.profile) setLocalProfile(klineRes.profile);
-    }
+    const savedResult = getSavedKlineResult();
+    setLocalHasData(
+      hasUsableKlineData({
+        hasServerKline: hasKline,
+        savedResult,
+      })
+    );
+    setLocalKlineResult(savedResult ?? null);
+    setLocalProfile(savedResult?.profile ?? null);
   }, [hasKline]);
+
+  const handleCreateFirstChart = useCallback(() => {
+    openModal(async (birthData: BirthData) => {
+      setIsCreatingChart(true);
+
+      try {
+        const normalizedBirthData = enrichBirthDataWithTimezone(birthData);
+
+        const response = await fetch('/api/astrology/natal-chart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildNatalChartPayload(normalizedBirthData)),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success || !result.data) {
+          throw new Error(result.error || 'Failed to calculate natal chart');
+        }
+
+        const newProfile = {
+          ...apiToProfile(result.data, normalizedBirthData),
+          overallAverageScore: result.reportData?.overallAverageScore ?? 82,
+        };
+        const cachedResult = {
+          profile: newProfile,
+          birthData: normalizedBirthData,
+          rawApiData: result.data,
+          klineData: result.reportData?.klineData ?? [],
+          transitDetails: result.reportData?.transitDetails ?? {},
+          radarData: result.reportData?.radarData ?? null,
+          destinyReading: result.reportData?.destinyReading ?? null,
+          next30Days: result.reportData?.next30Days ?? null,
+          currentEnergy: result.reportData?.currentEnergy ?? null,
+        };
+
+        saveKlineResult(cachedResult);
+
+        const saveResponse = await fetch('/api/kline/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            isSelf: true,
+            label: normalizedBirthData.name || 'Me',
+            birthDate: normalizedBirthData.date,
+            birthTime: normalizedBirthData.timeSlot,
+            birthPlace: normalizedBirthData.location,
+            birthLat: String(normalizedBirthData.lat),
+            birthLng: String(normalizedBirthData.lon),
+            klineResult: cachedResult,
+          }),
+        });
+        const saveJson = await saveResponse.json();
+
+        if (!saveResponse.ok || !saveJson.success) {
+          throw new Error(saveJson.error || 'Failed to save natal chart');
+        }
+
+        const persistedKlineResult = saveJson.data?.klineResult ?? cachedResult;
+        setLocalKlineResult(persistedKlineResult);
+        setLocalProfile(persistedKlineResult.profile ?? newProfile);
+        setLocalHasData(true);
+        router.refresh();
+      } catch (error) {
+        console.error('Failed to create first chart:', error);
+      } finally {
+        setIsCreatingChart(false);
+      }
+    });
+  }, [openModal, router]);
+
+  const effectiveKlineResult = klineResult ?? localKlineResult;
 
   // Derived data
   const data = useMemo(() => {
-    if (!klineResult) return null;
-    const parsed = typeof klineResult === 'string' ? JSON.parse(klineResult) : klineResult;
+    if (!effectiveKlineResult) return null;
+    const parsed = typeof effectiveKlineResult === 'string'
+      ? JSON.parse(effectiveKlineResult)
+      : effectiveKlineResult;
     const klineData = parsed?.klineData || [];
     const bd = parsed?.profile?.birthDate || birthDate || '2000-01-01';
     const yearPoint = klineData.find((p: any) => p.year === new Date().getFullYear());
@@ -80,7 +170,7 @@ export function DashboardClient({
       ? { sign: profileMoon.sign, degree: profileMoon.degree ?? 0, minute: profileMoon.minute ?? 0, birthYear }
       : { sign: 'Aries', degree: 0, minute: 0, birthYear };
     return { parsed, klineData, bd, yearScore, natalMoon };
-  }, [klineResult, birthDate]);
+  }, [birthDate, effectiveKlineResult]);
 
   const weekTransits = useMemo(() => {
     if (!data) return [];
@@ -105,12 +195,13 @@ export function DashboardClient({
     );
   }
 
-  const sunSign = extractSunSign(klineResult) || localProfile?.sun?.sign;
-  const moonSign = extractMoonSign(klineResult) || localProfile?.moon?.sign;
-  const tierLabel = TIER_LABELS[userTier] || 'Free';
+  const sunSign = extractSunSign(effectiveKlineResult) || localProfile?.sun?.sign;
+  const moonSign = extractMoonSign(effectiveKlineResult) || localProfile?.moon?.sign;
+  const appTier = toAppTier(userTier);
+  const tierLabel = tierDisplayName(appTier);
   const displayName = userName || localProfile?.name || 'Traveler';
-  const isFree = userTier === 'FREE';
-  const isPro = userTier === 'PREMIUM';
+  const isFree = appTier === 'FREE';
+  const isPro = tierAtLeast(appTier, 'PRO');
 
   const todayStr = new Date().toISOString().slice(0, 10);
   const selectedStr = selectedDate.toISOString().slice(0, 10);
@@ -127,6 +218,11 @@ export function DashboardClient({
   if (!localHasData) {
     return (
       <div className="mx-auto max-w-5xl">
+        {isCreatingChart && (
+          <div className="bg-background/95 fixed inset-0 z-[200] flex items-center justify-center backdrop-blur-xl">
+            <AstrologyLoader isLoading={true} durationMs={5000} />
+          </div>
+        )}
         <div className="relative overflow-hidden border border-primary/20 bg-gradient-to-br from-[#15131a]/80 to-primary/5 p-8 backdrop-blur-xl">
           <div className="pointer-events-none absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 bg-primary/10 blur-[100px]" />
           <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center py-6 text-center">
@@ -137,14 +233,14 @@ export function DashboardClient({
               Welcome, {displayName}
             </Heading>
             <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
-              Generate your first K-Line to unlock your personalized dashboard
+              Generate your first chart to unlock your personalized dashboard
               with energy forecasts, action calendar, and more.
             </p>
             <button
-              onClick={() => openModal(() => { setLocalHasData(true); router.refresh(); })}
+              onClick={handleCreateFirstChart}
               className="inline-flex items-center gap-2 bg-primary px-8 py-4 font-bold text-primary-foreground shadow-lg transition-all hover:scale-105"
             >
-              <Plus className="h-5 w-5" /> Create My K-Line
+              <Plus className="h-5 w-5" /> Create My First Chart
             </button>
           </div>
         </div>
@@ -172,7 +268,7 @@ export function DashboardClient({
         </div>
         <button
           onClick={() => {
-            if (isFree || userTier === 'STANDARD') {
+            if (!isPro) {
               openCheckout('pro');
             }
           }}
@@ -186,10 +282,39 @@ export function DashboardClient({
         </button>
       </div>
 
+      {/* Upgrade Banner for Free users */}
+      {isFree && (
+        <button
+          onClick={() => openCheckout('pro')}
+          className="group relative w-full overflow-hidden border border-primary/20 bg-gradient-to-r from-primary/8 via-amber-400/5 to-primary/8 p-4 transition-all hover:border-primary/35 hover:shadow-[0_0_30px_rgba(212,175,55,0.08)]"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full animate-[shimmer_3s_infinite]" />
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center border border-primary/30 bg-primary/10">
+                <TrendingUp className="h-4 w-4 text-primary" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-white/85">Unlock unlimited readings</p>
+                <p className="text-xs text-white/40">Upgrade to Pro for daily energy, advanced transits & more</p>
+              </div>
+            </div>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary transition-transform group-hover:translate-x-1">
+              Upgrade <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </div>
+        </button>
+      )}
+
       {/* Week Navigator */}
       <div className="border border-white/5 bg-[#15131A]/60 p-4 backdrop-blur-xl">
         <div className="flex items-center gap-2">
-          <button onClick={() => shiftWeek(-1)} className="p-1 text-white/40 hover:text-white">
+          <button
+            onClick={() => shiftWeek(-1)}
+            className="p-1 text-white/40 hover:text-white"
+            title="Previous week"
+            aria-label="Previous week"
+          >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <div className="flex flex-1 justify-between">
@@ -216,7 +341,12 @@ export function DashboardClient({
               );
             })}
           </div>
-          <button onClick={() => shiftWeek(1)} className="p-1 text-white/40 hover:text-white">
+          <button
+            onClick={() => shiftWeek(1)}
+            className="p-1 text-white/40 hover:text-white"
+            title="Next week"
+            aria-label="Next week"
+          >
             <ChevronRight className="h-4 w-4" />
           </button>
           <button onClick={() => setSelectedDate(new Date())} className="p-1.5 text-white/40 hover:text-white border border-white/10" title="Go to today">
@@ -329,23 +459,35 @@ export function DashboardClient({
               </button>
             )}
           </div>
-          <div className={cn('grid grid-cols-3 gap-3', !isPro && 'blur-[3px] select-none pointer-events-none')}>
-            <div className="border border-emerald-500/10 p-3">
-              <span className="text-[10px] font-bold text-emerald-400">🟢 PEAK</span>
-              <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.peak.range}</p>
-              <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.peak.activity}</p>
+          {isPro ? (
+            <div className="grid grid-cols-3 gap-3">
+              <div className="border border-emerald-500/10 p-3">
+                <span className="text-[10px] font-bold text-emerald-400">🟢 PEAK</span>
+                <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.peak.range}</p>
+                <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.peak.activity}</p>
+              </div>
+              <div className="border border-amber-500/10 p-3">
+                <span className="text-[10px] font-bold text-amber-400">🟡 NEUTRAL</span>
+                <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.neutral.range}</p>
+                <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.neutral.activity}</p>
+              </div>
+              <div className="border border-rose-500/10 p-3">
+                <span className="text-[10px] font-bold text-rose-400">🔴 LOW</span>
+                <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.low.range}</p>
+                <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.low.activity}</p>
+              </div>
             </div>
-            <div className="border border-amber-500/10 p-3">
-              <span className="text-[10px] font-bold text-amber-400">🟡 NEUTRAL</span>
-              <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.neutral.range}</p>
-              <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.neutral.activity}</p>
+          ) : (
+            <div className="grid grid-cols-3 gap-3">
+              {['🟢 PEAK', '🟡 NEUTRAL', '🔴 LOW'].map((label) => (
+                <div key={label} className="border border-white/5 p-3">
+                  <span className="text-[10px] font-bold text-white/20">{label}</span>
+                  <div className="mt-1 h-3 w-16 bg-white/5 rounded" />
+                  <div className="mt-1 h-2.5 w-24 bg-white/5 rounded" />
+                </div>
+              ))}
             </div>
-            <div className="border border-rose-500/10 p-3">
-              <span className="text-[10px] font-bold text-rose-400">🔴 LOW</span>
-              <p className="text-xs text-white/70 mt-1">{todayTransit.bestHours.low.range}</p>
-              <p className="text-[10px] text-white/40 mt-0.5">{todayTransit.bestHours.low.activity}</p>
-            </div>
-          </div>
+          )}
         </div>
       )}
 

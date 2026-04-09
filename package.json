@@ -36,9 +36,9 @@
     "rbac:init": "tsx scripts/with-env.ts npx tsx scripts/init-rbac.ts",
     "rbac:assign": "tsx scripts/with-env.ts npx tsx scripts/assign-role.ts",
     "postinstall": "fumadocs-mdx",
-    "cf:preview": "dotenv -e .env.production -- bash -lc 'opennextjs-cloudflare build && opennextjs-cloudflare preview --config wrangler.toml'",
-    "cf:deploy": "dotenv -e .env.production -- bash -lc 'opennextjs-cloudflare build && opennextjs-cloudflare deploy --config wrangler.toml'",
-    "cf:upload": "dotenv -e .env.production -- bash -lc 'opennextjs-cloudflare build && opennextjs-cloudflare upload --config wrangler.toml'",
+    "cf:preview": "node scripts/run-cf-command.mjs preview",
+    "cf:deploy": "node scripts/run-cf-command.mjs deploy",
+    "cf:upload": "node scripts/run-cf-command.mjs upload",
     "cf:typegen": "wrangler types --config wrangler.toml --env-interface CloudflareEnv src/shared/types/cloudflare.d.ts"
   },
   "dependencies": {
@@ -147,6 +147,7 @@
     "swisseph-wasm": "^0.0.5",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "tz-lookup": "^6.1.25",
     "use-stick-to-bottom": "^1.1.1",
     "uuid": "^13.0.0",
     "vaul": "^1.1.2",

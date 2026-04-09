@@ -6,9 +6,9 @@ import { getUserInfo } from '@/shared/models/user';
 import { KlineClient } from './page-client';
 
 export const generateMetadata = getMetadata({
-  title: '2026 Astrology Predictions & Transit Chart | Your Personal K-Line', // ' | AstroKline' will be auto-appended by seo.ts
+  title: '2026 Astrology Predictions and Your Personal Life Curve',
   description:
-    'Generate your personalized astrology predictions for 2026. Astrokline maps your planetary transits, Dashas, and Sade Sati into an interactive, readable K-Line chart.',
+    'Generate your personalized astrology predictions for 2026. AstroKline maps your planetary transits, Dashas, and Sade Sati into an interactive Life Curve and timing map.',
   keywords:
     'astrology predictions for 2026, astrology transit calculator, financial astrology, vedic astrology predictions, predictive astrology, transit chart',
   canonicalUrl: '/kline',

@@ -7,7 +7,7 @@ import { Heading } from "@/components/astrokline/ui/heading";
 const aboutUrl = `${envConfigs.app_url}/about`;
 
 export const metadata: Metadata = {
-  title: 'About AstroKline | AI Astrology, Birth Chart Timing, and K-Line Forecasts',
+  title: 'About AstroKline | AI Astrology, Birth Chart Timing, and Life Curve Forecasts',
   description:
     'Learn how AstroKline turns birth chart data, Swiss Ephemeris calculations, and AI interpretation into a practical astrology timing map for career, money, and relationships.',
   keywords: [
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     'birth chart reading',
     'natal chart analysis',
     'astrology timing',
-    'astrology k line',
+    'astrology life curve',
     'destiny chart',
     'swiss ephemeris astrology',
   ],
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'About AstroKline',
     description:
-      'AstroKline combines Swiss Ephemeris precision, astrology timing logic, and AI interpretation to turn birth charts into a practical K-Line forecast.',
+      'AstroKline combines Swiss Ephemeris precision, astrology timing logic, and AI interpretation to turn birth charts into a practical Life Curve forecast.',
     url: aboutUrl,
     type: 'article',
   },
@@ -38,7 +38,7 @@ const articleSchema = {
   name: 'About AstroKline',
   url: aboutUrl,
   description:
-    'About AstroKline, an AI astrology platform that converts birth chart timing into a readable K-Line forecast.',
+    'About AstroKline, an AI astrology platform that converts birth chart timing into a readable Life Curve forecast.',
   mainEntity: {
     '@type': 'Organization',
     name: 'AstroKline',
@@ -63,7 +63,7 @@ const principles = [
   {
     title: 'Readable Output Matters',
     description:
-      'A birth chart can be accurate and still be unusable. The K-Line format exists to make complex transit and cycle data readable at a glance.',
+      'A birth chart can be accurate and still be unusable. The Life Curve format exists to make complex transit and cycle data readable at a glance.',
   },
   {
     title: 'Privacy Is Product Quality',
@@ -117,7 +117,7 @@ export default function AboutPage() {
               AstroKline was built to answer those questions. We wanted an
               astrology tool that respects the complexity of a natal chart while
               still giving users an interface they can understand in seconds.
-              That is why the product centers on the K-Line, a long-range visual
+              That is why the product centers on the Life Curve, a long-range visual
               forecast that translates chart structure and cycle timing into a
               clear directional curve.
             </p>
@@ -155,12 +155,12 @@ export default function AboutPage() {
               instead of shortcuts or low-precision approximations.
             </p>
 
-            <Heading level={2}>What Makes the K-Line Different</Heading>
+            <Heading level={2}>What Makes the Life Curve Different</Heading>
             <p>
-              The K-Line is the core idea behind AstroKline. Traditional chart
+              The Life Curve is the core idea behind AstroKline. Traditional chart
               reports often overwhelm users with symbols, houses, aspects, and
               dense text. We wanted a format that preserved depth while making
-              patterns visible. The K-Line solves that by translating timing
+              patterns visible. The Life Curve solves that by translating timing
               stress and timing support into a clear line of movement.
             </p>
             <p>
@@ -227,7 +227,7 @@ export default function AboutPage() {
               If you want to understand AstroKline in practice, the fastest path
               is to view a sample{' '}
               <Link href="/kline" className="text-primary no-underline">
-                K-Line reading
+                Life Curve reading
               </Link>
               , and compare plan depth on the{' '}
               <Link href="/pricing" className="text-primary no-underline">
@@ -271,7 +271,7 @@ export default function AboutPage() {
             Read Your Timing With More Structure
           </Heading>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/65">
-            Start with the K-Line if you want to see how AstroKline turns birth
+            Start with the Life Curve if you want to see how AstroKline turns birth
             chart data into something practical and readable.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -279,7 +279,7 @@ export default function AboutPage() {
               href="/kline"
               className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-12 items-center justify-center  px-6 text-sm font-semibold"
             >
-              Explore the K-Line
+              Explore the Life Curve
             </Link>
             <Link
               href="/pricing"

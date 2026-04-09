@@ -1,6 +1,7 @@
 'use client';
 
 import { Heading } from "@/components/astrokline/ui/heading";
+import { Progress } from '@/shared/components/ui/progress';
 import { useAppContext } from '@/shared/contexts/app';
 import { getPersonalizedReading } from '@/lib/astrokline/transit-templates';
 
@@ -285,9 +286,9 @@ function ExtremumStar({
         fontSize="10"
         fontWeight={700}
         fill={stroke}
-        style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+        letterSpacing="0.08em"
       >
-        {label}
+        {label.toUpperCase()}
       </text>
     </g>
   );
@@ -450,18 +451,18 @@ export function InteractiveChart({
   return (
     <div
       className="relative w-full"
-      role="img"
-      aria-label="Interactive 100-year K-Line destiny timing chart showing life score trends by age"
       data-testid="interactive-kline-chart"
     >
+      <p className="sr-only">
+        Interactive 100-year Life Curve timing chart showing life score trends by age.
+      </p>
       <div
-        className="relative w-full pb-6 pt-2"
-        style={{ overflow: 'visible' }}
+        className="relative w-full overflow-visible pb-6 pt-2"
       >
         {/* Header - Centered Big Title & Subtitle */}
         <div className="mb-8 flex flex-col items-center justify-center text-center px-4">
           <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
-            {profileName ? `${profileName}'s` : 'Your'} Life Kline {(tier === 'GUEST' || isSimulation) && <span className="ml-2 text-white/30 text-2xl font-normal inline-block">(Preview)</span>}
+            {profileName ? `${profileName}'s` : 'Your'} Life Curve {(tier === 'GUEST' || isSimulation) && <span className="ml-2 text-white/30 text-2xl font-normal inline-block">(Preview)</span>}
           </Heading>
           <p className="mt-4 text-sm leading-relaxed text-white/50">
             A complete projection of your life energy across a 100-year timeline.
@@ -523,10 +524,7 @@ export function InteractiveChart({
 
         {/* Main Candlestick Chart */}
         <div className="w-full overflow-visible">
-          <div
-            className="h-[480px] md:h-[550px]"
-            style={{ overflow: 'visible' }}
-          >
+          <div className="h-[480px] overflow-visible md:h-[550px]">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart
                 data={chartData}
@@ -997,13 +995,15 @@ const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate, ai
                   icon: Heart,
                   label: 'Love',
                   value: dims.love,
-                  color: 'bg-rose-500',
+                  colorClass:
+                    '[&>[data-slot=progress-indicator]]:bg-rose-500',
                 },
                 {
                   icon: Zap,
                   label: 'Vitality',
                   value: dims.health,
-                  color: 'bg-blue-500',
+                  colorClass:
+                    '[&>[data-slot=progress-indicator]]:bg-blue-500',
                 },
               ].map((dim) => (
                 <div key={dim.label} className="flex items-center gap-2">
@@ -1015,12 +1015,10 @@ const CandleTooltip = ({ active, payload, transitDetails, tier, onActionGate, ai
                         {dim.value}
                       </span>
                     </div>
-                    <div className="h-1 w-full overflow-hidden bg-white/5">
-                      <div
-                        className={`h-full ${dim.color}`}
-                        style={{ width: `${dim.value}%`, opacity: 0.6 }}
-                      />
-                    </div>
+                    <Progress
+                      value={dim.value}
+                      className={`h-1 bg-white/5 opacity-60 ${dim.colorClass}`}
+                    />
                   </div>
                 </div>
               ))}

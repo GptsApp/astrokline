@@ -5,9 +5,8 @@ import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { authClient, signIn } from '@/core/auth/client';
+import { signIn } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
-import { defaultLocale } from '@/config/locale';
 import { Button } from '@/shared/components/ui/button';
 import {
   Card,
@@ -19,12 +18,18 @@ import {
 } from '@/shared/components/ui/card';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
+import {
+  addLocalePrefix,
+  sanitizeInternalCallbackPath,
+  stripLocalePrefix,
+} from '@/shared/lib/auth-callback';
+import { buildVerifyEmailPath } from '@/shared/lib/unverified-sign-in';
 
 import { SocialProviders } from './social-providers';
 
 export function SignIn({
   configs,
-  callbackUrl = '/',
+  callbackUrl = '/dashboard',
   defaultEmail = '',
 }: {
   configs: Record<string, string>;
@@ -44,28 +49,11 @@ export function SignIn({
     configs.email_auth_enabled !== 'false' ||
     (!isGoogleAuthEnabled && !isGithubAuthEnabled); // no social providers enabled, auto enable email auth
 
-  if (callbackUrl) {
-    if (
-      locale !== defaultLocale &&
-      callbackUrl.startsWith('/') &&
-      !callbackUrl.startsWith(`/${locale}`)
-    ) {
-      callbackUrl = `/${locale}${callbackUrl}`;
-    }
-  }
-
-  const base = locale !== defaultLocale ? `/${locale}` : '';
-  const stripLocalePrefix = (path: string) => {
-    if (!path?.startsWith('/')) return '/';
-    if (locale === defaultLocale) return path;
-    if (path === `/${locale}`) return '/';
-    if (path.startsWith(`/${locale}/`))
-      return path.slice(locale.length + 1) || '/';
-    return path;
-  };
-  const normalizedCallbackUrl = stripLocalePrefix(callbackUrl || '/');
+  const safeCallbackUrl = sanitizeInternalCallbackPath(callbackUrl || '/dashboard');
+  const localizedCallbackUrl = addLocalePrefix(safeCallbackUrl, locale);
+  const normalizedCallbackUrl = stripLocalePrefix(localizedCallbackUrl, locale);
   const signUpHref =
-    normalizedCallbackUrl && normalizedCallbackUrl !== '/'
+    normalizedCallbackUrl && normalizedCallbackUrl !== '/' && normalizedCallbackUrl !== '/dashboard'
       ? `/sign-up?callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`
       : '/sign-up';
 
@@ -87,7 +75,7 @@ export function SignIn({
         {
           email,
           password,
-          callbackURL: callbackUrl,
+          callbackURL: localizedCallbackUrl,
         },
         {
           onRequest: () => {
@@ -97,27 +85,15 @@ export function SignIn({
             // Do NOT reset loading here; navigation may not have completed yet.
           },
           onSuccess: () => {
-            router.push(normalizedCallbackUrl || '/');
+            router.push(normalizedCallbackUrl || '/dashboard');
             router.refresh();
           },
           onError: (e: any) => {
             const status = e?.error?.status;
             if (status === 403) {
-              const verifyPath = `/verify-email?sent=1&email=${encodeURIComponent(
-                email
-              )}&callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`;
-
-              // IMPORTANT:
-              // better-auth does not URL-encode callbackURL when generating the verification URL.
-              // So callbackURL must not contain its own '&' query params (or they'll get split).
-              // We send users to home/callbackUrl after verification, and keep the verify page only
-              // as the waiting UI.
-              void authClient.sendVerificationEmail({
-                email,
-                callbackURL: `${base}${normalizedCallbackUrl || '/'}`,
+              const verifyPath = buildVerifyEmailPath(email, normalizedCallbackUrl, {
+                resend: true,
               });
-
-              // i18n router will prefix locale automatically; do NOT include locale here.
               router.push(verifyPath);
               return;
             }
@@ -210,7 +186,7 @@ export function SignIn({
 
           <SocialProviders
             configs={configs}
-            callbackUrl={callbackUrl || '/'}
+            callbackUrl={safeCallbackUrl}
             loading={loading}
             setLoading={setLoading}
           />

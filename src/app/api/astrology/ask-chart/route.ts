@@ -1,6 +1,4 @@
 import { NextRequest } from 'next/server';
-import { streamText } from 'ai';
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { enforceMinIntervalRateLimit } from '@/shared/lib/rate-limit';
 import { db } from '@/core/db';
@@ -8,7 +6,15 @@ import { chat, chatMessage } from '@/config/db/schema';
 import { eq, and, count, gte } from 'drizzle-orm';
 import { getUserInfo } from '@/shared/models/user';
 import { getAstroUserTier } from '@/lib/astrokline/user-tier';
-import { ASK_CHART_SYSTEM_PROMPT } from '@/lib/astrokline/gemini';
+import {
+  ASK_CHART_SYSTEM_PROMPT,
+  callGeminiMultiTurn,
+} from '@/lib/astrokline/gemini';
+
+import {
+  buildAskChartGeminiMessages,
+  createAskChartTextResponse,
+} from './route-helpers';
 
 // ── Prompt Injection Detection ──
 const INJECTION_PATTERNS = [
@@ -64,8 +70,12 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const body = await request.json();
-  const { messages: clientMessages, chatId: reqChatId, profile } = body;
+  const body = await request.json().catch(() => null);
+  const clientMessages = Array.isArray(body?.messages) ? body.messages : [];
+  const reqChatId = typeof body?.chatId === 'string' ? body.chatId : null;
+  const profile = body?.profile && typeof body.profile === 'object'
+    ? (body.profile as UserProfile)
+    : null;
 
   // Extract latest user message
   const lastUserMsg = clientMessages
@@ -152,60 +162,48 @@ export async function POST(request: NextRequest) {
     : '';
   const fullSystemPrompt = ASK_CHART_SYSTEM_PROMPT + chartContext;
 
-  // ── Build messages for Gemini ──
-  const aiMessages = (clientMessages || [])
-    .slice(-10)
-    .map((m: any) => ({
-      role: m.role as 'user' | 'assistant',
-      content: m.role === 'user' && m.content === rawQuestion ? safeQuestion : (m.content || ''),
-    }));
+  const aiMessages = buildAskChartGeminiMessages(clientMessages, safeQuestion);
 
-  // ── Stream with AI SDK ──
-  if (!process.env.GEMINI_API_KEY) {
-    return Response.json({ error: 'AI service not configured' }, { status: 500 });
+  let replyText = '';
+  try {
+    replyText = await callGeminiMultiTurn(aiMessages, fullSystemPrompt, 2048);
+  } catch (error) {
+    console.error('Ask chart generation failed:', error);
+    return Response.json({ error: 'AI service unavailable' }, { status: 502 });
   }
 
-  const google = createGoogleGenerativeAI({
-    apiKey: process.env.GEMINI_API_KEY,
-  });
+  if (!replyText.trim()) {
+    console.error('Ask chart generation returned an empty response');
+    return Response.json({ error: 'AI service unavailable' }, { status: 502 });
+  }
 
-  const result = streamText({
-    model: google('gemini-2.5-flash') as any,
-    system: fullSystemPrompt,
-    messages: aiMessages,
-    onFinish: async ({ text }) => {
-      try {
-        const db2 = db();
-        await db2.insert(chatMessage).values([
-          {
-            id: crypto.randomUUID(),
-            userId: user.id,
-            chatId: currentChatId,
-            status: 'active',
-            role: 'user',
-            parts: JSON.stringify([{ type: 'text', text: safeQuestion }]),
-            model: 'ask-chart',
-            provider: 'gemini',
-          },
-          {
-            id: crypto.randomUUID(),
-            userId: user.id,
-            chatId: currentChatId,
-            status: 'active',
-            role: 'assistant',
-            parts: JSON.stringify([{ type: 'text', text }]),
-            model: 'ask-chart',
-            provider: 'gemini',
-          },
-        ]);
-      } catch (e) {
-        console.error('Failed to save chat messages:', e);
-      }
-    },
-  });
+  try {
+    const db2 = db();
+    await db2.insert(chatMessage).values([
+      {
+        id: crypto.randomUUID(),
+        userId: user.id,
+        chatId: currentChatId,
+        status: 'active',
+        role: 'user',
+        parts: JSON.stringify([{ type: 'text', text: safeQuestion }]),
+        model: 'ask-chart',
+        provider: 'gemini',
+      },
+      {
+        id: crypto.randomUUID(),
+        userId: user.id,
+        chatId: currentChatId,
+        status: 'active',
+        role: 'assistant',
+        parts: JSON.stringify([{ type: 'text', text: replyText }]),
+        model: 'ask-chart',
+        provider: 'gemini',
+      },
+    ]);
+  } catch (error) {
+    console.error('Failed to save chat messages:', error);
+  }
 
-  // Return plain text stream + chatId header
-  const response = result.toTextStreamResponse();
-  response.headers.set('X-Chat-Id', currentChatId);
-  return response;
+  return createAskChartTextResponse(replyText, currentChatId);
 }

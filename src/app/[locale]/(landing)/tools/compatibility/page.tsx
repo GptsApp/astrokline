@@ -1,15 +1,14 @@
 import { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { getUserInfo } from '@/shared/models/user';
-import { getAstroUserTier } from '@/lib/astrokline/user-tier';
-import { getMyKline } from '@/shared/models/kline';
 import { ToolPageShell } from '@/components/astrokline/tools/tool-page-shell';
+import { redirect } from '@/core/i18n/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Free Astrology Compatibility by Date of Birth | Synastry K-Line',
-    description: 'Discover deep astrology compatibility by date of birth. Our synastry K-Line chart maps your relationship friction, romantic peaks, and long-term synergy perfectly.',
-    keywords: ['astrology compatibility', 'astrology compatibility by date of birth', 'astrology synastry', 'synastry K-line', 'birth chart compatibility'],
+    title: 'Free Astrology Compatibility by Date of Birth | Synastry Timing Map',
+    description: 'Discover deep astrology compatibility by date of birth. Our synastry timing map shows relationship friction, romantic peaks, and long-term synergy with far more nuance than sun-sign matching.',
+    keywords: ['astrology compatibility', 'astrology compatibility by date of birth', 'astrology synastry', 'synastry timing map', 'birth chart compatibility'],
   };
 }
 
@@ -23,8 +22,7 @@ export default async function CompatibilityPage({
 
   const user = await getUserInfo();
   if (user) {
-    const { redirect } = await import('next/navigation');
-    redirect('/dashboard/tools/compatibility');
+    redirect({ href: '/dashboard/tools/compatibility', locale });
   }
 
   const tier = 'GUEST';

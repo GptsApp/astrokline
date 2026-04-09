@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
+  type AiInsightData,
   getInsightCacheKey,
   getCachedInsight,
   setCachedInsight,
@@ -23,6 +25,9 @@ interface Props {
   onActionGate: (context?: string, tier?: string) => void;
   selectedYear?: number;
   yearFocusEvent?: TransitEvent | null;
+  klineId?: string;
+  initialInsight?: AiInsightData | null;
+  onInsightResolved?: (insight: AiInsightData) => void;
 }
 
 // ── MODULE CONFIGURATION ──
@@ -34,12 +39,7 @@ type ModuleKeys =
   | 'love'
   | 'health'
   | 'strengths'
-  | 'shadow'
-  | 'roots'
-  | 'karma'
-  | 'drive'
-  | 'legacy'
-  | 'transformation';
+  | 'shadow';
 
 interface ModuleConfig {
   id: ModuleKeys;
@@ -107,47 +107,42 @@ const MODULES: ModuleConfig[] = [
     shortDesc: 'Recurring habits that hold you back.',
     lockedTeaser: 'Everyone has blind spots. Your chart reveals a recurring pattern that may be quietly limiting your growth. Awareness is the first step.',
   },
-  {
-    id: 'roots',
-    title: 'Home & Roots',
-    icon: '🏡',
-    requiredTier: 'PRO',
-    shortDesc: 'Ancestral patterns and foundational security.',
-    lockedTeaser: 'Your 4th house reveals deep-seated emotional foundations and ancestral karma. Discover what truly makes you feel secure.',
-  },
-  {
-    id: 'karma',
-    title: 'Karma & Past',
-    icon: '🔮',
-    requiredTier: 'PRO',
-    shortDesc: 'Spiritual debts and soul-level purpose.',
-    lockedTeaser: 'Your chart holds a strong karmic signature. Uncover the spiritual lessons you are meant to resolve in this lifetime.',
-  },
-  {
-    id: 'drive',
-    title: 'Inner Drive',
-    icon: '🚀',
-    requiredTier: 'PRO',
-    shortDesc: 'Raw motivation and communication style.',
-    lockedTeaser: 'The 3rd house dictates your courage and how you exert will. Learn how to harness your raw psychological horsepower.',
-  },
-  {
-    id: 'legacy',
-    title: 'Legacy & Creation',
-    icon: '👶',
-    requiredTier: 'PRO',
-    shortDesc: 'Creative output, children, and speculations.',
-    lockedTeaser: 'Your creative and speculative karma is unique. See what your chart says about your legacy, offspring, and creative risks.',
-  },
-  {
-    id: 'transformation',
-    title: 'Transformation (Crisis)',
-    icon: '⚡',
-    requiredTier: 'PRO',
-    shortDesc: 'Sudden changes, rebirth, and hidden wealth.',
-    lockedTeaser: 'The 8th house governs sudden life shocks and profound rebirths. Forewarned is forearmed—understand your transformative cycles.',
-  },
 ];
+
+type PanelInsight = Partial<Record<ModuleKeys, string>>;
+
+const LOADING_PHASE_WIDTH_CLASSES = [
+  'w-[15%]',
+  'w-[40%]',
+  'w-[70%]',
+  'w-[92%]',
+] as const;
+
+const SKELETON_WIDTH_CLASSES = [
+  'w-[75%]',
+  'w-[90%]',
+  'w-[60%]',
+  'w-[85%]',
+  'w-[50%]',
+] as const;
+
+function normalizeInsight(raw?: AiInsightData | null): PanelInsight | null {
+  if (!raw) {
+    return null;
+  }
+
+  const mapped: PanelInsight = {
+    summary: raw.summary,
+    career: raw.career,
+    wealth: raw.wealth,
+    love: raw.relationships ?? raw.love,
+    health: raw.health,
+    strengths: raw.strengths,
+    shadow: raw.warnings ?? raw.shadow,
+  };
+
+  return Object.values(mapped).some(Boolean) ? mapped : null;
+}
 
 export function AiReadingPanels({
   profile,
@@ -155,13 +150,22 @@ export function AiReadingPanels({
   onActionGate,
   selectedYear,
   yearFocusEvent,
+  klineId,
+  initialInsight,
+  onInsightResolved,
 }: Props) {
-  const [insight, setInsight] = useState<any>(null);
+  const [resolvedInsight, setResolvedInsight] = useState<AiInsightData | null>(
+    initialInsight ?? null
+  );
+  const [insight, setInsight] = useState<PanelInsight | null>(() =>
+    normalizeInsight(initialInsight)
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [activeModule, setActiveModule] = useState<ModuleKeys | null>('summary');
   const [astroSystem, setAstroSystem] = useState<'PARASHARA'|'JAIMINI'>('PARASHARA');
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const persistedInsightKeyRef = useRef('');
 
   // Determine if a module is unlocked based on tier precedence
   const isUnlocked = (reqTier: AppTier) => {
@@ -195,6 +199,40 @@ export function AiReadingPanels({
     phaseTimers.current = [];
   };
 
+  const applyInsight = (nextInsight: AiInsightData) => {
+    const normalized = normalizeInsight(nextInsight);
+    if (!normalized) {
+      return;
+    }
+
+    setResolvedInsight(nextInsight);
+    setInsight(normalized);
+    onInsightResolved?.(nextInsight);
+  };
+
+  const persistInsight = async (nextInsight: AiInsightData) => {
+    if (!klineId) {
+      return;
+    }
+
+    const persistKey = `${klineId}:${JSON.stringify(nextInsight)}`;
+    if (persistedInsightKeyRef.current === persistKey) {
+      return;
+    }
+
+    persistedInsightKeyRef.current = persistKey;
+
+    try {
+      await fetch('/api/kline/ai-insight', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ klineId, insight: nextInsight }),
+      });
+    } catch {
+      persistedInsightKeyRef.current = '';
+    }
+  };
+
   // Fetch with localStorage cache layer
   useEffect(() => {
     if (tier === 'GUEST' || tier === 'FREE') return;
@@ -202,19 +240,19 @@ export function AiReadingPanels({
     let retryCount = 0;
     const maxRetries = 2;
 
+    if (normalizeInsight(initialInsight)) {
+      applyInsight(initialInsight!);
+      return () => {
+        isMounted = false;
+      };
+    }
+
     // ── 1. Check localStorage cache first ──
     const cacheKey = getInsightCacheKey(profile);
-    const cached = getCachedInsight(cacheKey);
-    if (cached) {
-      setInsight({
-        summary: cached.summary,
-        career: cached.career,
-        wealth: cached.wealth,
-        love: cached.relationships ?? cached.love,
-        health: cached.health,
-        strengths: cached.strengths,
-        shadow: cached.warnings ?? cached.shadow,
-      });
+    const cached = getCachedInsight(cacheKey) as AiInsightData | null;
+    if (normalizeInsight(cached)) {
+      applyInsight(cached!);
+      void persistInsight(cached!);
       return; // No API call needed!
     }
 
@@ -230,19 +268,11 @@ export function AiReadingPanels({
         .then((res) => res.json())
         .then((data) => {
           if (isMounted && data && !data.error) {
-            const mapped = {
-              summary: data.summary,
-              career: data.career,
-              wealth: data.wealth,
-              love: data.relationships,
-              health: data.health,
-              strengths: data.strengths,
-              shadow: data.warnings,
-            };
-            setInsight(mapped);
+            applyInsight(data);
             // Write to localStorage cache — only for real AI results
             if (!data._fallback) {
               setCachedInsight(cacheKey, data);
+              void persistInsight(data);
             }
           } else if (isMounted && retryCount < maxRetries) {
             retryCount++;
@@ -272,9 +302,9 @@ export function AiReadingPanels({
       isMounted = false;
       stopLoadingPhases();
     };
-  }, [profile, tier]);
+  }, [initialInsight, klineId, onInsightResolved, profile, tier]);
 
-  // 2-Way Binding: Scroll to readings when a K-Line node is clicked (PRO feature)
+  // 2-way binding: scroll to readings when a Life Curve node is clicked (PRO feature)
   useEffect(() => {
     if (tier === 'PRO' && selectedYear && containerRef.current) {
       containerRef.current.scrollIntoView({
@@ -484,70 +514,74 @@ export function AiReadingPanels({
               </button>
 
               {/* Expander Content */}
-              {unlocked && (
-                <div
-                  className={cn(
-                    'grid transition-all duration-500 ease-in-out',
-                    isOpen
-                      ? 'grid-rows-[1fr] opacity-100'
-                      : 'grid-rows-[0fr] opacity-0'
-                  )}
-                >
-                  <div className="relative overflow-hidden">
-                    {/* Active ambient glow */}
-                    <div className="absolute -top-20 -left-20 h-40 w-40 bg-[#D4AF37]/10 blur-[60px]" />
-                    
-                    <div className="relative z-10 border-t border-white/[0.04] px-6 pt-2 pb-8">
-                      {isLoading ? (
-                        <div className="flex flex-col items-center gap-4 py-8">
-                          {/* Animated progress */}
-                          <div className="relative h-1 w-full max-w-xs overflow-hidden bg-white/[0.04]">
-                            <div
-                              className="absolute inset-y-0 left-0 bg-[#D4AF37]/60 transition-all duration-1000 ease-out"
-                              style={{ width: `${[15, 40, 70, 92][loadingPhase]}%` }}
-                            />
-                          </div>
-                          <div className="flex items-center gap-2 text-white/40">
-                            <Sparkles className="h-4 w-4 animate-pulse text-[#D4AF37]/50" />
-                            <span className="text-sm transition-opacity duration-500">
-                              {[
-                                'Reading your birth chart...',
-                                'Analyzing planetary aspects...',
-                                'Writing your personalized insight...',
-                                'Almost there, crafting final details...',
-                              ][loadingPhase]}
-                            </span>
-                          </div>
-                          {/* Shimmer skeleton */}
-                          <div className="mt-2 w-full space-y-3">
-                            {[0.75, 0.9, 0.6, 0.85, 0.5].map((w, i) => (
+              <AnimatePresence initial={false}>
+                {unlocked && isOpen ? (
+                  <motion.div
+                    key={`${mod.id}-content`}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="relative overflow-hidden">
+                      <div className="absolute -top-20 -left-20 h-40 w-40 bg-[#D4AF37]/10 blur-[60px]" />
+
+                      <div className="relative z-10 border-t border-white/[0.04] px-6 pt-2 pb-8">
+                        {isLoading ? (
+                          <div className="flex flex-col items-center gap-4 py-8">
+                            <div className="relative h-1 w-full max-w-xs overflow-hidden bg-white/[0.04]">
                               <div
-                                key={i}
-                                className="h-3.5 animate-pulse bg-white/[0.03]"
-                                style={{ width: `${w * 100}%`, animationDelay: `${i * 150}ms` }}
+                                className={cn(
+                                  'absolute inset-y-0 left-0 bg-[#D4AF37]/60 transition-all duration-1000 ease-out',
+                                  LOADING_PHASE_WIDTH_CLASSES[loadingPhase]
+                                )}
                               />
-                            ))}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="prose prose-invert prose-sm prose-p:leading-relaxed prose-p:text-white/60 prose-strong:text-white/90 prose-h3:text-[#D4AF37] prose-h3:font-normal prose-h3:text-xs prose-h3:tracking-widest prose-h3:uppercase prose-h3:mt-8 prose-h3:mb-4 max-w-none">
-                          {insight?.[mod.id] ? (
-                            <AstroTextParser text={insight[mod.id]} />
-                          ) : (
-                            <div className="flex flex-col items-center gap-3 py-4 text-center">
-                              <div className="flex items-center gap-2 text-white/30">
-                                <Sparkles className="h-4 w-4 animate-pulse text-[#D4AF37]/50" />
-                                <span className="text-sm">Generating your personalized reading...</span>
-                              </div>
-                              <p className="text-[11px] text-white/20">This usually takes a few seconds. If it persists, try refreshing the page.</p>
                             </div>
-                          )}
-                        </div>
-                      )}
+                            <div className="flex items-center gap-2 text-white/40">
+                              <Sparkles className="h-4 w-4 animate-pulse text-[#D4AF37]/50" />
+                              <span className="text-sm transition-opacity duration-500">
+                                {[
+                                  'Reading your birth chart...',
+                                  'Analyzing planetary aspects...',
+                                  'Writing your personalized insight...',
+                                  'Almost there, crafting final details...',
+                                ][loadingPhase]}
+                              </span>
+                            </div>
+                            <div className="mt-2 w-full space-y-3">
+                              {SKELETON_WIDTH_CLASSES.map((widthClass, i) => (
+                                <div
+                                  key={widthClass}
+                                  className={cn(
+                                    'h-3.5 animate-pulse bg-white/[0.03]',
+                                    widthClass,
+                                    i > 0 && 'animation-delay-[150ms]'
+                                  )}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="prose prose-invert prose-sm prose-p:leading-relaxed prose-p:text-white/60 prose-strong:text-white/90 prose-h3:text-[#D4AF37] prose-h3:font-normal prose-h3:text-xs prose-h3:tracking-widest prose-h3:uppercase prose-h3:mt-8 prose-h3:mb-4 max-w-none">
+                            {insight?.[mod.id] ? (
+                              <AstroTextParser text={insight[mod.id] as string} />
+                            ) : (
+                              <div className="flex flex-col items-center gap-3 py-4 text-center">
+                                <div className="flex items-center gap-2 text-white/30">
+                                  <Sparkles className="h-4 w-4 animate-pulse text-[#D4AF37]/50" />
+                                  <span className="text-sm">This section is being prepared for your chart.</span>
+                                </div>
+                                <p className="text-[11px] text-white/20">Try another section now, then come back in a moment.</p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
             </div>
           );
         })}
@@ -593,19 +627,36 @@ function AstroTextParser({ text }: { text: string }) {
         }
         if (p.includes('\n- ')) {
           const lines = p.split('\n');
+          const bulletLines = lines
+            .filter((line) => line.startsWith('- '))
+            .map((line) => line.substring(2));
+          const paragraphLines = lines.filter((line) => !line.startsWith('- '));
+
           return (
             <div key={i} className="mb-4">
-              {lines.map((line, j) => {
-                if (line.startsWith('- ')) {
-                  return (
-                    <li key={j} className="mb-1 ml-4 text-white/70">
-                      {parseBold(line.substring(2))}
-                    </li>
-                  );
-                }
-                return <p key={j}>{parseBold(line)}</p>;
-              })}
+              {paragraphLines.map((line, j) => <p key={`${i}-p-${j}`}>{parseBold(line)}</p>)}
+              {bulletLines.length > 0 && (
+                <ul className="ml-4 list-disc space-y-1 text-white/70">
+                  {bulletLines.map((line, j) => (
+                    <li key={`${i}-li-${j}`}>{parseBold(line)}</li>
+                  ))}
+                </ul>
+              )}
             </div>
+          );
+        }
+        if (p.trim().startsWith('- ')) {
+          const bulletLines = p
+            .split('\n')
+            .filter((line) => line.startsWith('- '))
+            .map((line) => line.substring(2));
+
+          return (
+            <ul key={i} className="ml-4 list-disc space-y-1 text-white/70">
+              {bulletLines.map((line, j) => (
+                <li key={`${i}-single-${j}`}>{parseBold(line)}</li>
+              ))}
+            </ul>
           );
         }
         return <p key={i}>{parseBold(p)}</p>;

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const SECTIONS = [
   { id: 'hero', label: 'Core Profile' },
-  { id: 'k-line', label: '10-Year Destiny' },
+  { id: 'life-curve', label: '10-Year Destiny' },
   { id: 'radar', label: 'Dimension Radar' },
   { id: 'diagnosis', label: 'Cosmic Diagnosis' },
   { id: 'next-30-days', label: 'Micro Focus' },

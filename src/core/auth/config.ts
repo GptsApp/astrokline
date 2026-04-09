@@ -14,6 +14,10 @@ import {
 } from '@/shared/lib/cookie';
 import { getUuid } from '@/shared/lib/hash';
 import { getClientIp } from '@/shared/lib/ip';
+import {
+  getRuntimeConfigValue,
+  hasRuntimeDatabase,
+} from '@/shared/lib/runtime-config.server';
 import { grantCreditsForNewUser } from '@/shared/models/credit';
 import { getEmailService } from '@/shared/services/email';
 import { grantRoleForNewUser } from '@/shared/services/rbac';
@@ -24,10 +28,16 @@ import { grantRoleForNewUser } from '@/shared/services/rbac';
 const recentVerificationEmailSentAt = new Map<string, number>();
 const VERIFICATION_EMAIL_MIN_INTERVAL_MS = 60_000;
 
-function getTrustedOrigins() {
+function getTrustedOrigins(requestOrigin?: string) {
   const origins = new Set<string>();
 
-  [envConfigs.app_url, envConfigs.auth_url].forEach((origin) => {
+  [
+    requestOrigin,
+    getRuntimeConfigValue('NEXT_PUBLIC_APP_URL'),
+    getRuntimeConfigValue('AUTH_URL'),
+    envConfigs.app_url,
+    envConfigs.auth_url,
+  ].forEach((origin) => {
     if (!origin) {
       return;
     }
@@ -115,6 +125,8 @@ async function resolveAuthBaseUrl(request?: Request) {
   }
 
   return (
+    getOrigin(getRuntimeConfigValue('AUTH_URL')) ||
+    getOrigin(getRuntimeConfigValue('NEXT_PUBLIC_APP_URL')) ||
     getOrigin(envConfigs.auth_url) ||
     getOrigin(envConfigs.app_url) ||
     requestOrigin ||
@@ -122,18 +134,21 @@ async function resolveAuthBaseUrl(request?: Request) {
   );
 }
 
-// Static auth options - NO database connection
-// This ensures zero database calls during build time
-if (process.env.NODE_ENV === 'production' && !envConfigs.auth_secret) {
-  throw new Error(
-    'AUTH_SECRET environment variable is required in production. Generate one with: openssl rand -base64 32'
-  );
+function getAuthSecret() {
+  const authSecret =
+    getRuntimeConfigValue('AUTH_SECRET') || envConfigs.auth_secret;
+
+  if (process.env.NODE_ENV === 'production' && !authSecret) {
+    throw new Error(
+      'AUTH_SECRET environment variable is required in production. Generate one with: openssl rand -base64 32'
+    );
+  }
+
+  return authSecret;
 }
 
 const authOptions = {
   appName: envConfigs.app_name,
-  secret: envConfigs.auth_secret,
-  trustedOrigins: getTrustedOrigins(),
   user: {
     // Allow persisting custom columns on user table.
     // Without this, better-auth may ignore extra properties during create/update.
@@ -179,6 +194,9 @@ export async function getAuthOptions(
   configs: Record<string, string>,
   request?: Request
 ) {
+  const baseURL = await resolveAuthBaseUrl(request);
+  const requestOrigin = getOrigin(baseURL);
+
   const emailVerificationEnabled =
     configs.email_verification_enabled === 'true' &&
     !!configs.resend_api_key &&
@@ -186,9 +204,11 @@ export async function getAuthOptions(
 
   return {
     ...authOptions,
-    baseURL: await resolveAuthBaseUrl(request),
+    secret: getAuthSecret(),
+    trustedOrigins: getTrustedOrigins(requestOrigin),
+    baseURL,
     // Add database connection only when actually needed (runtime)
-    database: (envConfigs.database_url || ['d1', 'turso'].includes(envConfigs.database_provider))
+    database: hasRuntimeDatabase()
       ? drizzleAdapter(db(), {
           provider: getDatabaseProvider(envConfigs.database_provider),
           schema: schema,
@@ -266,8 +286,9 @@ export async function getAuthOptions(
     ...(emailVerificationEnabled
       ? {
           emailVerification: {
-            // We explicitly send verification emails from the UI with a callbackURL
-            // (redirecting to /verify-email). Disabling automatic sends avoids duplicates.
+            // Sign-up passes the verify-email bridge as callbackURL so the initial
+            // better-auth verification email can land on the intended protected route.
+            // Separate UI-triggered sends are reserved for resend/unverified sign-in flows.
             sendOnSignUp: false,
             sendOnSignIn: false,
             // After user clicks the verification link, create session automatically.

@@ -116,25 +116,25 @@ export function OnboardingGuide({
   if (dismissed || allComplete) return null;
 
   return (
-    <div className="border-t border-white/8 pt-4">
+    <div className="mx-2 mt-4 rounded-md border border-primary/15 bg-gradient-to-b from-primary/5 to-transparent p-3">
       {/* Header */}
-      <div className="flex items-center justify-between px-3">
+      <div className="flex items-center justify-between">
         <button
           type="button"
           onClick={() => setCollapsed((prev) => !prev)}
           className="flex items-center gap-2 text-left"
         >
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60">
+          <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary/70">
             Getting Started
           </span>
           {collapsed ? (
-            <ChevronDown className="h-3.5 w-3.5 text-white/40" />
+            <ChevronDown className="h-3.5 w-3.5 text-primary/40" />
           ) : (
-            <ChevronUp className="h-3.5 w-3.5 text-white/40" />
+            <ChevronUp className="h-3.5 w-3.5 text-primary/40" />
           )}
         </button>
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-medium tabular-nums text-white/40">
+          <span className="text-[10px] font-medium tabular-nums text-primary/50">
             {completedCount}/{totalCount}
           </span>
           <button
@@ -149,16 +149,16 @@ export function OnboardingGuide({
       </div>
 
       {/* Progress bar */}
-      <div className="mx-3 mt-2 h-1 overflow-hidden bg-white/8">
+      <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/8">
         <div
-          className="h-full bg-primary transition-all duration-500"
+          className="h-full rounded-full bg-primary transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>
 
       {/* Steps */}
       {!collapsed && (
-        <div className="mt-3 space-y-1 px-1">
+        <div className="mt-3 space-y-0.5">
           {resolvedSteps.map((step) => (
             <button
               key={step.id}
@@ -170,7 +170,7 @@ export function OnboardingGuide({
               }}
               disabled={step.isComplete}
               className={cn(
-                'flex w-full items-center gap-3 px-2 py-2 text-left text-sm transition-colors',
+                'flex w-full items-center gap-3 rounded-sm px-2 py-2 text-left text-sm transition-colors',
                 step.isComplete
                   ? 'text-white/35 cursor-default'
                   : 'text-white/70 hover:text-white hover:bg-white/5'
@@ -178,10 +178,10 @@ export function OnboardingGuide({
             >
               <div
                 className={cn(
-                  'flex h-5 w-5 shrink-0 items-center justify-center border',
+                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border',
                   step.isComplete
                     ? 'border-emerald-400/40 bg-emerald-400/15 text-emerald-400'
-                    : 'border-white/15 bg-transparent text-transparent'
+                    : 'border-primary/25 bg-primary/5 text-transparent'
                 )}
               >
                 {step.isComplete && <Check className="h-3 w-3" />}
@@ -196,7 +196,7 @@ export function OnboardingGuide({
 
       {/* Skip link */}
       {!collapsed && (
-        <div className="mt-2 px-3 pb-2">
+        <div className="mt-2">
           <button
             type="button"
             onClick={handleDismiss}

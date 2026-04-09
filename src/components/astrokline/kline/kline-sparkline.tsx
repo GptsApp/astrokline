@@ -10,7 +10,7 @@ interface Props {
   className?: string;
 }
 
-/** Compact SVG sparkline of K-line scores for embedding in cards */
+/** Compact SVG sparkline of Life Curve scores for embedding in cards */
 export function KlineSparkline({
   data,
   width = 280,

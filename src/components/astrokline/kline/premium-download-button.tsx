@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
+import type { AiInsightData } from '@/lib/astrokline/ai-insight-cache';
 import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrokline/mock-astrology-data';
 
 const PDFDownloadLinkDynamic = dynamic(
@@ -25,11 +26,12 @@ interface PremiumDownloadButtonProps {
   profile: UserProfile;
   klineData?: DestinyScorePoint[];
   transitDetails?: Record<number, TransitEvent[]>;
+  insightData?: AiInsightData | null;
   tier?: string;
   onUpgradeClick?: () => void;
 }
 
-export function PremiumDownloadButton({ profile, klineData, transitDetails, tier = 'free', onUpgradeClick }: PremiumDownloadButtonProps) {
+export function PremiumDownloadButton({ profile, klineData, transitDetails, insightData, tier = 'free', onUpgradeClick }: PremiumDownloadButtonProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export function PremiumDownloadButton({ profile, klineData, transitDetails, tier
       className="group relative w-full sm:w-auto"
     >
       <div className="absolute -inset-1  bg-[#D4AF37]/20 blur-md transition-all duration-700 opacity-0 group-hover:opacity-100" />
-      <PDFDownloadLinkDynamic profile={profile} klineData={klineData} transitDetails={transitDetails} />
+      <PDFDownloadLinkDynamic profile={profile} klineData={klineData} transitDetails={transitDetails} insightData={insightData} />
     </motion.div>
   );
 }

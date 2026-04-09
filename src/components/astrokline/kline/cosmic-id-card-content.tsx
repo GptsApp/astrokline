@@ -105,7 +105,7 @@ export function CosmicIdCardContent({ profile, klineData, cardRef, shareUrl = 'h
         <span className="font-mono text-[9px] text-white/20">{profile.sun.sign} Season</span>
       </div>
 
-      {/* K-Line Sparkline */}
+      {/* Life Curve sparkline */}
       <div className="relative z-10 mx-5 border border-white/5 bg-white/[0.01] p-3">
         <div className="mb-1.5 flex items-center justify-between">
           <span className="font-mono text-[7px] font-bold tracking-[0.2em] text-white/25 uppercase">100-Year Destiny Curve</span>

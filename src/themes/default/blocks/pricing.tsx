@@ -53,6 +53,11 @@ import { authClient } from '@/core/auth/client';
 import { User } from '@/shared/models/user';
 import { Heading } from '@/components/astrokline/ui/heading';
 
+import {
+  getInitialPricingGroup,
+  isCurrentPlanProduct,
+} from './pricing-utils';
+
 const PENDING_CHECKOUT_KEY = 'astrokline_pending_checkout_intent';
 const PENDING_CHECKOUT_MAX_AGE_MS = 30 * 60 * 1000;
 const SUPPORT_EMAIL = 'support@astrokline.com';
@@ -240,23 +245,16 @@ export function Pricing({
     configs,
   } = useAppContext();
 
-  const [group, setGroup] = useState(() => {
-    // find current pricing item
-    const currentItem = section.items?.find(
-      (i) => i.product_id === currentSubscription?.productId
-    );
+  const [resolvedCurrentSubscription, setResolvedCurrentSubscription] =
+    useState(currentSubscription);
 
-    // First look for a group with is_featured set to true
-    const featuredGroup = section.groups?.find((g) => g.is_featured);
-
-    // Default to Yearly if exactly 2 groups (Monthly / Yearly pattern)
-    const fallbackGroup =
-      section.groups?.length === 2
-        ? section.groups[1].name
-        : section.groups?.[0]?.name;
-
-    return currentItem?.group || featuredGroup?.name || fallbackGroup || '';
-  });
+  const [group, setGroup] = useState(() =>
+    getInitialPricingGroup(
+      section.items,
+      section.groups,
+      currentSubscription?.productId
+    )
+  );
 
   // current pricing item
   const [pricingItem, setPricingItem] = useState<PricingItem | null>(null);
@@ -317,6 +315,10 @@ export function Pricing({
     }
   }, [hasMounted, isCheckSign]);
 
+  useEffect(() => {
+    setResolvedCurrentSubscription(currentSubscription);
+  }, [currentSubscription]);
+
   const resolveSignedInUser = useCallback(async () => {
     if (user?.id) {
       return user;
@@ -335,6 +337,48 @@ export function Pricing({
 
     return null;
   }, [setUser, user]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadCurrentSubscription = async () => {
+      const sessionUser = await resolveSignedInUser();
+      if (!sessionUser?.id) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/user/current-subscription', {
+          cache: 'no-store',
+        });
+        const payload = await response.json();
+
+        if (!cancelled && payload?.code === 0) {
+          setResolvedCurrentSubscription(payload.data || undefined);
+        }
+      } catch {
+        // best-effort only
+      }
+    };
+
+    void loadCurrentSubscription();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [resolveSignedInUser]);
+
+  useEffect(() => {
+    const nextGroup = getInitialPricingGroup(
+      section.items,
+      section.groups,
+      resolvedCurrentSubscription?.productId
+    );
+
+    if (nextGroup) {
+      setGroup(nextGroup);
+    }
+  }, [resolvedCurrentSubscription?.productId, section.groups, section.items]);
 
   const getPreferredProvider = useCallback(
     (item: PricingItem) => {
@@ -918,8 +962,10 @@ export function Pricing({
 
             let isCurrentPlan = false;
             if (
-              currentSubscription &&
-              currentSubscription.productId === item.product_id
+              isCurrentPlanProduct(
+                resolvedCurrentSubscription?.productId,
+                item.product_id
+              )
             ) {
               isCurrentPlan = true;
             }

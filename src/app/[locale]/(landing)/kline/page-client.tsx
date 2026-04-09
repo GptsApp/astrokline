@@ -26,6 +26,10 @@ import {
   MOCK_USER_PROFILE,
   type UserProfile,
 } from '@/lib/astrokline/mock-astrology-data';
+import {
+  buildNatalChartPayload,
+  enrichBirthDataWithTimezone,
+} from '@/lib/astrokline/birth-timezone';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 import { trackEvent } from '@/lib/astrokline/track-event';
 import {
@@ -197,18 +201,10 @@ export function KlineClient({
       let shouldResetLoading = true;
 
       try {
-        // Parse date
-        const [year, month, day] = birthData.date.split('-').map(Number);
-        const timezone = -(new Date().getTimezoneOffset() / 60);
+        const normalizedBirthData = enrichBirthDataWithTimezone(birthData);
 
         const profileToSave = {
-          year,
-          month,
-          day,
-          timeSlot: birthData.timeSlot,
-          timezone,
-          latitude: birthData.lat,
-          longitude: birthData.lon,
+          ...buildNatalChartPayload(normalizedBirthData),
         };
 
         // Fetch actual data
@@ -222,13 +218,13 @@ export function KlineClient({
 
         if (result.success && result.data) {
           const newProfile = {
-            ...apiToProfile(result.data, birthData),
+            ...apiToProfile(result.data, normalizedBirthData),
             overallAverageScore:
               result.reportData?.overallAverageScore ?? 82,
           };
           const persistedResult = {
             profile: newProfile,
-            birthData,
+            birthData: normalizedBirthData,
           };
           const cachedResult = {
             ...persistedResult,
@@ -237,33 +233,48 @@ export function KlineClient({
             transitDetails: result.reportData?.transitDetails,
           };
 
+          let resultForStorage: Record<string, unknown> = cachedResult;
+
+          if (isLoggedIn) {
+            try {
+              const saveRes = await fetch('/api/kline/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  isSelf: true,
+                  label: normalizedBirthData.name || 'Me',
+                  birthDate: normalizedBirthData.date,
+                  birthTime: normalizedBirthData.timeSlot,
+                  birthPlace: normalizedBirthData.location,
+                  birthLat: String(normalizedBirthData.lat),
+                  birthLng: String(normalizedBirthData.lon),
+                  klineResult: cachedResult,
+                }),
+              });
+
+              if (saveRes.ok) {
+                const saveJson = await saveRes.json();
+                resultForStorage = {
+                  ...(saveJson.data?.klineResult ?? cachedResult),
+                  klineId: saveJson.data?.id ?? null,
+                };
+              }
+            } catch (err) {
+              console.error('Auto-save error:', err);
+            }
+          }
+
           // The result page hydrates from localStorage first, so persist the
-          // freshly generated chart before we navigate there.
-          saveKlineResult(cachedResult);
+          // freshest saved chart before navigation.
+          saveKlineResult(resultForStorage);
           const hydratedResult = getSavedKlineResult();
           if (!hydratedResult?.profile) {
-            throw new Error('Failed to persist generated K-Line result');
+            throw new Error('Failed to persist generated chart result');
           }
           setProfile(newProfile);
           trackEvent('kline_result_loaded');
 
-          // Auto-save for logged-in users
-          if (isLoggedIn) {
-            fetch('/api/kline/save', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                isSelf: true,
-                label: birthData.name || 'Me',
-                birthDate: birthData.date,
-                birthTime: birthData.timeSlot,
-                birthPlace: birthData.location,
-                birthLat: String(birthData.lat),
-                birthLng: String(birthData.lon),
-                klineResult: cachedResult,
-              }),
-            }).catch((err) => console.error('Auto-save error:', err));
-          } else {
+          if (!isLoggedIn) {
             // Show registration nudge after 3 seconds for non-logged-in users
             setTimeout(() => setShowNudge(true), 3000);
           }
@@ -474,11 +485,11 @@ export function KlineClient({
               <Heading level={2} variant="section" className="text-3xl leading-tight text-white md:text-4xl">
                 Timing Is Everything: <br />
                 <span className="text-primary italic">
-                  Steve Jobs&apos; K-Line
+                  Steve Jobs&apos; Life Curve
                 </span>
               </Heading>
               <p className="text-base leading-relaxed text-white/60">
-                Success isn't just hard work; it's doing the right thing at the right time. His cosmic K-Line perfectly mirrors his real-world turning points.
+                Success isn't just hard work; it's doing the right thing at the right time. His timing curve mirrors his real-world turning points with unusual clarity.
               </p>
               <ul className="space-y-4">
                 <li className="flex gap-4">
@@ -510,7 +521,7 @@ export function KlineClient({
                       2007: Maximum Peak (The iPhone)
                     </strong>
                     <span className="text-sm text-white/50">
-                      The K-Line peaks. Perfect alignment between his natal promise and transit timing. He launches the iPhone, changing the world forever.
+                      The curve peaks. Perfect alignment between his natal promise and transit timing. He launches the iPhone, changing the world forever.
                     </span>
                   </div>
                 </li>
@@ -527,14 +538,7 @@ export function KlineClient({
             </div>
             <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden  border border-white/10 bg-black p-6 shadow-2xl md:aspect-[4/3]">
               {/* Fake abstract chart representing the case study */}
-              <div
-                className="absolute inset-0 opacity-20"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                  backgroundSize: '40px 40px',
-                }}
-              />
+              <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:40px_40px]" />
               <svg
                 viewBox="0 0 400 300"
                 className="h-full w-full drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]"
@@ -612,12 +616,12 @@ export function KlineClient({
                   question:
                     'What if I make a major decision during a "Weak Window"?',
                   answer:
-                    "Weak windows (dips in your K-Line) represent high cosmic friction, usually driven by heavy Saturn or Pluto transits. Pushing for rapid expansion during these periods often leads to burnout, financial loss, or blocked progress. These years are designed for defense—protecting assets, cutting losses, and restructuring. Knowing it's a weak window prevents you from blaming yourself for the friction.",
+                    "Weak windows, the dips in your Life Curve, represent high cosmic friction, usually driven by heavy Saturn or Pluto transits. Pushing for rapid expansion during these periods often leads to burnout, financial loss, or blocked progress. These years are designed for defense: protecting assets, cutting losses, and restructuring. Knowing it's a weak window prevents you from blaming yourself for the friction.",
                 },
                 {
                   question: 'Does this actually predict my future?',
                   answer:
-                    "AstroKline doesn't predict events; it predicts the 'weather'. If we tell you it's going to rain (high pressure transit), you can still choose to go outside—but you'll bring an umbrella. By mapping your planetary transits into a K-Line, we show you exactly when your environment will be supportive (high momentum) and when it will be resistant.",
+                    "AstroKline doesn't predict events; it predicts the weather. If we tell you it's going to rain, meaning a high-pressure transit, you can still choose to go outside, but you'll bring an umbrella. By mapping your planetary transits into a Life Curve, we show you exactly when your environment will be supportive, high momentum, and when it will be resistant.",
                 },
                 {
                   question: 'Why do you need my exact birth time and place?',
@@ -627,7 +631,7 @@ export function KlineClient({
                 {
                   question: 'What if I don\'t know my exact birth time?',
                   answer:
-                    "If you don't know your exact time, you can select 'I don't know' or estimate a time block. Our system will generate a baseline K-Line focusing on slower-moving outer planets (Jupiter, Saturn, Uranus, etc.) which dominate long-term life chapters. While you lose some exact day-to-day precision, your macro 10-year trends remain highly accurate.",
+                    "If you don't know your exact time, you can select 'I don't know' or estimate a time block. Our system will generate a baseline Life Curve focusing on slower-moving outer planets, including Jupiter, Saturn, and Uranus, which dominate long-term life chapters. While you lose some exact day-to-day precision, your macro 10-year trends remain highly accurate.",
                 },
               ].map((faq, i) => (
                 <AccordionItem
@@ -690,7 +694,7 @@ export function KlineClient({
               </div>
               <Heading level={3} className="text-2xl font-bold">Unlock Your Full Blueprint</Heading>
               <p className="text-muted-foreground mt-2 text-sm">
-                Choose a plan to unlock your complete 10-year destiny K-Line and
+                Choose a plan to unlock your complete 10-year Life Curve and
                 deep analysis.
               </p>
             </div>

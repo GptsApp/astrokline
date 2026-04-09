@@ -4,9 +4,12 @@ import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { signIn } from '@/core/auth/client';
-import { defaultLocale } from '@/config/locale';
 import { Button } from '@/shared/components/ui/button';
 import { useAppContext } from '@/shared/contexts/app';
+import {
+  addLocalePrefix,
+  sanitizeInternalCallbackPath,
+} from '@/shared/lib/auth-callback';
 import { cn } from '@/shared/lib/utils';
 import { Button as ButtonType } from '@/shared/types/blocks/common';
 
@@ -38,22 +41,14 @@ export function SocialProviders({
   const locale = useLocale();
 
   const { setIsShowSignModal } = useAppContext();
-
-  if (callbackUrl) {
-    if (
-      locale !== defaultLocale &&
-      callbackUrl.startsWith('/') &&
-      !callbackUrl.startsWith(`/${locale}`)
-    ) {
-      callbackUrl = `/${locale}${callbackUrl}`;
-    }
-  }
+  const safeCallbackUrl = sanitizeInternalCallbackPath(callbackUrl || '/');
+  const localizedCallbackUrl = addLocalePrefix(safeCallbackUrl, locale);
 
   const handleSignIn = async ({ provider }: { provider: string }) => {
     await signIn.social(
       {
         provider: provider,
-        callbackURL: callbackUrl,
+        callbackURL: localizedCallbackUrl,
       },
       {
         onRequest: (ctx) => {

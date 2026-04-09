@@ -1,5 +1,7 @@
 import type { NatalChartResult } from '@/lib/astrology/engine';
 
+import type { AiInsightData } from './ai-insight-cache';
+
 import {
   buildFullPersonalizedReport,
   buildPersonalizedKlineTimeline,
@@ -19,9 +21,12 @@ import type {
 export interface StoredBirthContext extends BirthProfileInput {
   lat?: number | string | null;
   lon?: number | string | null;
+  timezoneValue?: number | null;
+  timeZoneId?: string | null;
 }
 
 export interface StoredKlineResult {
+  klineId?: string | null;
   profile?: UserProfile | null;
   birthData?: StoredBirthContext | null;
   rawApiData?: NatalChartResult | null;
@@ -29,6 +34,7 @@ export interface StoredKlineResult {
   transitDetails?: Record<number, TransitEvent[]> | null;
   radarData?: RadarData[] | null;
   destinyReading?: DestinyReading | null;
+  aiInsight?: AiInsightData | null;
   next30Days?: Next30DaysGuidance | null;
   currentEnergy?: CurrentEnergyData | null;
 }

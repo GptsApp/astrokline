@@ -1,8 +1,8 @@
+import { redirect } from '@/core/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { Empty } from '@/shared/blocks/common';
 import { FormCard } from '@/shared/blocks/form';
-import { getNonceStr } from '@/shared/lib/hash';
 import {
   findApikeyById,
   updateApikey,
@@ -15,9 +15,9 @@ import { Form as FormType } from '@/shared/types/blocks/form';
 export default async function EditApiKeyPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }) {
-  const { id } = await params;
+  const { locale, id } = await params;
   const apikey = await findApikeyById(id);
   if (!apikey) {
     return <Empty message="API key not found" />;
@@ -25,10 +25,11 @@ export default async function EditApiKeyPage({
 
   const user = await getUserInfo();
   if (!user) {
-    return <Empty message="no auth" />;
+    redirect({ href: '/sign-in', locale });
   }
+  const currentUser = user!;
 
-  if (apikey.userId !== user.id) {
+  if (apikey.userId !== currentUser.id) {
     return <Empty message="no permission" />;
   }
 
@@ -46,7 +47,7 @@ export default async function EditApiKeyPage({
       },
     ],
     passby: {
-      user: user,
+      user: currentUser,
       apikey: apikey,
     },
     data: apikey,
@@ -72,8 +73,6 @@ export default async function EditApiKeyPage({
         if (!title?.trim()) {
           throw new Error('title is required');
         }
-
-        const key = `sk-${getNonceStr(32)}`;
 
         const updatedApikey: UpdateApikey = {
           title: title.trim(),

@@ -1,13 +1,22 @@
+import { getRuntimeGeminiApiKey } from '@/shared/lib/runtime-config.server';
+
 import { UserProfile } from './mock-astrology-data';
 import { getRichFallbackInsight } from './rich-fallback-insight';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 const GEMINI_API_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
-const GEMINI_TIMEOUT_MS = 25000;
+const DEFAULT_GEMINI_TIMEOUT_MS = 25000;
+const LONG_GEMINI_TIMEOUT_MS = 60000;
+const PERSONALITY_INSIGHT_MAX_TOKENS = 6144;
 
-if (!GEMINI_API_KEY) {
-  console.warn('[AstroKline] ⚠️ GEMINI_API_KEY is not set. AI insights will use fallback responses.');
+function requireGeminiApiKey() {
+  const geminiApiKey = getRuntimeGeminiApiKey();
+
+  if (!geminiApiKey) {
+    throw new Error('GEMINI_API_KEY is not configured');
+  }
+
+  return geminiApiKey;
 }
 
 // ─── System Prompt ───
@@ -114,26 +123,27 @@ ${formatProfileForPrompt(profile)}
 You are a world-renowned Evolutionary Astrologer blending Western psychological astrology with Vedic timing wisdom (Nakshatras, Dasha periods). Your reading style: piercing, soul-striking, warm yet honest. You speak like a wise, trusted counselor who also happens to be a brilliant astrologer. NO generic "horoscope" fluff. ALL RESPONSES MUST BE IN ENGLISH.
 
 ## Mission Objective
-Generate a deeply personal astrological analysis report that makes the user feel truly seen and understood. The RELATIONSHIPS section must be the longest and most emotionally resonant — this is what users care about most. Include a "What Your Partner Needs to Know About You" subsection within relationships that users will want to screenshot and share. Reference the user's Moon Nakshatra for emotional texture.
+Generate a deeply personal astrological analysis report that makes the user feel truly seen and understood. The RELATIONSHIPS section must be the longest and most emotionally resonant because it matters most to the user. Include a "What Your Partner Needs to Know About You" subsection within relationships that users will want to screenshot and share. Reference the user's Moon Nakshatra for emotional texture when you can do so without inventing data.
 
 ## Absolute Execution Laws (Violation means complete failure)
 1. **Pronouns & POV**: Speak to the user entirely in the SECOND PERSON ("You", "Your"). Never use the third person.
 2. **Astrological Jargon & Hardcore Analysis**: Every sub-section MUST **explicitly cite specific sign placements, houses, or aspects** from their chart as the basis for your deduction.
-3. **Terrifying Word Count Requirements**: Every section (e.g., CAREER, WEALTH) MUST be deeply excavated. Output at least **5 long paragraphs, no less than 1000 words per section**. Dig into psychological motivations, childhood roots, real-world challenges, and specific breakthrough strategies. Provide a $1000-value consultation experience.
-4. **Mandatory Action Plan**: At the very end of EVERY section (except nickname/coreQuote), you MUST append a specific markdown block titled exactly: \`\\n\\n### Next Steps\\n\` followed by a 3-step, highly specific, bulleted action plan. Be warm and direct.
+3. **Hard Length Budget**: Be detailed but finish within a single fast Gemini response. Use 2-3 compact paragraphs per section. Target lengths: summary 180-260 words, relationships 260-360 words, career/wealth/health 160-240 words each, strengths/warnings 140-220 words each.
+4. **Mandatory Action Plan**: At the very end of EVERY section (except nickname/coreQuote), you MUST append a specific markdown block titled exactly: "\n\n### Next Steps\n" followed by a 3-step, highly specific, bulleted action plan. Be warm and direct.
+5. **No Filler**: Avoid repetition, do not restate the same placement twice unless drawing a new conclusion, and keep the total JSON response concise enough to return reliably in one request.
 
 ## Output Format Requirements
 You MUST STRICTLY output a valid JSON object. Do not include markdown code block tags, just the raw JSON. The JSON must exactly match this interface:
 {
   "nickname": "[A 3-6 word soul moniker, e.g., 'The Quiet Storm']",
   "coreQuote": "[One piercing soul quote, 15-30 words, revealing their core life script]",
-  "summary": "[Core Personality Blueprint, 1000+ words. What mask do you wear? What is your core attachment style? Reference Moon Nakshatra for emotional texture. Who are you meant to become? \\n\\n### Next Steps\\n- Step 1...]",
-  "relationships": "[Love, Intimacy & Connection, 1500+ words. THIS IS THE MOST IMPORTANT SECTION. Deep analysis of Venus, Mars, Moon, 7th House, 5th House. Diagnose attachment style (anxious/avoidant/secure). What kind of partner does this chart call for? When does the next significant love window open? Include a subsection: 'What Your Partner Needs to Know About You' (3-4 sentences that feel so accurate users will screenshot them). \\n\\n### Next Steps\\n- Step 1...]",
-  "career": "[Career & Life Direction, 1000+ words. Deconstruct 10th House, 6th House. What makes you feel stuck? When does the next career breakthrough arrive? \\n\\n### Next Steps\\n- Step 1...]",
-  "wealth": "[Wealth & Financial Security, 800+ words. Analysis of 2nd/8th Houses. When is the best window for building lasting financial security? \\n\\n### Next Steps\\n- Step 1...]",
-  "health": "[Energy & Wellbeing, 800+ words. How does emotional stress show up in your body? Specific rituals for your elemental balance. \\n\\n### Next Steps\\n- Step 1...]",
-  "strengths": "[Your Hidden Superpowers, 800+ words. The 3 gifts your chart carries that most people never discover. \\n\\n### Next Steps\\n- Step 1...]",
-  "warnings": "[Patterns to Watch, 800+ words. Self-sabotage patterns traced to specific placements. Delivered with compassion, not fear. \\n\\n### Next Steps\\n- Step 1...]"
+  "summary": "[Core Personality Blueprint, 180-260 words. What mask do you wear? What is your core attachment style? Who are you meant to become? \n\n### Next Steps\n- Step 1...]",
+  "relationships": "[Love, Intimacy & Connection, 260-360 words. THIS IS THE MOST IMPORTANT SECTION. Deep analysis of Venus, Mars, Moon, 7th House, 5th House. Diagnose attachment style (anxious/avoidant/secure). What kind of partner does this chart call for? When does the next significant love window open? Include a subsection: 'What Your Partner Needs to Know About You' (3-4 sentences users will want to screenshot). \n\n### Next Steps\n- Step 1...]",
+  "career": "[Career & Life Direction, 160-240 words. Deconstruct 10th House and 6th House. What makes you feel stuck? When does the next career breakthrough arrive? \n\n### Next Steps\n- Step 1...]",
+  "wealth": "[Wealth & Financial Security, 160-220 words. Analysis of 2nd/8th Houses. When is the best window for building lasting financial security? \n\n### Next Steps\n- Step 1...]",
+  "health": "[Energy & Wellbeing, 160-220 words. How does emotional stress show up in your body? Specific rituals for your elemental balance. \n\n### Next Steps\n- Step 1...]",
+  "strengths": "[Your Hidden Superpowers, 140-220 words. The 3 gifts your chart carries that most people never discover. \n\n### Next Steps\n- Step 1...]",
+  "warnings": "[Patterns to Watch, 140-220 words. Self-sabotage patterns traced to specific placements. Delivered with compassion, not fear. \n\n### Next Steps\n- Step 1...]"
 }`;
 
   try {
@@ -147,7 +157,10 @@ You MUST STRICTLY output a valid JSON object. Do not include markdown code block
       warnings: string;
       nickname: string;
       coreQuote: string;
-    }>(userPrompt);
+    }>(userPrompt, {
+      maxTokens: PERSONALITY_INSIGHT_MAX_TOKENS,
+      timeoutMs: LONG_GEMINI_TIMEOUT_MS,
+    });
     return response;
   } catch (error) {
     console.error('Gemini personality insight failed. Details:', error);
@@ -204,14 +217,13 @@ You MUST STRICTLY output a valid JSON object. Do not include markdown code block
 // ─── Call Gemini API ───
 export async function callGemini(
   userPrompt: string,
-  maxTokens: number = 1024
+  maxTokens: number = 1024,
+  timeoutMs: number = DEFAULT_GEMINI_TIMEOUT_MS
 ): Promise<string> {
-  if (!GEMINI_API_KEY) {
-    throw new Error('GEMINI_API_KEY is not configured');
-  }
+  const geminiApiKey = requireGeminiApiKey();
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   let response: Response;
   try {
@@ -219,7 +231,7 @@ export async function callGemini(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-goog-api-key': GEMINI_API_KEY,
+        'x-goog-api-key': geminiApiKey,
       },
       signal: controller.signal,
       body: JSON.stringify({
@@ -253,13 +265,19 @@ export async function callGemini(
 }
 
 // ─── Call Gemini API and get structured JSON response ───
-export async function callGeminiJson<T = any>(userPrompt: string): Promise<T> {
-  if (!GEMINI_API_KEY) {
-    throw new Error('GEMINI_API_KEY is not configured');
-  }
+export async function callGeminiJson<T = any>(
+  userPrompt: string,
+  options: {
+    maxTokens?: number;
+    timeoutMs?: number;
+  } = {}
+): Promise<T> {
+  const geminiApiKey = requireGeminiApiKey();
+  const maxTokens = options.maxTokens ?? 16384;
+  const timeoutMs = options.timeoutMs ?? DEFAULT_GEMINI_TIMEOUT_MS;
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   let response: Response;
   try {
@@ -267,7 +285,7 @@ export async function callGeminiJson<T = any>(userPrompt: string): Promise<T> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-goog-api-key': GEMINI_API_KEY,
+        'x-goog-api-key': geminiApiKey,
       },
       signal: controller.signal,
       body: JSON.stringify({
@@ -283,7 +301,7 @@ export async function callGeminiJson<T = any>(userPrompt: string): Promise<T> {
         generationConfig: {
           temperature: 0.7,
           topP: 0.9,
-          maxOutputTokens: 16384,
+          maxOutputTokens: maxTokens,
           responseMimeType: 'application/json',
         },
       }),
@@ -432,14 +450,13 @@ export interface GeminiMessage {
 export async function callGeminiMultiTurn(
   messages: GeminiMessage[],
   systemPrompt: string = ASK_CHART_SYSTEM_PROMPT,
-  maxTokens: number = 2048
+  maxTokens: number = 2048,
+  timeoutMs: number = DEFAULT_GEMINI_TIMEOUT_MS
 ): Promise<string> {
-  if (!GEMINI_API_KEY) {
-    throw new Error('GEMINI_API_KEY is not configured');
-  }
+  const geminiApiKey = requireGeminiApiKey();
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   let response: Response;
   try {
@@ -447,7 +464,7 @@ export async function callGeminiMultiTurn(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-goog-api-key': GEMINI_API_KEY,
+        'x-goog-api-key': geminiApiKey,
       },
       signal: controller.signal,
       body: JSON.stringify({

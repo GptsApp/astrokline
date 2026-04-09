@@ -33,7 +33,7 @@ export function QuotaLimitModal({
       ? {
           name: 'Pro',
           detail:
-            '30 saved K-Lines / month + exact transit detail + premium dashboard tools',
+            '30 saved charts per month + exact transit detail + premium dashboard tools',
         }
       : normalizedTier === 'PREMIUM'
         ? {
@@ -44,7 +44,7 @@ export function QuotaLimitModal({
         : {
             name: 'Lite',
             detail:
-              '10 saved K-Lines / month + career, wealth, love, health AI modules',
+              '10 saved charts per month + career, wealth, love, health AI modules',
           };
 
   return (
@@ -69,7 +69,7 @@ export function QuotaLimitModal({
 
         {/* Title */}
         <Heading level={3} className="text-foreground mb-2 text-center text-xl font-bold">
-          Query Limit Reached
+          Chart Limit Reached
         </Heading>
 
         {/* Status */}

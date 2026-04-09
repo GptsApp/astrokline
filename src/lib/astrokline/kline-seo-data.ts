@@ -10,7 +10,7 @@ export const KLINE_SEO_CONTENT = {
       {
         title: 'Real-Time Planetary Transits',
         description:
-          'Your Destiny K-Line is calculated by analyzing the current position of all major planets (from moving fast like the Moon, to painfully slow like Pluto) against the static positions of planets at your exact moment of birth.',
+          'Your Destiny Life Curve is calculated by analyzing the current position of all major planets, from the fast-moving Moon to slow Pluto, against the static positions of planets at your exact moment of birth.',
         icon: 'Globe',
         image: {
           src: '/images/kline-preview.png',
@@ -20,7 +20,7 @@ export const KLINE_SEO_CONTENT = {
           {
             title: 'Hard Angles = Crossroads',
             description:
-              'Squares and Oppositions create necessary friction for growth. We map these as dips on your K-Line.',
+              'Squares and oppositions create necessary friction for growth. We map these as dips on your Life Curve.',
           },
           {
             title: 'Soft Angles = Flow',
@@ -57,7 +57,7 @@ export const KLINE_SEO_CONTENT = {
   audience: {
     id: 'audience',
     title: 'Who is the',
-    highlight_text: 'Destiny K-Line',
+    highlight_text: 'Destiny Life Curve',
     description:
       'Designed for those who want actionable foresight, not vague generalizations. Connect with your cosmic timing.',
     tabs: [
@@ -66,7 +66,7 @@ export const KLINE_SEO_CONTENT = {
         icon: 'Compass',
         headline: 'Navigate Major Life Transitions with Clarity',
         description:
-          'Should you change careers now or wait six months? Is this relationship undergoing a temporary stress test or a fundamental breaking point? Your K-Line shows you the weather forecast for your life so you can pack an umbrella or set sail.',
+          'Should you change careers now or wait six months? Is this relationship undergoing a temporary stress test or a fundamental breaking point? Your Life Curve shows the weather forecast for your life so you can pack an umbrella or set sail.',
         benefits: [
           'Identify peak periods for career leaps',
           "Prepare for unavoidable 'Crossroads' periods",
@@ -82,7 +82,7 @@ export const KLINE_SEO_CONTENT = {
         icon: 'Star',
         headline: 'A Professional Transit Tool in Your Pocket',
         description:
-          'Skip the complex ephemeris tables and manual transit calculations. The K-Line instantly visualizes heavy outer-planet transits (Saturn, Uranus, Pluto) to your personal inner planets visually.',
+          'Skip the complex ephemeris tables and manual transit calculations. The Life Curve instantly visualizes heavy outer-planet transits, including Saturn, Uranus, and Pluto, against your personal inner planets.',
         benefits: [
           'Instant visual mapping of complex aspects',
           'Tracks long-term Pluto/Neptune generations',
@@ -116,7 +116,7 @@ export const KLINE_SEO_CONTENT = {
         icon: 'Cpu',
       },
       {
-        title: '3. Read Your K-Line',
+        title: '3. Read Your Life Curve',
         description:
           "Instantly see your life's peaks and valleys, with tailored advice for navigating each phase.",
         icon: 'LineChart',

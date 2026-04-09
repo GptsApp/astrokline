@@ -25,10 +25,10 @@
         "items": [
           {
             "title": "Gratis",
-            "description": "Mira tu K-Line de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
+            "description": "Mira tu Curva de Vida de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
             "features_title": "Incluye",
             "features": [
-              "Curva K-Line completa de 100 años",
+              "Curva de Vida completa de 100 años",
               "Puntuación de destino y dirección de tendencia",
               "Tarjeta de ID Cósmica — perfil compartible",
               "1 generación de carta de por vida",
@@ -42,7 +42,7 @@
             "is_featured": false,
             "tip": "Gratis",
             "button": {
-              "title": "Ver Mi K-Line Gratis",
+              "title": "Ver Mi Curva Gratis",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -105,10 +105,10 @@
           },
           {
             "title": "Gratis",
-            "description": "Mira tu K-Line de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
+            "description": "Mira tu Curva de Vida de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
             "features_title": "Incluye",
             "features": [
-              "Curva K-Line completa de 100 años",
+              "Curva de Vida completa de 100 años",
               "Puntuación de destino y dirección de tendencia",
               "Tarjeta de ID Cósmica — perfil compartible",
               "1 generación de carta de por vida",
@@ -122,7 +122,7 @@
             "is_featured": false,
             "tip": "Gratis",
             "button": {
-              "title": "Ver Mi K-Line Gratis",
+              "title": "Ver Mi Curva Gratis",
               "url": "/pricing"
             },
             "product_id": "free-yearly",

@@ -15,6 +15,7 @@ import {
 import { useSession } from '@/core/auth/client';
 import { useRouter } from '@/core/i18n/navigation';
 import { persistBirthData, clearSavedKlineResult } from '@/components/astrokline/ui/birth-info-context';
+import { enrichBirthDataWithTimezone } from '@/lib/astrokline/birth-timezone';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
@@ -51,14 +52,7 @@ export function Hero() {
 
       {/* Grid Pattern */}
       <div className="pointer-events-none absolute inset-0 bg-[url('/textures/noise.svg')] opacity-20 mix-blend-overlay" />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
-          backgroundSize: '32px 32px',
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_2px_2px,rgba(255,255,255,0.15)_1px,transparent_0)] [background-size:32px_32px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px] px-6 text-center">
         <motion.div
@@ -155,24 +149,11 @@ export function Hero() {
             <div className="pointer-events-none absolute inset-0 z-10  border border-white/5" />
 
             {/* The Animated AI Studio Edge Light (Masked specifically to the border) */}
-            <div
-              className="pointer-events-none absolute inset-[-1px] z-20 overflow-hidden -[17px]"
-              style={{
-                padding: '1.5px', // Defines the thickness of the glow border
-                WebkitMask:
-                  'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                WebkitMaskComposite: 'xor',
-                maskComposite: 'exclude',
-              }}
-            >
+            <div className="pointer-events-none absolute inset-[-1px] z-20 overflow-hidden [padding:1.5px] [-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] [-webkit-mask-composite:xor] [mask-composite:exclude]">
               <motion.div
-                className="absolute top-1/2 left-1/2 h-[2000px] w-[2000px] origin-center -translate-x-1/2 -translate-y-1/2 opacity-70 transition-opacity group-hover:opacity-100"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-                style={{
-                  background:
-                    'conic-gradient(from 0deg, transparent 75%, rgba(212,175,55,0.2) 85%, rgba(252,221,115,1) 100%)',
-                }}
+                className="absolute top-1/2 left-1/2 h-[2000px] w-[2000px] origin-center -translate-x-1/2 -translate-y-1/2 opacity-70 transition-opacity group-hover:opacity-100 bg-[conic-gradient(from_0deg,transparent_75%,rgba(212,175,55,0.2)_85%,rgba(252,221,115,1)_100%)]"
               />
             </div>
 
@@ -203,17 +184,19 @@ export function Hero() {
                     coordinates.lon !== null
                   ) {
                     clearSavedKlineResult();
-                    persistBirthData({
-                      name,
-                      gender: '',
-                      date: dob,
-                      timeSlot: toTimeSlot(time),
-                      location,
-                      lat: coordinates.lat,
-                      lon: coordinates.lon,
-                    });
+                    persistBirthData(
+                      enrichBirthDataWithTimezone({
+                        name,
+                        gender: '',
+                        date: dob,
+                        timeSlot: toTimeSlot(time),
+                        location,
+                        lat: coordinates.lat,
+                        lon: coordinates.lon,
+                      })
+                    );
                     
-                    router.push('/kline/result');
+                    router.push('/kline');
                   }
                 }}
               >

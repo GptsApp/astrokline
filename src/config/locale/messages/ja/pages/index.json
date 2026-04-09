@@ -16,12 +16,12 @@
         "block": "astro-hero",
         "title1": "あなたの出生図にはタイミングの地図が隠されています。",
         "title2": "私たちはそれを可視化しました。",
-        "highlight_text": "K-Line",
-        "description": "多くの人は、自分の宇宙の天気を知らずに、キャリアの転機、恋愛の決断、そして金銭的な賭けに出ています。AstroKlineは、あなたの正確な出生データをK-Lineに変換し、ピーク、谷、そして転換点が訪れる前にそれを確認できるようにします。",
+        "highlight_text": "人生曲線",
+        "description": "多くの人は、自分の宇宙の天気を知らずに、キャリアの転機、恋愛の決断、そして金銭的な賭けに出ています。AstroKlineは、あなたの正確な出生データを人生曲線に変換し、ピーク、谷、そして転換点が訪れる前にそれを確認できるようにします。",
         "badge": "Swiss Ephemeris · 高精度占星術",
         "announcement": {
           "badge": "V2.0",
-          "title": "今日のK-Lineリーディング",
+          "title": "今日の人生曲線リーディング",
           "url": "/kline",
           "subtitle": "最初のチャートを無料で始める"
         },
@@ -41,7 +41,7 @@
       "kline-preview": {
         "id": "kline-preview",
         "block": "astro-kline-preview",
-        "title": "Your Birth Chart, Turned Into a K-Line.",
+        "title": "あなたの出生図を人生曲線に。",
         "label": "100-Year Destiny Trajectory",
         "description": "See where your long-term highs, lows, and reversals are likely to happen.",
         "className": "astro-starfield"
@@ -60,7 +60,7 @@
         "title2": "ダッシュボード",
         "description": "私たちは曖昧な星占いはしません。正確な天文歴データを使用し、あなたの人生の勢い、摩擦、ターニングポイントを明確な戦術的チャートにプロットします。",
         "card1": {
-           "title": "全人生K-Lineマップ",
+           "title": "一生分の人生曲線マップ",
            "desc": "何十年にもわたるエネルギーのピークと谷を視覚化します。現在が勢いのある拡大期か、摩擦の多い保護期かを瞬時に把握します。",
            "tooltip": "スコア: 92 (ピーク年)"
         },
@@ -97,7 +97,7 @@
         "id": "testimonials",
         "block": "astro-testimonials",
         "title": "They Saw It Coming. You Can Too.",
-        "description": "Real stories from people who used their K-Line to dodge setbacks and seize the right moments."
+        "description": "人生曲線を使って遠回りを避け、適切なタイミングをつかんだ人たちの実例です。"
       },
       "pricing": {
         "id": "pricing",
@@ -121,7 +121,7 @@
             "description": "2026年のあなたのチャートにおける1つの重要な転機を即座にアンロックし、100年の軌跡を確認します。",
             "features_title": "含まれるもの",
             "features": [
-              "Full 100-year K-Line curve",
+              "100年間の人生曲線",
               "AI-powered core reading",
               "Yearly momentum insights",
               "Raw natal chart data",
@@ -135,7 +135,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "See My K-Line Free",
+              "title": "無料で人生曲線を見る",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -146,7 +146,7 @@
             "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines per month",
+              "月10件のチャート保存",
               "Career, Wealth, Love & Health breakdowns",
               "Annual transit summaries per year",
               "Personal dashboard with saved reports",
@@ -172,7 +172,7 @@
             "label": "Best for Big Decisions",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines per month",
+              "月30件のチャート保存",
               "Click any year for instant deep reading",
               "Strengths & Blindspots analysis",
               "Exact transit detail for every turning year",
@@ -196,10 +196,10 @@
           },
           {
             "title": "Free",
-            "description": "See your 100-year K-Line and find out what's coming.",
+            "description": "100年間の人生曲線を見て、これから起こる流れをつかみましょう。",
             "features_title": "Includes",
             "features": [
-              "Full 100-year K-Line curve",
+              "100年間の人生曲線",
               "AI-powered core reading",
               "Yearly momentum insights",
               "Raw natal chart data",
@@ -213,7 +213,7 @@
             "is_featured": false,
             "tip": "Free",
             "button": {
-              "title": "See My K-Line Free",
+              "title": "無料で人生曲線を見る",
               "url": "/pricing"
             },
             "product_id": "free-yearly",
@@ -224,7 +224,7 @@
             "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "10 saved K-Lines per month",
+              "月10件のチャート保存",
               "Career, Wealth, Love & Health breakdowns",
               "Annual transit summaries per year",
               "Personal dashboard with saved reports",
@@ -251,7 +251,7 @@
             "label": "Best for Big Decisions",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "30 saved K-Lines per month",
+              "月30件のチャート保存",
               "Click any year for instant deep reading",
               "Strengths & Blindspots analysis",
               "Exact transit detail for every turning year",
@@ -280,7 +280,7 @@
         "id": "faq",
         "block": "astro-faq",
         "title": "Questions Before You Start",
-        "description": "Everything you need to know about your K-Line and how it's built."
+        "description": "人生曲線とは何か、どう作られるのかをまとめて確認できます。"
       },
       "cta": {
         "id": "cta",
@@ -328,7 +328,7 @@
           "how_to_read": "マーカーの読み解き方",
           "markers_desc1": "金色のラインは、あなたの全体的な勢いの軌跡です。これが上昇している時、外部要因は概ね拡大をサポートしています。",
           "markers_desc2": "カーブ上のノードは正確なトランジットのヒットを示します。明るいノードをクリックすると、その特定の年の占星術的な天候についてのAI分析が提供されます。",
-          "reading_title": "K-Line リーディング",
+          "reading_title": "人生曲線リーディング",
           "teaser_hook": "システムが <strong>{year}年</strong> に主要な転換点を検出しました。これは今後3年間で最も重要な決断の時期となる可能性があります。",
           "bands": {
             "expansion": { "label": "成長期", "summary": "目に見える行動を起こし、勢いを具体的な成果に変えましょう。" },

@@ -11,7 +11,7 @@
     "nav": {
       "items": [
         {
-          "title": "K-Line",
+          "title": "Life Curve",
           "url": "/kline"
         },
         {
@@ -55,7 +55,7 @@
           "icon": "LayoutDashboard"
         },
         {
-          "title": "K-Line",
+          "title": "Life Curve",
           "url": "/kline"
         },
         {
@@ -116,7 +116,7 @@
               "url": "/#features"
             },
             {
-              "title": "K-Line",
+              "title": "Life Curve",
               "url": "/kline"
             },
             {
@@ -167,7 +167,7 @@
         }
       ]
     },
-    "copyright": "© 2026 AstroKline. AI-powered astrology meets K-Line precision. All rights reserved.",
+    "copyright": "© 2026 AstroKline. AI-powered astrology with life-timing clarity. All rights reserved.",
     "show_theme": true,
     "show_locale": true,
     "show_built_with": false

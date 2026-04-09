@@ -25,10 +25,10 @@
         "items": [
           {
             "title": "無料",
-            "description": "100年間のK-Lineチャートを確認し、コスミックIDカードを生成 — 完全無料、永久に。",
+            "description": "100年間の人生曲線を確認し、コスミックIDカードを生成 — 完全無料、永久に。",
             "features_title": "含まれるもの",
             "features": [
-              "100年間の完全なK-Lineカーブ",
+              "100年間の完全な人生曲線",
               "全体の運命スコアとトレンド方向",
               "コスミックIDカード — シェア可能なプロフィール",
               "生涯で1回のチャート生成",
@@ -42,7 +42,7 @@
             "is_featured": false,
             "tip": "無料",
             "button": {
-              "title": "無料でK-Lineを見る",
+              "title": "無料で人生曲線を見る",
               "url": "/pricing"
             },
             "product_id": "free-monthly",
@@ -105,10 +105,10 @@
           },
           {
             "title": "無料",
-            "description": "100年間のK-Lineチャートを確認し、コスミックIDカードを生成 — 完全無料、永久に。",
+            "description": "100年間の人生曲線を確認し、コスミックIDカードを生成 — 完全無料、永久に。",
             "features_title": "含まれるもの",
             "features": [
-              "100年間の完全なK-Lineカーブ",
+              "100年間の完全な人生曲線",
               "全体の運命スコアとトレンド方向",
               "コスミックIDカード — シェア可能なプロフィール",
               "生涯で1回のチャート生成",
@@ -122,7 +122,7 @@
             "is_featured": false,
             "tip": "無料",
             "button": {
-              "title": "無料でK-Lineを見る",
+              "title": "無料で人生曲線を見る",
               "url": "/pricing"
             },
             "product_id": "free-yearly",

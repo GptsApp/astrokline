@@ -73,7 +73,7 @@ export function getDailyEnergy(
 }
 
 /**
- * Extract current year score from K-Line data.
+ * Extract current year score from Life Curve data.
  */
 export function extractCurrentYearScore(
   klineResult: any,
@@ -98,7 +98,7 @@ export function extractCurrentYearScore(
 }
 
 /**
- * Extract sun sign from K-Line result profile.
+ * Extract sun sign from Life Curve result profile.
  */
 export function extractSunSign(klineResult: any): string | null {
   if (!klineResult) return null;
@@ -111,7 +111,7 @@ export function extractSunSign(klineResult: any): string | null {
 }
 
 /**
- * Extract moon sign from K-Line result profile.
+ * Extract moon sign from Life Curve result profile.
  */
 export function extractMoonSign(klineResult: any): string | null {
   if (!klineResult) return null;

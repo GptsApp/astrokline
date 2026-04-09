@@ -1,10 +1,10 @@
 import { respData, respErr } from '@/shared/lib/resp';
-import { isEmailVerified, getSignUser } from '@/shared/models/user';
+import { getSignUser, isEmailVerified } from '@/shared/models/user';
 
 export async function POST(req: Request) {
   try {
-    const user = await getSignUser();
-    if (!user) {
+    const user = await getSignUser(req);
+    if (!user?.email) {
       return respErr('not login');
     }
 
@@ -16,8 +16,7 @@ export async function POST(req: Request) {
       return respErr('email is required');
     }
 
-    // Only allow users to check their own email verification status
-    if (user.email?.toLowerCase() !== email) {
+    if (user.email.toLowerCase() !== email) {
       return respErr('email is required');
     }
 

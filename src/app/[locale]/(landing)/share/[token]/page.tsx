@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: PageProps) {
   return (
     await getMetadata({
       title: `${label}'s Cosmic Blueprint — ${sunSign} ☉`,
-      description: `Explore ${label}'s personalized K-Line astrology chart. Discover their unique cosmic DNA, planetary positions, and life trajectory.`,
-      keywords: 'shared astrology chart, natal chart, K-Line, cosmic blueprint',
+      description: `Explore ${label}'s personalized astrology timing curve. Discover their unique cosmic DNA, planetary positions, and life trajectory.`,
+      keywords: 'shared astrology chart, natal chart, timing curve, cosmic blueprint',
       canonicalUrl: `/share/${token}`,
     })
   )({ params });
@@ -47,7 +47,7 @@ export default async function SharedKlinePage({ params }: PageProps) {
             href="/kline"
             className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 text-sm font-bold transition-all"
           >
-            Create Your Own K-Line
+            Create Your Own Chart
           </Link>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import { enrichBirthDataWithTimezone } from '@/lib/astrokline/birth-timezone';
 import { trackEvent } from '@/lib/astrokline/track-event';
 import {
   AlertCircle,
@@ -143,14 +144,20 @@ export function BirthInfoModal() {
       // step === 1 — submit
       trackEvent('birth_modal_submit');
 
+      const normalizedData: BirthData = enrichBirthDataWithTimezone({
+        ...data,
+        location: data.location.trim(),
+        timeSlot: data.timeSlot || 'unknown',
+      });
+
       // SYNC SAVE: forcefully save to localStorage immediately to prevent redirect data loss
-      if (data.date && data.location) {
+      if (normalizedData.date && normalizedData.location) {
         try {
-          localStorage.setItem('astrokline_birth_data', JSON.stringify(data));
+          localStorage.setItem('astrokline_birth_data', JSON.stringify(normalizedData));
         } catch (e) {}
       }
 
-      onCompleteCallback?.(data);
+      onCompleteCallback?.(normalizedData);
       setTimeout(() => close(), 100);
     }
   }, [step, validate, data, onCompleteCallback, close]);

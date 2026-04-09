@@ -204,7 +204,7 @@ export interface DestinyScorePoint {
   explanation?: string; // Rich astrological analysis for hover
 }
 
-// Generate 100-year K-Line data with clear bull/bear cycles
+// Generate 100-year Life Curve data with clear bull/bear cycles
 export function generateKlineData(birthYear: number): DestinyScorePoint[] {
   const data: DestinyScorePoint[] = [];
   const stages = [

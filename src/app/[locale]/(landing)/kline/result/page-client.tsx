@@ -19,9 +19,14 @@ import {
   type TransitEvent,
   type UserProfile,
 } from '@/lib/astrokline/mock-astrology-data';
+import type { AiInsightData } from '@/lib/astrokline/ai-insight-cache';
+import {
+  buildNatalChartPayload,
+  enrichBirthDataWithTimezone,
+} from '@/lib/astrokline/birth-timezone';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 import { trackEvent } from '@/lib/astrokline/track-event';
-import { ShieldCheck, Briefcase, Heart, Sparkles, Share2 } from 'lucide-react';
+import { ShieldCheck, Briefcase, Heart, Sparkles, Share2, Compass } from 'lucide-react';
 import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
@@ -30,6 +35,7 @@ import { useAppContext } from '@/shared/contexts/app';
 import { Lock } from 'lucide-react';
 
 type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';
+type ResultRecoveryMode = 'missing-birth-data' | 'rebuild-error';
 
 function StickyUpgradeBar({ tier, onUpgrade }: { tier: AppTier; onUpgrade: () => void }) {
   const [visible, setVisible] = useState(false);
@@ -49,6 +55,65 @@ function StickyUpgradeBar({ tier, onUpgrade }: { tier: AppTier; onUpgrade: () =>
         <Sparkles className="h-3.5 w-3.5" />
         {tier === 'GUEST' ? 'Unlock Free' : 'Upgrade Now'}
       </button>
+    </div>
+  );
+}
+
+function ResultRecoveryState({
+  mode,
+  isLoggedIn,
+  onStartOver,
+  onOpenDashboard,
+}: {
+  mode: ResultRecoveryMode;
+  isLoggedIn: boolean;
+  onStartOver: () => void;
+  onOpenDashboard: () => void;
+}) {
+  const content =
+    mode === 'rebuild-error'
+      ? {
+          title: 'We could not restore this Life Curve',
+          description:
+            'This result page can recover a chart when saved birth data is still available. In this session, the recovery data was incomplete or expired.',
+        }
+      : {
+          title: 'This page needs a fresh chart session',
+          description:
+            'The result page is the handoff after chart generation. Start from the Life Curve generator to create a new chart, then return here with live data.',
+        };
+
+  return (
+    <div className="bg-background astro-starfield min-h-screen px-6 pt-32 pb-20">
+      <div className="mx-auto max-w-3xl border border-white/10 bg-[#111015] p-8 text-center shadow-2xl md:p-12">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-primary/20 bg-primary/10 text-primary">
+          <Compass className="h-6 w-6" />
+        </div>
+        <Heading level={2} className="text-3xl md:text-4xl">
+          {content.title}
+        </Heading>
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
+          {content.description}
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <button
+            type="button"
+            onClick={onStartOver}
+            className="inline-flex h-12 items-center bg-primary px-6 text-sm font-bold text-primary-foreground transition-all hover:scale-[1.01] hover:bg-primary/90"
+          >
+            Start A New Life Curve
+          </button>
+          {isLoggedIn ? (
+            <button
+              type="button"
+              onClick={onOpenDashboard}
+              className="inline-flex h-12 items-center border border-white/10 px-6 text-sm font-semibold text-white/80 transition-colors hover:border-primary/30 hover:text-primary"
+            >
+              Open My Dashboard
+            </button>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }
@@ -75,6 +140,9 @@ export function ResultClient({
   const [transitDetails, setTransitDetails] = useState<Record<number, TransitEvent[]>>({});
   const [radarData, setRadarData] = useState<any[] | null>(null);
   const [next30Days, setNext30Days] = useState<any | null>(null);
+  const [aiInsight, setAiInsight] = useState<AiInsightData | null>(null);
+  const [savedKlineId, setSavedKlineId] = useState<string | null>(null);
+  const [recoveryMode, setRecoveryMode] = useState<ResultRecoveryMode | null>(null);
 
   // Registration nudge & quota modal state
   const [showNudge, setShowNudge] = useState(false);
@@ -185,6 +253,17 @@ export function ResultClient({
     setShowPricingInline(true);
   };
 
+  const handleAiInsightResolved = (nextInsight: AiInsightData) => {
+    setAiInsight(nextInsight);
+
+    const savedResult = getSavedKlineResult() ?? {};
+    saveKlineResult({
+      ...savedResult,
+      ...(savedKlineId ? { klineId: savedKlineId } : {}),
+      aiInsight: nextInsight,
+    });
+  };
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     let cancelled = false;
@@ -207,6 +286,9 @@ export function ResultClient({
       setTransitDetails((savedResult.transitDetails as Record<number, TransitEvent[]>) ?? {});
       setRadarData((savedResult as any).radarData ?? null);
       setNext30Days((savedResult as any).next30Days ?? null);
+      setAiInsight((savedResult as any).aiInsight ?? null);
+      setSavedKlineId((savedResult as any).klineId ?? null);
+      setRecoveryMode(null);
       setIsInitializing(false);
       return true;
     };
@@ -217,47 +299,76 @@ export function ResultClient({
       const savedBirthData = getSavedBirthData();
       if (!savedBirthData) {
         if (!cancelled) {
+          setRecoveryMode('missing-birth-data');
           setIsInitializing(false);
-          router.replace('/kline');
         }
         return;
       }
       try {
-        const [year, month, day] = savedBirthData.date.split('-').map(Number);
-        const timezone = -(new Date().getTimezoneOffset() / 60);
+        const normalizedBirthData = enrichBirthDataWithTimezone(savedBirthData);
         const response = await fetch('/api/astrology/natal-chart', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ year, month, day, timeSlot: savedBirthData.timeSlot, timezone, latitude: savedBirthData.lat, longitude: savedBirthData.lon }),
+          body: JSON.stringify(buildNatalChartPayload(normalizedBirthData)),
         });
         const result = await response.json();
         if (!response.ok || !result.success || !result.data) {
-          throw new Error(result.error || 'Failed to rebuild K-Line result');
+          throw new Error(result.error || 'Failed to rebuild chart result');
         }
 
         const rebuiltProfile = {
-          ...apiToProfile(result.data, savedBirthData),
+          ...apiToProfile(result.data, normalizedBirthData),
           overallAverageScore: result.reportData?.overallAverageScore ?? 82,
         };
-        const rebuiltResult = {
+        let rebuiltResult: Record<string, unknown> = {
           profile: rebuiltProfile,
-          birthData: savedBirthData,
+          birthData: normalizedBirthData,
           rawApiData: result.data,
           klineData: result.reportData?.klineData ?? [],
           transitDetails: result.reportData?.transitDetails ?? {},
         };
 
+        if (isLoggedIn) {
+          const saveRes = await fetch('/api/kline/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              isSelf: true,
+              label: normalizedBirthData.name || 'Me',
+              birthDate: normalizedBirthData.date,
+              birthTime: normalizedBirthData.timeSlot,
+              birthPlace: normalizedBirthData.location,
+              birthLat: String(normalizedBirthData.lat),
+              birthLng: String(normalizedBirthData.lon),
+              klineResult: rebuiltResult,
+            }),
+          });
+
+          if (saveRes.ok) {
+            const saveJson = await saveRes.json();
+            rebuiltResult = {
+              ...(saveJson.data?.klineResult ?? rebuiltResult),
+              klineId: saveJson.data?.id ?? null,
+            };
+          }
+        }
+
         saveKlineResult(rebuiltResult);
 
         if (cancelled) return;
         setProfile(rebuiltProfile);
-        setKlineData(rebuiltResult.klineData);
-        setTransitDetails(rebuiltResult.transitDetails);
+        setKlineData((rebuiltResult.klineData as DestinyScorePoint[]) ?? []);
+        setTransitDetails((rebuiltResult.transitDetails as Record<number, TransitEvent[]>) ?? {});
+        setRadarData((rebuiltResult as any).radarData ?? null);
+        setNext30Days((rebuiltResult as any).next30Days ?? null);
+        setAiInsight((rebuiltResult as any).aiInsight ?? null);
+        setSavedKlineId((rebuiltResult as any).klineId ?? null);
+        setRecoveryMode(null);
         setIsInitializing(false);
       } catch (error) {
         if (!cancelled) {
+          setRecoveryMode('rebuild-error');
           setIsInitializing(false);
-          router.replace('/kline');
         }
       }
     };
@@ -266,11 +377,22 @@ export function ResultClient({
     return () => { cancelled = true; };
   }, [router, isLoggedIn]);
 
-  if (isInitializing || !profile) {
+  if (isInitializing) {
     return (
       <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#0A0A0A]/95 backdrop-blur-2xl">
         <AstrologyLoader isLoading={true} durationMs={6000} className="scale-110" />
       </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <ResultRecoveryState
+        mode={recoveryMode ?? 'missing-birth-data'}
+        isLoggedIn={isLoggedIn}
+        onStartOver={() => router.push('/kline')}
+        onOpenDashboard={() => router.push('/dashboard/kline')}
+      />
     );
   }
 
@@ -290,6 +412,9 @@ export function ResultClient({
         onActionGate={handleActionGate}
         radarData={radarData}
         next30Days={next30Days}
+        klineId={savedKlineId ?? undefined}
+        initialAiInsight={aiInsight}
+        onAiInsightResolved={handleAiInsightResolved}
       />
 
       <ReportSection id="report-footer" className="pb-12">

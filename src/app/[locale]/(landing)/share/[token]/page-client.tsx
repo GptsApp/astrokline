@@ -50,7 +50,7 @@ export function SharedKlineClient({ kline }: SharedKlineClientProps) {
             href="/kline"
             className="bg-primary text-primary-foreground hover:bg-primary/90 flex shrink-0 items-center gap-2 px-5 py-2 text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all"
           >
-            <Sparkles className="h-4 w-4" /> Get Your Own K-Line
+            <Sparkles className="h-4 w-4" /> Get Your Own Life Curve
           </Link>
         </div>
       </div>
@@ -84,7 +84,7 @@ export function SharedKlineClient({ kline }: SharedKlineClientProps) {
             href="/kline"
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center gap-2 px-8 py-3 font-bold shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all hover:scale-105"
           >
-            <Sparkles className="h-5 w-5" /> Create My K-Line — Free
+            <Sparkles className="h-5 w-5" /> Create My Life Curve — Free
           </Link>
         </div>
       </section>

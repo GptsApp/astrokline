@@ -24,15 +24,39 @@ export function Footer() {
             <ul className="text-muted-foreground space-y-3 text-sm">
               <li>
                 <Link
-                  href="#features"
+                  href="/kline"
                   className="hover:text-primary transition-colors"
                 >
-                  Features
+                  Life Curve
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#pricing"
+                  href="/houses"
+                  className="hover:text-primary transition-colors"
+                >
+                  Houses Hub
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/zodiac"
+                  className="hover:text-primary transition-colors"
+                >
+                  Zodiac Hub
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tools"
+                  className="hover:text-primary transition-colors"
+                >
+                  Tools Hub
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/pricing"
                   className="hover:text-primary transition-colors"
                 >
                   Pricing
@@ -54,18 +78,18 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/privacy-policy"
+                  href="/learn-astrology"
                   className="hover:text-primary transition-colors"
                 >
-                  Privacy Policy
+                  Learn Astrology
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/terms-of-service"
+                  href="/blog"
                   className="hover:text-primary transition-colors"
                 >
-                  Terms of Service
+                  Blog
                 </Link>
               </li>
             </ul>
@@ -73,22 +97,17 @@ export function Footer() {
 
           <div>
             <Heading level={4} className="text-foreground mb-4 font-semibold">
-              Science & API
+              Legal
             </Heading>
             <ul className="text-muted-foreground space-y-3 text-sm">
               <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  Astronomy data
+                <Link href="/privacy-policy" className="hover:text-primary transition-colors">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  Scoring Algorithm
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  API Documentation
+                <Link href="/terms-of-service" className="hover:text-primary transition-colors">
+                  Terms of Service
                 </Link>
               </li>
             </ul>

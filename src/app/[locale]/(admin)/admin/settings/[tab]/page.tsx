@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { PERMISSIONS, requireAllPermissions } from '@/core/rbac';
+import { PERMISSIONS, requirePermission } from '@/core/rbac';
 import { Header, Main, MainHeader } from '@/shared/blocks/dashboard';
 import { FormCard } from '@/shared/blocks/form';
 import { getAllConfigs, saveConfigs } from '@/shared/models/config';
@@ -22,8 +22,8 @@ export default async function SettingsPage({
   setRequestLocale(locale);
 
   // Check if user has permission to read settings
-  await requireAllPermissions({
-    codes: [PERMISSIONS.SETTINGS_READ, PERMISSIONS.SETTINGS_WRITE],
+  await requirePermission({
+    code: PERMISSIONS.SETTINGS_READ,
     redirectUrl: '/admin/no-permission',
     locale,
   });
@@ -46,6 +46,12 @@ export default async function SettingsPage({
     'use server';
 
     try {
+      await requirePermission({
+        code: PERMISSIONS.SETTINGS_WRITE,
+        redirectUrl: '/admin/no-permission',
+        locale,
+      });
+
       const user = await getUserInfo();
 
       if (!user) {

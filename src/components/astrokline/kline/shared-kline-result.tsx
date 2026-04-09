@@ -3,19 +3,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, Briefcase, Coins, Heart, Leaf, Sparkles, TrendingUp, Users } from 'lucide-react';
+import { ArrowRight, Briefcase, Coins, Heart, Leaf, Lock, Sparkles, TrendingUp, Users } from 'lucide-react';
 
 import { ChartHero } from '@/components/astrokline/kline/chart-hero';
 import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
 import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
 import { FiveYearPlan } from '@/components/astrokline/kline/five-year-plan';
+import { FloatingNav } from '@/components/astrokline/kline/floating-nav';
 import { LifeRadar } from '@/components/astrokline/kline/life-radar';
 import { Next30Days } from '@/components/astrokline/kline/next-30-days';
+import { ResultCommandDeck } from '@/components/astrokline/kline/result-command-deck';
 import { CosmicIdCard } from '@/components/astrokline/kline/cosmic-id-card';
 import { AskChartPanel, InlineAskChartEntry } from '@/components/astrokline/kline/ask-chart-panel';
 import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { cn } from '@/shared/lib/utils';
-import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
+import type { AiInsightData } from '@/lib/astrokline/ai-insight-cache';
+import { trackEvent } from '@/lib/astrokline/track-event';
+import type { DestinyScorePoint, Next30DaysGuidance, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { Heading } from "@/components/astrokline/ui/heading";
 
 function extractDimensionPreviews(
@@ -105,9 +109,8 @@ function ActionableFutureCliffhanger({ onActionGate, tier, profile, klineData, t
     <div className="relative mt-8 py-16">
        {/* Teaser content that fades out */}
        <div 
-         className="mx-auto max-w-4xl space-y-8 px-4 opacity-50 select-none pb-40 flex flex-col items-center text-center" 
+         className="mx-auto flex max-w-4xl flex-col items-center space-y-8 px-4 pb-40 text-center opacity-50 select-none [mask-image:linear-gradient(to_bottom,black_0%,transparent_60%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,transparent_60%)]" 
          aria-hidden="true" 
-         style={{ maskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)', WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)' }}
        >
           <Heading level={3} className="font-serif text-2xl text-white/90 md:text-3xl">The Next Chapter of Your Story</Heading>
           <p className="max-w-prose leading-loose text-white/70">
@@ -137,6 +140,95 @@ function ActionableFutureCliffhanger({ onActionGate, tier, profile, klineData, t
   );
 }
 
+function SectionLead({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="mb-10 flex flex-col items-center justify-center text-center">
+      <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
+        <Sparkles className="h-4 w-4" />
+        <span className="font-mono text-[10px] font-bold uppercase tracking-widest">{eyebrow}</span>
+      </div>
+      <Heading level={2} className="font-serif text-3xl text-white/90 md:text-4xl">
+        {title}
+      </Heading>
+      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/50">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function DiagnosisPreview({
+  profile,
+  onActionGate,
+  tier,
+}: {
+  profile: UserProfile;
+  onActionGate: (context?: string, tier?: string) => void;
+  tier: string;
+}) {
+  const previewCards = [
+    {
+      title: 'Core Pattern',
+      text: `${profile.sun.sign} drive and ${profile.moon.sign} sensitivity create your baseline timing tension. That inner split explains why some windows feel powerful and fragile at the same time.`,
+    },
+    {
+      title: 'Career Trigger',
+      text: 'Your chart is not asking for endless effort. It is asking for precise timing, especially around public visibility, leverage, and reputation shifts.',
+    },
+    {
+      title: 'Relationship Lesson',
+      text: 'One repeating emotional pattern is shaping the curve more than you think. The full diagnosis shows when to lean in and when to stop repeating it.',
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-4 md:grid-cols-3">
+        {previewCards.map((card) => (
+          <div
+            key={card.title}
+            className="relative overflow-hidden border border-white/8 bg-white/[0.03] p-5"
+          >
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/35">{card.title}</p>
+            <p className="mt-4 text-sm leading-7 text-white/72">{card.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="border border-[#D4AF37]/15 bg-[#D4AF37]/[0.04] p-5 md:p-6">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 text-[#D4AF37]">
+              <Lock className="h-4 w-4" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.22em]">Diagnosis Preview</span>
+            </div>
+            <p className="mt-3 text-sm leading-7 text-white/75">
+              The full diagnosis unlocks your timing logic across career, money, love, health, strengths, and shadow patterns. This is where the chart stops being decorative and starts becoming useful.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onActionGate?.('diagnosis_preview', tier === 'GUEST' ? 'FREE' : 'LITE')}
+            className="inline-flex shrink-0 items-center gap-2 bg-[#D4AF37] px-5 py-3 text-xs font-bold uppercase tracking-[0.18em] text-black transition-transform hover:scale-[1.01]"
+          >
+            Unlock Full Diagnosis
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface SharedKlineResultProps {
   profile: UserProfile;
   klineData: DestinyScorePoint[];
@@ -145,7 +237,10 @@ interface SharedKlineResultProps {
   onActionGate: (context?: string, tier?: string) => void;
   hideFloatingNav?: boolean;
   radarData?: any[] | null;
-  next30Days?: any | null;
+  next30Days?: Next30DaysGuidance | null;
+  klineId?: string;
+  initialAiInsight?: AiInsightData | null;
+  onAiInsightResolved?: (insight: AiInsightData) => void;
 }
 
 export function SharedKlineResult({
@@ -154,8 +249,12 @@ export function SharedKlineResult({
   transitDetails,
   tier,
   onActionGate,
+  hideFloatingNav,
   radarData,
   next30Days,
+  klineId,
+  initialAiInsight,
+  onAiInsightResolved,
 }: SharedKlineResultProps) {
   const t = useTranslations('pages.index.page.sections.kline_result.page_client');
   const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
@@ -174,6 +273,37 @@ export function SharedKlineResult({
   const energyLabel = currentScore >= 75 ? 'Strong' : currentScore >= 55 ? 'Steady' : 'Rebuilding';
   const energyColor = currentScore >= 75 ? 'text-emerald-400' : currentScore >= 55 ? 'text-amber-400' : 'text-rose-400';
   const firstName = (profile?.name || 'Voyager').split(' ')[0];
+
+  const handleHeroPrimaryAction = () => {
+    if (tier === 'LITE' || tier === 'PRO') {
+      trackEvent('result_ask_chart_open', { source: 'hero_deck' });
+      setAskChartOpen(true);
+      return;
+    }
+
+    trackEvent('result_upgrade_cta_click', {
+      source: 'hero_deck',
+      tier,
+    });
+    onActionGate?.('hero_deck_upgrade', tier === 'GUEST' ? 'FREE' : 'LITE');
+  };
+
+  const handleHeroSecondaryAction = () => {
+    document
+      .getElementById('life-curve')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleHeroYearSelect = (year: number) => {
+    setSelectedYear(year);
+    trackEvent('result_key_year_click', {
+      year,
+      source: 'hero_deck',
+    });
+    document
+      .getElementById('life-curve')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const handleDimCta = (context: string) => {
     if (tier === 'LITE' || tier === 'PRO') {
@@ -239,8 +369,23 @@ export function SharedKlineResult({
   return (
     <>
     <div className="w-full">
-      {/* ── 1. K-LINE CHART & PROFILE RIBBON ── */}
-      <ReportSection id="kline-hero" divider={false} className="w-full overflow-visible px-0 py-0 pb-8 pt-12 md:pt-16">
+      {!hideFloatingNav ? <FloatingNav /> : null}
+
+      <ReportSection id="hero" divider={false} className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:pt-12">
+        <ResultCommandDeck
+          profile={profile}
+          klineData={klineData}
+          transitDetails={transitDetails}
+          tier={tier as AppTier}
+          onPrimaryAction={handleHeroPrimaryAction}
+          onSecondaryAction={handleHeroSecondaryAction}
+          onYearSelect={handleHeroYearSelect}
+        />
+      </ReportSection>
+
+      {/* ── 1. LIFE CURVE CHART & PROFILE RIBBON ── */}
+      <ReportSection id="life-curve" divider={false} className="w-full overflow-visible px-0 py-0 pb-8 pt-4 md:pt-8">
+        <div id="kline-hero">
         <InteractiveChart
           data={klineData}
           transitDetails={transitDetails}
@@ -252,6 +397,7 @@ export function SharedKlineResult({
           onActionGate={onActionGate}
           aiYearInsights={aiYearInsights}
         />
+        </div>
       </ReportSection>
 
       {/* ── 2. ENERGY SNAPSHOT — Co-Star style 'Right Now' anchor ── */}
@@ -305,7 +451,8 @@ export function SharedKlineResult({
       </div>
 
       {/* ── 3. FOUR-DIMENSION LIFE PREVIEW ── */}
-      <ReportSection id="kline-insights" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
+      <ReportSection id="kline-insights" divider={false} className="mx-auto w-full max-w-4xl px-4 py-14 md:px-8">
+        <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <div className="mb-12 flex flex-col items-center justify-center text-center">
           <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
             <Sparkles className="h-4 w-4" />
@@ -372,32 +519,58 @@ export function SharedKlineResult({
          <ActionableFutureCliffhanger tier={tier} onActionGate={onActionGate} profile={profile} klineData={klineData} transitDetails={transitDetails} />
       </ReportSection>
 
-      {/* ── 5. AI DEEP READING (LITE+ only, hidden for FREE to avoid lock fatigue) ── */}
-      {(tier === 'LITE' || tier === 'PRO') && (
-        <ReportSection id="ai-reading" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
-          <AiReadingPanels
-            profile={profile}
-            tier={tier}
-            onActionGate={onActionGate}
-            selectedYear={selectedYear}
-          />
-        </ReportSection>
-      )}
+      <ReportSection id="diagnosis" divider={false} className="mx-auto w-full max-w-4xl px-4 py-14 md:px-8">
+        <SectionLead
+          eyebrow="Cosmic Diagnosis"
+          title="Why The Curve Bends This Way"
+          description="This layer translates your timing structure into actual causes: what keeps repeating, what is opening, and what your chart is trying to teach right now."
+        />
+
+        {(tier === 'LITE' || tier === 'PRO') ? (
+          <div id="ai-reading">
+            <AiReadingPanels
+              profile={profile}
+              tier={tier}
+              onActionGate={onActionGate}
+              selectedYear={selectedYear}
+              klineId={klineId}
+              initialInsight={initialAiInsight}
+              onInsightResolved={onAiInsightResolved}
+            />
+          </div>
+        ) : (
+          <DiagnosisPreview profile={profile} onActionGate={onActionGate} tier={tier} />
+        )}
+      </ReportSection>
 
       {/* ── 5b. PRO EXCLUSIVE: Life Radar + Next 30 Days ── */}
       {tier === 'PRO' && radarData && radarData.length > 0 && (
-        <ReportSection id="life-radar" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
+        <ReportSection id="radar" divider={false} className="mx-auto w-full max-w-4xl px-4 py-10 md:px-8">
+          <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          <SectionLead
+            eyebrow="Life Radar"
+            title="Your Life Balance Right Now"
+            description="A multi-dimensional snapshot of where your energy, career, love, and health stand this cycle."
+          />
           <LifeRadar data={radarData} />
         </ReportSection>
       )}
-      {tier === 'PRO' && next30Days && (
-        <ReportSection id="next-30-days" divider={false} className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
+
+      {(tier === 'LITE' || tier === 'PRO') && next30Days && (
+        <ReportSection id="next-30-days" divider={false} className="mx-auto w-full max-w-4xl px-4 py-10 md:px-8">
+          <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent" />
+          <SectionLead
+            eyebrow="Action Window"
+            title="Your Next 30 Days"
+            description="The macro timing translated into micro moves. What to prioritize, what to defer, and where the windows open this month."
+          />
           <Next30Days data={next30Days} />
         </ReportSection>
       )}
 
       {/* ── 6. CONTINUE YOUR JOURNEY — entry cards to Dashboard tools ── */}
-      <ReportSection id="explore-tools" divider={false} className="mx-auto w-full max-w-4xl px-4 py-16 md:px-8">
+      <ReportSection id="explore-tools" divider={false} className="mx-auto w-full max-w-4xl px-4 py-14 md:px-8">
+        <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <div className="mb-10 flex flex-col items-center justify-center text-center">
           <div className="mb-4 flex items-center gap-2 text-[#D4AF37]">
             <Sparkles className="h-4 w-4" />

@@ -70,9 +70,13 @@ export function RecentItems({
       </div>
 
       {items.length === 0 ? (
-        <p className="px-3 pb-2 text-[11px] text-white/25">
-          No recent charts yet
-        </p>
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2 px-3 pb-2 text-[11px] text-white/35 transition-colors hover:text-primary/70"
+        >
+          <Plus className="h-3 w-3" />
+          <span>Create your first chart →</span>
+        </Link>
       ) : (
         <nav className="space-y-0.5">
           {items.map((item) => (

@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 
 import { authClient, useSession } from '@/core/auth/client';
 import { useRouter } from '@/core/i18n/navigation';
-import { defaultLocale } from '@/config/locale';
 import { Button } from '@/shared/components/ui/button';
 import {
   Card,
@@ -17,29 +16,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card';
+import {
+  addLocalePrefix,
+  buildVerifyEmailCallbackPath,
+  sanitizeInternalCallbackPath,
+  stripLocalePrefix,
+} from '@/shared/lib/auth-callback';
 
 const RESEND_COOLDOWN_SECONDS = 60;
-
-function safeDecodeCallbackUrl(raw?: string) {
-  if (!raw) return '/';
-  try {
-    const decoded = decodeURIComponent(raw);
-    // only allow internal redirects
-    if (decoded.startsWith('/')) return decoded;
-    return '/';
-  } catch {
-    return '/';
-  }
-}
-
-function stripLocalePrefix(path: string, locale: string) {
-  if (!path?.startsWith('/')) return '/';
-  if (locale === defaultLocale) return path;
-  if (path === `/${locale}`) return '/';
-  if (path.startsWith(`/${locale}/`))
-    return path.slice(locale.length + 1) || '/';
-  return path;
-}
 
 function getCooldownKey(email?: string) {
   return `verify-email:lastSentAt:${String(email || '').toLowerCase()}`;
@@ -69,10 +53,12 @@ export function VerifyEmailPage({
   email,
   callbackUrl,
   sent,
+  resend,
 }: {
   email?: string;
   callbackUrl?: string;
   sent?: string;
+  resend?: string;
 }) {
   const t = useTranslations('common.sign');
   const router = useRouter();
@@ -83,11 +69,21 @@ export function VerifyEmailPage({
   const lastSessionCheckAtRef = useRef(0);
 
   const nextUrl = useMemo(() => {
-    const decoded = safeDecodeCallbackUrl(callbackUrl);
     // i18n router will prefix locale automatically; store locale-less paths
-    return stripLocalePrefix(decoded, locale);
+    return stripLocalePrefix(sanitizeInternalCallbackPath(callbackUrl), locale);
   }, [callbackUrl, locale]);
-  const base = locale !== defaultLocale ? `/${locale}` : '';
+  const localizedNextUrl = useMemo(
+    () => addLocalePrefix(nextUrl, locale),
+    [nextUrl, locale]
+  );
+  const verificationCallbackUrl = useMemo(
+    () => buildVerifyEmailCallbackPath(nextUrl, locale),
+    [nextUrl, locale]
+  );
+  const localizedSignInBasePath = useMemo(
+    () => addLocalePrefix('/sign-in', locale),
+    [locale]
+  );
   const signInPath = useMemo(() => {
     const query = new URLSearchParams();
     query.set('callbackUrl', nextUrl || '/');
@@ -101,7 +97,7 @@ export function VerifyEmailPage({
     const query = new URLSearchParams();
     if (prefillEmail) query.set('email', prefillEmail);
     query.set('callbackUrl', nextUrl || '/');
-    window.location.assign(`${base}/sign-in?${query.toString()}`);
+    window.location.assign(`${localizedSignInBasePath}?${query.toString()}`);
   };
 
   // Initialize & tick cooldown
@@ -118,7 +114,7 @@ export function VerifyEmailPage({
   const hardNavigateToNextUrl = () => {
     if (typeof window === 'undefined') return;
     // Force a full navigation so server components read the latest cookies/session.
-    window.location.assign(`${base}${nextUrl}`);
+    window.location.assign(localizedNextUrl);
   };
 
   const checkSessionAndRedirect = async () => {
@@ -221,6 +217,65 @@ export function VerifyEmailPage({
     }
   }, [sent, t, email]);
 
+  useEffect(() => {
+    if (resend !== '1' || !email) {
+      return;
+    }
+
+    if (getCooldownRemainingSeconds(email) > 0) {
+      if (typeof window !== 'undefined') {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.delete('resend');
+          window.history.replaceState({}, '', url.toString());
+        } catch {
+          // ignore
+        }
+      }
+      return;
+    }
+
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        setLoading(true);
+        const result = await authClient.sendVerificationEmail({
+          email,
+          callbackURL: verificationCallbackUrl,
+        });
+
+        if (result?.error) {
+          toast.error(result.error.message || 'send verification email failed');
+          return;
+        }
+
+        markSentNow(email);
+        setCooldownSeconds(getCooldownRemainingSeconds(email));
+      } catch (e: any) {
+        toast.error(e?.message || 'send verification email failed');
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+
+        if (typeof window !== 'undefined') {
+          try {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('resend');
+            window.history.replaceState({}, '', url.toString());
+          } catch {
+            // ignore
+          }
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [email, resend, verificationCallbackUrl]);
+
   const handleResend = async () => {
     if (!email) {
       toast.error('email is required');
@@ -239,7 +294,7 @@ export function VerifyEmailPage({
         email,
         // IMPORTANT: callbackURL must not contain its own '&' query params.
         // After verification, send user to callbackUrl (or home). This page is just the waiting UI.
-        callbackURL: `${base}${nextUrl || '/'}`,
+        callbackURL: verificationCallbackUrl,
       });
       if (result?.error) {
         toast.error(result.error.message || 'send verification email failed');
@@ -264,30 +319,8 @@ export function VerifyEmailPage({
       await checkSessionAndRedirect();
       const { data } = await authClient.getSession();
       if (!data?.user) {
-        // If user verified in a different browser (no shared cookies),
-        // we can detect verified status and redirect them to sign-in.
-        const targetEmail = String(email || '')
-          .trim()
-          .toLowerCase();
-        if (targetEmail) {
-          try {
-            const res = await fetch('/api/user/is-email-verified', {
-              method: 'POST',
-              headers: { 'content-type': 'application/json' },
-              body: JSON.stringify({ email: targetEmail }),
-            });
-            const json = await res.json().catch(() => null);
-            const verified = Boolean(json?.data?.emailVerified);
-            if (verified) {
-              hardNavigateToSignIn(targetEmail);
-              return;
-            }
-          } catch {
-            // ignore
-          }
-        }
-
-        toast.error(t('verify_email_not_verified_yet'));
+        const targetEmail = String(email || '').trim().toLowerCase();
+        hardNavigateToSignIn(targetEmail || undefined);
       }
     })();
   };

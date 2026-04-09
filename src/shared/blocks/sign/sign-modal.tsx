@@ -13,6 +13,7 @@ import {
 } from '@/shared/components/ui/dialog';
 import { useAppContext } from '@/shared/contexts/app';
 import { useMediaQuery } from '@/shared/hooks/use-media-query';
+import { sanitizeInternalCallbackPath } from '@/shared/lib/auth-callback';
 
 import { SignInForm } from './sign-in-form';
 import { SignUp } from './sign-up';
@@ -34,11 +35,13 @@ export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
 
   const resolvedCallbackUrl = useMemo(() => {
     if (callbackUrl && callbackUrl !== '/') {
-      return callbackUrl;
+      return sanitizeInternalCallbackPath(callbackUrl);
     }
 
     const query = searchParams.toString();
-    return `${pathname || '/'}${query ? `?${query}` : ''}`;
+    return sanitizeInternalCallbackPath(
+      `${pathname || '/'}${query ? `?${query}` : ''}`
+    );
   }, [callbackUrl, pathname, searchParams]);
 
   // Clean the drawer logic, use responsive full-screen dialog on mobile

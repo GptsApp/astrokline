@@ -4,7 +4,8 @@ import { getMyKline } from '@/shared/models/kline';
 import { EnergyTool } from '@/components/astrokline/tools/energy-tool';
 import { CompatibilityTool } from '@/components/astrokline/tools/compatibility-tool';
 import { ToolBreadcrumb } from '@/components/astrokline/tools/tool-breadcrumb';
-import { redirect } from 'next/navigation';
+import { redirect } from '@/core/i18n/navigation';
+import { notFound } from 'next/navigation';
 
 interface ToolPageProps {
   params: Promise<{ locale: string; tool: string }>;
@@ -16,19 +17,20 @@ const TOOL_MAP: Record<string, { title: string; component: string }> = {
 };
 
 export default async function DashboardToolPage({ params }: ToolPageProps) {
-  const { tool } = await params;
+  const { locale, tool } = await params;
 
   const meta = TOOL_MAP[tool];
-  if (!meta) redirect('/dashboard');
+  if (!meta) notFound();
 
   const user = await getUserInfo();
-  if (!user) redirect('/sign-in');
+  if (!user) redirect({ href: '/sign-in', locale });
+  const currentUser = user!;
 
-  const tier = await getAstroUserTier(user);
-  const myKline = await getMyKline(user.id);
+  const tier = await getAstroUserTier(currentUser);
+  const myKline = await getMyKline(currentUser.id);
 
   if (!myKline?.klineResult) {
-    redirect('/dashboard/kline');
+    redirect({ href: '/dashboard/kline', locale });
   }
 
   return (

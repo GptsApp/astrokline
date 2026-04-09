@@ -29,23 +29,35 @@ export function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 md:flex">
-          <a
-            href="#features"
+          <Link
+            href="/houses"
             className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
           >
-            Features
-          </a>
+            Houses
+          </Link>
+          <Link
+            href="/zodiac"
+            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
+          >
+            Zodiac
+          </Link>
+          <Link
+            href="/tools"
+            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
+          >
+            Tools
+          </Link>
+          <Link
+            href="/learn-astrology"
+            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
+          >
+            Learn
+          </Link>
           <a
             href="#pricing"
             className="text-primary hover:text-primary/80 bg-primary/10 border-primary/20 border px-3 py-1 text-sm font-medium transition-colors"
           >
             Pricing
-          </a>
-          <a
-            href="#faq"
-            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
-          >
-            FAQ
           </a>
         </nav>
 
@@ -92,6 +104,8 @@ export function Navbar() {
                 </div>
                 <button
                   type="button"
+                  title="Sign out"
+                  aria-label="Sign out"
                   onClick={() =>
                     signOut({
                       fetchOptions: {
@@ -131,33 +145,40 @@ export function Navbar() {
       {mobileOpen && (
         <div className="bg-background/95 animate-in slide-in-from-top absolute top-16 right-0 left-0 z-40 border-b border-white/10 shadow-2xl backdrop-blur-xl duration-200 md:hidden">
           <nav className="flex flex-col gap-4 px-6 py-6">
-            <a
-              href="#features"
+            <Link
+              href="/houses"
               onClick={() => setMobileOpen(false)}
               className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
             >
-              Features
-            </a>
+              Houses
+            </Link>
+            <Link
+              href="/zodiac"
+              onClick={() => setMobileOpen(false)}
+              className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
+            >
+              Zodiac
+            </Link>
+            <Link
+              href="/tools"
+              onClick={() => setMobileOpen(false)}
+              className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
+            >
+              Tools
+            </Link>
+            <Link
+              href="/learn-astrology"
+              onClick={() => setMobileOpen(false)}
+              className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
+            >
+              Learn Astrology
+            </Link>
             <a
               href="#pricing"
               onClick={() => setMobileOpen(false)}
               className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
             >
               Pricing
-            </a>
-            <a
-              href="#testimonials"
-              onClick={() => setMobileOpen(false)}
-              className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
-            >
-              Testimonials
-            </a>
-            <a
-              href="#faq"
-              onClick={() => setMobileOpen(false)}
-              className="text-muted-foreground hover:text-primary border-b border-white/5 py-2 text-base font-medium transition-colors"
-            >
-              FAQ
             </a>
 
             <div className="flex flex-col gap-3 pt-4">

@@ -8,7 +8,7 @@
         "icon": "Home"
       },
       {
-        "title": "K-Line",
+        "title": "Mis Cartas",
         "url": "/dashboard/kline",
         "icon": "Activity"
       }

@@ -49,7 +49,7 @@ export function SocialShareModal({
 Sun ${profile.sun?.sign} · Moon ${profile.moon?.sign} · Rising ${profile.rising?.sign}
 Dominant element: ${dominantElement}
 
-I just generated my K-Line and 100-year timing map.
+I just generated my Life Curve and 100-year timing map.
 See yours at astrokline.com`;
   };
 

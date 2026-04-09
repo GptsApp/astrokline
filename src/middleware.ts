@@ -19,6 +19,18 @@ export async function middleware(request: NextRequest) {
     ? pathname.slice(locale.length + 1)
     : pathname;
 
+  // Redirect logged-in users from homepage to dashboard
+  if (pathWithoutLocale === '' || pathWithoutLocale === '/') {
+    const sessionCookie = getSessionCookie(request);
+    if (sessionCookie) {
+      const dashboardUrl = new URL(
+        isValidLocale ? `/${locale}/dashboard` : '/dashboard',
+        request.url
+      );
+      return NextResponse.redirect(dashboardUrl);
+    }
+  }
+
   // Only check authentication for admin routes
   if (
     pathWithoutLocale.startsWith('/admin') ||

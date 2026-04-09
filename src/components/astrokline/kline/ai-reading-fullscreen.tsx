@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
 import { Heading } from "@/components/astrokline/ui/heading";
+import { Progress } from '@/shared/components/ui/progress';
 import { InsightSection, AstroTextParser } from './insight-section';
 
 interface InsightData {
@@ -155,9 +156,9 @@ export function AiReadingFullscreen({
         className="fixed inset-0 z-[300] overflow-x-hidden overflow-y-auto bg-[#020205]"
         onScroll={handleScroll}
       >
-        <div
-          className="bg-primary fixed top-0 right-0 left-0 z-[400] h-1 origin-left transition-transform duration-150 ease-out"
-          style={{ transform: `scaleX(${scrollProgress})` }}
+        <Progress
+          value={scrollProgress * 100}
+          className="fixed top-0 right-0 left-0 z-[400] h-1 bg-white/5"
         />
         {/* Breathing Nebula Backgrounds */}
         <div className="pointer-events-none fixed inset-0 flex items-center justify-center overflow-hidden">
@@ -191,7 +192,7 @@ export function AiReadingFullscreen({
             className="flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white/80"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to K-Line
+            Back to Life Curve
           </button>
           <div className="flex items-center gap-2">
             <Sparkles className="text-primary h-4 w-4" />

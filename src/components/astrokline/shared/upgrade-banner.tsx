@@ -16,7 +16,7 @@ interface UpgradeBannerProps {
 
 const contextMessages: Record<string, { headline: string; subtext: string }> = {
   kline: {
-    headline: 'Unlock Your Full 10+ Year K-Line',
+    headline: 'Unlock Your Full 10+ Year Life Curve',
     subtext:
       'See longer-range timing across career, love, money, and health.',
   },
@@ -28,7 +28,7 @@ const contextMessages: Record<string, { headline: string; subtext: string }> = {
   general: {
     headline: 'Unlock the full report',
     subtext:
-      'Upgrade for deeper K-Line projections and the full set of AI reading modules.',
+      'Upgrade for deeper Life Curve projections and the full set of AI reading modules.',
   },
 };
 
@@ -36,7 +36,7 @@ const tiers = [
   {
     icon: Sparkles,
     name: 'Free',
-    highlight: 'K-Line + Cosmic ID',
+    highlight: 'Life Curve + Cosmic ID',
     color: 'text-muted-foreground',
   },
   {

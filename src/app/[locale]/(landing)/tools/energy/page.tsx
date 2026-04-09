@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getUserInfo } from '@/shared/models/user';
-import { getAstroUserTier } from '@/lib/astrokline/user-tier';
-import { getMyKline } from '@/shared/models/kline';
 import { ToolPageShell } from '@/components/astrokline/tools/tool-page-shell';
+import { redirect } from '@/core/i18n/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -23,8 +22,7 @@ export default async function EnergyPage({
 
   const user = await getUserInfo();
   if (user) {
-    const { redirect } = await import('next/navigation');
-    redirect('/dashboard/tools/energy');
+    redirect({ href: '/dashboard/tools/energy', locale });
   }
 
   const tier = 'GUEST';

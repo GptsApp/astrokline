@@ -40,8 +40,8 @@ export function CTA() {
             data-testid="cta-generate-kline"
             data-ai-action="open-kline-generator"
             onClick={() => {
-              open((birthData) => {
-                router.push('/kline/result');
+              open(() => {
+                router.push('/kline');
               });
             }}
           >

@@ -30,33 +30,49 @@ export function ReferralCard() {
       .finally(() => setLoading(false));
   }, []);
 
+  const isValidShareUrl = useCallback((url: string) => {
+    try {
+      const u = new URL(url);
+      return u.protocol === 'https:' || u.protocol === 'http:';
+    } catch {
+      return false;
+    }
+  }, []);
+
   const handleCopy = useCallback(async () => {
-    if (!data?.shareUrl) return;
-    await navigator.clipboard.writeText(data.shareUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [data]);
+    if (!data?.shareUrl || !isValidShareUrl(data.shareUrl)) return;
+    try {
+      await navigator.clipboard.writeText(data.shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard write failed silently
+    }
+  }, [data, isValidShareUrl]);
 
   const handleShare = useCallback(async () => {
-    if (!data?.shareUrl) return;
+    if (!data?.shareUrl || !isValidShareUrl(data.shareUrl)) return;
     if (navigator.share) {
       try {
         await navigator.share({
           title: 'AstroKline — Your Cosmic Timing Map',
-          text: 'Check out your personal K-Line reading — free!',
+          text: 'Check out your personal Life Curve reading — free!',
           url: data.shareUrl,
         });
       } catch {}
     } else {
       handleCopy();
     }
-  }, [data, handleCopy]);
+  }, [data, handleCopy, isValidShareUrl]);
 
   if (loading || !data) return null;
 
   const count = data.totalReferred;
+  const prevMilestone = MILESTONES.filter((m) => m.count <= count).pop();
   const nextMilestone = MILESTONES.find((m) => m.count > count) || MILESTONES[MILESTONES.length - 1];
-  const progress = Math.min(100, (count / nextMilestone.count) * 100);
+  const prevCount = prevMilestone?.count ?? 0;
+  const range = nextMilestone.count - prevCount;
+  const progress = range > 0 ? Math.min(100, ((count - prevCount) / range) * 100) : 100;
   const maxReached = count >= 10;
 
   return (

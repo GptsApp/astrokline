@@ -1,13 +1,13 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Star, Activity, Sparkles, AlertTriangle } from 'lucide-react';
+import { Compass, Orbit, ShieldAlert, Sparkles } from 'lucide-react';
 
-import { ASTROLOGY_HOUSES, House } from '@/lib/astrokline/houses-data';
+import { StructuredFaqSection } from '@/components/astrokline/content/structured-faq-section';
+import { HouseCalculator } from '@/components/astrokline/houses/house-calculator';
+import { Heading } from '@/components/astrokline/ui/heading';
 import { envConfigs } from '@/config';
-import { Heading } from "@/components/astrokline/ui/heading";
-import { InlineBirthForm } from '@/components/astrokline/ui/inline-birth-form';
-import { cn } from '@/shared/lib/utils';
+import { Link } from '@/core/i18n/navigation';
+import { ASTROLOGY_HOUSES, House } from '@/lib/astrokline/houses-data';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -20,16 +20,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const h = ASTROLOGY_HOUSES.find((s) => s.slug === slug);
   if (!h) return {};
   const url = `${envConfigs.app_url}/houses/${h.slug}`;
+  const houseName = h.name.toLowerCase();
   return {
-    title: `${h.name} Astrology | Understanding the 12 Houses in Astrology`,
-    description: `What does the ${h.name} represent? Learn about the astrology houses and how to track their live planetary transits using the predictive Astrokline chart.`,
-    keywords: `${h.slug} astrology, astrology houses, 1st-12th house astrology, predictive astrology, vedic astrology calculator, ${h.keyword} astrology`,
+    title: `${h.name} Meaning + Free Calculator | AstroKline`,
+    description: `Use the free ${h.name} calculator to see which sign rules your ${houseName}, which planets fall there, and what it means for ${h.keyword.toLowerCase()} in astrology.`,
+    keywords: `${houseName} meaning, ${houseName} calculator, ${houseName} astrology, what does the ${houseName} mean, ${h.keyword.toLowerCase()} astrology`,
     alternates: { canonical: url },
     openGraph: {
-      title: `${h.name} (${h.keyword}) in Astrology — AstroKline`,
-      description: h.description,
+      title: `${h.name} Meaning and Calculator`,
+      description: `Find your ${houseName} sign, ruling planet, and natal planets with AstroKline's free calculator.`,
       url,
-      type: 'article',
+      type: 'website',
     },
   };
 }
@@ -41,232 +42,270 @@ export default async function HousePage({ params }: Props) {
   return <HouseContent house={h} />;
 }
 
-// Server-side pure CSS animation wrappers for instant display
-function FadeInText({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <p className={cn("animate-in fade-in duration-1000 fill-mode-both", className)} style={{ animationDelay: '200ms' }}>
-      {children}
-    </p>
-  );
-}
-
-function FadeInStats({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-1000 fill-mode-both", className)} style={{ animationDelay: '300ms' }}>
-      {children}
-    </div>
-  );
+function normalizeTimingLanguage(text: string) {
+  return text.replaceAll('kline', 'life curve');
 }
 
 function HouseContent({ house: h }: { house: House }) {
-  const schema = {
+  const articleSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `The Essential Guide to the ${h.name} in Astrology`,
-    description: h.description,
+    '@type': 'WebPage',
+    name: `${h.name} Meaning + Free Calculator`,
+    description: `Learn what the ${h.name} means and calculate your own ${h.name} sign and planets.`,
     author: { '@type': 'Organization', name: 'AstroKline' },
     publisher: { '@type': 'Organization', name: 'AstroKline' },
   };
+
+  const faqItems = [
+    {
+      question: `What does the ${h.name} mean in astrology?`,
+      answer: `${h.description} In practice, the ${h.name} shows how ${h.keyword.toLowerCase()} works in real life, not just in textbook definitions.`,
+    },
+    {
+      question: `How do I know what sign rules my ${h.name}?`,
+      answer: `You need your birth date, birth place, and ideally your exact birth time. The house calculator above uses those details to calculate the sign on the cusp of your ${h.name}.`,
+    },
+    {
+      question: `Can I still use the ${h.name} calculator if I do not know my exact birth time?`,
+      answer: `Yes, but the result is approximate. Houses shift with birth time, so an unknown time can move the cusp sign or planets between neighboring houses.`,
+    },
+  ];
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+
+  const relatedHouses = ASTROLOGY_HOUSES.filter((house) => house.slug !== h.slug);
+  const timingCopy = normalizeTimingLanguage(h.klineInsight);
 
   return (
     <main className="bg-background text-foreground min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
 
-      {/* Hero Section with Contextual Form Hook */}
-      <section className="relative overflow-hidden pt-24 pb-16 lg:pt-32 lg:pb-28">
-        {/* Impeccable Background Base */}
-        <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-screen"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
-            backgroundSize: '48px 48px',
-          }}
-        />
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 h-80 w-80 bg-primary/10 blur-[120px] pointer-events-none opacity-50" />
+      <section className="relative overflow-hidden border-b border-white/5 pt-24 pb-20 lg:pt-32 lg:pb-24">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.12),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent)]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,currentColor_1px,transparent_0)] [background-size:42px_42px]" />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16 lg:gap-12 xl:gap-24">
-            
-            {/* Left Column: Semantic Titles & NASA Stats */}
-            <div className="flex-1 w-full lg:w-[45%] max-w-2xl space-y-8 pt-4 xl:pt-8 flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="px-3 py-1 rounded-full border border-primary/20 bg-primary/10 text-primary text-xs font-semibold tracking-widest uppercase">
-                  {h.keyword}
-                </span>
-                <span className="text-muted-foreground text-xs uppercase tracking-widest font-mono">
-                  Ruled by {h.ruler}
-                </span>
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              Free {h.name} Calculator
+            </div>
+
+            <Heading level={1} className="mt-6 max-w-3xl text-5xl md:text-7xl lg:text-[5.5rem]">
+              Understand Your {h.name} Before You Commit To A Full Reading
+            </Heading>
+
+            <Heading level={2} className="sr-only">
+              {h.name} meaning and free astrology calculator
+            </Heading>
+
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+              {h.description} This page is intentionally utility-first: it explains the house, lets you calculate your own placement, and keeps the full AstroKline funnel optional.
+            </p>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              <div className="border border-white/10 bg-white/[0.02] p-5">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-primary/70">
+                  You will get
+                </p>
+                <p className="mt-3 text-lg font-semibold text-white/90">
+                  House sign and natal planets
+                </p>
+              </div>
+              <div className="border border-white/10 bg-white/[0.02] p-5">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-primary/70">
+                  Natural ruler
+                </p>
+                <p className="mt-3 text-lg font-semibold text-white/90">
+                  {h.ruler}
+                </p>
+              </div>
+              <div className="border border-white/10 bg-white/[0.02] p-5">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-primary/70">
+                  Why time matters
+                </p>
+                <p className="mt-3 text-lg font-semibold text-white/90">
+                  House cusps shift with birth time
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link
+                href="/houses"
+                className="inline-flex h-12 items-center border border-white/10 px-6 text-sm font-semibold text-white/80 transition-colors hover:border-primary/30 hover:text-primary"
+              >
+                Browse All 12 Houses
+              </Link>
+              <Link
+                href="/kline"
+                className="inline-flex h-12 items-center bg-primary px-6 text-sm font-bold text-primary-foreground transition-all hover:scale-[1.01] hover:bg-primary/90"
+              >
+                Open Full Life Curve
+              </Link>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="border border-white/10 bg-[#111015] p-5">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center border border-primary/20 bg-primary/10 text-primary">
+                  <Compass className="h-4 w-4" />
+                </div>
+                <Heading level={3} className="text-2xl md:text-3xl">
+                  What this house rules
+                </Heading>
+                <p className="mt-3 text-sm leading-7 text-white/65">
+                  {h.keyword} is the practical theme. This is the area of life where {h.name.toLowerCase()} symbolism becomes visible in day-to-day decisions.
+                </p>
               </div>
 
-              <Heading level={1} className="text-5xl md:text-6xl lg:text-[70px] xl:whitespace-nowrap flex flex-col tracking-tighter leading-[1]">
-                <span className="block opacity-95">
-                  The Complete
-                </span>
-                <span className="block italic mt-1 pt-1 text-primary font-light">
-                  {h.name} Guide
-                </span>
-              </Heading>
-
-              {/* H2 logically supporting the page's search intent but visually acting as a subtitle */}
-              <Heading level={2} className="sr-only">What Does the {h.name} Represent in Astrology?</Heading>
-
-              <FadeInText className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light border-l-2 border-primary pl-6 max-w-lg">
-                {h.description}
-              </FadeInText>
-
-              {/* Trust Evidence Bar natively baked into the Hero */}
-              <FadeInStats className="flex flex-wrap border-y border-white/10 py-6 mt-8 items-center justify-between gap-6">
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Powered by</span>
-                  <span className="text-sm font-bold text-foreground font-mono tracking-wide">NASA Data</span>
+              <div className="border border-white/10 bg-[#111015] p-5">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center border border-primary/20 bg-primary/10 text-primary">
+                  <Orbit className="h-4 w-4" />
                 </div>
-                <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Approach</span>
-                  <span className="text-sm font-bold text-primary flex items-center gap-1.5 font-mono tracking-wide">
-                    <Activity className="h-3.5 w-3.5" /> Vedic + Western
-                  </span>
-                </div>
-                <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Precision</span>
-                  <span className="text-sm font-bold text-foreground font-mono tracking-wide">Swiss Ephemeris</span>
-                </div>
-              </FadeInStats>
+                <Heading level={3} className="text-2xl md:text-3xl">
+                  Where it connects to timing
+                </Heading>
+                <p className="mt-3 text-sm leading-7 text-white/65">
+                  {timingCopy}
+                </p>
+              </div>
             </div>
 
-            {/* Right Column: The "Trojan Horse" Conversion Form */}
-            <div className="w-full lg:w-[55%] xl:w-[540px] relative z-20 shrink-0 pt-4 lg:pt-8 xl:pr-12">
-              <FadeInStats>
-                <div className="relative w-full group">
-                  <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-primary/50 z-30" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-primary/50 z-30" />
-                  <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-primary/50 z-30" />
-                  <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-primary/50 z-30" />
-                  <div className="w-full border border-white/10 bg-[#050505]/90 shadow-2xl relative overflow-hidden">
-                    <div className="h-1 w-full bg-gradient-to-r from-primary/20 via-primary to-primary/20 relative z-10" />
-                    <div className="p-8 relative z-10">
-                      <div className="mb-6 flex flex-col justify-start">
-                        <Heading level={3} variant="card" className="font-semibold text-2xl mb-2 text-white">
-                          What is in YOUR {h.name}?
-                        </Heading>
-                        <p className="text-muted-foreground text-sm font-light leading-relaxed">
-                          Enter your exact birth time. We calculate your {h.name} placements and reveal how its active transits shape your personal timeline.
-                        </p>
-                      </div>
-                      <InlineBirthForm />
-                    </div>
-                  </div>
-                </div>
-              </FadeInStats>
-            </div>
-
+            <HouseCalculator house={h} />
           </div>
         </div>
       </section>
 
-      {/* Bento Box Layout for Deep Data */}
-      <section className="bg-white/[0.01] border-y border-white/5 py-24 relative">
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <Heading level={2} className="text-3xl lg:text-4xl font-bold mb-12 text-center md:text-left">
-            Planetary Weather: <span className="text-primary italic font-light">The {h.name}</span>
-          </Heading>
+      <section className="border-b border-white/5 bg-white/[0.02] py-20">
+        <div className="mx-auto grid max-w-7xl gap-6 px-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="border border-white/10 bg-[#111015] p-8">
+            <Heading level={2} variant="section" className="mb-4 text-3xl md:text-4xl">
+              Read {h.name} With Real-Life Context
+            </Heading>
+            <p className="text-base leading-8 text-muted-foreground">
+              Search intent on house pages is usually practical. People want a plain-English explanation, a fast way to see their own placement, and a clear sense of whether exact birth time changes the answer.
+            </p>
+            <div className="mt-6 border-l-2 border-primary pl-4 text-sm leading-7 text-white/65">
+              If you are near a birth-time boundary, the sign on the cusp or the planets inside the house can shift. That is why AstroKline now treats birthplace and birth-time precision as part of the calculation, not decorative form fields.
+            </div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            {/* Bento 1: K-Line Insight (Colspan 2) */}
-            <div className="md:col-span-2 border border-white/10 bg-[#08080A] p-8 md:p-10 relative overflow-hidden group hover:border-primary/30 transition-colors">
-              <div className="absolute top-0 right-0 p-8 opacity-10">
-                <Activity className="w-32 h-32" />
-              </div>
-              <Heading level={3} className="text-2xl font-semibold mb-2 text-white/90">
-                Transits & K-Line Volatility
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="border border-emerald-500/20 bg-emerald-500/[0.06] p-6">
+              <Heading level={3} className="text-2xl text-emerald-100">
+                Healthy Expression
               </Heading>
-              <h4 className="text-primary text-sm uppercase tracking-widest font-mono mb-6">Cosmic Insight</h4>
-              <p className="text-muted-foreground text-lg font-light leading-relaxed relative z-10 max-w-2xl">
-                {h.klineInsight}
-              </p>
-            </div>
-
-            {/* Bento 2: Core Identity Box */}
-            <div className="border border-white/10 bg-[#08080A] p-8 flex flex-col justify-center items-center text-center">
-               <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6">
-                 <Star className="w-6 h-6 text-primary" />
-               </div>
-               <Heading level={3} className="text-xl font-medium text-white mb-2">{h.keyword}</Heading>
-               <p className="text-muted-foreground text-sm font-light">
-                 The undisputed domain of your chart representing {h.keyword.toLowerCase()} and ruled by the energy of {h.ruler}.
-               </p>
-            </div>
-
-            {/* Bento 3: Strengths Card */}
-            <div className="border border-white/10 bg-gradient-to-br from-[#08080A] to-emerald-950/20 p-8 md:p-10 group">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2 bg-emerald-500/10 rounded-md">
-                  <Sparkles className="w-5 h-5 text-emerald-400" />
-                </div>
-                <Heading level={3} className="text-xl font-semibold text-emerald-100">
-                  Momentum Triggers
-                </Heading>
-              </div>
-              <ul className="space-y-4">
-                {h.strengths.map((s) => (
-                  <li key={s} className="flex items-start gap-3 text-muted-foreground font-light group-hover:text-emerald-100/70 transition-colors">
-                    <span className="text-emerald-500/50 mt-1">✦</span> {s}
+              <ul className="mt-5 space-y-3 text-sm leading-7 text-emerald-50/80">
+                {h.strengths.map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="text-emerald-300">+</span>
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Bento 4: Friction Points Card */}
-            <div className="md:col-span-2 border border-white/10 bg-gradient-to-bl from-[#08080A] to-rose-950/20 p-8 md:p-10 group">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2 bg-rose-500/10 rounded-md">
-                  <AlertTriangle className="w-5 h-5 text-rose-400" />
-                </div>
-                <Heading level={3} className="text-xl font-semibold text-rose-100">
-                  Friction & Shadow Transits
-                </Heading>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
-                {h.challenges.map((c) => (
-                  <div key={c} className="flex items-start gap-3 text-muted-foreground font-light border-l border-rose-500/20 pl-4 py-1">
-                     {c}
-                  </div>
+            <div className="border border-rose-500/20 bg-rose-500/[0.06] p-6">
+              <Heading level={3} className="text-2xl text-rose-100">
+                Shadow Pattern
+              </Heading>
+              <ul className="mt-5 space-y-3 text-sm leading-7 text-rose-50/80">
+                {h.challenges.map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="text-rose-300">-</span>
+                    <span>{item}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
+            <div className="border border-white/10 bg-[#111015] p-6 md:col-span-2">
+              <div className="flex items-start gap-4">
+                <div className="mt-1 inline-flex h-10 w-10 shrink-0 items-center justify-center border border-amber-500/20 bg-amber-500/10 text-amber-300">
+                  <ShieldAlert className="h-4 w-4" />
+                </div>
+                <div>
+                  <Heading level={3} className="text-2xl md:text-3xl">
+                    What this page should do before it sells anything
+                  </Heading>
+                  <p className="mt-3 text-sm leading-7 text-white/65">
+                    House pages exist to answer narrow intent first. The user should leave with a clear meaning, a calculated placement, and a sensible next step. The full Life Curve is the upgrade path, not the opening move.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="mx-auto max-w-4xl px-6 text-center relative z-10">
-          <Heading level={2} className="text-3xl font-bold md:text-5xl mb-6">
-            Ready to track your <span className="text-primary italic font-light">{h.name}</span>?
-          </Heading>
-          <p className="mx-auto max-w-2xl text-muted-foreground text-lg font-light mb-10">
-            Stop reading generic descriptions. See exactly which planets are in your {h.name} and track their live transits on your dynamic K-Line.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/kline"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-14 items-center px-8 text-base font-semibold shadow-xl shadow-primary/20 transition-all hover:scale-105"
-            >
-              Reveal My Chart ✨ →
-            </Link>
-            <Link
-              href="/pricing"
-              className="inline-flex h-14 items-center border border-white/20 px-8 text-base font-semibold text-white/80 hover:bg-white/10 hover:text-white transition-all"
-            >
-              Explore Astrokline Pro
-            </Link>
+      <StructuredFaqSection
+        title={<>Frequently Asked <span className="text-primary italic font-light">Questions</span></>}
+        description={`These are the questions users usually have when they search for "${h.name.toLowerCase()} meaning" or try to calculate their own placement.`}
+        items={faqItems}
+      />
+
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <Heading level={2} variant="section" className="mb-4 text-3xl md:text-4xl">
+                Explore The Rest Of The Houses
+              </Heading>
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                Users studying one house usually need the full 1st-to-12th-house framework soon after. The hub page gives them that broader map, and the full Life Curve gives them timing.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/houses"
+                className="inline-flex h-12 items-center border border-white/10 px-6 text-sm font-semibold text-white/80 transition-colors hover:border-primary/30 hover:text-primary"
+              >
+                Open Houses Hub
+              </Link>
+              <Link
+                href="/kline"
+                className="inline-flex h-12 items-center bg-primary px-6 text-sm font-bold text-primary-foreground transition-all hover:scale-[1.01] hover:bg-primary/90"
+              >
+                Continue To My Life Curve
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {relatedHouses.map((house) => (
+              <Link
+                key={house.slug}
+                href={`/houses/${house.slug}`}
+                className="group border border-white/10 bg-[#111015] p-5 transition-all hover:border-primary/30 hover:bg-white/[0.03]"
+              >
+                <p className="text-[11px] uppercase tracking-[0.18em] text-primary/70">
+                  {house.ruler}
+                </p>
+                <Heading level={3} className="mt-3 text-2xl md:text-3xl">
+                  {house.name}
+                </Heading>
+                <p className="mt-3 text-sm leading-7 text-white/65">
+                  {house.keyword}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

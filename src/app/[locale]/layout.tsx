@@ -65,7 +65,7 @@ export default async function LocaleLayout({
                   '@type': 'WebSite',
                   name: 'AstroKline',
                   url: 'https://astrokline.com',
-                  description: 'AI-powered astrology timing tool that turns birth chart data into a visual K-Line forecast for career, relationships, and life decisions.',
+                  description: 'AI-powered astrology timing tool that turns birth chart data into a visual life curve for career, relationships, and life decisions.',
                   potentialAction: {
                     '@type': 'SearchAction',
                     target: {
@@ -83,7 +83,7 @@ export default async function LocaleLayout({
                   applicationCategory: 'LifestyleApplication',
                   operatingSystem: 'Web',
                   url: 'https://astrokline.com',
-                  description: 'Free AI birth chart reading and astrology K-Line timing map. Discover your career, love, and wealth turning points with Swiss Ephemeris precision.',
+                  description: 'Free AI birth chart reading and astrology timing map. Discover your career, love, and wealth turning points with Swiss Ephemeris precision.',
                   offers: {
                     '@type': 'Offer',
                     price: '0',

@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
+import { Link } from '@/core/i18n/navigation';
 import { ZODIAC_SIGNS, ZodiacSign } from '@/lib/astrokline/zodiac-data';
 import { envConfigs } from '@/config';
 import { Heading } from "@/components/astrokline/ui/heading";
@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!z) return {};
   const url = `${envConfigs.app_url}/zodiac/${z.slug}`;
   return {
-    title: `${z.name} Birth Chart Reading & K-Line Forecast | AstroKline`,
-    description: `Free ${z.name} (${z.dateRange}) birth chart K-Line reading. Discover ${z.name} career timing, relationship windows, and life turning points with AI astrology.`,
-    keywords: `${z.slug} birth chart, ${z.slug} natal chart, ${z.slug} astrology, ${z.slug} horoscope, ${z.slug} K-Line, ${z.slug} career timing`,
+    title: `${z.name} Timing Guide and Life Curve Reading | AstroKline`,
+    description: `Free ${z.name} (${z.dateRange}) birth chart timing guide. Discover ${z.name} career timing, relationship windows, and life turning points with AI astrology.`,
+    keywords: `${z.slug} birth chart, ${z.slug} natal chart, ${z.slug} astrology, ${z.slug} horoscope, ${z.slug} life curve, ${z.slug} career timing`,
     alternates: { canonical: url },
     openGraph: {
-      title: `${z.name} ${z.symbol} Birth Chart K-Line — AstroKline`,
+      title: `${z.name} ${z.symbol} Life Curve Guide — AstroKline`,
       description: z.description,
       url,
       type: 'article',
@@ -39,10 +39,12 @@ export default async function ZodiacPage({ params }: Props) {
 }
 
 function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
+  const timingCopy = z.klineInsight;
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: `${z.name} Birth Chart K-Line Reading`,
+    headline: `${z.name} Birth Chart Life Curve Reading`,
     description: z.description,
     author: { '@type': 'Organization', name: 'AstroKline' },
     publisher: { '@type': 'Organization', name: 'AstroKline' },
@@ -66,7 +68,7 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
             {z.name} Birth Chart
             <br />
             <span className="bg-gradient-to-r from-[#F5EBBA] via-[#D4AF37] to-[#8B7321] bg-clip-text text-transparent">
-              K-Line Reading
+              Life Curve Guide
             </span>
           </Heading>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/65 md:text-lg">
@@ -78,14 +80,14 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
         </div>
       </section>
 
-      {/* K-Line Insight */}
+      {/* Timing Insight */}
       <section className="border-b border-white/5 py-16">
         <div className="mx-auto max-w-4xl px-6">
           <Heading level={2} className="mb-6 text-3xl font-bold">
-            Your {z.name} K-Line Pattern
+            Your {z.name} Life Curve Pattern
           </Heading>
           <div className=" border border-white/8 bg-[#111015] p-8">
-            <p className="leading-8 text-white/70">{z.klineInsight}</p>
+            <p className="leading-8 text-white/70">{timingCopy}</p>
           </div>
         </div>
       </section>
@@ -126,10 +128,10 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
       <section className="py-16">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Heading level={2} className="text-3xl font-bold md:text-4xl">
-            See Your Personal {z.name} K-Line
+            See Your Personal {z.name} Timing Map
           </Heading>
           <p className="mx-auto mt-4 max-w-2xl text-white/65">
-            Enter your exact birth time and location to generate a K-Line
+            Enter your exact birth time and location to generate a Life Curve
             specific to your natal chart — not just your Sun sign.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -140,10 +142,10 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
               Reveal My Stars ✨ →
             </Link>
             <Link
-              href="/kline"
+              href="/zodiac"
               className="inline-flex h-12 items-center  border border-white/10 px-6 text-sm font-semibold text-white/80 hover:bg-white/5"
             >
-              Explore the Full K-Line
+              Browse All Zodiac Signs
             </Link>
           </div>
         </div>

@@ -160,7 +160,7 @@ export default async function RootLayout({
         <link rel="icon" href={envConfigs.app_favicon} />
         <link rel="apple-touch-icon" href={envConfigs.app_favicon} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Generate your free birth chart with the most accurate Vedic astrology calculator. Stop struggling with how to read astrology charts — our K-Line visualizes your destiny and compatibility instantly." />
+        <meta name="description" content="Generate your free birth chart with the most accurate Vedic astrology calculator. Stop struggling with how to read astrology charts — our life curve makes your timing and compatibility instantly clear." />
 
         {/* inject locales */}
         {locales ? (

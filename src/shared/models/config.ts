@@ -4,6 +4,10 @@ import { db } from '@/core/db';
 import { envConfigs } from '@/config';
 import { config } from '@/config/db/schema';
 import {
+  getRuntimeConfigValue,
+  hasRuntimeDatabase,
+} from '@/shared/lib/runtime-config.server';
+import {
   getAllSettingNames,
   publicSettingNames,
 } from '@/shared/services/settings';
@@ -52,7 +56,7 @@ export async function addConfig(newConfig: NewConfig) {
 async function loadConfigsFromDb(): Promise<Configs> {
   const configs: Record<string, string> = {};
 
-  if (!envConfigs.database_url && !['d1', 'sqlite', 'turso'].includes(envConfigs.database_provider)) {
+  if (!hasRuntimeDatabase()) {
     return configs;
   }
 
@@ -87,7 +91,7 @@ export async function getAllConfigs(
   let dbConfigs: Configs = {};
 
   // only get configs from db in server side
-  if (typeof window === 'undefined' && (envConfigs.database_url || ['d1', 'sqlite', 'turso'].includes(envConfigs.database_provider))) {
+  if (typeof window === 'undefined' && hasRuntimeDatabase()) {
     try {
       dbConfigs = options.fresh ? await getFreshConfigs() : await getConfigs();
     } catch (e) {
@@ -98,8 +102,7 @@ export async function getAllConfigs(
 
   const settingNames = await getAllSettingNames();
   settingNames.forEach((key) => {
-    const upperKey = key.toUpperCase();
-    const envValue = process.env[upperKey] ?? process.env[key];
+    const envValue = getRuntimeConfigValue(key);
     // Keep DB/admin settings as the source of truth and only backfill missing env-backed values.
     if ((dbConfigs[key] === undefined || dbConfigs[key] === '') && envValue) {
       dbConfigs[key] = envValue;

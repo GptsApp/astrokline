@@ -15,6 +15,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }[] = [
     { path: '/', changeFrequency: 'daily', priority: 1 },
     { path: '/kline', changeFrequency: 'weekly', priority: 0.9 },
+    { path: '/houses', changeFrequency: 'weekly', priority: 0.85 },
+    { path: '/zodiac', changeFrequency: 'weekly', priority: 0.85 },
+    { path: '/tools', changeFrequency: 'weekly', priority: 0.8 },
+    { path: '/learn-astrology', changeFrequency: 'weekly', priority: 0.75 },
     { path: '/tools/energy', changeFrequency: 'weekly', priority: 0.85 },
     { path: '/tools/calendar', changeFrequency: 'weekly', priority: 0.85 },
     { path: '/tools/compatibility', changeFrequency: 'weekly', priority: 0.85 },
@@ -56,7 +60,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const allPages = [...pages, ...zodiacPages];
+  const houseSlugs = [
+    '1st-house',
+    '2nd-house',
+    '3rd-house',
+    '4th-house',
+    '5th-house',
+    '6th-house',
+    '7th-house',
+    '8th-house',
+    '9th-house',
+    '10th-house',
+    '11th-house',
+    '12th-house',
+  ];
+
+  const housePages = houseSlugs.map((slug) => ({
+    path: `/houses/${slug}`,
+    changeFrequency: 'weekly' as const,
+    priority: 0.72,
+  }));
+
+  const allPages = [...pages, ...zodiacPages, ...housePages];
 
   // Generate entries for all locales
   const entries: MetadataRoute.Sitemap = [];

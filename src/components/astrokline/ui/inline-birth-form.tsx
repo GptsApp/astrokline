@@ -2,15 +2,19 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, MapPin, Sparkles, User } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { AlertCircle, ArrowLeft, ArrowRight, MapPin, Sparkles, User } from 'lucide-react';
 import { useRouter } from '@/core/i18n/navigation';
+import { enrichBirthDataWithTimezone } from '@/lib/astrokline/birth-timezone';
 import { trackEvent } from '@/lib/astrokline/track-event';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { cn } from '@/shared/lib/utils';
-import { Heading } from '@/components/astrokline/ui/heading';
-import { useBirthInfoModal, type BirthData } from './birth-info-context';
+import {
+  clearSavedKlineResult,
+  persistBirthData,
+  useBirthInfoModal,
+  type BirthData,
+} from './birth-info-context';
 import { ScrollPicker } from './scroll-picker';
 
 const LocationAutocomplete = dynamic(
@@ -33,7 +37,6 @@ const STEP_META = [
 
 export function InlineBirthForm() {
   const { data, setData } = useBirthInfoModal();
-  const t = useTranslations('common.birthModal');
   const router = useRouter();
   
   const [step, setStep] = useState(0);
@@ -62,7 +65,7 @@ export function InlineBirthForm() {
       const d = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
       setData((prev: BirthData) => {
         const newData = { ...prev, date: d };
-        try { localStorage.setItem('astrokline_birth_data', JSON.stringify(newData)); } catch (e) {}
+        try { localStorage.setItem('astrokline_birth_data', JSON.stringify(newData)); } catch {}
         return newData;
       });
     } else {
@@ -92,10 +95,16 @@ export function InlineBirthForm() {
     } else {
       trackEvent('birth_modal_submit');
       if (data.date && data.location) {
-        try { localStorage.setItem('astrokline_birth_data', JSON.stringify(data)); } catch (e) {}
+        const normalizedData: BirthData = enrichBirthDataWithTimezone({
+          ...data,
+          name: data.name.trim(),
+          location: data.location.trim(),
+          timeSlot: data.timeSlot || 'unknown',
+        });
+        persistBirthData(normalizedData);
+        clearSavedKlineResult();
       }
-      // Submit -> Navigate!
-      router.push('/kline/result');
+      router.push('/kline');
     }
   };
 
@@ -206,6 +215,8 @@ export function InlineBirthForm() {
         {step > 0 && (
           <button
             onClick={onBack}
+            aria-label="Go back to the previous step"
+            title="Go back"
             className="flex h-14 w-14 items-center justify-center border border-white/20 bg-transparent text-foreground hover:bg-white/5 transition-colors shrink-0"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -214,10 +225,6 @@ export function InlineBirthForm() {
         <button
           onClick={onNext}
           className="flex-1 h-14 bg-primary text-primary-foreground font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_35px_rgba(212,175,55,0.5)] hover:scale-[1.02] active:scale-[0.98] animate-[glow-pulse_2s_ease-in-out_infinite]"
-          style={{
-            // @ts-ignore -- CSS custom animation
-            animation: 'glow-pulse 2s ease-in-out infinite',
-          }}
         >
           {step === 0 ? "Continue ✨" : "Reveal My Stars ✨"}
           {step === 1 ? <Sparkles className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}

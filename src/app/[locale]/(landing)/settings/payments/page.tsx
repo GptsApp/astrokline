@@ -1,8 +1,8 @@
+import { redirect } from '@/core/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { PaymentStatusSync } from '@/shared/blocks/payment/payment-status-sync';
 import { PaymentType } from '@/extensions/payment/types';
-import { Empty } from '@/shared/blocks/common';
 import { TableCard } from '@/shared/blocks/table';
 import {
   getOrders,
@@ -15,8 +15,10 @@ import { Tab } from '@/shared/types/blocks/common';
 import { type Table } from '@/shared/types/blocks/table';
 
 export default async function PaymentsPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{
     page?: number;
     pageSize?: number;
@@ -28,25 +30,27 @@ export default async function PaymentsPage({
 }) {
   const { page: pageNum, pageSize, type, payment, order_no, provider } =
     await searchParams;
+  const { locale } = await params;
   const page = pageNum || 1;
   const limit = pageSize || 20;
 
   const user = await getUserInfo();
   if (!user) {
-    return <Empty message="no auth" />;
+    redirect({ href: '/sign-in', locale });
   }
+  const currentUser = user!;
 
   const t = await getTranslations('settings.payments');
 
   const total = await getOrdersCount({
     paymentType: type as PaymentType,
-    userId: user.id,
+    userId: currentUser.id,
     status: OrderStatus.PAID,
   });
 
   const orders = await getOrders({
     paymentType: type as PaymentType,
-    userId: user.id,
+    userId: currentUser.id,
     status: OrderStatus.PAID,
     page,
     limit,
@@ -140,6 +144,7 @@ export default async function PaymentsPage({
       {
         name: 'actions',
         type: 'dropdown',
+        placeholder: '—',
         callback: (item: Order) => {
           if (item.invoiceUrl) {
             return [
@@ -159,6 +164,8 @@ export default async function PaymentsPage({
               },
             ];
           }
+
+          return [];
         },
       },
     ],

@@ -15,19 +15,20 @@ import {
 } from '@chatscope/chat-ui-kit-react';
 import ReactMarkdown from 'react-markdown';
 
+import { toAppTier, tierAtLeast } from '@/lib/astrokline/tier-utils';
+
 interface Msg { role: 'user' | 'assistant'; content: string }
 interface ChatItem { id: string; title: string; createdAt: string }
 
 export function AskChartDashboard({ userTier }: { userTier: string }) {
-  const tier = userTier === 'PREMIUM' ? 'PRO' : userTier === 'STANDARD' ? 'LITE' : 'FREE';
-  const canUse = tier === 'PRO' || tier === 'LITE';
+  const tier = toAppTier(userTier);
+  const canUse = tierAtLeast(tier, 'LITE');
   const { openCheckout } = useCheckout();
 
   const [chats, setChats] = useState<ChatItem[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [messages, setMessages] = useState<Msg[]>([]);
-  const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingChats, setIsLoadingChats] = useState(true);
   const [limitReached, setLimitReached] = useState(false);
@@ -56,6 +57,9 @@ export function AskChartDashboard({ userTier }: { userTier: string }) {
     setLimitReached(false);
     try {
       const res = await fetch(`/api/astrology/ask-chart/history?chatId=${chatId}`);
+      if (!res.ok) {
+        throw new Error('load chat failed');
+      }
       const data = await res.json();
       if (data.success && data.data.messages) {
         setMessages(data.data.messages.map((m: any) => ({ role: m.role, content: m.content })));
@@ -111,6 +115,12 @@ export function AskChartDashboard({ userTier }: { userTier: string }) {
           return updated;
         });
       }
+      assistantText += decoder.decode();
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { role: 'assistant', content: assistantText };
+        return updated;
+      });
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Connection error.' }]);
     } finally {
@@ -129,7 +139,10 @@ export function AskChartDashboard({ userTier }: { userTier: string }) {
     e.stopPropagation();
     if (!confirm('Delete this conversation?')) return;
     try {
-      await fetch(`/api/astrology/ask-chart/history?chatId=${chatIdToDelete}`, { method: 'DELETE' });
+      const res = await fetch(`/api/astrology/ask-chart/history?chatId=${chatIdToDelete}`, { method: 'DELETE' });
+      if (!res.ok) {
+        throw new Error('delete chat failed');
+      }
       setChats(prev => prev.filter(c => c.id !== chatIdToDelete));
       if (activeChatId === chatIdToDelete) {
         setActiveChatId(null);
@@ -152,12 +165,12 @@ export function AskChartDashboard({ userTier }: { userTier: string }) {
   }
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] gap-0 overflow-hidden rounded-xl border border-white/5" style={{ background: '#0c0c18' }}>
+    <div className="flex h-[calc(100vh-8rem)] gap-0 overflow-hidden rounded-xl border border-white/5 bg-[#0c0c18]">
       {/* Sidebar */}
-      <div className="hidden md:flex w-64 shrink-0 flex-col border-r border-white/5" style={{ background: '#0a0a16' }}>
+      <div className="hidden md:flex w-64 shrink-0 flex-col border-r border-white/5 bg-[#0a0a16]">
         <div className="flex items-center justify-between border-b border-white/5 px-4 py-3">
           <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Conversations</span>
-          <button onClick={handleNewChat} className="text-white/30 hover:text-[#D4AF37] p-1 rounded hover:bg-white/5 transition-colors"><Plus className="h-4 w-4" /></button>
+          <button onClick={handleNewChat} title="Start a new conversation" aria-label="Start a new conversation" className="text-white/30 hover:text-[#D4AF37] p-1 rounded hover:bg-white/5 transition-colors"><Plus className="h-4 w-4" /></button>
         </div>
         <div className="flex-1 overflow-y-auto">
           {isLoadingChats ? (

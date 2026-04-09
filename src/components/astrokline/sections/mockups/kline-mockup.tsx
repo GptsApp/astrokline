@@ -2,7 +2,7 @@
 
 import { cn } from '@/shared/lib/utils';
 
-/** Simulated K-Line data matching the real chart structure */
+/** Simulated Life Curve data matching the real chart structure */
 const KLINE_DATA = [
   { year: 2020, o: 45, h: 58, l: 38, c: 52 },
   { year: 2021, o: 52, h: 65, l: 44, c: 60 },
@@ -41,7 +41,7 @@ export function KlineMockup() {
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest">⚹ Your Life Kline</span>
+          <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest">⚹ Your Life Curve</span>
           <span className="text-[8px] font-mono bg-white/10 text-white/40 px-1.5 py-0.5">(Preview)</span>
         </div>
         <div className="flex items-center gap-3 text-[8px] font-mono text-white/25 uppercase">

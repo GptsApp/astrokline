@@ -1,3 +1,4 @@
+import { redirect } from '@/core/i18n/navigation';
 import moment from 'moment';
 import { getTranslations } from 'next-intl/server';
 
@@ -30,8 +31,9 @@ export default async function CancelBillingPage({
 
   const user = await getUserInfo();
   if (!user) {
-    return <Empty message="no auth, please sign in" />;
+    redirect({ href: '/sign-in', locale });
   }
+  const currentUser = user!;
 
   const subscription = await findSubscriptionBySubscriptionNo(subscription_no);
   if (!subscription) {
@@ -42,7 +44,7 @@ export default async function CancelBillingPage({
     return <Empty message="subscription with no payment subscription id" />;
   }
 
-  if (subscription.userId !== user.id) {
+  if (subscription.userId !== currentUser.id) {
     return <Empty message="no permission" />;
   }
 
@@ -97,9 +99,14 @@ export default async function CancelBillingPage({
       subscription.paymentProvider
     );
 
-    const result = await paymentProvider?.cancelSubscription?.({
-      subscriptionId: subscription.subscriptionId,
-    });
+    let result;
+    try {
+      result = await paymentProvider?.cancelSubscription?.({
+        subscriptionId: subscription.subscriptionId,
+      });
+    } catch {
+      throw new Error('cancel subscription failed');
+    }
     if (!result) {
       throw new Error('cancel subscription failed');
     }
@@ -151,7 +158,7 @@ export default async function CancelBillingPage({
     data: subscription,
     passby: {
       subscription: subscription,
-      user: user,
+      user: currentUser,
     },
     submit: {
       handler: handleCancelSubscription,

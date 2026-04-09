@@ -5,13 +5,18 @@ import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { authClient, signIn } from '@/core/auth/client';
+import { signIn } from '@/core/auth/client';
 import { Link, useRouter } from '@/core/i18n/navigation';
-import { defaultLocale } from '@/config/locale';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { useAppContext } from '@/shared/contexts/app';
+import {
+  addLocalePrefix,
+  sanitizeInternalCallbackPath,
+  stripLocalePrefix,
+} from '@/shared/lib/auth-callback';
+import { buildVerifyEmailPath } from '@/shared/lib/unverified-sign-in';
 
 import { SocialProviders } from './social-providers';
 
@@ -37,26 +42,9 @@ export function SignInForm({
     configs.email_auth_enabled !== 'false' ||
     (!isGoogleAuthEnabled && !isGithubAuthEnabled); // no social providers enabled, auto enable email auth
 
-  if (callbackUrl) {
-    if (
-      locale !== defaultLocale &&
-      callbackUrl.startsWith('/') &&
-      !callbackUrl.startsWith(`/${locale}`)
-    ) {
-      callbackUrl = `/${locale}${callbackUrl}`;
-    }
-  }
-
-  const base = locale !== defaultLocale ? `/${locale}` : '';
-  const stripLocalePrefix = (path: string) => {
-    if (!path?.startsWith('/')) return '/';
-    if (locale === defaultLocale) return path;
-    if (path === `/${locale}`) return '/';
-    if (path.startsWith(`/${locale}/`))
-      return path.slice(locale.length + 1) || '/';
-    return path;
-  };
-  const normalizedCallbackUrl = stripLocalePrefix(callbackUrl || '/');
+  const safeCallbackUrl = sanitizeInternalCallbackPath(callbackUrl || '/');
+  const localizedCallbackUrl = addLocalePrefix(safeCallbackUrl, locale);
+  const normalizedCallbackUrl = stripLocalePrefix(localizedCallbackUrl, locale);
   const signUpHref =
     normalizedCallbackUrl && normalizedCallbackUrl !== '/'
       ? `/sign-up?callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`
@@ -80,7 +68,7 @@ export function SignInForm({
         {
           email,
           password,
-          callbackURL: callbackUrl,
+          callbackURL: localizedCallbackUrl,
         },
         {
           onRequest: () => {
@@ -96,17 +84,9 @@ export function SignInForm({
           onError: (e: any) => {
             const status = e?.error?.status;
             if (status === 403) {
-              const verifyPath = `/verify-email?sent=1&email=${encodeURIComponent(
-                email
-              )}&callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`;
-
-              // Keep the email link callback simple; verify page remains the waiting UI.
-              void authClient.sendVerificationEmail({
-                email,
-                callbackURL: `${base}${normalizedCallbackUrl || '/'}`,
+              const verifyPath = buildVerifyEmailPath(email, normalizedCallbackUrl, {
+                resend: true,
               });
-
-              // i18n router will prefix locale automatically; do NOT include locale here.
               router.push(verifyPath);
               return;
             }
@@ -188,7 +168,7 @@ export function SignInForm({
 
         <SocialProviders
           configs={configs}
-          callbackUrl={callbackUrl || '/'}
+          callbackUrl={safeCallbackUrl}
           loading={loading}
           setLoading={setLoading}
         />

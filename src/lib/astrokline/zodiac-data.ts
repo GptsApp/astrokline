@@ -24,7 +24,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Aries is the first sign of the zodiac, ruled by Mars. Known for bold initiative, leadership energy, and a drive to start new chapters.',
     klineInsight:
-      'Aries K-Lines often show sharp peaks during Mars return cycles. Career momentum tends to spike in spring, with major turning points when Mars aspects natal Sun or Midheaven.',
+      'Aries Life Curves often show sharp peaks during Mars return cycles. Career momentum tends to spike in spring, with major turning points when Mars aspects natal Sun or Midheaven.',
     strengths: ['Leadership', 'Courage', 'Initiative', 'Determination'],
     challenges: ['Impatience', 'Impulsivity', 'Short temper'],
   },
@@ -39,7 +39,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Taurus is an earth sign ruled by Venus, focused on stability, material comfort, and long-term value building.',
     klineInsight:
-      'Taurus K-Lines tend to show slow, steady growth curves. Major wealth windows often align with Venus-Jupiter conjunctions, and Uranus transits through Taurus bring unexpected breakthroughs.',
+      'Taurus Life Curves tend to show slow, steady growth patterns. Major wealth windows often align with Venus-Jupiter conjunctions, and Uranus transits through Taurus bring unexpected breakthroughs.',
     strengths: ['Persistence', 'Reliability', 'Financial sense', 'Patience'],
     challenges: ['Stubbornness', 'Resistance to change', 'Possessiveness'],
   },
@@ -54,7 +54,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Gemini is an air sign ruled by Mercury, known for intellectual curiosity, adaptability, and communication skills.',
     klineInsight:
-      'Gemini K-Lines show frequent oscillations reflecting their dual nature. Mercury retrograde periods are especially significant, often marking communication breakthroughs or pivots.',
+      'Gemini Life Curves show frequent oscillations reflecting their dual nature. Mercury retrograde periods are especially significant, often marking communication breakthroughs or pivots.',
     strengths: ['Communication', 'Versatility', 'Wit', 'Curiosity'],
     challenges: ['Inconsistency', 'Restlessness', 'Overthinking'],
   },
@@ -69,7 +69,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Cancer is a water sign ruled by the Moon, deeply connected to emotion, family, and inner security.',
     klineInsight:
-      'Cancer K-Lines correlate strongly with lunar cycles. Eclipse seasons hitting the Cancer-Capricorn axis often trigger major life restructuring around home, family, and career foundations.',
+      'Cancer Life Curves correlate strongly with lunar cycles. Eclipse seasons hitting the Cancer-Capricorn axis often trigger major life restructuring around home, family, and career foundations.',
     strengths: ['Emotional intelligence', 'Nurturing', 'Intuition', 'Loyalty'],
     challenges: ['Over-sensitivity', 'Mood swings', 'Clinginess'],
   },
@@ -84,7 +84,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Leo is a fire sign ruled by the Sun, radiating confidence, creativity, and a natural magnetism that draws others in.',
     klineInsight:
-      'Leo K-Lines peak during solar return seasons and when Jupiter transits fire signs. Recognition cycles align with Sun-Jupiter aspects, making these key windows for career visibility.',
+      'Leo Life Curves peak during solar return seasons and when Jupiter transits fire signs. Recognition cycles align with Sun-Jupiter aspects, making these key windows for career visibility.',
     strengths: ['Charisma', 'Creativity', 'Generosity', 'Confidence'],
     challenges: ['Pride', 'Need for validation', 'Dramatic tendencies'],
   },
@@ -99,7 +99,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Virgo is an earth sign ruled by Mercury, excelling in analysis, service, and systematic improvement.',
     klineInsight:
-      'Virgo K-Lines show gradual refinement patterns. Health and work transits peak during Mercury-Saturn aspects. The most productive windows come during organized, low-drama periods.',
+      'Virgo Life Curves show gradual refinement patterns. Health and work transits peak during Mercury-Saturn aspects. The most productive windows come during organized, low-drama periods.',
     strengths: ['Analytical mind', 'Dedication', 'Precision', 'Service'],
     challenges: ['Perfectionism', 'Over-criticism', 'Worry'],
   },
@@ -114,7 +114,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Libra is an air sign ruled by Venus, seeking balance, partnership, and aesthetic harmony in all things.',
     klineInsight:
-      'Libra K-Lines show relationship-driven peaks. Venus return cycles and Jupiter transits through air signs mark key windows for partnerships, legal outcomes, and creative collaboration.',
+      'Libra Life Curves show relationship-driven peaks. Venus return cycles and Jupiter transits through air signs mark key windows for partnerships, legal outcomes, and creative collaboration.',
     strengths: ['Diplomacy', 'Fairness', 'Charm', 'Aesthetic sense'],
     challenges: ['Indecision', 'People-pleasing', 'Avoidance of conflict'],
   },
@@ -129,7 +129,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Scorpio is a water sign ruled by Pluto, known for depth, transformation, and psychological intensity.',
     klineInsight:
-      'Scorpio K-Lines feature dramatic dips and equally powerful rebounds. Pluto transits trigger deep transformation periods lasting years, while Mars aspects create shorter bursts of decisive action.',
+      'Scorpio Life Curves feature dramatic dips and equally powerful rebounds. Pluto transits trigger deep transformation periods lasting years, while Mars aspects create shorter bursts of decisive action.',
     strengths: ['Depth', 'Resilience', 'Strategic mind', 'Passion'],
     challenges: ['Control issues', 'Jealousy', 'Secretiveness'],
   },
@@ -144,7 +144,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Sagittarius is a fire sign ruled by Jupiter, driven by expansion, adventure, philosophy, and the pursuit of truth.',
     klineInsight:
-      'Sagittarius K-Lines expand during Jupiter return cycles (every 12 years). International opportunities, education milestones, and belief system shifts align with Jupiter-Sun transits.',
+      'Sagittarius Life Curves expand during Jupiter return cycles every 12 years. International opportunities, education milestones, and belief system shifts align with Jupiter-Sun transits.',
     strengths: ['Optimism', 'Vision', 'Adventure', 'Honesty'],
     challenges: ['Overcommitment', 'Restlessness', 'Bluntness'],
   },
@@ -159,7 +159,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Capricorn is an earth sign ruled by Saturn, focused on ambition, structure, long-term achievement, and discipline.',
     klineInsight:
-      'Capricorn K-Lines show classic climb patterns with Saturn return cycles (ages ~29 and ~58) as defining peaks. Career breakthroughs align with Saturn-Jupiter conjunctions and Pluto transits.',
+      'Capricorn Life Curves show classic climb patterns with Saturn return cycles, around ages 29 and 58, as defining peaks. Career breakthroughs align with Saturn-Jupiter conjunctions and Pluto transits.',
     strengths: ['Discipline', 'Ambition', 'Responsibility', 'Endurance'],
     challenges: ['Rigidity', 'Workaholism', 'Emotional guardedness'],
   },
@@ -174,7 +174,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Aquarius is an air sign ruled by Uranus, driven by innovation, independence, humanitarian ideals, and unconventional thinking.',
     klineInsight:
-      'Aquarius K-Lines show sudden breakouts and unconventional trajectories. Uranus transits create unexpected life pivots, while Saturn aspects bring structure to visionary ideas.',
+      'Aquarius Life Curves show sudden breakouts and unconventional trajectories. Uranus transits create unexpected life pivots, while Saturn aspects bring structure to visionary ideas.',
     strengths: ['Innovation', 'Independence', 'Humanitarianism', 'Originality'],
     challenges: ['Detachment', 'Stubbornness', 'Unpredictability'],
   },
@@ -189,7 +189,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
     description:
       'Pisces is a water sign ruled by Neptune, embodying intuition, compassion, artistic sensitivity, and spiritual depth.',
     klineInsight:
-      'Pisces K-Lines show fluid, wave-like patterns. Neptune transits create long periods of spiritual growth, while Jupiter aspects open creative and healing windows. Eclipse seasons in Pisces bring pivotal revelations.',
+      'Pisces Life Curves show fluid, wave-like patterns. Neptune transits create long periods of spiritual growth, while Jupiter aspects open creative and healing windows. Eclipse seasons in Pisces bring pivotal revelations.',
     strengths: ['Intuition', 'Compassion', 'Creativity', 'Spiritual depth'],
     challenges: ['Escapism', 'Boundary issues', 'Over-idealism'],
   },

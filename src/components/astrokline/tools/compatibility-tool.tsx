@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Users, ArrowRight, Heart, MessageCircle, Zap, Shield } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import { Progress } from '@/shared/components/ui/progress';
 import { PartnerBirthForm, PartnerBirthData } from './partner-birth-form';
 import { computeCompatibility, SynastryScore } from '@/lib/astrokline/compatibility-engine';
 
@@ -24,14 +25,10 @@ function buildUtcDate(dateStr: string, timeSlot: string, tzOffset: number | null
     hour = parseInt(timeSlot.split(':')[0], 10);
   }
 
-  // Apply timezone approximation logically, or just build standard Local and assume it represents UTC for the engine since engine takes Date.
-  // Actually, if we just build Date(UTC), it's consistent.
   let date = new Date(Date.UTC(yyyy, mm - 1, dd, hour, 0, 0));
   
   if (tzOffset !== null) {
-    // If tz is +480 (Asia/Shanghai), we subtract 480 mins to get UTC. 
-    // Wait, let's keep it simple: New Date(Date.UTC(...)) - tzOffset * 60000 ensures alignment.
-    date = new Date(date.getTime() + (tzOffset * 60000));
+    date = new Date(date.getTime() - (tzOffset * 60 * 60 * 1000));
   }
   return date;
 }
@@ -43,10 +40,11 @@ interface CompatibilityToolProps {
 
 export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps) {
   const data = typeof klineResult === 'string' ? JSON.parse(klineResult) : klineResult;
-  const myDateStr = data?.profile?.date || data?.profile?.birthDate;
-  const myTimeSlot = data?.profile?.timeSlot;
-  const myTz = data?.profile?.timezoneValue || 0;
-  const myName = data?.profile?.name || 'You';
+  const myBirthData = data?.birthData ?? {};
+  const myDateStr = myBirthData.date || data?.profile?.birthDate;
+  const myTimeSlot = myBirthData.timeSlot || data?.profile?.birthTime || 'unknown';
+  const myTz = myBirthData.timezoneValue ?? 0;
+  const myName = data?.profile?.name || myBirthData.name || 'You';
 
   const [partnerName, setPartnerName] = useState('');
   const [result, setResult] = useState<SynastryScore | null>(null);
@@ -119,9 +117,15 @@ export function CompatibilityTool({ tier, klineResult }: CompatibilityToolProps)
                   <span className={cn('ml-auto text-xl font-mono', d.score >= 75 ? 'text-[#D4AF37]' : 'text-white')}>{d.score}</span>
                 </div>
                 
-                <div className="h-[2px] bg-white/5 overflow-hidden mb-5">
-                  <div className={cn('h-full', d.score >= 75 ? 'bg-[#D4AF37]' : 'bg-white/40')} style={{ width: `${d.score}%` }} />
-                </div>
+                <Progress
+                  value={d.score}
+                  className={cn(
+                    'mb-5 h-[2px] bg-white/5',
+                    d.score >= 75
+                      ? '[&>[data-slot=progress-indicator]]:bg-[#D4AF37]'
+                      : '[&>[data-slot=progress-indicator]]:bg-white/40'
+                  )}
+                />
                 
                 <p className="text-[11px] text-white/40 leading-relaxed font-mono">
                   {d.label === 'Romance' && result.insights.romanceText}

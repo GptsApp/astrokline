@@ -4,6 +4,7 @@ import { count, desc, eq, inArray } from 'drizzle-orm';
 import { getAuth } from '@/core/auth';
 import { db } from '@/core/db';
 import { user } from '@/config/db/schema';
+import { hasRuntimeDatabase } from '@/shared/lib/runtime-config.server';
 
 import { Permission, Role } from '../services/rbac';
 import { getRemainingCredits } from './credit';
@@ -88,12 +89,20 @@ export async function getUserCredits(userId: string) {
 }
 
 export async function getSignUser(request?: Request) {
-  const auth = await getAuth(request);
-  const session = await auth.api.getSession({
-    headers: request ? new Headers(request.headers) : await headers(),
-  });
+  if (!hasRuntimeDatabase()) {
+    return null;
+  }
 
-  return session?.user;
+  try {
+    const auth = await getAuth(request);
+    const session = await auth.api.getSession({
+      headers: request ? new Headers(request.headers) : await headers(),
+    });
+
+    return session?.user;
+  } catch {
+    return null;
+  }
 }
 
 export async function isEmailVerified(email: string): Promise<boolean> {
@@ -102,13 +111,19 @@ export async function isEmailVerified(email: string): Promise<boolean> {
     .toLowerCase();
   if (!normalized) return false;
 
-  const [row] = await db()
-    .select({ emailVerified: user.emailVerified })
-    .from(user)
-    .where(eq(user.email, normalized))
-    .limit(1);
+  if (!hasRuntimeDatabase()) return false;
 
-  return !!row?.emailVerified;
+  try {
+    const [row] = await db()
+      .select({ emailVerified: user.emailVerified })
+      .from(user)
+      .where(eq(user.email, normalized))
+      .limit(1);
+
+    return !!row?.emailVerified;
+  } catch {
+    return false;
+  }
 }
 
 export async function appendUserToResult(result: any) {

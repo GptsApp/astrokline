@@ -2,6 +2,7 @@
 
 import React, { useCallback, useState } from 'react';
 import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, MapPin, Sparkles, User } from 'lucide-react';
+import { resolveBirthTimezoneContext } from '@/lib/astrokline/birth-timezone';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { cn } from '@/shared/lib/utils';
@@ -192,6 +193,9 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
                   Time of Birth <span className="text-white/20 tracking-normal text-xs capitalize">(optional)</span>
                 </Label>
                 <select 
+                  id="partner-birth-time"
+                  title="Partner birth time"
+                  aria-label="Partner birth time"
                   className="flex h-12 w-full appearance-none rounded-none border-b border-white/10 bg-[#111] px-4 font-mono text-base text-white transition-colors focus-visible:border-[#D4AF37]/50 focus-visible:outline-none"
                   value={data.timeSlot}
                   onChange={(e) => {
@@ -214,7 +218,19 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
                   <LocationAutocomplete
                     value={data.location}
                     onChange={(name: string, lat: number, lon: number) => { 
-                      setData(d => ({ ...d, location: name, lat, lon, timezoneValue: 0 })); 
+                      const timezoneInfo = resolveBirthTimezoneContext({
+                        date: data.date,
+                        timeSlot: data.timeSlot,
+                        lat,
+                        lon,
+                      });
+                      setData(d => ({
+                        ...d,
+                        location: name,
+                        lat,
+                        lon,
+                        timezoneValue: timezoneInfo.timezoneValue,
+                      })); 
                       setErrorMsg(''); 
                     }}
                   />
@@ -232,6 +248,8 @@ export function PartnerBirthForm({ onSubmit, isLoading }: PartnerBirthFormProps)
               <button
                 disabled={isLoading}
                 onClick={onBack}
+                title="Go back to the previous step"
+                aria-label="Go back to the previous step"
                 className="h-14 px-6 flex items-center justify-center font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white border border-white/10 hover:border-white/30 bg-transparent transition-colors flex-1 max-w-[120px]"
               >
                 <ArrowLeft className="w-4 h-4" />

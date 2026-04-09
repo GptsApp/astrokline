@@ -2,6 +2,8 @@
 
 import React, { createContext, useCallback, useContext, useState } from 'react';
 
+import { enrichBirthDataWithTimezone } from '@/lib/astrokline/birth-timezone';
+
 const STORAGE_KEY = 'astrokline_birth_data';
 const KLINE_RESULT_KEY = 'astrokline_kline_result';
 
@@ -45,13 +47,19 @@ export function getSavedBirthData(): BirthData | null {
     if (!parsed) return null;
     // Validate it has the required fields
     if (
-      parsed.name &&
       parsed.date &&
       parsed.location &&
       parsed.lat !== null &&
       parsed.lon !== null
     ) {
-      return parsed;
+      const normalized = enrichBirthDataWithTimezone(parsed);
+      if (
+        normalized.timezoneValue !== parsed.timezoneValue ||
+        normalized.timeZoneId !== parsed.timeZoneId
+      ) {
+        saveBirthData(normalized);
+      }
+      return normalized;
     }
     return null;
   } catch {
@@ -60,11 +68,15 @@ export function getSavedBirthData(): BirthData | null {
 }
 
 function saveBirthData(data: BirthData) {
+  const normalizedData = enrichBirthDataWithTimezone(data);
+
   try {
-    saveJsonToStorage(STORAGE_KEY, data);
+    saveJsonToStorage(STORAGE_KEY, normalizedData);
   } catch {
     /* ignore quota errors */
   }
+
+  return normalizedData;
 }
 
 export function persistBirthData(data: BirthData) {
@@ -106,6 +118,8 @@ export interface BirthData {
   location: string; // display name
   lat: number | null;
   lon: number | null;
+  timezoneValue?: number | null;
+  timeZoneId?: string | null;
 }
 
 const DEFAULT_BIRTH_DATA: BirthData = {
@@ -116,16 +130,22 @@ const DEFAULT_BIRTH_DATA: BirthData = {
   location: '',
   lat: null,
   lon: null,
+  timezoneValue: null,
+  timeZoneId: null,
 };
+
+// eslint-disable-next-line no-unused-vars
+type BirthInfoCompletionCallback = (_birthData: BirthData) => void;
 
 interface BirthInfoContextType {
   data: BirthData;
   setData: React.Dispatch<React.SetStateAction<BirthData>>;
   isComplete: boolean;
   isModalOpen: boolean;
-  openModal: (onComplete?: (data: BirthData) => void) => void;
+  // eslint-disable-next-line no-unused-vars
+  openModal: (onComplete?: BirthInfoCompletionCallback) => void;
   closeModal: () => void;
-  onCompleteCallback: ((data: BirthData) => void) | null;
+  onCompleteCallback: BirthInfoCompletionCallback | null;
 }
 
 const BirthInfoContext = createContext<BirthInfoContextType | null>(null);
@@ -133,9 +153,8 @@ const BirthInfoContext = createContext<BirthInfoContextType | null>(null);
 export function BirthInfoProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<BirthData>(DEFAULT_BIRTH_DATA);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [onCompleteCallback, setOnCompleteCallback] = useState<
-    ((data: BirthData) => void) | null
-  >(null);
+  const [onCompleteCallback, setOnCompleteCallback] =
+    useState<BirthInfoCompletionCallback | null>(null);
 
   const isComplete = !!(
     data.name &&
@@ -145,7 +164,7 @@ export function BirthInfoProvider({ children }: { children: React.ReactNode }) {
     data.location
   );
 
-  const openModal = useCallback((onComplete?: (data: BirthData) => void) => {
+  const openModal = useCallback((onComplete?: BirthInfoCompletionCallback) => {
     // Reset all data on each open to prevent stale values
     setData({ ...DEFAULT_BIRTH_DATA });
     if (onComplete) {
@@ -157,7 +176,12 @@ export function BirthInfoProvider({ children }: { children: React.ReactNode }) {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     // Persist completed data to localStorage
-    if (data.name && data.date && data.location) {
+    if (
+      data.date &&
+      data.location &&
+      data.lat !== null &&
+      data.lon !== null
+    ) {
       saveBirthData(data);
     }
   }, [data]);

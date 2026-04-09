@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { SharedKlineResult } from '@/components/astrokline/kline/shared-kline-result';
-import { ExportPdfButton } from '@/components/astrokline/kline/export-pdf-button';
+import { PremiumDownloadButton } from '@/components/astrokline/kline/premium-download-button';
 import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
 import { ReferralCard } from '@/components/astrokline/kline/referral-card';
 import { ReportFooter } from '@/components/astrokline/kline/report-footer';
@@ -20,6 +20,11 @@ import {
   type TransitEvent,
   type UserProfile,
 } from '@/lib/astrokline/mock-astrology-data';
+import type { AiInsightData } from '@/lib/astrokline/ai-insight-cache';
+import {
+  buildNatalChartPayload,
+  enrichBirthDataWithTimezone,
+} from '@/lib/astrokline/birth-timezone';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 import {
   Plus,
@@ -33,6 +38,7 @@ import {
 import { cn } from '@/shared/lib/utils';
 import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
 import { Heading } from "@/components/astrokline/ui/heading";
+import { shouldSaveChartAsSelf } from '@/shared/lib/kline-ownership';
 
 interface KlineItem {
   id: string;
@@ -72,6 +78,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
   const [transitDetails, setTransitDetails] = useState<Record<number, TransitEvent[]>>({});
   const [radarData, setRadarData] = useState<any[] | null>(null);
   const [next30Days, setNext30Days] = useState<any | null>(null);
+  const [aiInsight, setAiInsight] = useState<AiInsightData | null>(null);
   const [dataReady, setDataReady] = useState(false);
   const animationDoneRef = useRef(false);
 
@@ -97,11 +104,11 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         setKlines(data.data);
         // Automatically select "My Chart" or the first one if not set
         if (data.data.length > 0) {
-          const defaultTab = data.data.find((k: KlineItem) => k.isSelf) || data.data[0];
-          // We set the active tab using functional logic to avoid stale closures
           setActiveKlineId((prev) => {
             if (!prev) {
-               applyKlineData(defaultTab);
+               const defaultTab = data.data.find((k: KlineItem) => k.isSelf) || data.data[0];
+               // Defer applyKlineData to avoid stale closure inside setState
+               queueMicrotask(() => applyKlineData(defaultTab));
                return defaultTab.id;
             }
             return prev;
@@ -153,6 +160,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       setTransitDetails(kline.klineResult.transitDetails ?? {});
       setRadarData(kline.klineResult.radarData ?? null);
       setNext30Days(kline.klineResult.next30Days ?? null);
+      setAiInsight(kline.klineResult.aiInsight ?? null);
       setSelectedYear(undefined);
     }
   };
@@ -223,27 +231,28 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       }
     } catch {}
 
+    const saveAsSelf = shouldSaveChartAsSelf(klines);
+
     openBirthModal(async (birthData: BirthData) => {
       setIsCalculating(true);
       setDataReady(false);
       animationDoneRef.current = false;
       try {
-        const [year, month, day] = birthData.date.split('-').map(Number);
-        const timezone = -(new Date().getTimezoneOffset() / 60);
+        const normalizedBirthData = enrichBirthDataWithTimezone(birthData);
         const response = await fetch('/api/astrology/natal-chart', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ year, month, day, timeSlot: birthData.timeSlot, timezone, latitude: birthData.lat, longitude: birthData.lon }),
+          body: JSON.stringify(buildNatalChartPayload(normalizedBirthData)),
         });
         const result = await response.json();
         if (result.success && result.data) {
           const newProfile = {
-            ...apiToProfile(result.data, birthData),
+            ...apiToProfile(result.data, normalizedBirthData),
             overallAverageScore: result.reportData?.overallAverageScore ?? 82,
           };
           const cachedResult = {
             profile: newProfile,
-            birthData,
+            birthData: normalizedBirthData,
             rawApiData: result.data,
             klineData: result.reportData?.klineData ?? [],
             transitDetails: result.reportData?.transitDetails ?? {},
@@ -253,24 +262,30 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              isSelf: false,
-              label: birthData.name || 'Friend',
-              birthDate: birthData.date,
-              birthTime: birthData.timeSlot,
-              birthPlace: birthData.location,
-              birthLat: String(birthData.lat),
-              birthLng: String(birthData.lon),
+              isSelf: saveAsSelf,
+              label: normalizedBirthData.name || (saveAsSelf ? 'Me' : 'Friend'),
+              birthDate: normalizedBirthData.date,
+              birthTime: normalizedBirthData.timeSlot,
+              birthPlace: normalizedBirthData.location,
+              birthLat: String(normalizedBirthData.lat),
+              birthLng: String(normalizedBirthData.lon),
               klineResult: cachedResult,
             }),
           });
           
           if (saveRes.ok) {
              const saveJson = await saveRes.json();
+             const persistedKlineResult = saveJson.data?.klineResult ?? cachedResult;
              await fetchKlines();
              if (saveJson.data?.id) {
                 // Instantly select the new chart
                 setActiveKlineId(saveJson.data.id);
-                applyKlineData({ id: saveJson.data.id, klineResult: cachedResult } as any);
+               applyKlineData({
+                id: saveJson.data.id,
+                isSelf: saveJson.data.isSelf,
+                label: saveJson.data.label,
+                klineResult: persistedKlineResult,
+               } as any);
              }
           }
         }
@@ -280,7 +295,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         setDataReady(true);
       }
     });
-  }, [openBirthModal, fetchKlines]);
+  }, [fetchKlines, klines, openBirthModal]);
 
   const handleLoaderComplete = useCallback(() => {
     animationDoneRef.current = true;
@@ -312,7 +327,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
              No Charts Yet
            </Heading>
            <p className="text-muted-foreground mb-6 max-w-sm text-sm">
-             Enter your birth details to generate your personal K-Line, or query a friend&apos;s chart.
+             Enter your birth details to generate your personal timing curve, or query a friend&apos;s chart.
            </p>
            <button
              onClick={handleNewQuery}
@@ -416,6 +431,8 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         {/* New Query Button as Tab */}
         <button
           onClick={handleNewQuery}
+          aria-label="Create a new chart"
+          title="Create a new chart"
           className="group flex h-[42px] shrink-0 items-center gap-2 px-4 transition-all hover:bg-white/5 -mb-[1px]"
         >
           <Plus className="h-4 w-4 text-white/40 group-hover:text-[#D4AF37] transition-colors" />
@@ -425,8 +442,15 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       {/* ── TOOLBAR ── */}
       <div className="flex items-center justify-between border-b border-white/5 pb-4">
          <div /> {/* spacing */}
-        {canExport ? (
-          <ExportPdfButton klineId={activeKlineId || ''} fileName={`kline-${profile?.name || 'report'}`} />
+        {profile ? (
+          <PremiumDownloadButton
+            profile={profile}
+            klineData={klineData}
+            transitDetails={transitDetails}
+            insightData={aiInsight}
+            tier={chartTier}
+            onUpgradeClick={() => openCheckout('lite')}
+          />
         ) : (
           <button onClick={() => openCheckout('lite')} className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
             Upgrade to Export PDF
@@ -452,6 +476,9 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
               hideFloatingNav={true}
               radarData={radarData}
               next30Days={next30Days}
+              klineId={activeKlineId || undefined}
+              initialAiInsight={aiInsight}
+              onAiInsightResolved={setAiInsight}
             />
           </motion.div>
         )}

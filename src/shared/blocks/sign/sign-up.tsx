@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { authClient, signUp } from '@/core/auth/client';
-import { Link } from '@/core/i18n/navigation';
-import { defaultLocale } from '@/config/locale';
+import { signUp } from '@/core/auth/client';
+import { Link, useRouter } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import {
   Card,
@@ -21,12 +19,19 @@ import {
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { useAppContext } from '@/shared/contexts/app';
+import {
+  addLocalePrefix,
+  buildVerifyEmailCallbackPath,
+  sanitizeInternalCallbackPath,
+  stripLocalePrefix,
+} from '@/shared/lib/auth-callback';
+import { buildSignUpEmailPayload } from '@/shared/lib/sign-up-email';
 
 import { SocialProviders } from './social-providers';
 
 export function SignUp({
   configs,
-  callbackUrl = '/',
+  callbackUrl = '/dashboard',
 }: {
   configs: Record<string, string>;
   callbackUrl: string;
@@ -50,28 +55,15 @@ export function SignUp({
   const emailVerificationEnabled =
     configs.email_verification_enabled === 'true';
 
-  if (callbackUrl) {
-    if (
-      locale !== defaultLocale &&
-      callbackUrl.startsWith('/') &&
-      !callbackUrl.startsWith(`/${locale}`)
-    ) {
-      callbackUrl = `/${locale}${callbackUrl}`;
-    }
-  }
-
-  const base = locale !== defaultLocale ? `/${locale}` : '';
-  const stripLocalePrefix = (path: string) => {
-    if (!path?.startsWith('/')) return '/';
-    if (locale === defaultLocale) return path;
-    if (path === `/${locale}`) return '/';
-    if (path.startsWith(`/${locale}/`))
-      return path.slice(locale.length + 1) || '/';
-    return path;
-  };
-  const normalizedCallbackUrl = stripLocalePrefix(callbackUrl || '/');
+  const safeCallbackUrl = sanitizeInternalCallbackPath(callbackUrl || '/dashboard');
+  const localizedCallbackUrl = addLocalePrefix(safeCallbackUrl, locale);
+  const normalizedCallbackUrl = stripLocalePrefix(localizedCallbackUrl, locale);
+  const verificationCallbackUrl = buildVerifyEmailCallbackPath(
+    normalizedCallbackUrl,
+    locale
+  );
   const signInHref =
-    normalizedCallbackUrl && normalizedCallbackUrl !== '/'
+    normalizedCallbackUrl && normalizedCallbackUrl !== '/' && normalizedCallbackUrl !== '/dashboard'
       ? `/sign-in?callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`
       : '/sign-in';
 
@@ -117,11 +109,13 @@ export function SignUp({
 
     try {
       await signUp.email(
-        {
+        buildSignUpEmailPayload({
           email,
           password,
           name,
-        },
+          emailVerificationEnabled,
+          verificationCallbackUrl,
+        }),
         {
           onRequest: () => {
             // loading is already set above; keep as no-op for safety
@@ -141,19 +135,12 @@ export function SignUp({
                 email
               )}&callbackUrl=${encodeURIComponent(normalizedCallbackUrl)}`;
 
-              // IMPORTANT: callbackURL must not contain its own '&' query params.
-              // We redirect to home/callbackUrl after verification; verify page is just the waiting UI.
-              void authClient.sendVerificationEmail({
-                email,
-                callbackURL: `${base}${normalizedCallbackUrl || '/'}`,
-              });
-
               // next/navigation router expects fully qualified path (including locale when non-default)
-              router.push(`${base}${verifyPath}`);
+              router.push(verifyPath);
               return;
             }
 
-            router.push(callbackUrl);
+            router.push(normalizedCallbackUrl || '/dashboard');
           },
           onError: (e: any) => {
             toast.error(e?.error?.message || 'sign up failed');
@@ -262,7 +249,7 @@ export function SignUp({
 
           <SocialProviders
             configs={configs}
-            callbackUrl={callbackUrl || '/'}
+            callbackUrl={safeCallbackUrl}
             loading={loading}
             setLoading={setLoading}
           />

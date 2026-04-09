@@ -6,8 +6,8 @@ import { getUserInfo } from '@/shared/models/user';
 import { ResultClient } from './page-client';
 
 export const generateMetadata = getMetadata({
-  title: 'Your K-Line Report — AstroKline',
-  description: 'Your personalized K-Line timing report.',
+  title: 'Your Life Curve Reading',
+  description: 'Your personalized Life Curve and timing-map reading.',
   noIndex: true,
 });
 
