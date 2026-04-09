@@ -19,6 +19,7 @@ import { ReportSection } from '@/components/astrokline/kline/report-section';
 import { cn } from '@/shared/lib/utils';
 import type { AiInsightData } from '@/lib/astrokline/ai-insight-cache';
 import { trackEvent } from '@/lib/astrokline/track-event';
+import type { AppTier } from '@/lib/astrokline/tier-utils';
 import type { DestinyScorePoint, Next30DaysGuidance, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
 import { Heading } from "@/components/astrokline/ui/heading";
 
