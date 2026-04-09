@@ -17,6 +17,8 @@ export type FunnelEvent =
   // Layer 3 – KLine Result
   | 'kline_result_loaded'
   | 'result_ask_chart_open'
+  | 'result_upgrade_cta_click'
+  | 'result_key_year_click'
   | 'registration_nudge_shown'
   | 'registration_nudge_signup_click'
   | 'registration_nudge_dismiss'
