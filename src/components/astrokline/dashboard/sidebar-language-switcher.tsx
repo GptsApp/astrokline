@@ -34,6 +34,15 @@ export function SidebarLanguageSwitcher({ collapsed }: { collapsed?: boolean }) 
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
 
+  const handleSwitch = (value: string) => {
+    if (value !== currentLocale) {
+      cacheSet('locale', value);
+      const query = searchParams?.toString?.() ?? '';
+      const href = query ? `${pathname}?${query}` : pathname;
+      router.push(href, { locale: value });
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
 
@@ -57,15 +66,6 @@ export function SidebarLanguageSwitcher({ collapsed }: { collapsed?: boolean }) 
       localStorage.setItem(LOCALE_DETECTED_KEY, '1');
     }
   }, []);
-
-  const handleSwitch = (value: string) => {
-    if (value !== currentLocale) {
-      cacheSet('locale', value);
-      const query = searchParams?.toString?.() ?? '';
-      const href = query ? `${pathname}?${query}` : pathname;
-      router.push(href, { locale: value });
-    }
-  };
 
   if (!mounted) {
     return (
