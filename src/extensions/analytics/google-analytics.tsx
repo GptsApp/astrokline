@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Script from 'next/script';
 
 import { AnalyticsConfigs, AnalyticsProvider } from '.';
 
@@ -26,13 +27,14 @@ export class GoogleAnalyticsProvider implements AnalyticsProvider {
   getHeadScripts(): ReactNode {
     return (
       <>
-        {/* Google tag (gtag.js) */}
-        <script
+        {/* Google tag (gtag.js) - lazyOnload to reduce TBT */}
+        <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${this.configs.gaId}`}
-          async
+          strategy="lazyOnload"
         />
-        <script
+        <Script
           id={this.name}
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];

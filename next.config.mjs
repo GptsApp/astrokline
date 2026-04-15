@@ -77,6 +77,20 @@ const nextConfig = {
           },
         ],
       },
+      // CDN edge cache for landing page (CF honors CDN-Cache-Control over Cache-Control)
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'CDN-Cache-Control',
+            value: 'public, s-maxage=3600, stale-while-revalidate=86400',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=60, stale-while-revalidate=3600',
+          },
+        ],
+      },
     ];
   },
   turbopack: {
