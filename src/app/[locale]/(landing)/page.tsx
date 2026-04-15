@@ -2,6 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { locales } from '@/config/locale';
 import { getMetadata } from '@/shared/lib/seo';
 import { DynamicPage } from '@/shared/types/blocks/landing';
 import { AstroHero } from '@/themes/default/blocks/astro-hero';
@@ -44,6 +45,10 @@ const homepageBlockRenderers: Record<
     <AstroTestimonials key={key} section={section} />
   ),
 };
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export const revalidate = 3600;
 
