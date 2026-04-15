@@ -751,7 +751,7 @@ function buildCoreInsights(profile: UserProfile, timeline: KlineTimelineData) {
   ];
 }
 
-function buildStrategicReading(
+export function buildStrategicReading(
   profile: UserProfile,
   chart: NatalChartResult,
   timeline: KlineTimelineData
@@ -853,9 +853,10 @@ function buildStrategicReading(
 export function buildFullPersonalizedReport(
   chart: NatalChartResult,
   birthDate: string,
-  profile: UserProfile
+  profile: UserProfile,
+  timelineOverride?: KlineTimelineData
 ) {
-  const timeline = buildPersonalizedKlineTimeline(chart, birthDate);
+  const timeline = timelineOverride ?? buildPersonalizedKlineTimeline(chart, birthDate);
   const strategic = buildStrategicReading(profile, chart, timeline);
 
   return {

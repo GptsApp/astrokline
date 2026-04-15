@@ -1,5 +1,5 @@
 /**
- * AstroKline Astrology Engine — Powered by astronomy-engine (VSOP87)
+ * AstroCurve Astrology Engine — Powered by astronomy-engine (VSOP87)
  * ===================================================================
  * Uses Don Cross's astronomy-engine library for high-precision planetary
  * position calculations. Based on VSOP87 (planets) and ELP/MPP02 (Moon)
@@ -34,6 +34,7 @@ export interface PlanetPosition {
   signDegree: number;
   house: number;
   retrograde: boolean;
+  navamsa?: { sign: string; degree: number };
 }
 
 export interface HousePosition {
@@ -50,12 +51,19 @@ export interface AspectData {
   orb: number;
 }
 
+export interface YogaResult {
+  name: string;
+  planets: string[];
+  description: string;
+}
+
 export interface NatalChartResult {
   planets: PlanetPosition[];
   houses: HousePosition[];
   aspects: AspectData[];
   ascendant: { sign: string; degree: number };
   midheaven: { sign: string; degree: number };
+  yogas?: YogaResult[];
 }
 
 export interface TransitDateInput {
@@ -224,6 +232,111 @@ function assignHouse(planetLon: number, cusps: number[]): number {
   return 1;
 }
 
+// ── Navamsa (D9) — each sign divided into 9 equal parts of 3°20' ──
+
+function computeNavamsa(longitude: number): { sign: string; degree: number } {
+  const navLon = mod360(longitude * 9);
+  return longitudeToSign(navLon);
+}
+
+// ── Vedic Yoga detection ──
+
+function haveAspect(aspects: AspectData[], p1: string, p2: string, types?: string[]): boolean {
+  return aspects.some(a =>
+    ((a.planet1 === p1 && a.planet2 === p2) || (a.planet1 === p2 && a.planet2 === p1))
+    && (!types || types.includes(a.aspect))
+  );
+}
+
+function detectYogas(planets: PlanetPosition[], aspects: AspectData[], houses: HousePosition[]): YogaResult[] {
+  const yogas: YogaResult[] = [];
+  const findPlanet = (name: string) => planets.find(p => p.name === name);
+
+  const jupiter = findPlanet('Jupiter');
+  const moon = findPlanet('Moon');
+  const sun = findPlanet('Sun');
+  const mercury = findPlanet('Mercury');
+  const venus = findPlanet('Venus');
+  const mars = findPlanet('Mars');
+
+  // 1. Gaja Kesari — Jupiter and Moon in angular (kendra) relationship
+  if (jupiter && moon) {
+    const angularAspects = ['Conjunction', 'Square', 'Opposition', 'Trine'];
+    if (haveAspect(aspects, 'Jupiter', 'Moon', angularAspects)) {
+      yogas.push({
+        name: 'Gaja Kesari',
+        planets: ['Jupiter', 'Moon'],
+        description: 'Natural wisdom, reputation, and influence that grows with age. You earn respect through knowledge and emotional intelligence.',
+      });
+    }
+  }
+
+  // 2. Budhaditya — Sun and Mercury in the same house
+  if (sun && mercury && sun.house === mercury.house) {
+    yogas.push({
+      name: 'Budhaditya',
+      planets: ['Sun', 'Mercury'],
+      description: 'Sharp analytical mind and articulate expression. You think clearly, communicate persuasively, and process information rapidly.',
+    });
+  }
+
+  // 3. Chandra-Mangal — Moon and Mars in conjunction or angular aspect
+  if (moon && mars) {
+    if (haveAspect(aspects, 'Moon', 'Mars', ['Conjunction', 'Opposition', 'Square', 'Trine'])) {
+      yogas.push({
+        name: 'Chandra-Mangal',
+        planets: ['Moon', 'Mars'],
+        description: 'Emotional courage and drive. You make bold decisions from the heart and possess the energy to act on your feelings.',
+      });
+    }
+  }
+
+  // 4. Amala — Jupiter or Venus in the 10th house (pure career blessing)
+  if ((jupiter && jupiter.house === 10) || (venus && venus.house === 10)) {
+    const benefic = jupiter?.house === 10 ? 'Jupiter' : 'Venus';
+    yogas.push({
+      name: 'Amala',
+      planets: [benefic],
+      description: 'A naturally noble public image. Your career benefits from ethical conduct and genuine goodwill.',
+    });
+  }
+
+  // 5. Malavya — Venus in own sign (Taurus/Libra) or exalted (Pisces), in angular house (1,4,7,10)
+  if (venus && [1, 4, 7, 10].includes(venus.house)) {
+    if (['Taurus', 'Libra', 'Pisces'].includes(venus.sign)) {
+      yogas.push({
+        name: 'Malavya',
+        planets: ['Venus'],
+        description: 'Gift for beauty, luxury, and harmonious relationships. You attract refined experiences and creative opportunities.',
+      });
+    }
+  }
+
+  // 6. Hamsa — Jupiter in own sign (Sagittarius/Pisces) or exalted (Cancer), in angular house
+  if (jupiter && [1, 4, 7, 10].includes(jupiter.house)) {
+    if (['Sagittarius', 'Pisces', 'Cancer'].includes(jupiter.sign)) {
+      yogas.push({
+        name: 'Hamsa',
+        planets: ['Jupiter'],
+        description: 'Deep spiritual wisdom and moral authority. You inspire others through your knowledge and ethical leadership.',
+      });
+    }
+  }
+
+  // 7. Ruchaka — Mars in own sign (Aries/Scorpio) or exalted (Capricorn), in angular house
+  if (mars && [1, 4, 7, 10].includes(mars.house)) {
+    if (['Aries', 'Scorpio', 'Capricorn'].includes(mars.sign)) {
+      yogas.push({
+        name: 'Ruchaka',
+        planets: ['Mars'],
+        description: 'Physical vitality and commanding presence. You lead through action and possess remarkable stamina.',
+      });
+    }
+  }
+
+  return yogas;
+}
+
 // ── Main calculation ──
 
 export async function calculateNatalChart(
@@ -298,6 +411,7 @@ export async function calculateNatalChart(
         signDegree: signInfo.degree,
         house: assignHouse(lon, cusps),
         retrograde,
+        navamsa: computeNavamsa(lon),
       });
     } catch (err) {
       console.warn(`Failed to calculate ${planetDef.name}:`, err);
@@ -345,6 +459,7 @@ export async function calculateNatalChart(
     aspects,
     ascendant: longitudeToSign(ascendant),
     midheaven: longitudeToSign(mc),
+    yogas: detectYogas(planets, aspects, houses),
   };
 }
 

@@ -1,38 +1,37 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 
 import { Link } from '@/core/i18n/navigation';
 import { ZODIAC_SIGNS, ZodiacSign } from '@/lib/astrokline/zodiac-data';
-import { envConfigs } from '@/config';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
+import { getMetadata } from '@/shared/lib/seo';
 
-type Props = { params: Promise<{ sign: string }> };
+type Props = { params: Promise<{ locale: string; sign: string }> };
 
-export async function generateStaticParams() {
-  return ZODIAC_SIGNS.map((z) => ({ sign: z.slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { sign } = await params;
+  const { locale, sign } = await params;
+  setRequestLocale(locale);
+
   const z = ZODIAC_SIGNS.find((s) => s.slug === sign);
   if (!z) return {};
-  const url = `${envConfigs.app_url}/zodiac/${z.slug}`;
-  return {
-    title: `${z.name} Timing Guide and Life Curve Reading | AstroKline`,
+
+  const generatePageMetadata = getMetadata({
+    title: `${z.name} Timing Guide and Life Curve Reading | AstroCurve`,
     description: `Free ${z.name} (${z.dateRange}) birth chart timing guide. Discover ${z.name} career timing, relationship windows, and life turning points with AI astrology.`,
     keywords: `${z.slug} birth chart, ${z.slug} natal chart, ${z.slug} astrology, ${z.slug} horoscope, ${z.slug} life curve, ${z.slug} career timing`,
-    alternates: { canonical: url },
-    openGraph: {
-      title: `${z.name} ${z.symbol} Life Curve Guide — AstroKline`,
-      description: z.description,
-      url,
-      type: 'article',
-    },
-  };
+    canonicalUrl: `/zodiac/${z.slug}`,
+  });
+
+  return generatePageMetadata({ params: Promise.resolve({ locale }) });
 }
 
 export default async function ZodiacPage({ params }: Props) {
-  const { sign } = await params;
+  const { locale, sign } = await params;
+  setRequestLocale(locale);
+
   const z = ZODIAC_SIGNS.find((s) => s.slug === sign);
   if (!z) notFound();
   return <ZodiacContent sign={z} />;
@@ -46,8 +45,8 @@ function ZodiacContent({ sign: z }: { sign: ZodiacSign }) {
     '@type': 'Article',
     headline: `${z.name} Birth Chart Life Curve Reading`,
     description: z.description,
-    author: { '@type': 'Organization', name: 'AstroKline' },
-    publisher: { '@type': 'Organization', name: 'AstroKline' },
+    author: { '@type': 'Organization', name: 'AstroCurve' },
+    publisher: { '@type': 'Organization', name: 'AstroCurve' },
   };
 
   return (

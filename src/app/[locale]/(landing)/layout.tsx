@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { BirthInfoWrapper } from '@/components/astrokline/ui/birth-info-wrapper';
-import { DeferredWidgets } from '@/components/astrokline/ui/deferred-widgets';
+import { BirthInfoWrapper } from '@/components/astrocurve/ui/birth-info-wrapper';
+import { DeferredWidgets } from '@/components/astrocurve/ui/deferred-widgets';
 import { getTranslations } from 'next-intl/server';
 
 import { envConfigs } from '@/config';
@@ -11,6 +11,8 @@ import {
   Footer as FooterType,
   Header as HeaderType,
 } from '@/shared/types/blocks/landing';
+
+export const dynamic = 'force-dynamic';
 
 export default async function LandingLayout({
   children,

@@ -262,7 +262,7 @@ export default async function BillingPage({
             Payment received.
           </div>
           <p className="mt-1 text-sm leading-6 text-white/70">
-            Your subscription is now updating in AstroKline.
+            Your subscription is now updating in AstroCurve.
             {provider ? ` Provider: ${provider}.` : ''}
             {order_no ? ` Order: ${order_no}.` : ''}
           </p>

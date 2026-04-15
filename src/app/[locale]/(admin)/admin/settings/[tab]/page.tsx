@@ -3,6 +3,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { PERMISSIONS, requirePermission } from '@/core/rbac';
 import { Header, Main, MainHeader } from '@/shared/blocks/dashboard';
 import { FormCard } from '@/shared/blocks/form';
+import {
+  CONFIGURED_SECRET_HELP_TEXT,
+  getSecretSettingNames,
+  isConfiguredSecretMask,
+  maskSecretSettingValues,
+} from '@/shared/lib/admin-console';
 import { getAllConfigs, saveConfigs } from '@/shared/models/config';
 import { getUserInfo } from '@/shared/models/user';
 import {
@@ -32,6 +38,11 @@ export default async function SettingsPage({
 
   const settingGroups = await getSettingGroups();
   const settings = await getSettings();
+  const { maskedConfigs, maskedSecretNames } = maskSecretSettingValues(
+    configs,
+    settings
+  );
+  const maskedSecretNameSet = new Set(maskedSecretNames);
 
   const t = await getTranslations('admin.settings');
 
@@ -59,9 +70,21 @@ export default async function SettingsPage({
       }
 
       // Only save fields from the form submission, not all configs
+      const secretSettingNames = new Set(
+        getSecretSettingNames(await getSettings())
+      );
       const formConfigs: Record<string, string> = {};
       data.forEach((value, name) => {
-        formConfigs[name] = value as string;
+        const stringValue = value as string;
+
+        if (
+          secretSettingNames.has(name) &&
+          isConfiguredSecretMask(stringValue)
+        ) {
+          return;
+        }
+
+        formConfigs[name] = stringValue;
       });
 
       await saveConfigs(formConfigs);
@@ -91,22 +114,31 @@ export default async function SettingsPage({
       description: group.description,
       fields: settings
         .filter((setting) => setting.group === group.name)
-        .map((setting) => ({
-          name: setting.name,
-          title: setting.title,
-          type: setting.type as any,
-          placeholder: setting.placeholder,
-          group: setting.group,
-          options: setting.options,
-          tip: setting.tip,
-          value: setting.value,
-          attributes: setting.attributes,
-        })),
+        .map((setting) => {
+          const isMaskedSecret = maskedSecretNameSet.has(setting.name);
+
+          return {
+            name: setting.name,
+            title: setting.title,
+            type: setting.type as any,
+            placeholder: setting.placeholder,
+            group: setting.group,
+            options: setting.options,
+            tip: [
+              setting.tip,
+              isMaskedSecret ? CONFIGURED_SECRET_HELP_TEXT : null,
+            ]
+              .filter(Boolean)
+              .join(' '),
+            value: setting.value,
+            attributes: setting.attributes,
+          };
+        }),
       passby: {
         provider: group.name,
         tab: group.tab,
       },
-      data: configs,
+      data: maskedConfigs,
       submit: {
         button: {
           title: t('edit.buttons.submit'),

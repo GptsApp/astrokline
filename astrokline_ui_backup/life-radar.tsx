@@ -1,9 +1,9 @@
 'use client';
 
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 import { useRef, useState } from 'react';
-import { RadarData } from '@/lib/astrokline/mock-astrology-data';
+import { RadarData } from '@/lib/astrocurve/mock-astrology-data';
 import { motion } from 'framer-motion';
 import { Focus } from 'lucide-react';
 import {

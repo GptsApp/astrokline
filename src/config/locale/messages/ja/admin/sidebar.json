@@ -1,10 +1,10 @@
 {
   "header": {
     "brand": {
-      "title": "AstroKline Two",
+      "title": "AstroCurve",
       "logo": {
-        "src": "/images/astrokline-logo.webp",
-        "alt": "AstroKline Two"
+        "src": "/images/astrocurve-logo.webp",
+        "alt": "AstroCurve"
       },
       "url": "/admin"
     },
@@ -149,7 +149,7 @@
         },
         {
           "title": "Email",
-          "url": "mailto:support@astrokline.com",
+          "url": "mailto:support@astrocurve.net",
           "icon": "Mail",
           "target": "_blank"
         }

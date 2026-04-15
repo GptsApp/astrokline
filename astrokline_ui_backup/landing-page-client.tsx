@@ -1,33 +1,33 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
-import { ChartHero } from '@/components/astrokline/kline/chart-hero';
-import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
-import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
-import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
-import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
+import { AiReadingPanels } from '@/components/astrocurve/kline/ai-reading-panels';
+import { ChartHero } from '@/components/astrocurve/kline/chart-hero';
+import { DestinySummaryCard } from '@/components/astrocurve/kline/destiny-summary-card';
+import { InteractiveChart } from '@/components/astrocurve/kline/interactive-chart';
+import { LifeStageScores } from '@/components/astrocurve/kline/life-stage-scores';
+import { QuotaLimitModal } from '@/components/astrocurve/kline/quota-limit-modal';
 // Removed unused lock / Star import
-import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
-import { ReportFooter } from '@/components/astrokline/kline/report-footer';
-import { ReportSection } from '@/components/astrokline/kline/report-section';
+import { RegistrationNudge } from '@/components/astrocurve/kline/registration-nudge';
+import { ReportFooter } from '@/components/astrocurve/kline/report-footer';
+import { ReportSection } from '@/components/astrocurve/kline/report-section';
 import {
   getSavedBirthData,
   getSavedKlineResult,
   saveKlineResult,
   useBirthInfoModal,
   type BirthData,
-} from '@/components/astrokline/ui/birth-info-context';
-import { PageBreadcrumb } from '@/components/astrokline/ui/page-breadcrumb';
-import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
+} from '@/components/astrocurve/ui/birth-info-context';
+import { PageBreadcrumb } from '@/components/astrocurve/ui/page-breadcrumb';
+import { AstrologyLoader } from '@/components/astrocurve/ui/theatrical-loader';
 import {
   generateKlineData,
   MOCK_TRANSIT_DETAILS,
   MOCK_USER_PROFILE,
   type UserProfile,
-} from '@/lib/astrokline/mock-astrology-data';
-import { apiToProfile } from '@/lib/astrokline/profile-transform';
-import { trackEvent } from '@/lib/astrokline/track-event';
+} from '@/lib/astrocurve/mock-astrology-data';
+import { apiToProfile } from '@/lib/astrocurve/profile-transform';
+import { trackEvent } from '@/lib/astrocurve/track-event';
 import {
   ArrowUp,
   Award,
@@ -56,7 +56,7 @@ import {
   AccordionTrigger,
 } from '@/shared/components/ui/accordion';
 import { cn } from '@/shared/lib/utils';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 // ─── Floating Mini Nav ───
 function FloatingNav() {

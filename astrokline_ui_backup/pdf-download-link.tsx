@@ -4,7 +4,7 @@ import React from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { Download, Sparkles, Loader2 } from 'lucide-react';
 import { PremiumPDFDocument } from './premium-pdf-document';
-import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrokline/mock-astrology-data';
+import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrocurve/mock-astrology-data';
 
 interface PDFDownloadLinkProps {
   profile: UserProfile;

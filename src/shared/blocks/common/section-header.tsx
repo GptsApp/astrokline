@@ -1,5 +1,5 @@
 import { cn } from '@/shared/lib/utils';
-import { Heading } from '@/components/astrokline/ui/heading';
+import { Heading } from '@/components/astrocurve/ui/heading';
 
 export function SectionHeader({
   title,

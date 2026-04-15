@@ -1,15 +1,15 @@
 {
   "metadata": {
     "title": "Blog",
-    "description": "Read latest product features, solutions, and updates."
+    "description": "Read AstroCurve guides on birth charts, astrology timing, life-curve analysis, and practical ways to use your chart for real decisions."
   },
   "page": {
-    "title": "AstroKline Blog",
+    "title": "AstroCurve Blog",
     "sections": {
       "blog": {
         "id": "blog",
         "title": "Blog",
-        "description": "Read latest product features, solutions, and updates."
+        "description": "Read AstroCurve guides on birth charts, astrology timing, life-curve analysis, and practical ways to use your chart for real decisions."
       }
     }
   },

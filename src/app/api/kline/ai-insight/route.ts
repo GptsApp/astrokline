@@ -18,6 +18,16 @@ const aiInsightSchema = z
     strengths: z.string().optional(),
     warnings: z.string().optional(),
     shadow: z.string().optional(),
+    dashaTimeline: z.string().optional(),
+    marriage: z.string().optional(),
+    karma: z.string().optional(),
+    family: z.string().optional(),
+    children: z.string().optional(),
+    spirituality: z.string().optional(),
+    education: z.string().optional(),
+    authority: z.string().optional(),
+    lifestyle: z.string().optional(),
+    hiddenDangers: z.string().optional(),
   })
   .passthrough();
 

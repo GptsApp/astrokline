@@ -1,11 +1,11 @@
 'use client';
 
-import { ChartHero } from '@/components/astrokline/kline/chart-hero';
-import { LifeRadar } from '@/components/astrokline/kline/life-radar';
-import { TrustBadge } from '@/components/astrokline/ui/trust-badge';
+import { ChartHero } from '@/components/astrocurve/kline/chart-hero';
+import { LifeRadar } from '@/components/astrocurve/kline/life-radar';
+import { TrustBadge } from '@/components/astrocurve/ui/trust-badge';
 import { Share2, Sparkles } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 interface SharedKlineClientProps {
   kline: {

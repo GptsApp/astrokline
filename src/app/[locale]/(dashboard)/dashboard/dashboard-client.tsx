@@ -12,7 +12,7 @@ import {
   saveKlineResult,
   useBirthInfoModal,
   type BirthData,
-} from '@/components/astrokline/ui/birth-info-context';
+} from '@/components/astrocurve/ui/birth-info-context';
 import {
   extractCurrentYearScore, extractSunSign, extractMoonSign,
 } from '@/lib/astrokline/daily-energy';
@@ -23,13 +23,13 @@ import {
 } from '@/lib/astrokline/birth-timezone';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 
-import { Heading } from '@/components/astrokline/ui/heading';
-import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
-import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
+import { Heading } from '@/components/astrocurve/ui/heading';
+import { AstrologyLoader } from '@/components/astrocurve/ui/theatrical-loader';
+import { useCheckout } from '@/components/astrocurve/checkout/checkout-context';
 import { useRouter } from 'next/navigation';
 import { hasUsableKlineData } from '@/shared/lib/kline-ownership';
 import { cn } from '@/shared/lib/utils';
-import { ReferralCard } from '@/components/astrokline/kline/referral-card';
+import { ReferralCard } from '@/components/astrocurve/kline/referral-card';
 import { toAppTier, tierDisplayName, tierAtLeast } from '@/lib/astrokline/tier-utils';
 
 interface DashboardClientProps {

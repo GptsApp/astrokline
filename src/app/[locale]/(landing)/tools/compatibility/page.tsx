@@ -1,15 +1,33 @@
 import { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { getUserInfo } from '@/shared/models/user';
-import { ToolPageShell } from '@/components/astrokline/tools/tool-page-shell';
+import { ToolPageShell } from '@/components/astrocurve/tools/tool-page-shell';
 import { redirect } from '@/core/i18n/navigation';
+import { getMetadata } from '@/shared/lib/seo';
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const generatePageMetadata = getMetadata({
     title: 'Free Astrology Compatibility by Date of Birth | Synastry Timing Map',
-    description: 'Discover deep astrology compatibility by date of birth. Our synastry timing map shows relationship friction, romantic peaks, and long-term synergy with far more nuance than sun-sign matching.',
-    keywords: ['astrology compatibility', 'astrology compatibility by date of birth', 'astrology synastry', 'synastry timing map', 'birth chart compatibility'],
-  };
+    description:
+      'Discover deep astrology compatibility by date of birth. Our synastry timing map shows relationship friction, romantic peaks, and long-term synergy with far more nuance than sun-sign matching.',
+    keywords: [
+      'astrology compatibility',
+      'astrology compatibility by date of birth',
+      'astrology synastry',
+      'synastry timing map',
+      'birth chart compatibility',
+    ].join(', '),
+    canonicalUrl: '/tools/compatibility',
+  });
+
+  return generatePageMetadata({ params: Promise.resolve({ locale }) });
 }
 
 export default async function CompatibilityPage({

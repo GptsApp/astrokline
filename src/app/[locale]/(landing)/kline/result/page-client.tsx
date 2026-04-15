@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { SharedKlineResult } from '@/components/astrokline/kline/shared-kline-result';
-import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
-import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
-import { ReportFooter } from '@/components/astrokline/kline/report-footer';
-import { ReportSection } from '@/components/astrokline/kline/report-section';
+import { SharedKlineResult } from '@/components/astrocurve/kline/shared-kline-result';
+import { QuotaLimitModal } from '@/components/astrocurve/kline/quota-limit-modal';
+import { RegistrationNudge } from '@/components/astrocurve/kline/registration-nudge';
+import { ReportFooter } from '@/components/astrocurve/kline/report-footer';
+import { ReportSection } from '@/components/astrocurve/kline/report-section';
 import {
   getSavedBirthData,
   getSavedKlineResult,
   saveKlineResult,
   clearSavedKlineResult,
-} from '@/components/astrokline/ui/birth-info-context';
-import { PageBreadcrumb } from '@/components/astrokline/ui/page-breadcrumb';
-import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
+} from '@/components/astrocurve/ui/birth-info-context';
+import { PageBreadcrumb } from '@/components/astrocurve/ui/page-breadcrumb';
+import { AstrologyLoader } from '@/components/astrocurve/ui/theatrical-loader';
 import {
   type DestinyScorePoint,
   type TransitEvent,
@@ -24,13 +24,14 @@ import {
   buildNatalChartPayload,
   enrichBirthDataWithTimezone,
 } from '@/lib/astrokline/birth-timezone';
+import { PLAN_ENTITLEMENTS } from '@/lib/astrokline/plan-entitlements';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 import { trackEvent } from '@/lib/astrokline/track-event';
 import { ShieldCheck, Briefcase, Heart, Sparkles, Share2, Compass } from 'lucide-react';
 import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 import { useAppContext } from '@/shared/contexts/app';
 import { Lock } from 'lucide-react';
 
@@ -444,8 +445,8 @@ export function ResultClient({
                 </div>
               )}
               {[
-                { name: 'Lite', price: '$19.9/mo', desc: 'Full tooltip details + Career, Wealth, Love & Health AI reading + 5 charts/mo', id: 'standard-yearly', hidden: tier === 'LITE' || tier === 'PRO', featured: false },
-                { name: 'Pro', price: '$39.9/mo', desc: 'Transit details + 5-Year Strategic Plan + Unlimited charts + PDF export', id: 'premium-yearly', featured: true, hidden: tier === 'PRO' },
+                { name: 'Lite', price: '$19.9/mo', desc: PLAN_ENTITLEMENTS.LITE.upgradeCardDescription, id: 'standard-yearly', hidden: tier === 'LITE' || tier === 'PRO', featured: false },
+                { name: 'Pro', price: '$39.9/mo', desc: PLAN_ENTITLEMENTS.PRO.upgradeCardDescription, id: 'premium-yearly', featured: true, hidden: tier === 'PRO' },
               ].filter(p => !p.hidden).map((plan) => (
                 <button key={plan.id} onClick={() => handleDirectCheckout(plan.id)} disabled={!!checkoutLoading} className={cn('block w-full text-left border p-5 transition-all hover:scale-[1.02]', plan.featured ? 'border-primary/40 bg-primary/5 shadow-[0_0_20px_rgba(212,175,55,0.1)]' : 'border-white/10 bg-white/[0.02] hover:border-white/20')}>
                   <div className="mb-2 flex items-center justify-between"><Heading level={4} className="text-foreground font-bold">{plan.name}</Heading><span className="text-primary text-lg font-bold">{checkoutLoading === plan.id ? '...' : plan.price}</span></div>
@@ -462,13 +463,13 @@ export function ResultClient({
                   setShowPricingInline(false);
                   if (navigator.share) {
                     navigator.share({
-                      title: 'AstroKline — My Cosmic Timing Map',
+                      title: 'AstroCurve — My Cosmic Timing Map',
                       text: 'I just mapped my 100-year timing curve. See yours free:',
                       url: window.location.origin + '/kline',
                     }).catch(() => {});
                   } else {
                     navigator.clipboard.writeText(
-                      `I just mapped my 100-year timing curve on AstroKline! See yours free: ${window.location.origin}/kline`
+                      `I just mapped my 100-year timing curve on AstroCurve! See yours free: ${window.location.origin}/kline`
                     ).then(() => {
                       alert('Link copied! Share it to unlock a free report.');
                     }).catch(() => {});

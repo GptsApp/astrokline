@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { UserProfile } from '@/lib/astrokline/mock-astrology-data';
+import { UserProfile } from '@/lib/astrocurve/mock-astrology-data';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, Globe, Orbit } from 'lucide-react';
 
@@ -9,7 +9,7 @@ import { cn } from '@/shared/lib/utils';
 
 import { AdvancedAstrologyData } from './advanced-astrology-data';
 import { AstrologyChartWheel } from './astrology-chart-wheel';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 interface Props {
   profile: UserProfile;

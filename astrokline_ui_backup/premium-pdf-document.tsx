@@ -1,6 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrokline/mock-astrology-data';
+import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrocurve/mock-astrology-data';
 
 // --- Polished Gallup-Grade Styles ---
 const styles = StyleSheet.create({

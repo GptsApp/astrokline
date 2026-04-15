@@ -10,7 +10,29 @@
       {
         "title": "Mis Cartas",
         "url": "/dashboard/kline",
-        "icon": "Activity"
+        "icon": "Activity",
+        "children": [
+          {
+            "title": "01 Curva de Vida",
+            "url": "/dashboard/kline#life-curve"
+          },
+          {
+            "title": "02 Etapa Actual",
+            "url": "/dashboard/kline#hero"
+          },
+          {
+            "title": "03 Por Qué Se Siente Así",
+            "url": "/dashboard/kline#diagnosis"
+          },
+          {
+            "title": "04 Qué Hacer Ahora",
+            "url": "/dashboard/kline#action-plan"
+          },
+          {
+            "title": "05 Profundizar",
+            "url": "/dashboard/kline#continue"
+          }
+        ]
       }
     ]
   },

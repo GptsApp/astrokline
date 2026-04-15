@@ -10,7 +10,29 @@
       {
         "title": "マイチャート",
         "url": "/dashboard/kline",
-        "icon": "Activity"
+        "icon": "Activity",
+        "children": [
+          {
+            "title": "01 ライフカーブ",
+            "url": "/dashboard/kline#life-curve"
+          },
+          {
+            "title": "02 現在のステージ",
+            "url": "/dashboard/kline#hero"
+          },
+          {
+            "title": "03 なぜこう感じるのか",
+            "url": "/dashboard/kline#diagnosis"
+          },
+          {
+            "title": "04 次に何をするか",
+            "url": "/dashboard/kline#action-plan"
+          },
+          {
+            "title": "05 さらに深く",
+            "url": "/dashboard/kline#continue"
+          }
+        ]
       },
       {
         "title": "招待する",

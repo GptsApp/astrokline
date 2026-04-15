@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { cn } from '@/shared/lib/utils';
-import { InlineBirthForm } from '@/components/astrokline/ui/inline-birth-form';
+import { InlineBirthForm } from '@/components/astrocurve/ui/inline-birth-form';
 
 const SOCIAL_PROOFS = [
   { label: 'Based on NASA Planetary Data' },

@@ -2,10 +2,10 @@
   "sidebar": {
     "header": {
       "brand": {
-        "title": "AstroKline Chat",
+        "title": "AstroCurve Chat",
         "logo": {
-          "src": "/images/astrokline-logo.webp",
-          "alt": "AstroKline Chat"
+          "src": "/images/astrocurve-logo.webp",
+          "alt": "AstroCurve Chat"
         },
         "url": "/chat"
       },
@@ -78,7 +78,7 @@
           },
           {
             "title": "Email",
-            "url": "mailto:support@astrokline.com",
+            "url": "mailto:support@astrocurve.net",
             "icon": "Mail",
             "target": "_blank"
           }

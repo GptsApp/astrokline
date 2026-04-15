@@ -1,15 +1,15 @@
 {
   "metadata": {
     "title": "Blog",
-    "description": "Read latest product features, solutions, and updates."
+    "description": "出生図、占星術のタイミング、人生曲線、そして実際の意思決定に活かす方法を解説するAstroCurveガイドをまとめています。"
   },
   "page": {
-    "title": "AstroKline Blog",
+    "title": "AstroCurve Blog",
     "sections": {
       "blog": {
         "id": "blog",
         "title": "Blog",
-        "description": "Read latest product features, solutions, and updates."
+        "description": "出生図、占星術のタイミング、人生曲線、そして実際の意思決定に活かす方法を解説するAstroCurveガイドをまとめています。"
       }
     }
   },

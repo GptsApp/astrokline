@@ -1,14 +1,14 @@
 {
   "metadata": {
     "title": "Showcases",
-    "description": "Awesome projects built with AstroKline"
+    "description": "Awesome projects built with AstroCurve"
   },
   "page": {
     "title": "Showcases",
     "sections": {
       "showcases": {
         "id": "showcases",
-        "title": "AI SaaS Startups built with AstroKline",
+        "title": "AI SaaS Startups built with AstroCurve",
         "description": "Easy to use and fast to ship.",
         "groups": [
           {

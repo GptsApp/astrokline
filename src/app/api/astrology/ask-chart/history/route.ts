@@ -4,6 +4,70 @@ import { chat, chatMessage } from '@/config/db/schema';
 import { eq, and, desc } from 'drizzle-orm';
 import { getUserInfo } from '@/shared/models/user';
 
+function parseChatMetadata(rawMetadata: unknown) {
+  if (typeof rawMetadata !== 'string' || !rawMetadata.trim()) {
+    return {} as Record<string, unknown>;
+  }
+
+  try {
+    const parsed = JSON.parse(rawMetadata);
+    return parsed && typeof parsed === 'object'
+      ? (parsed as Record<string, unknown>)
+      : {};
+  } catch {
+    return {} as Record<string, unknown>;
+  }
+}
+
+function getThreadPresentation(
+  metadata: Record<string, unknown>,
+  fallbackTitle: string | null
+) {
+  const activeContext =
+    metadata.activeContext && typeof metadata.activeContext === 'object'
+      ? (metadata.activeContext as Record<string, unknown>)
+      : metadata.askContext && typeof metadata.askContext === 'object'
+        ? (metadata.askContext as Record<string, unknown>)
+        : null;
+
+  const promptLabel =
+    activeContext && typeof activeContext.promptLabel === 'string'
+      ? activeContext.promptLabel.trim()
+      : null;
+  const selectedYear =
+    activeContext && typeof activeContext.selectedYear === 'number'
+      ? activeContext.selectedYear
+      : null;
+  const threadTitle =
+    typeof metadata.threadTitle === 'string' && metadata.threadTitle.trim()
+      ? metadata.threadTitle.trim()
+      : promptLabel
+        ? selectedYear
+          ? `${promptLabel} · ${selectedYear}`
+          : promptLabel
+        : fallbackTitle?.trim() || 'Untitled conversation';
+  const threadTheme =
+    typeof metadata.threadTheme === 'string' && metadata.threadTheme.trim()
+      ? metadata.threadTheme.trim()
+      : promptLabel;
+  const lastUserQuestion =
+    typeof metadata.lastUserQuestion === 'string' && metadata.lastUserQuestion.trim()
+      ? metadata.lastUserQuestion.trim()
+      : null;
+  const chartLabel =
+    typeof metadata.chartLabel === 'string' && metadata.chartLabel.trim()
+      ? metadata.chartLabel.trim()
+      : null;
+
+  return {
+    threadTitle,
+    threadTheme,
+    lastUserQuestion,
+    chartLabel,
+    selectedYear,
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const user = await getUserInfo();
@@ -89,7 +153,24 @@ export async function GET(request: NextRequest) {
       .orderBy(desc(chat.updatedAt))
       .limit(50);
 
-    return NextResponse.json({ success: true, data: chats });
+    const threadChats = chats.map((chatRecord: (typeof chats)[number]) => {
+      const metadata = parseChatMetadata(chatRecord.metadata);
+      const presentation = getThreadPresentation(metadata, chatRecord.title);
+
+      return {
+        id: chatRecord.id,
+        title: presentation.threadTitle,
+        threadTitle: presentation.threadTitle,
+        threadTheme: presentation.threadTheme,
+        lastUserQuestion: presentation.lastUserQuestion,
+        chartLabel: presentation.chartLabel,
+        selectedYear: presentation.selectedYear,
+        createdAt: chatRecord.createdAt,
+        updatedAt: chatRecord.updatedAt,
+      };
+    });
+
+    return NextResponse.json({ success: true, data: threadChats });
   } catch (error) {
     console.error('Ask chart history error:', error);
     return NextResponse.json(

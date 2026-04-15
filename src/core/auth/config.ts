@@ -21,6 +21,9 @@ import {
 import { grantCreditsForNewUser } from '@/shared/models/credit';
 import { getEmailService } from '@/shared/services/email';
 import { grantRoleForNewUser } from '@/shared/services/rbac';
+import { getCanonicalOrigin } from '@/shared/lib/canonical-host';
+
+import { buildSocialProviders } from './social-providers';
 
 // Best-effort dedupe to prevent sending verification emails too frequently.
 // This is especially helpful in dev/hot reload, transient network conditions,
@@ -113,25 +116,25 @@ async function getServerOriginFromHeaders() {
   }
 }
 
-async function resolveAuthBaseUrl(request?: Request) {
+async function resolveRequestOrigin(request?: Request) {
   const requestOrigin = getOrigin(request?.url);
   if (requestOrigin) {
     return requestOrigin;
   }
 
-  const headerOrigin = await getServerOriginFromHeaders();
-  if (headerOrigin) {
-    return headerOrigin;
-  }
+  return getServerOriginFromHeaders();
+}
 
-  return (
+async function resolveAuthBaseUrl(request?: Request) {
+  const requestOrigin = await resolveRequestOrigin(request);
+  const fallbackOrigin =
     getOrigin(getRuntimeConfigValue('AUTH_URL')) ||
     getOrigin(getRuntimeConfigValue('NEXT_PUBLIC_APP_URL')) ||
     getOrigin(envConfigs.auth_url) ||
     getOrigin(envConfigs.app_url) ||
-    requestOrigin ||
-    'http://localhost:3000'
-  );
+    'http://localhost:3000';
+
+  return getCanonicalOrigin(requestOrigin || fallbackOrigin) || fallbackOrigin;
 }
 
 function getAuthSecret() {
@@ -195,7 +198,8 @@ export async function getAuthOptions(
   request?: Request
 ) {
   const baseURL = await resolveAuthBaseUrl(request);
-  const requestOrigin = getOrigin(baseURL);
+  const requestOrigin =
+    (await resolveRequestOrigin(request)) || getOrigin(baseURL);
 
   const emailVerificationEnabled =
     configs.email_verification_enabled === 'true' &&
@@ -341,25 +345,7 @@ export async function getAuthOptions(
 
 // get social providers with configs
 export async function getSocialProviders(configs: Record<string, string>) {
-  const providers: any = {};
-
-  // google auth
-  if (configs.google_client_id && configs.google_client_secret) {
-    providers.google = {
-      clientId: configs.google_client_id,
-      clientSecret: configs.google_client_secret,
-    };
-  }
-
-  // github auth
-  if (configs.github_client_id && configs.github_client_secret) {
-    providers.github = {
-      clientId: configs.github_client_id,
-      clientSecret: configs.github_client_secret,
-    };
-  }
-
-  return providers;
+  return buildSocialProviders(configs);
 }
 
 // convert database provider to better-auth database provider

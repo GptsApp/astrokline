@@ -1,31 +1,31 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { SharedKlineResult } from '@/components/astrokline/kline/shared-kline-result';
-import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
-import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
-import { ReportFooter } from '@/components/astrokline/kline/report-footer';
-import { ReportSection } from '@/components/astrokline/kline/report-section';
+import { SharedKlineResult } from '@/components/astrocurve/kline/shared-kline-result';
+import { QuotaLimitModal } from '@/components/astrocurve/kline/quota-limit-modal';
+import { RegistrationNudge } from '@/components/astrocurve/kline/registration-nudge';
+import { ReportFooter } from '@/components/astrocurve/kline/report-footer';
+import { ReportSection } from '@/components/astrocurve/kline/report-section';
 import {
   getSavedBirthData,
   getSavedKlineResult,
   saveKlineResult,
   clearSavedKlineResult,
-} from '@/components/astrokline/ui/birth-info-context';
-import { PageBreadcrumb } from '@/components/astrokline/ui/page-breadcrumb';
-import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
+} from '@/components/astrocurve/ui/birth-info-context';
+import { PageBreadcrumb } from '@/components/astrocurve/ui/page-breadcrumb';
+import { AstrologyLoader } from '@/components/astrocurve/ui/theatrical-loader';
 import {
   type DestinyScorePoint,
   type TransitEvent,
   type UserProfile,
-} from '@/lib/astrokline/mock-astrology-data';
-import { apiToProfile } from '@/lib/astrokline/profile-transform';
-import { trackEvent } from '@/lib/astrokline/track-event';
+} from '@/lib/astrocurve/mock-astrology-data';
+import { apiToProfile } from '@/lib/astrocurve/profile-transform';
+import { trackEvent } from '@/lib/astrocurve/track-event';
 import { ShieldCheck, Briefcase, Heart, Sparkles, Share2 } from 'lucide-react';
 import { useRouter } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 import { useAppContext } from '@/shared/contexts/app';
 
 type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';

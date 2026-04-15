@@ -1,6 +1,6 @@
-import { Next30DaysGuidance } from '@/lib/astrokline/mock-astrology-data';
+import { Next30DaysGuidance } from '@/lib/astrocurve/mock-astrology-data';
 import { CheckCircle2, MoonStar, XCircle } from 'lucide-react';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 export function Next30Days({ data }: { data: Next30DaysGuidance }) {
   return (

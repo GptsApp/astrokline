@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { AstroWheel } from '@/components/astrokline/charts/astro-wheel';
-import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
+import { AstroWheel } from '@/components/astrocurve/charts/astro-wheel';
+import { AstrologyLoader } from '@/components/astrocurve/ui/theatrical-loader';
 import {
   CheckCircle2,
   CreditCard,

@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "AstroKline — Personal Timing Map",
-    "description": "出生図から人生曲線を生成し、進むべき時、待つべき時、守るべき時を把握しましょう。",
-    "keywords": "astrokline, astrology chart, birth chart, natal chart, horoscope, destiny chart, 人生曲線, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast, personalized astrology, star chart analysis"
+    "title": "AstroCurve — AI占星術、出生図、相性診断",
+    "description": "AI占星術アプリで出生図、ホロスコープ、相性診断、人生曲線のタイミングを確認。AstroCurveが転機をSwiss Ephemeris精度で可視化します。",
+    "keywords": "AstroCurve, AI占星術, 出生図, ホロスコープ, 相性診断, 人生曲線, astrology chart, birth chart, natal chart, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast"
   },
   "sign": {
     "sign_in_title": "Sign In",

@@ -1,9 +1,9 @@
 import { getUserInfo } from '@/shared/models/user';
 import { getAstroUserTier } from '@/lib/astrokline/user-tier';
 import { getMyKline } from '@/shared/models/kline';
-import { EnergyTool } from '@/components/astrokline/tools/energy-tool';
-import { CompatibilityTool } from '@/components/astrokline/tools/compatibility-tool';
-import { ToolBreadcrumb } from '@/components/astrokline/tools/tool-breadcrumb';
+import { EnergyTool } from '@/components/astrocurve/tools/energy-tool';
+import { CompatibilityTool } from '@/components/astrocurve/tools/compatibility-tool';
+import { ToolBreadcrumb } from '@/components/astrocurve/tools/tool-breadcrumb';
 import { redirect } from '@/core/i18n/navigation';
 import { notFound } from 'next/navigation';
 

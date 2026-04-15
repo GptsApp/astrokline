@@ -1,11 +1,11 @@
-import { ContentHubShell } from '@/components/astrokline/content/content-hub-shell';
+import { ContentHubShell } from '@/components/astrocurve/content/content-hub-shell';
 import { getMetadata } from '@/shared/lib/seo';
 import { ZODIAC_SIGNS } from '@/lib/astrokline/zodiac-data';
 
 export const generateMetadata = getMetadata({
   title: 'Zodiac Sign Meanings and Timing Guides',
   description:
-    'Browse all 12 zodiac signs, learn the personality and timing patterns behind each sign, and continue into your full AstroKline Life Curve.',
+    'Browse all 12 zodiac signs, learn the personality and timing patterns behind each sign, and continue into your full AstroCurve Life Curve.',
   keywords:
     'zodiac signs, zodiac meanings, astrology signs, natal chart signs, sign meanings',
   canonicalUrl: '/zodiac',

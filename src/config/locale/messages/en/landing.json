@@ -2,10 +2,10 @@
   "header": {
     "show_sign": true,
     "brand": {
-      "title": "AstroKline",
+      "title": "AstroCurve",
       "logo": {
-        "src": "/images/astrokline-logo.webp",
-        "alt": "AstroKline logo"
+        "src": "/images/astrocurve-logo.webp",
+        "alt": "AstroCurve logo"
       }
     },
     "nav": {
@@ -99,11 +99,11 @@
   },
   "footer": {
     "brand": {
-      "title": "AstroKline",
-      "description": "AstroKline turns birth-chart data into a simple timing map so you can spot strong periods, weak periods, and turning points.",
+      "title": "AstroCurve",
+      "description": "AstroCurve turns your birth chart into an AI Life Curve so you can spot timing patterns, compatibility shifts, and major turning points.",
       "logo": {
-        "src": "/images/astrokline-logo.webp",
-        "alt": "AstroKline logo"
+        "src": "/images/astrocurve-logo.webp",
+        "alt": "AstroCurve logo"
       }
     },
     "nav": {
@@ -157,7 +157,7 @@
       "items": [
         {
           "title": "Email Support",
-          "url": "mailto:support@astrokline.com",
+          "url": "mailto:support@astrocurve.net",
           "icon": "Mail"
         },
         {
@@ -167,7 +167,7 @@
         }
       ]
     },
-    "copyright": "© 2026 AstroKline. AI-powered astrology with life-timing clarity. All rights reserved.",
+    "copyright": "© 2026 AstroCurve. AI astrology for birth charts, horoscopes, and life timing. All rights reserved.",
     "show_theme": true,
     "show_locale": true,
     "show_built_with": false

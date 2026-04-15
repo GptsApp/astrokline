@@ -6,7 +6,7 @@ export default async function DashboardLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="min-h-screen w-screen overflow-x-hidden overflow-y-auto">
       {children}
     </div>
   );

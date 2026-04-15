@@ -1,15 +1,15 @@
 {
   "metadata": {
     "title": "Blog",
-    "description": "Read latest product features, solutions, and updates."
+    "description": "Lee guías de AstroCurve sobre carta natal, timing astrológico, curva de vida y formas prácticas de usar tu carta en decisiones reales."
   },
   "page": {
-    "title": "AstroKline Blog",
+    "title": "AstroCurve Blog",
     "sections": {
       "blog": {
         "id": "blog",
         "title": "Blog",
-        "description": "Read latest product features, solutions, and updates."
+        "description": "Lee guías de AstroCurve sobre carta natal, timing astrológico, curva de vida y formas prácticas de usar tu carta en decisiones reales."
       }
     }
   },

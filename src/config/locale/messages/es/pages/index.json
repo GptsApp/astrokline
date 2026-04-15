@@ -2,7 +2,6 @@
   "page": {
     "show_sections": [
       "hero",
-      "kline-preview",
       "how-it-works",
       "features",
       "testimonials",
@@ -17,7 +16,7 @@
         "title1": "Tu carta natal esconde un mapa de tiempo.",
         "title2": "Lo hemos hecho visible.",
         "highlight_text": "Curva de Vida",
-        "description": "La mayoría de las personas toman decisiones profesionales, de relaciones y financieras sin conocer su clima cósmico. AstroKline convierte tus datos de nacimiento exactos en una curva de vida para que veas los picos, valles y puntos de inflexión antes de que lleguen.",
+        "description": "La mayoría de las personas toman decisiones profesionales, de relaciones y financieras sin conocer su clima cósmico. AstroCurve convierte tus datos de nacimiento exactos en una curva de vida para que veas los picos, valles y puntos de inflexión antes de que lleguen.",
         "badge": "Swiss Ephemeris · Astrología de Precisión",
         "announcement": {
           "badge": "V2.0",
@@ -28,7 +27,7 @@
         "tip": "Análisis de carta natal de precisión impulsado por Swiss Ephemeris y datos NASA JPL",
         "social_proof": {
            "quote": "\"Cada cálculo es transparente, preciso y verificable — construido con el mismo motor utilizado por astrólogos profesionales en todo el mundo.\"",
-           "author": "— Equipo AstroKline",
+           "author": "— Equipo AstroCurve",
            "avatar": "/images/avatars/diverse/hero_casual_1.webp",
            "readers": "Impulsado por <strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431"
         },
@@ -55,7 +54,7 @@
       "features": {
         "id": "features",
         "block": "astro-features",
-        "engine": "El Motor Astrokline",
+        "engine": "El Motor AstroCurve",
         "title1": "Un Panel de Control Para",
         "title2": "Tu Línea de Tiempo.",
         "description": "No hacemos horóscopos difusos. Usamos datos exactos de efemérides para trazar el impulso de tu vida, la fricción y los puntos de inflexión en un gráfico claro y táctico.",
@@ -118,14 +117,14 @@
         "items": [
           {
             "title": "Gratis",
-            "description": "Descubre al instante 1 punto de inflexión crucial en tu carta de 2026 y mira tu trayectoria de 100 años.",
+            "description": "Obtén tu primera carta gratis: mira tu curva de 100 años, guarda tu ID Cósmica y previsualiza lo que viene.",
             "features_title": "Incluye",
             "features": [
               "Curva de Vida completa de 100 años",
-              "AI-powered core reading",
-              "Yearly momentum insights",
-              "Raw natal chart data",
-              "2 saved charts for life"
+              "Puntuación de destino y panorama anual por año",
+              "Tarjeta de ID Cósmica — perfil compartible",
+              "1 generación de carta de por vida",
+              "Herramienta básica de compatibilidad + vista previa de energía de 3 meses"
             ],
             "interval": "month",
             "amount": 0,
@@ -143,24 +142,25 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
-            "features_title": "Everything in Free, plus",
+            "description": "Desbloquea la capa práctica: 7 módulos de lectura AI, tu calendario de 30 días, energía anual completa y reportes guardados.",
+            "features_title": "Todo en Gratis, más",
             "features": [
-              "10 cartas guardadas por mes",
-              "Career, Wealth, Love & Health breakdowns",
-              "Annual transit summaries per year",
-              "Personal dashboard with saved reports",
-              "Upgrade to Pro anytime"
+              "Lectura AI de 7 secciones para carrera, dinero, amor, salud, timing, matrimonio y resumen",
+              "Calendario de Acción de 30 Días + pronóstico completo de energía de 12 meses",
+              "\"Pregunta a tu Carta\" — 3 preguntas AI por mes",
+              "Detalles completos de tránsitos año por año",
+              "5 generaciones de carta por mes",
+              "Guardar cartas, historial del panel y exportación PDF"
             ],
             "interval": "month",
             "amount": 3990,
             "currency": "USD",
             "price": "$39.9",
-            "unit": "/ month",
+            "unit": "/ mes",
             "is_featured": false,
-            "tip": "Billed Monthly",
+            "tip": "Facturado Mensualmente",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "Desbloquear Mi Mapa de Tiempo",
               "url": "/pricing"
             },
             "product_id": "standard-monthly",
@@ -168,42 +168,42 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
-            "features_title": "Everything in Lite, plus",
+            "description": "Desbloquea el dossier completo: todos los módulos AI avanzados, chat ilimitado con tu carta, herramientas Pro de timing y exportaciones completas.",
+            "label": "Mejor para Grandes Decisiones",
+            "features_title": "Todo en Lite, más",
             "features": [
-              "30 cartas guardadas por mes",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
-              "Exact transit detail for every turning year",
-              "Priority access to every new release",
-              "Export polished PDF reports",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "Dossier AI de 17 secciones con karma, familia, hijos, espiritualidad, liderazgo y zonas de cautela",
+              "\"Pregunta a tu Carta\" — conversaciones AI ilimitadas",
+              "Generaciones de carta ilimitadas",
+              "Mejores Horas, Viaje en el Tiempo, Radar de Vida, Lectura del Destino y Próximos 30 Días",
+              "Modo Jaimini + inteligencia avanzada de tránsitos",
+              "Exportación HD del Life Book en PDF (50+ páginas)",
+              "Acceso prioritario a cada nuevo lanzamiento"
             ],
             "interval": "month",
             "amount": 7990,
             "currency": "USD",
             "price": "$79.9",
-            "unit": "/ month",
+            "unit": "/ mes",
             "is_featured": true,
-            "tip": "Billed Monthly",
+            "tip": "Facturado Mensualmente",
             "button": {
-              "title": "Get Full Access",
+              "title": "Obtener Acceso Total",
               "url": "/pricing"
             },
             "product_id": "premium-monthly",
             "group": "monthly"
           },
           {
-            "title": "Free",
-            "description": "Descubre tu Curva de Vida de 100 años y entiende lo que viene.",
-            "features_title": "Includes",
+            "title": "Gratis",
+            "description": "Obtén tu primera carta gratis: mira tu curva de 100 años, guarda tu ID Cósmica y previsualiza lo que viene.",
+            "features_title": "Incluye",
             "features": [
               "Curva de Vida completa de 100 años",
-              "AI-powered core reading",
-              "Yearly momentum insights",
-              "Raw natal chart data",
-              "2 saved charts for life"
+              "Puntuación de destino y panorama anual por año",
+              "Tarjeta de ID Cósmica — perfil compartible",
+              "1 generación de carta de por vida",
+              "Herramienta básica de compatibilidad + vista previa de energía de 3 meses"
             ],
             "interval": "year",
             "amount": 0,
@@ -221,25 +221,26 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
-            "features_title": "Everything in Free, plus",
+            "description": "Desbloquea la capa práctica: 7 módulos de lectura AI, tu calendario de 30 días, energía anual completa y reportes guardados.",
+            "features_title": "Todo en Gratis, más",
             "features": [
-              "10 cartas guardadas por mes",
-              "Career, Wealth, Love & Health breakdowns",
-              "Annual transit summaries per year",
-              "Personal dashboard with saved reports",
-              "Upgrade to Pro anytime"
+              "Lectura AI de 7 secciones para carrera, dinero, amor, salud, timing, matrimonio y resumen",
+              "Calendario de Acción de 30 Días + pronóstico completo de energía de 12 meses",
+              "\"Pregunta a tu Carta\" — 3 preguntas AI por mes",
+              "Detalles completos de tránsitos año por año",
+              "5 generaciones de carta por mes",
+              "Guardar cartas, historial del panel y exportación PDF"
             ],
             "interval": "year",
             "amount": 23880,
             "currency": "USD",
             "price": "$19.9",
             "original_price": "$39.9",
-            "unit": "/ month",
+            "unit": "/ mes",
             "is_featured": false,
-            "tip": "Billed yearly at $238.8",
+            "tip": "Facturado anualmente a $238.8",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "Desbloquear Mi Mapa de Tiempo",
               "url": "/pricing"
             },
             "product_id": "standard-yearly",
@@ -247,28 +248,28 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
-            "features_title": "Everything in Lite, plus",
+            "description": "Desbloquea el dossier completo: todos los módulos AI avanzados, chat ilimitado con tu carta, herramientas Pro de timing y exportaciones completas.",
+            "label": "Mejor para Grandes Decisiones",
+            "features_title": "Todo en Lite, más",
             "features": [
-              "30 cartas guardadas por mes",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
-              "Exact transit detail for every turning year",
-              "Priority access to every new release",
-              "Export polished PDF reports",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "Dossier AI de 17 secciones con karma, familia, hijos, espiritualidad, liderazgo y zonas de cautela",
+              "\"Pregunta a tu Carta\" — conversaciones AI ilimitadas",
+              "Generaciones de carta ilimitadas",
+              "Mejores Horas, Viaje en el Tiempo, Radar de Vida, Lectura del Destino y Próximos 30 Días",
+              "Modo Jaimini + inteligencia avanzada de tránsitos",
+              "Exportación HD del Life Book en PDF (50+ páginas)",
+              "Acceso prioritario a cada nuevo lanzamiento"
             ],
             "interval": "year",
             "amount": 47880,
             "currency": "USD",
             "price": "$39.9",
             "original_price": "$79.9",
-            "unit": "/ month",
+            "unit": "/ mes",
             "is_featured": true,
-            "tip": "Billed yearly at $478.8",
+            "tip": "Facturado anualmente a $478.8",
             "button": {
-              "title": "Get Full Access",
+              "title": "Obtener Acceso Total",
               "url": "/pricing"
             },
             "product_id": "premium-yearly",
@@ -279,14 +280,14 @@
       "faq": {
         "id": "faq",
         "block": "astro-faq",
-        "title": "Questions Before You Start",
+        "title": "Preguntas Antes de Empezar",
         "description": "Todo lo que necesitas saber sobre tu Curva de Vida y cómo se construye."
       },
       "cta": {
         "id": "cta",
         "block": "astro-cta",
-        "title": "Your Turning Point Is Coming.",
-        "description": "The question is: will you see it before it hits, or after?"
+        "title": "Tu Punto de Inflexión Está Llegando.",
+        "description": "La pregunta es: ¿lo verás antes de que llegue, o solo después?"
       },
       "kline_result": {
         "scores": {

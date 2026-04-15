@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'KLine not found' }, { status: 404 });
     }
 
-    const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://astrokline.com'}/share/${token}`;
+    const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.astrocurve.net'}/share/${token}`;
     return NextResponse.json({ success: true, data: { token, shareUrl } });
   } catch (error: any) {
     console.error('Share error:', error);

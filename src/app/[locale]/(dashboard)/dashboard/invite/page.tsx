@@ -1,5 +1,5 @@
-import { ReferralCard } from '@/components/astrokline/kline/referral-card';
-import { Heading } from '@/components/astrokline/ui/heading';
+import { ReferralCard } from '@/components/astrocurve/kline/referral-card';
+import { Heading } from '@/components/astrocurve/ui/heading';
 
 export default function DashboardInvitePage() {
   return (

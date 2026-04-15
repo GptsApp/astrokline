@@ -3,7 +3,7 @@
 import type {
   DestinyScorePoint,
   UserProfile,
-} from '@/lib/astrokline/mock-astrology-data';
+} from '@/lib/astrocurve/mock-astrology-data';
 import { motion } from 'framer-motion';
 import {
   Calendar,
@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 interface Props {
   profile: UserProfile;

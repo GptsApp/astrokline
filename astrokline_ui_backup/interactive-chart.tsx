@@ -1,12 +1,12 @@
 'use client';
 
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 import { useCallback, useMemo, useState } from 'react';
 import {
   DestinyScorePoint,
   TransitEvent,
-} from '@/lib/astrokline/mock-astrology-data';
+} from '@/lib/astrocurve/mock-astrology-data';
 import {
   AlertCircle,
   Briefcase,

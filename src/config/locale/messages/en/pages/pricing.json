@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "title": "Astrokline Pro | Advanced Astrology Transit & Timing Features",
-    "description": "Unlock long-term predictive astrology charts, AI-driven daily insights, and full astrological software tools with an Astrokline subscription. Advanced Vedic astrology predictions."
+    "title": "AstroCurve Pro | Advanced Astrology Transit & Timing Features",
+    "description": "Unlock full Life Curve timing, AI horoscopes, compatibility insights, and premium birth chart tools with an AstroCurve subscription."
   },
   "page": {
-    "title": "AstroKline Pricing",
+    "title": "AstroCurve Pricing",
     "sections": {
       "pricing": {
         "id": "pricing",
@@ -25,14 +25,14 @@
         "items": [
           {
             "title": "Free",
-            "description": "See your full 100-year timing curve, generate your Cosmic ID card, and discover what lies ahead — completely free, forever.",
+            "description": "Get your first chart free: see your 100-year timing curve, save your Cosmic ID card, and preview what comes next.",
             "features_title": "Includes",
             "features": [
               "Full 100-year life curve",
-              "Overall destiny score & trend direction",
+              "Overall destiny score and year-by-year trend overview",
               "Cosmic ID Card — shareable profile",
               "1 chart generation for life",
-              "Trend overview for every year"
+              "Basic compatibility tool + 3-month energy preview"
             ],
             "interval": "month",
             "amount": 0,
@@ -50,16 +50,15 @@
           },
           {
             "title": "Lite",
-            "description": "Unlock your full AI reading, 30-day action calendar, yearly energy curve, and compatibility checks — so every big decision has timing on its side.",
+            "description": "Unlock the practical layer: 7 AI reading modules, your 30-day action calendar, full-year energy timing, and saved reports.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "Career, Wealth, Love & Health AI reading",
-              "30-Day Action Calendar with daily Do/Don't",
-              "12-Month Energy Curve forecast",
-              "Compatibility Check (synastry)",
+              "7-section AI reading for career, money, love, health, timing, marriage, and summary",
+              "30-Day Action Calendar + full 12-month energy forecast",
+              "\"Ask Your Chart\" — 3 AI questions per month",
+              "Full year-by-year transit details",
               "5 chart generations per month",
-              "Save & download reports",
-              "Personal dashboard + history"
+              "Save charts, dashboard history, and PDF export"
             ],
             "interval": "month",
             "amount": 3990,
@@ -77,15 +76,15 @@
           },
           {
             "title": "Pro",
-            "description": "Your complete strategic intelligence dossier. Ask Your Chart anything, explore Time Travel, and get deep transit analysis for every turning point.",
+            "description": "Unlock the complete dossier: all advanced AI modules, unlimited chart chat, Pro timing tools, and full exports.",
             "label": "For Deep Self-Discovery",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "\"Ask Your Chart\" — AI chat with your birth chart",
-              "Time Travel — explore any past or future year",
-              "Strengths & Blindspots deep analysis",
-              "Exact planetary transit details & advice",
+              "17-section AI dossier with karma, family, children, spirituality, leadership, and caution zones",
+              "\"Ask Your Chart\" — unlimited AI conversations",
               "Unlimited chart generations",
+              "Best Hours, Time Travel, Life Radar, Destiny Reading, and Next 30 Days",
+              "Jaimini deep-analysis mode + advanced transit intelligence",
               "HD PDF Life Book export (50+ pages)",
               "Priority access to every new release"
             ],
@@ -105,14 +104,14 @@
           },
           {
             "title": "Free",
-            "description": "See your full 100-year timing curve, generate your Cosmic ID card, and discover what lies ahead — completely free, forever.",
+            "description": "Get your first chart free: see your 100-year timing curve, save your Cosmic ID card, and preview what comes next.",
             "features_title": "Includes",
             "features": [
               "Full 100-year life curve",
-              "Overall destiny score & trend direction",
+              "Overall destiny score and year-by-year trend overview",
               "Cosmic ID Card — shareable profile",
               "1 chart generation for life",
-              "Trend overview for every year"
+              "Basic compatibility tool + 3-month energy preview"
             ],
             "interval": "year",
             "amount": 0,
@@ -130,16 +129,15 @@
           },
           {
             "title": "Lite",
-            "description": "Unlock your full AI reading, 30-day action calendar, yearly energy curve, and compatibility checks — so every big decision has timing on its side.",
+            "description": "Unlock the practical layer: 7 AI reading modules, your 30-day action calendar, full-year energy timing, and saved reports.",
             "features_title": "Everything in Free, plus",
             "features": [
-              "Career, Wealth, Love & Health AI reading",
-              "30-Day Action Calendar with daily Do/Don't",
-              "12-Month Energy Curve forecast",
-              "Compatibility Check (synastry)",
+              "7-section AI reading for career, money, love, health, timing, marriage, and summary",
+              "30-Day Action Calendar + full 12-month energy forecast",
+              "\"Ask Your Chart\" — 3 AI questions per month",
+              "Full year-by-year transit details",
               "5 chart generations per month",
-              "Save & download reports",
-              "Personal dashboard + history"
+              "Save charts, dashboard history, and PDF export"
             ],
             "interval": "year",
             "amount": 23880,
@@ -158,15 +156,15 @@
           },
           {
             "title": "Pro",
-            "description": "Your complete strategic intelligence dossier. Ask Your Chart anything, explore Time Travel, and get deep transit analysis for every turning point.",
+            "description": "Unlock the complete dossier: all advanced AI modules, unlimited chart chat, Pro timing tools, and full exports.",
             "label": "Most Popular",
             "features_title": "Everything in Lite, plus",
             "features": [
-              "\"Ask Your Chart\" — AI chat with your birth chart",
-              "Time Travel — explore any past or future year",
-              "Strengths & Blindspots deep analysis",
-              "Exact planetary transit details & advice",
+              "17-section AI dossier with karma, family, children, spirituality, leadership, and caution zones",
+              "\"Ask Your Chart\" — unlimited AI conversations",
               "Unlimited chart generations",
+              "Best Hours, Time Travel, Life Radar, Destiny Reading, and Next 30 Days",
+              "Jaimini deep-analysis mode + advanced transit intelligence",
               "HD PDF Life Book export (50+ pages)",
               "Priority access to every new release"
             ],

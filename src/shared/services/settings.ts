@@ -426,6 +426,15 @@ export async function getSettings() {
       tab: 'auth',
     },
     {
+      name: 'google_redirect_uri',
+      title: 'Google Redirect URI',
+      type: 'text',
+      placeholder: 'https://www.astrocurve.net/api/auth/callback/google',
+      group: 'google_auth',
+      tab: 'auth',
+      tip: 'Optional fixed OAuth callback URL. Add the same URI to Google Cloud Console > Authorized redirect URIs.',
+    },
+    {
       name: 'github_auth_enabled',
       title: 'Auth Enabled',
       type: 'switch',
@@ -589,7 +598,7 @@ export async function getSettings() {
       placeholder: 'whsec_xxx',
       group: 'creem',
       tab: 'payment',
-      tip: 'Creem Signing Secret is used to verify the webhook notification from Creem',
+      tip: 'Creem Signing Secret is used to verify webhook notifications from Creem. Configure the Creem webhook endpoint as https://www.astrocurve.net/api/payment/notify/creem.',
     },
     {
       name: 'creem_product_ids',
@@ -730,7 +739,7 @@ export async function getSettings() {
       name: 'sendflare_sender_email',
       title: 'Sendflare Sender Email',
       type: 'text',
-      placeholder: 'AstroKline <noreply@astrokline.com>',
+      placeholder: 'AstroCurve <noreply@astrocurve.net>',
       group: 'sendflare',
       tab: 'email',
       tip: 'Format: Name <email@domain.com>',

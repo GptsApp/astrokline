@@ -3,9 +3,10 @@ import type { NatalChartResult } from '@/lib/astrology/engine';
 import type { AiInsightData } from './ai-insight-cache';
 
 import {
-  buildFullPersonalizedReport,
+  buildStrategicReading,
   buildPersonalizedKlineTimeline,
   type CurrentEnergyData,
+  type StrategicReadingData,
 } from './personalized-report';
 import { apiToProfile, type BirthProfileInput } from './profile-transform';
 import type { AstroUserTier } from './user-tier';
@@ -39,16 +40,37 @@ export interface StoredKlineResult {
   currentEnergy?: CurrentEnergyData | null;
 }
 
+type StoredStrategicReadingData = Pick<
+  StrategicReadingData,
+  'radarData' | 'destinyReading' | 'next30Days' | 'currentEnergy'
+>;
+
 function hasTimelineData(result: StoredKlineResult | null | undefined) {
   return Array.isArray(result?.klineData) && result.klineData.length > 0;
 }
 
-function hasPremiumDashboardData(result: StoredKlineResult | null | undefined) {
+function hasPremiumDashboardData(
+  result: StoredKlineResult | null | undefined
+): result is StoredKlineResult & StoredStrategicReadingData {
+  if (
+    !Array.isArray(result?.radarData) ||
+    !result?.destinyReading ||
+    !result?.next30Days ||
+    !result?.currentEnergy
+  ) {
+    return false;
+  }
+
+  const destinyReading = result.destinyReading as StrategicReadingData['destinyReading'];
+
   return Boolean(
-    result?.radarData &&
-      result?.destinyReading &&
-      result?.next30Days &&
-      result?.currentEnergy
+    typeof destinyReading.advice?.health === 'string' &&
+      typeof destinyReading.advice?.timing === 'string' &&
+      typeof destinyReading.hiddenTalent?.title === 'string' &&
+      typeof destinyReading.hiddenTalent?.description === 'string' &&
+      typeof destinyReading.hiddenTalent?.activationAdvice === 'string' &&
+      Array.isArray(destinyReading.coreInsights) &&
+      typeof destinyReading.cosmicQuote === 'string'
   );
 }
 
@@ -79,7 +101,23 @@ export function enrichStoredKlineResult(
   };
 
   if (userTier === 'PREMIUM' || userTier === 'STANDARD') {
-    const fullReport = buildFullPersonalizedReport(chart, birthData.date, profile);
+    const timeline = hasTimelineData(result)
+      ? {
+          klineData: result!.klineData!,
+          transitDetails: result!.transitDetails ?? {},
+          overallAverageScore:
+            result?.profile?.overallAverageScore ?? profile.overallAverageScore,
+        }
+      : buildPersonalizedKlineTimeline(chart, birthData.date);
+
+    const premiumDashboard: StrategicReadingData = hasPremiumDashboardData(result)
+      ? {
+          radarData: result.radarData,
+          destinyReading: result.destinyReading,
+          next30Days: result.next30Days,
+          currentEnergy: result.currentEnergy,
+        }
+      : buildStrategicReading(profile, chart, timeline);
 
     return {
       ...result,
@@ -87,11 +125,15 @@ export function enrichStoredKlineResult(
       rawApiData: chart,
       profile: {
         ...profile,
-        overallAverageScore: fullReport.overallAverageScore,
+        overallAverageScore: timeline.overallAverageScore,
       },
-      ...fullReport,
+      klineData: timeline.klineData,
+      transitDetails: timeline.transitDetails,
+      destinyReading: premiumDashboard.destinyReading,
+      next30Days: premiumDashboard.next30Days,
+      currentEnergy: premiumDashboard.currentEnergy,
       // Life Radar is PREMIUM-only
-      radarData: userTier === 'PREMIUM' ? fullReport.radarData : undefined,
+      radarData: userTier === 'PREMIUM' ? premiumDashboard.radarData : undefined,
     };
   }
 

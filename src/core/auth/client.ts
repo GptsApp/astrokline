@@ -2,13 +2,14 @@ import { oneTapClient } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
 
 import { envConfigs } from '@/config';
+import { getCanonicalOrigin } from '@/shared/lib/canonical-host';
 
 function resolveAuthBaseUrl() {
   if (typeof window === 'undefined') {
-    return envConfigs.auth_url;
+    return getCanonicalOrigin(envConfigs.auth_url) || envConfigs.auth_url;
   }
 
-  return window.location.origin;
+  return getCanonicalOrigin(window.location.origin) || window.location.origin;
 }
 
 function createGetSessionThrottledFetch({

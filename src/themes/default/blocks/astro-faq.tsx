@@ -5,7 +5,7 @@ import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 
 const FAQ = dynamic(
-  () => import('@/components/astrokline/sections/faq').then(m => ({ default: m.FAQ })),
+  () => import('@/components/astrocurve/sections/faq').then(m => ({ default: m.FAQ })),
   { ssr: false, loading: () => <div className="min-h-[300px]" /> }
 );
 

@@ -1,11 +1,11 @@
-import { ContentHubShell } from '@/components/astrokline/content/content-hub-shell';
+import { ContentHubShell } from '@/components/astrocurve/content/content-hub-shell';
 import { getMetadata } from '@/shared/lib/seo';
 import { ASTROLOGY_HOUSES } from '@/lib/astrokline/houses-data';
 
 export const generateMetadata = getMetadata({
   title: 'Astrology Houses Guide and Free House Calculators',
   description:
-    'Explore all 12 astrology houses, understand what each house rules, and use AstroKline house calculators to find your own placements.',
+    'Explore all 12 astrology houses, understand what each house rules, and use AstroCurve house calculators to find your own placements.',
   keywords:
     'astrology houses, 12 houses astrology, house meanings, house calculator, birth chart houses',
   canonicalUrl: '/houses',
@@ -16,7 +16,7 @@ export default function HousesHubPage() {
     <ContentHubShell
       eyebrow="Astrology Houses Hub"
       title="Explore All 12 Houses Before You Read Your Chart"
-      description="This is the master index for AstroKline's house content. Move from plain-English house meaning to your own placement, then into a full Life Curve reading when you want deeper timing context."
+      description="This is the master index for AstroCurve's house content. Move from plain-English house meaning to your own placement, then into a full Life Curve reading when you want deeper timing context."
       primaryCta={{ href: '/kline', label: 'Generate My Life Curve' }}
       secondaryCta={{ href: '/zodiac', label: 'Browse Zodiac Signs' }}
       stats={[
@@ -56,7 +56,7 @@ export default function HousesHubPage() {
         {
           question: 'What happens after I use a house calculator?',
           answer:
-            'You can continue into the full AstroKline Life Curve flow, where the same birth data powers timing, yearly momentum, and dashboard tools.',
+            'You can continue into the full AstroCurve Life Curve flow, where the same birth data powers timing, yearly momentum, and dashboard tools.',
         },
       ]}
     />

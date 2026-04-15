@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import {
   PlanetPlacement,
   UserProfile,
-} from '@/lib/astrokline/mock-astrology-data';
+} from '@/lib/astrocurve/mock-astrology-data';
 
 import { cn } from '@/shared/lib/utils';
 

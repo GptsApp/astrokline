@@ -9,11 +9,16 @@ import { getAstroUserTier } from '@/lib/astrokline/user-tier';
 import {
   ASK_CHART_SYSTEM_PROMPT,
   callGeminiMultiTurn,
+  openGeminiMultiTurnStream,
 } from '@/lib/astrokline/gemini';
 
 import {
   buildAskChartGeminiMessages,
+  buildAskChartFallbackResponse,
   createAskChartTextResponse,
+  createAskChartTextStreamResponse,
+  extractGeminiTextFromStreamEvent,
+  formatProfileForAskChartPrompt,
 } from './route-helpers';
 
 // ── Prompt Injection Detection ──
@@ -38,22 +43,140 @@ function getQuotaConfig(tier: string) {
   switch (tier) {
     case 'PREMIUM': return { max: Infinity, period: 'monthly' as const };
     case 'STANDARD': return { max: 3, period: 'monthly' as const };
-    case 'FREE': return { max: 1, period: 'lifetime' as const };
+    case 'FREE': return { max: 0, period: 'lifetime' as const };
     default: return { max: 0, period: 'lifetime' as const };
   }
 }
 
-// ── Build chart context ──
-function buildChartContext(p: UserProfile): string {
-  const planets = p.planets
-    ?.map(pl => `${pl.name}: ${pl.sign} ${pl.degree}° (House ${pl.house})`)
-    .join('\n  ') || '';
-  return `[User's Birth Chart]
-Sun: ${p.sun.sign} ${p.sun.degree}° (House ${p.sun.house})
-Moon: ${p.moon.sign} ${p.moon.degree}° (House ${p.moon.house})
-Rising: ${p.rising.sign} ${p.rising.degree}° (House ${p.rising.house})
-${planets ? `Placements:\n  ${planets}` : ''}
-Elements: Fire ${p.elements.fire}% / Earth ${p.elements.earth}% / Air ${p.elements.air}% / Water ${p.elements.water}%`;
+function normalizeAskChartContext(rawContext: unknown) {
+  if (!rawContext || typeof rawContext !== 'object') {
+    return null;
+  }
+
+  const context = rawContext as Record<string, unknown>;
+  const sourceType = typeof context.sourceType === 'string' ? context.sourceType : null;
+  const sourceKey = typeof context.sourceKey === 'string' ? context.sourceKey : null;
+
+  if (!sourceType || !sourceKey) {
+    return null;
+  }
+
+  const selectedYear = typeof context.selectedYear === 'number' ? context.selectedYear : undefined;
+  const promptLabel = typeof context.promptLabel === 'string' ? context.promptLabel : undefined;
+  const promptText = typeof context.promptText === 'string' ? context.promptText : undefined;
+  const contextSnippet = typeof context.contextSnippet === 'string' ? context.contextSnippet : undefined;
+
+  return {
+    sourceType,
+    sourceKey,
+    selectedYear,
+    promptLabel,
+    promptText,
+    contextSnippet,
+  };
+}
+
+function parseChatMetadata(rawMetadata: unknown) {
+  if (typeof rawMetadata !== 'string' || !rawMetadata.trim()) {
+    return {} as Record<string, unknown>;
+  }
+
+  try {
+    const parsed = JSON.parse(rawMetadata);
+    return parsed && typeof parsed === 'object'
+      ? (parsed as Record<string, unknown>)
+      : {};
+  } catch {
+    return {} as Record<string, unknown>;
+  }
+}
+
+function buildAskChartThreadTitle(
+  context: ReturnType<typeof normalizeAskChartContext>,
+  fallbackQuestion: string,
+  existingTitle?: unknown
+) {
+  const safeExistingTitle =
+    typeof existingTitle === 'string' && existingTitle.trim()
+      ? existingTitle.trim()
+      : null;
+
+  if (context?.sourceType === 'answer' && safeExistingTitle) {
+    return safeExistingTitle;
+  }
+
+  if (context?.promptLabel) {
+    return context.selectedYear
+      ? `${context.promptLabel} · ${context.selectedYear}`
+      : context.promptLabel;
+  }
+
+  if (context?.sourceType === 'year' && context.selectedYear) {
+    return `Year ${context.selectedYear}`;
+  }
+
+  return safeExistingTitle ?? fallbackQuestion.slice(0, 80);
+}
+
+function buildAskChartThreadTheme(
+  context: ReturnType<typeof normalizeAskChartContext>,
+  existingTheme?: unknown
+) {
+  const safeExistingTheme =
+    typeof existingTheme === 'string' && existingTheme.trim()
+      ? existingTheme.trim()
+      : null;
+
+  if (context?.sourceType === 'answer' && safeExistingTheme) {
+    return safeExistingTheme;
+  }
+
+  if (context?.promptLabel) {
+    return context.selectedYear
+      ? `${context.promptLabel} · ${context.selectedYear}`
+      : context.promptLabel;
+  }
+
+  if (context?.sourceType === 'year' && context.selectedYear) {
+    return `Year ${context.selectedYear}`;
+  }
+
+  return safeExistingTheme;
+}
+
+async function persistAskChartMessages(
+  chatId: string,
+  userId: string,
+  safeQuestion: string,
+  replyText: string
+) {
+  try {
+    const database = db();
+    await database.insert(chatMessage).values([
+      {
+        id: crypto.randomUUID(),
+        userId,
+        chatId,
+        status: 'active',
+        role: 'user',
+        parts: JSON.stringify([{ type: 'text', text: safeQuestion }]),
+        model: 'ask-chart',
+        provider: 'gemini',
+      },
+      {
+        id: crypto.randomUUID(),
+        userId,
+        chatId,
+        status: 'active',
+        role: 'assistant',
+        parts: JSON.stringify([{ type: 'text', text: replyText }]),
+        model: 'ask-chart',
+        provider: 'gemini',
+      },
+    ]);
+  } catch (error) {
+    console.error('Failed to save chat messages:', error);
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -73,6 +196,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
   const clientMessages = Array.isArray(body?.messages) ? body.messages : [];
   const reqChatId = typeof body?.chatId === 'string' ? body.chatId : null;
+  const askChartContext = normalizeAskChartContext(body?.context);
   const profile = body?.profile && typeof body.profile === 'object'
     ? (body.profile as UserProfile)
     : null;
@@ -139,6 +263,61 @@ export async function POST(request: NextRequest) {
 
   // ── Resolve chat session ──
   let currentChatId = reqChatId;
+  let existingChatMetadata: Record<string, unknown> = {};
+  let storedActiveContext: ReturnType<typeof normalizeAskChartContext> = null;
+
+  if (currentChatId) {
+    const existingChats = await database
+      .select({ id: chat.id, metadata: chat.metadata })
+      .from(chat)
+      .where(and(eq(chat.id, currentChatId), eq(chat.userId, user.id)))
+      .limit(1);
+
+    const existingChat = existingChats[0];
+
+    if (existingChat) {
+      existingChatMetadata = parseChatMetadata(existingChat.metadata);
+      storedActiveContext = normalizeAskChartContext(
+        existingChatMetadata.activeContext ?? existingChatMetadata.askContext
+      );
+    } else {
+      currentChatId = null;
+    }
+  }
+
+  const effectiveAskChartContext = askChartContext?.sourceType === 'answer'
+    ? storedActiveContext ?? askChartContext
+    : askChartContext ?? storedActiveContext;
+
+  const nextThreadTitle = buildAskChartThreadTitle(
+    effectiveAskChartContext,
+    safeQuestion,
+    existingChatMetadata.threadTitle ?? existingChatMetadata.title
+  );
+  const nextThreadTheme = buildAskChartThreadTheme(
+    effectiveAskChartContext,
+    existingChatMetadata.threadTheme
+  );
+  const nextChartLabel =
+    profile?.name?.trim() ||
+    (typeof existingChatMetadata.chartLabel === 'string'
+      ? existingChatMetadata.chartLabel
+      : undefined);
+
+  const nextChatMetadata = {
+    ...existingChatMetadata,
+    sunSign: profile?.sun?.sign ?? existingChatMetadata.sunSign,
+    chartLabel: nextChartLabel,
+    threadTitle: nextThreadTitle,
+    threadTheme: nextThreadTheme,
+    askContext: effectiveAskChartContext,
+    activeContext: askChartContext && askChartContext.sourceType !== 'answer'
+      ? askChartContext
+      : effectiveAskChartContext,
+    lastUserQuestion: safeQuestion,
+    lastUpdatedAt: new Date().toISOString(),
+  };
+
   if (!currentChatId) {
     const newId = crypto.randomUUID();
     await database.insert(chat).values({
@@ -147,63 +326,119 @@ export async function POST(request: NextRequest) {
       status: 'active',
       model: 'ask-chart',
       provider: 'gemini',
-      title: safeQuestion.slice(0, 80),
+      title: nextThreadTitle,
       parts: '[]',
-      metadata: profile ? JSON.stringify({
-        sunSign: profile.sun?.sign,
-      }) : null,
+      metadata: JSON.stringify(nextChatMetadata),
     });
     currentChatId = newId;
+  } else {
+    await database
+      .update(chat)
+      .set({
+        title: nextThreadTitle,
+        metadata: JSON.stringify(nextChatMetadata),
+      })
+      .where(and(eq(chat.id, currentChatId), eq(chat.userId, user.id)));
   }
 
   // ── Build system prompt with chart data ──
   const chartContext = profile
-    ? `\n\n${buildChartContext(profile)}`
+    ? `\n\n${formatProfileForAskChartPrompt(profile)}`
     : '';
   const fullSystemPrompt = ASK_CHART_SYSTEM_PROMPT + chartContext;
 
-  const aiMessages = buildAskChartGeminiMessages(clientMessages, safeQuestion);
+  const aiMessages = buildAskChartGeminiMessages(clientMessages, safeQuestion, effectiveAskChartContext);
 
-  let replyText = '';
   try {
-    replyText = await callGeminiMultiTurn(aiMessages, fullSystemPrompt, 2048);
+    const upstreamResponse = await openGeminiMultiTurnStream(aiMessages, fullSystemPrompt, 768, undefined, 0);
+    if (!upstreamResponse.body) {
+      throw new Error('Gemini stream body is missing');
+    }
+
+    const upstreamReader = upstreamResponse.body.getReader();
+    const decoder = new TextDecoder();
+    const encoder = new TextEncoder();
+    let buffer = '';
+    let replyText = '';
+
+    const stream = new ReadableStream<Uint8Array>({
+      async start(controller) {
+        const emitEventText = (eventBlock: string) => {
+          const eventData = eventBlock
+            .split(/\r?\n/)
+            .filter((line) => line.startsWith('data:'))
+            .map((line) => line.slice(5).trimStart())
+            .join('\n');
+          const nextText = extractGeminiTextFromStreamEvent(eventData);
+          if (!nextText) {
+            return;
+          }
+
+          const deltaText = nextText.startsWith(replyText)
+            ? nextText.slice(replyText.length)
+            : nextText;
+
+          if (!deltaText) {
+            return;
+          }
+
+          replyText += deltaText;
+          controller.enqueue(encoder.encode(deltaText));
+        };
+
+        try {
+          while (true) {
+            const { done, value } = await upstreamReader.read();
+
+            if (value) {
+              buffer += decoder.decode(value, { stream: !done }).replace(/\r\n/g, '\n');
+            }
+
+            let separatorIndex = buffer.indexOf('\n\n');
+            while (separatorIndex !== -1) {
+              const eventBlock = buffer.slice(0, separatorIndex);
+              buffer = buffer.slice(separatorIndex + 2);
+              emitEventText(eventBlock);
+              separatorIndex = buffer.indexOf('\n\n');
+            }
+
+            if (done) {
+              break;
+            }
+          }
+
+          const remainingEvent = buffer.trim();
+          if (remainingEvent) {
+            emitEventText(remainingEvent);
+          }
+
+          if (!replyText.trim()) {
+            const fallbackText = buildAskChartFallbackResponse(profile, safeQuestion);
+            replyText = fallbackText;
+            controller.enqueue(encoder.encode(fallbackText));
+          }
+
+          controller.close();
+        } catch (error) {
+          console.error('Ask chart stream failed:', error);
+          if (!replyText.trim()) {
+            const fallbackText = buildAskChartFallbackResponse(profile, safeQuestion);
+            replyText = fallbackText;
+            controller.enqueue(encoder.encode(fallbackText));
+          }
+          controller.close();
+        } finally {
+          upstreamReader.releaseLock();
+          await persistAskChartMessages(currentChatId, user.id, safeQuestion, replyText);
+        }
+      },
+    });
+
+    return createAskChartTextStreamResponse(stream, currentChatId);
   } catch (error) {
     console.error('Ask chart generation failed:', error);
-    return Response.json({ error: 'AI service unavailable' }, { status: 502 });
+    const replyText = buildAskChartFallbackResponse(profile, safeQuestion);
+    await persistAskChartMessages(currentChatId, user.id, safeQuestion, replyText);
+    return createAskChartTextResponse(replyText, currentChatId);
   }
-
-  if (!replyText.trim()) {
-    console.error('Ask chart generation returned an empty response');
-    return Response.json({ error: 'AI service unavailable' }, { status: 502 });
-  }
-
-  try {
-    const db2 = db();
-    await db2.insert(chatMessage).values([
-      {
-        id: crypto.randomUUID(),
-        userId: user.id,
-        chatId: currentChatId,
-        status: 'active',
-        role: 'user',
-        parts: JSON.stringify([{ type: 'text', text: safeQuestion }]),
-        model: 'ask-chart',
-        provider: 'gemini',
-      },
-      {
-        id: crypto.randomUUID(),
-        userId: user.id,
-        chatId: currentChatId,
-        status: 'active',
-        role: 'assistant',
-        parts: JSON.stringify([{ type: 'text', text: replyText }]),
-        model: 'ask-chart',
-        provider: 'gemini',
-      },
-    ]);
-  } catch (error) {
-    console.error('Failed to save chat messages:', error);
-  }
-
-  return createAskChartTextResponse(replyText, currentChatId);
 }

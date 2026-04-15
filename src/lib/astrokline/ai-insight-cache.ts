@@ -9,6 +9,7 @@
 // ── Client-side cache helpers (localStorage) ──
 
 const LS_PREFIX = 'ai_insight_';
+const LS_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 export interface AiInsightData {
   nickname?: string;
@@ -22,6 +23,16 @@ export interface AiInsightData {
   strengths?: string;
   warnings?: string;
   shadow?: string;
+  dashaTimeline?: string;
+  marriage?: string;
+  karma?: string;
+  family?: string;
+  children?: string;
+  spirituality?: string;
+  education?: string;
+  authority?: string;
+  lifestyle?: string;
+  hiddenDangers?: string;
   _cached?: boolean;
   _fallback?: boolean;
 }
@@ -31,12 +42,15 @@ export function getInsightCacheKey(profile: {
   moon?: { sign: string };
   rising?: { sign: string };
   birthDate?: string;
-}): string {
+  birthTime?: string;
+}, tier?: string): string {
   const raw = [
     profile.sun?.sign ?? '',
     profile.moon?.sign ?? '',
     profile.rising?.sign ?? '',
     profile.birthDate ?? '',
+    profile.birthTime ?? '',
+    tier ?? '',
   ].join('|');
   // Simple hash for localStorage (no need for crypto)
   let hash = 0;
@@ -54,7 +68,11 @@ export function getCachedInsight(cacheKey: string): any | null {
     const raw = localStorage.getItem(LS_PREFIX + cacheKey);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    // Check if data looks valid
+    // Check TTL
+    if (parsed?._cachedAt && Date.now() - parsed._cachedAt > LS_TTL_MS) {
+      localStorage.removeItem(LS_PREFIX + cacheKey);
+      return null;
+    }
     if (parsed && parsed.summary) return parsed;
     return null;
   } catch {
@@ -65,7 +83,7 @@ export function getCachedInsight(cacheKey: string): any | null {
 export function setCachedInsight(cacheKey: string, data: any): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(LS_PREFIX + cacheKey, JSON.stringify(data));
+    localStorage.setItem(LS_PREFIX + cacheKey, JSON.stringify({ ...data, _cachedAt: Date.now() }));
   } catch {
     // localStorage full — silently fail
   }
@@ -78,12 +96,14 @@ export async function getServerCacheKey(profile: {
   moon?: { sign: string };
   rising?: { sign: string };
   birthDate?: string;
+  birthTime?: string;
 }): Promise<string> {
   const raw = [
     profile.sun?.sign ?? '',
     profile.moon?.sign ?? '',
     profile.rising?.sign ?? '',
     profile.birthDate ?? '',
+    profile.birthTime ?? '',
   ].join('|');
 
   const encoder = new TextEncoder();

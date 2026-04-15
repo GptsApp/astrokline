@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "AstroKline — Personal Timing Map",
-    "description": "Genera una Curva de Vida personal a partir de tu carta natal y descubre cuándo avanzar, pausar o protegerte.",
-    "keywords": "astrokline, astrology chart, birth chart, natal chart, horoscope, destiny chart, curva de vida, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast, personalized astrology, star chart analysis"
+    "title": "AstroCurve — IA astrológica, carta natal y compatibilidad",
+    "description": "App de astrología con IA para carta natal, horóscopo, compatibilidad y Curva de Vida. AstroCurve revela tus puntos de giro con precisión Swiss Ephemeris.",
+    "keywords": "astrocurve, astrología IA, carta natal, horóscopo, compatibilidad astrológica, curva de vida, astrology chart, birth chart, natal chart, astrology AI, planetary transit, zodiac reading, astrology prediction, birth chart reading, life trajectory, cosmic energy map, astrology tools, destiny tracker, Saturn return, horoscope forecast"
   },
   "sign": {
     "sign_in_title": "Sign In",

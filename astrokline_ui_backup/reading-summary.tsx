@@ -1,8 +1,8 @@
 'use client';
 
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
-import { DestinyReading } from '@/lib/astrokline/mock-astrology-data';
+import { DestinyReading } from '@/lib/astrocurve/mock-astrology-data';
 import { motion } from 'framer-motion';
 import {
   ArrowRightCircle,

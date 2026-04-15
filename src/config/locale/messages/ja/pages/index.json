@@ -2,7 +2,6 @@
   "page": {
     "show_sections": [
       "hero",
-      "kline-preview",
       "how-it-works",
       "features",
       "testimonials",
@@ -17,7 +16,7 @@
         "title1": "あなたの出生図にはタイミングの地図が隠されています。",
         "title2": "私たちはそれを可視化しました。",
         "highlight_text": "人生曲線",
-        "description": "多くの人は、自分の宇宙の天気を知らずに、キャリアの転機、恋愛の決断、そして金銭的な賭けに出ています。AstroKlineは、あなたの正確な出生データを人生曲線に変換し、ピーク、谷、そして転換点が訪れる前にそれを確認できるようにします。",
+        "description": "多くの人は、自分の宇宙の天気を知らずに、キャリアの転機、恋愛の決断、そして金銭的な賭けに出ています。AstroCurveは、あなたの正確な出生データを人生曲線に変換し、ピーク、谷、そして転換点が訪れる前にそれを確認できるようにします。",
         "badge": "Swiss Ephemeris · 高精度占星術",
         "announcement": {
           "badge": "V2.0",
@@ -28,7 +27,7 @@
         "tip": "Swiss EphemerisとNASA JPLデータによる高精度バースチャート分析",
         "social_proof": {
            "quote": "\"すべての計算は透明で正確、検証可能 — 世界中のプロの占星術師が使用するエンジンで構築されています。\"",
-           "author": "— AstroKlineチーム",
+           "author": "— AstroCurveチーム",
            "avatar": "/images/avatars/diverse/hero_casual_1.webp",
            "readers": "<strong className=\"font-bold text-white\">Swiss Ephemeris</strong> DE431搭載"
         },
@@ -55,7 +54,7 @@
       "features": {
         "id": "features",
         "block": "astro-features",
-        "engine": "アストロクライン・エンジン",
+        "engine": "AstroCurve エンジン",
         "title1": "人生のタイムラインの",
         "title2": "ダッシュボード",
         "description": "私たちは曖昧な星占いはしません。正確な天文歴データを使用し、あなたの人生の勢い、摩擦、ターニングポイントを明確な戦術的チャートにプロットします。",
@@ -118,14 +117,14 @@
         "items": [
           {
             "title": "無料",
-            "description": "2026年のあなたのチャートにおける1つの重要な転機を即座にアンロックし、100年の軌跡を確認します。",
+            "description": "最初のチャートは無料。100年の人生曲線を見て、コスミックIDを保存し、この先の流れをプレビューできます。",
             "features_title": "含まれるもの",
             "features": [
               "100年間の人生曲線",
-              "AI-powered core reading",
-              "Yearly momentum insights",
-              "Raw natal chart data",
-              "2 saved charts for life"
+              "運命スコアと年ごとのトレンド概要",
+              "コスミックIDカード — 共有できるプロフィール",
+              "生涯で1回のチャート生成",
+              "基本相性ツール + 3か月エネルギープレビュー"
             ],
             "interval": "month",
             "amount": 0,
@@ -143,24 +142,25 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
-            "features_title": "Everything in Free, plus",
+            "description": "実用レイヤーを解放。7つのAI解読、30日アクションカレンダー、年間エネルギー、保存レポートまで使えます。",
+            "features_title": "無料版のすべてに加えて",
             "features": [
-              "月10件のチャート保存",
-              "Career, Wealth, Love & Health breakdowns",
-              "Annual transit summaries per year",
-              "Personal dashboard with saved reports",
-              "Upgrade to Pro anytime"
+              "キャリア・お金・恋愛・健康・タイミング・結婚・総合要約の7セクションAI解読",
+              "30日アクションカレンダー + 12か月フルエネルギー予測",
+              "「星盤に聞く」— 月3回のAI質問",
+              "各年の詳細トランジットをフル表示",
+              "月5回のチャート生成",
+              "チャート保存、ダッシュボード履歴、PDF書き出し"
             ],
             "interval": "month",
             "amount": 3990,
             "currency": "USD",
             "price": "$39.9",
-            "unit": "/ month",
+            "unit": " / 月",
             "is_featured": false,
-            "tip": "Billed Monthly",
+            "tip": "月額請求",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "タイミングマップをアンロック",
               "url": "/pricing"
             },
             "product_id": "standard-monthly",
@@ -168,42 +168,42 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
-            "features_title": "Everything in Lite, plus",
+            "description": "完全版ドシエを解放。高度なAIモジュール、無制限のチャートAI対話、Pro向けタイミング機能、完全書き出しまで。",
+            "label": "大きな決断に最適",
+            "features_title": "Lite版のすべてに加えて",
             "features": [
-              "月30件のチャート保存",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
-              "Exact transit detail for every turning year",
-              "Priority access to every new release",
-              "Export polished PDF reports",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "カルマ・家族・子ども・精神性・リーダーシップ・注意領域を含む17セクションAIドシエ",
+              "「星盤に聞く」— 無制限のAI会話",
+              "無制限のチャート生成",
+              "Best Hours、タイムトラベル、Life Radar、Destiny Reading、Next 30 Days",
+              "ジャイミニ深層分析モード + 高度なトランジット分析",
+              "HD PDFライフブック出力（50ページ以上）",
+              "すべての新機能への優先アクセス"
             ],
             "interval": "month",
             "amount": 7990,
             "currency": "USD",
             "price": "$79.9",
-            "unit": "/ month",
+            "unit": " / 月",
             "is_featured": true,
-            "tip": "Billed Monthly",
+            "tip": "月額請求",
             "button": {
-              "title": "Get Full Access",
+              "title": "フルアクセスを取得",
               "url": "/pricing"
             },
             "product_id": "premium-monthly",
             "group": "monthly"
           },
           {
-            "title": "Free",
-            "description": "100年間の人生曲線を見て、これから起こる流れをつかみましょう。",
-            "features_title": "Includes",
+            "title": "無料",
+            "description": "最初のチャートは無料。100年の人生曲線を見て、コスミックIDを保存し、この先の流れをプレビューできます。",
+            "features_title": "含まれるもの",
             "features": [
               "100年間の人生曲線",
-              "AI-powered core reading",
-              "Yearly momentum insights",
-              "Raw natal chart data",
-              "2 saved charts for life"
+              "運命スコアと年ごとのトレンド概要",
+              "コスミックIDカード — 共有できるプロフィール",
+              "生涯で1回のチャート生成",
+              "基本相性ツール + 3か月エネルギープレビュー"
             ],
             "interval": "year",
             "amount": 0,
@@ -221,25 +221,26 @@
           },
           {
             "title": "Lite",
-            "description": "Know which years to push and which to protect. Make decisions with timing on your side.",
-            "features_title": "Everything in Free, plus",
+            "description": "実用レイヤーを解放。7つのAI解読、30日アクションカレンダー、年間エネルギー、保存レポートまで使えます。",
+            "features_title": "無料版のすべてに加えて",
             "features": [
-              "月10件のチャート保存",
-              "Career, Wealth, Love & Health breakdowns",
-              "Annual transit summaries per year",
-              "Personal dashboard with saved reports",
-              "Upgrade to Pro anytime"
+              "キャリア・お金・恋愛・健康・タイミング・結婚・総合要約の7セクションAI解読",
+              "30日アクションカレンダー + 12か月フルエネルギー予測",
+              "「星盤に聞く」— 月3回のAI質問",
+              "各年の詳細トランジットをフル表示",
+              "月5回のチャート生成",
+              "チャート保存、ダッシュボード履歴、PDF書き出し"
             ],
             "interval": "year",
             "amount": 23880,
             "currency": "USD",
             "price": "$19.9",
             "original_price": "$39.9",
-            "unit": "/ month",
+            "unit": " / 月",
             "is_featured": false,
-            "tip": "Billed yearly at $238.8",
+            "tip": "年額 $238.8 で請求",
             "button": {
-              "title": "Unlock My Timing Map",
+              "title": "タイミングマップをアンロック",
               "url": "/pricing"
             },
             "product_id": "standard-yearly",
@@ -247,28 +248,28 @@
           },
           {
             "title": "Pro",
-            "description": "Never walk into a turning point blind again. Full access to every tool, every year, every dimension.",
-            "label": "Best for Big Decisions",
-            "features_title": "Everything in Lite, plus",
+            "description": "完全版ドシエを解放。高度なAIモジュール、無制限のチャートAI対話、Pro向けタイミング機能、完全書き出しまで。",
+            "label": "大きな決断に最適",
+            "features_title": "Lite版のすべてに加えて",
             "features": [
-              "月30件のチャート保存",
-              "Click any year for instant deep reading",
-              "Strengths & Blindspots analysis",
-              "Exact transit detail for every turning year",
-              "Priority access to every new release",
-              "Export polished PDF reports",
-              "Life Radar, Destiny Reading, Current Energy, Next 30 Days"
+              "カルマ・家族・子ども・精神性・リーダーシップ・注意領域を含む17セクションAIドシエ",
+              "「星盤に聞く」— 無制限のAI会話",
+              "無制限のチャート生成",
+              "Best Hours、タイムトラベル、Life Radar、Destiny Reading、Next 30 Days",
+              "ジャイミニ深層分析モード + 高度なトランジット分析",
+              "HD PDFライフブック出力（50ページ以上）",
+              "すべての新機能への優先アクセス"
             ],
             "interval": "year",
             "amount": 47880,
             "currency": "USD",
             "price": "$39.9",
             "original_price": "$79.9",
-            "unit": "/ month",
+            "unit": " / 月",
             "is_featured": true,
-            "tip": "Billed yearly at $478.8",
+            "tip": "年額 $478.8 で請求",
             "button": {
-              "title": "Get Full Access",
+              "title": "フルアクセスを取得",
               "url": "/pricing"
             },
             "product_id": "premium-yearly",
@@ -279,14 +280,14 @@
       "faq": {
         "id": "faq",
         "block": "astro-faq",
-        "title": "Questions Before You Start",
+        "title": "始める前によくある質問",
         "description": "人生曲線とは何か、どう作られるのかをまとめて確認できます。"
       },
       "cta": {
         "id": "cta",
         "block": "astro-cta",
-        "title": "Your Turning Point Is Coming.",
-        "description": "The question is: will you see it before it hits, or after?"
+        "title": "あなたの転機は、もう近づいています。",
+        "description": "問題は、それが来る前に気づけるか、それとも後になってから気づくかです。"
       },
       "kline_result": {
         "scores": {

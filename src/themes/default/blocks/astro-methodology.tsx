@@ -5,7 +5,7 @@ import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 
 const MethodologyBadge = dynamic(
-  () => import('@/components/astrokline/sections/methodology-badge').then(m => ({ default: m.MethodologyBadge })),
+  () => import('@/components/astrocurve/sections/methodology-badge').then(m => ({ default: m.MethodologyBadge })),
   { ssr: false, loading: () => <div className="min-h-[400px]" /> }
 );
 

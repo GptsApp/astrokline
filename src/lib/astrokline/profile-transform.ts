@@ -30,6 +30,7 @@ export function apiToProfile(
       degree,
       minute,
       house: planet.house || 1,
+      ...(planet.navamsa ? { navamsa: planet.navamsa } : {}),
     };
   };
 
@@ -149,10 +150,12 @@ export function apiToProfile(
       house: planet.house || 1,
       name: planet.name,
       symbol: PLANET_SYMBOLS[planet.name] || '✦',
+      ...(planet.navamsa ? { navamsa: planet.navamsa } : {}),
     })),
     elements,
     modalities,
     lifePathNumber,
     overallAverageScore: 82,
+    ...(apiData.yogas?.length ? { yogas: apiData.yogas } : {}),
   };
 }

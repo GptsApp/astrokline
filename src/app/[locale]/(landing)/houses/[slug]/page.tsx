@@ -1,42 +1,41 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Compass, Orbit, ShieldAlert, Sparkles } from 'lucide-react';
+import { setRequestLocale } from 'next-intl/server';
 
-import { StructuredFaqSection } from '@/components/astrokline/content/structured-faq-section';
-import { HouseCalculator } from '@/components/astrokline/houses/house-calculator';
-import { Heading } from '@/components/astrokline/ui/heading';
-import { envConfigs } from '@/config';
+import { StructuredFaqSection } from '@/components/astrocurve/content/structured-faq-section';
+import { HouseCalculator } from '@/components/astrocurve/houses/house-calculator';
+import { Heading } from '@/components/astrocurve/ui/heading';
 import { Link } from '@/core/i18n/navigation';
 import { ASTROLOGY_HOUSES, House } from '@/lib/astrokline/houses-data';
+import { getMetadata } from '@/shared/lib/seo';
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export async function generateStaticParams() {
-  return ASTROLOGY_HOUSES.map((h) => ({ slug: h.slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+
   const h = ASTROLOGY_HOUSES.find((s) => s.slug === slug);
   if (!h) return {};
-  const url = `${envConfigs.app_url}/houses/${h.slug}`;
   const houseName = h.name.toLowerCase();
-  return {
-    title: `${h.name} Meaning + Free Calculator | AstroKline`,
+
+  const generatePageMetadata = getMetadata({
+    title: `${h.name} Meaning + Free Calculator | AstroCurve`,
     description: `Use the free ${h.name} calculator to see which sign rules your ${houseName}, which planets fall there, and what it means for ${h.keyword.toLowerCase()} in astrology.`,
     keywords: `${houseName} meaning, ${houseName} calculator, ${houseName} astrology, what does the ${houseName} mean, ${h.keyword.toLowerCase()} astrology`,
-    alternates: { canonical: url },
-    openGraph: {
-      title: `${h.name} Meaning and Calculator`,
-      description: `Find your ${houseName} sign, ruling planet, and natal planets with AstroKline's free calculator.`,
-      url,
-      type: 'website',
-    },
-  };
+    canonicalUrl: `/houses/${h.slug}`,
+  });
+
+  return generatePageMetadata({ params: Promise.resolve({ locale }) });
 }
 
 export default async function HousePage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+
   const h = ASTROLOGY_HOUSES.find((s) => s.slug === slug);
   if (!h) notFound();
   return <HouseContent house={h} />;
@@ -52,8 +51,8 @@ function HouseContent({ house: h }: { house: House }) {
     '@type': 'WebPage',
     name: `${h.name} Meaning + Free Calculator`,
     description: `Learn what the ${h.name} means and calculate your own ${h.name} sign and planets.`,
-    author: { '@type': 'Organization', name: 'AstroKline' },
-    publisher: { '@type': 'Organization', name: 'AstroKline' },
+    author: { '@type': 'Organization', name: 'AstroCurve' },
+    publisher: { '@type': 'Organization', name: 'AstroCurve' },
   };
 
   const faqItems = [
@@ -114,7 +113,7 @@ function HouseContent({ house: h }: { house: House }) {
             </Heading>
 
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-              {h.description} This page is intentionally utility-first: it explains the house, lets you calculate your own placement, and keeps the full AstroKline funnel optional.
+              {h.description} This page is intentionally utility-first: it explains the house, lets you calculate your own placement, and keeps the full AstroCurve funnel optional.
             </p>
 
             <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -202,7 +201,7 @@ function HouseContent({ house: h }: { house: House }) {
               Search intent on house pages is usually practical. People want a plain-English explanation, a fast way to see their own placement, and a clear sense of whether exact birth time changes the answer.
             </p>
             <div className="mt-6 border-l-2 border-primary pl-4 text-sm leading-7 text-white/65">
-              If you are near a birth-time boundary, the sign on the cusp or the planets inside the house can shift. That is why AstroKline now treats birthplace and birth-time precision as part of the calculation, not decorative form fields.
+              If you are near a birth-time boundary, the sign on the cusp or the planets inside the house can shift. That is why AstroCurve now treats birthplace and birth-time precision as part of the calculation, not decorative form fields.
             </div>
           </div>
 

@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import type {
   TransitEvent,
   UserProfile,
-} from '@/lib/astrokline/mock-astrology-data';
+} from '@/lib/astrocurve/mock-astrology-data';
 import { ChevronDown, Lock, Sparkles } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 type AppTier = 'GUEST' | 'FREE' | 'LITE' | 'PRO';
 

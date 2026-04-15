@@ -5,6 +5,13 @@ export interface PlanetPlacement {
   house: number;
   name?: string;
   symbol?: string;
+  navamsa?: { sign: string; degree: number };
+}
+
+export interface YogaInfo {
+  name: string;
+  planets: string[];
+  description: string;
 }
 
 export interface UserProfile {
@@ -29,6 +36,7 @@ export interface UserProfile {
   };
   lifePathNumber: number;
   overallAverageScore: number;
+  yogas?: YogaInfo[];
 }
 
 export const MOCK_USER_PROFILE: UserProfile = {

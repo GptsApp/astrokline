@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { trackEvent } from '@/lib/astrokline/track-event';
+import { trackEvent } from '@/lib/astrocurve/track-event';
 import { Sparkles, X } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 import { useAppContext } from '@/shared/contexts/app';
 
 interface RegistrationNudgeProps {

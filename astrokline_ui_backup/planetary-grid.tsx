@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { PlanetPlacement } from '@/lib/astrokline/mock-astrology-data';
+import { PlanetPlacement } from '@/lib/astrocurve/mock-astrology-data';
 import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 interface Props {
   planets: PlanetPlacement[];

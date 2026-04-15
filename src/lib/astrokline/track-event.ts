@@ -1,5 +1,5 @@
 /**
- * AstroKline Growth Funnel Event Tracking
+ * AstroCurve Growth Funnel Event Tracking
  *
  * Supports Plausible (cloud or self-hosted) and Google Analytics.
  * Usage: trackEvent('hero_cta_click', { source: 'landing' })
@@ -17,6 +17,13 @@ export type FunnelEvent =
   // Layer 3 – KLine Result
   | 'kline_result_loaded'
   | 'result_ask_chart_open'
+  | 'result_context_ask_open'
+  | 'result_context_ask_send'
+  | 'result_context_ask_success'
+  | 'thread_resume_shown'
+  | 'thread_resume_opened'
+  | 'thread_resume_completed'
+  | 'thread_revisit_conversion'
   | 'result_upgrade_cta_click'
   | 'result_key_year_click'
   | 'registration_nudge_shown'

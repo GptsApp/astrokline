@@ -1,10 +1,10 @@
-import { ContentHubShell } from '@/components/astrokline/content/content-hub-shell';
+import { ContentHubShell } from '@/components/astrocurve/content/content-hub-shell';
 import { getMetadata } from '@/shared/lib/seo';
 
 export const generateMetadata = getMetadata({
   title: 'Learn Astrology With Houses, Signs, and Timing Guides',
   description:
-    'Use AstroKline to learn astrology through houses, zodiac signs, tools, and practical timing concepts that connect directly to your own chart.',
+    'Use AstroCurve to learn astrology through houses, zodiac signs, tools, and practical timing concepts that connect directly to your own chart.',
   keywords:
     'learn astrology, astrology guide, houses and signs, timing map, birth chart education',
   canonicalUrl: '/learn-astrology',
@@ -15,7 +15,7 @@ export default function LearnAstrologyHubPage() {
     <ContentHubShell
       eyebrow="Learn Astrology Hub"
       title="Learn The Parts Of Astrology That Actually Help You Read A Chart"
-      description="This hub is the educational layer that ties together signs, houses, practical tools, and the Life Curve product. It gives users a place to learn without leaving the AstroKline ecosystem."
+      description="This hub is the educational layer that ties together signs, houses, practical tools, and the Life Curve product. It gives users a place to learn without leaving the AstroCurve ecosystem."
       primaryCta={{ href: '/houses', label: 'Start With Houses' }}
       secondaryCta={{ href: '/blog', label: 'Read The Blog' }}
       stats={[

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type UIEvent } from 'react';
-import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
+import type { UserProfile } from '@/lib/astrocurve/mock-astrology-data';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Activity,
@@ -20,7 +20,7 @@ import {
   X,
 } from 'lucide-react';
 import { Link } from '@/core/i18n/navigation';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 interface InsightData {
   nickname: string;

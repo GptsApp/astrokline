@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import type { DestinyScorePoint } from '@/lib/astrokline/mock-astrology-data';
+import type { DestinyScorePoint } from '@/lib/astrocurve/mock-astrology-data';
 import { Minus, Sparkles, TrendingDown, TrendingUp } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';

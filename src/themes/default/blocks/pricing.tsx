@@ -51,7 +51,7 @@ import {
 } from '@/shared/types/blocks/pricing';
 import { authClient } from '@/core/auth/client';
 import { User } from '@/shared/models/user';
-import { Heading } from '@/components/astrokline/ui/heading';
+import { Heading } from '@/components/astrocurve/ui/heading';
 
 import {
   getInitialPricingGroup,
@@ -60,7 +60,7 @@ import {
 
 const PENDING_CHECKOUT_KEY = 'astrokline_pending_checkout_intent';
 const PENDING_CHECKOUT_MAX_AGE_MS = 30 * 60 * 1000;
-const SUPPORT_EMAIL = 'support@astrokline.com';
+const SUPPORT_EMAIL = 'support@astrocurve.net';
 
 interface PendingCheckoutIntent {
   productId: string;
@@ -622,7 +622,7 @@ export function Pricing({
       } catch (e: any) {
         console.log('checkout failed: ', e);
         toast.error(
-          'Checkout failed. If Creem asked for a mobile number, enter it in the secure form and try again. You can also contact support@astrokline.com.'
+          'Checkout failed. If Creem asked for a mobile number, enter it in the secure form and try again. You can also contact support@astrocurve.net.'
         );
 
         setIsLoading(false);
@@ -780,7 +780,7 @@ export function Pricing({
                 <p className="mt-1 text-sm leading-6 text-white/70">
                   {paymentStatus === 'cancelled'
                     ? 'You can restart the same checkout now. If Creem showed an error, asked for a mobile number, or the page closed unexpectedly, retry below.'
-                    : 'Please try again. If Creem asked for a mobile number, enter it inside the secure checkout form before paying. If the problem continues, email support@astrokline.com and include your order number.'}
+                    : 'Please try again. If Creem asked for a mobile number, enter it inside the secure checkout form before paying. If the problem continues, email support@astrocurve.net and include your order number.'}
                 </p>
                 {paymentOrderNo ? (
                   <p className="mt-2 text-xs font-mono tracking-wide text-white/50">
@@ -792,7 +792,7 @@ export function Pricing({
                     Retry Payment
                   </Button>
                   <Button type="button" variant="outline" asChild>
-                    <a href={`mailto:${SUPPORT_EMAIL}?subject=AstroKline payment help${paymentOrderNo ? ` - ${paymentOrderNo}` : ''}`}>
+                    <a href={`mailto:${SUPPORT_EMAIL}?subject=AstroCurve payment help${paymentOrderNo ? ` - ${paymentOrderNo}` : ''}`}>
                       Contact Support
                     </a>
                   </Button>

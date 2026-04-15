@@ -1,5 +1,5 @@
-import { Heading } from "@/components/astrokline/ui/heading";
-import { UpgradeBanner } from '@/components/astrokline/shared/upgrade-banner';
+import { Heading } from "@/components/astrocurve/ui/heading";
+import { UpgradeBanner } from '@/components/astrocurve/shared/upgrade-banner';
 import { IDEAL_PARTNER_SEO_CONTENT } from '@/lib/astrokline/ideal-partner-seo-data';
 import { Heart, Sparkles } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';

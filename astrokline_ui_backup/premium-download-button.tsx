@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
-import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrokline/mock-astrology-data';
+import type { UserProfile, DestinyScorePoint, TransitEvent } from '@/lib/astrocurve/mock-astrology-data';
 
 const PDFDownloadLinkDynamic = dynamic(
   () => import('./pdf-download-link'),

@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { Menu, X } from 'lucide-react';
 
 import { Link, usePathname, useRouter } from '@/core/i18n/navigation';
-import { useBirthInfoModal } from '@/components/astrokline/ui/birth-info-context';
+import { useBirthInfoModal } from '@/components/astrocurve/ui/birth-info-context';
 import { BrandLogo } from '@/shared/blocks/common/brand-logo';
 import { SmartIcon } from '@/shared/blocks/common/smart-icon';
 import { LocaleSelector } from '@/shared/blocks/common/locale-selector';
@@ -29,11 +29,11 @@ const SignUser = dynamic(
   { ssr: false }
 );
 const MobileBottomTab = dynamic(
-  () => import('@/components/astrokline/ui/mobile-bottom-tab').then(m => ({ default: m.MobileBottomTab })),
+  () => import('@/components/astrocurve/ui/mobile-bottom-tab').then(m => ({ default: m.MobileBottomTab })),
   { ssr: false }
 );
 const MoonPhaseIndicator = dynamic(
-  () => import('@/components/astrokline/ui/moon-phase-indicator').then(m => ({ default: m.MoonPhaseIndicator })),
+  () => import('@/components/astrocurve/ui/moon-phase-indicator').then(m => ({ default: m.MoonPhaseIndicator })),
   { ssr: false }
 );
 
@@ -68,6 +68,12 @@ export function Header({ header }: { header: HeaderType }) {
   const { setIsShowSignModal, user } = useAppContext();
   // Derive login state from AppContext user (populated by fetchUserInfo) or cookie hint
   const isLoggedIn = !!user || (typeof document !== 'undefined' && document.cookie.includes('better-auth.session_token'));
+
+  const shouldDisablePrefetch = (url?: string) =>
+    !!url &&
+    (url.startsWith('/kline') ||
+      url.startsWith('/pricing') ||
+      url.startsWith('/dashboard/kline'));
 
   useEffect(() => {
     // Listen to scroll event to enable header styles on scroll
@@ -133,6 +139,7 @@ export function Header({ header }: { header: HeaderType }) {
                     ) : (
                       <Link
                         href={url}
+                        prefetch={shouldDisablePrefetch(url) ? false : undefined}
                         target={item.target || '_self'}
                         className={`flex flex-row items-center gap-2 px-4 py-1.5 text-sm ${
                           item.is_active || pathname.endsWith(url)
@@ -267,6 +274,7 @@ export function Header({ header }: { header: HeaderType }) {
                               ) : (
                                 <Link
                                   href={subUrl}
+                                  prefetch={shouldDisablePrefetch(subUrl) ? false : undefined}
                                   onClick={closeMenu}
                                   className="grid grid-cols-[auto_1fr] items-center gap-2.5 px-4 py-2"
                                 >
@@ -303,6 +311,7 @@ export function Header({ header }: { header: HeaderType }) {
                   ) : (
                     <Link
                       href={url}
+                      prefetch={shouldDisablePrefetch(url) ? false : undefined}
                       onClick={closeMenu}
                       className="data-[state=open]:bg-muted flex items-center justify-between px-4 py-3 text-lg **:!font-normal"
                     >
@@ -337,6 +346,7 @@ export function Header({ header }: { header: HeaderType }) {
         <NavigationMenuLink asChild>
           <Link
             href={href}
+            prefetch={shouldDisablePrefetch(href) ? false : undefined}
             target={target || '_self'}
             className="grid grid-cols-[auto_1fr] gap-3.5"
           >

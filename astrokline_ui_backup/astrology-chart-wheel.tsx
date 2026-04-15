@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { PlanetPlacement } from '@/lib/astrokline/mock-astrology-data';
+import { PlanetPlacement } from '@/lib/astrocurve/mock-astrology-data';
 import { motion } from 'framer-motion';
 
 import { cn } from '@/shared/lib/utils';

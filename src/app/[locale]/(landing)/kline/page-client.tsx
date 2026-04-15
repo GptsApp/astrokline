@@ -1,25 +1,25 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
-import { ChartHero } from '@/components/astrokline/kline/chart-hero';
-import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
-import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
-import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
-import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
+import { AiReadingPanels } from '@/components/astrocurve/kline/ai-reading-panels';
+import { ChartHero } from '@/components/astrocurve/kline/chart-hero';
+import { DestinySummaryCard } from '@/components/astrocurve/kline/destiny-summary-card';
+import { InteractiveChart } from '@/components/astrocurve/kline/interactive-chart';
+import { LifeStageScores } from '@/components/astrocurve/kline/life-stage-scores';
+import { QuotaLimitModal } from '@/components/astrocurve/kline/quota-limit-modal';
 // Removed unused lock / Star import
-import { RegistrationNudge } from '@/components/astrokline/kline/registration-nudge';
-import { ReportFooter } from '@/components/astrokline/kline/report-footer';
-import { ReportSection } from '@/components/astrokline/kline/report-section';
+import { RegistrationNudge } from '@/components/astrocurve/kline/registration-nudge';
+import { ReportFooter } from '@/components/astrocurve/kline/report-footer';
+import { ReportSection } from '@/components/astrocurve/kline/report-section';
 import {
   getSavedBirthData,
   getSavedKlineResult,
   saveKlineResult,
   useBirthInfoModal,
   type BirthData,
-} from '@/components/astrokline/ui/birth-info-context';
-import { PageBreadcrumb } from '@/components/astrokline/ui/page-breadcrumb';
-import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
+} from '@/components/astrocurve/ui/birth-info-context';
+import { PageBreadcrumb } from '@/components/astrocurve/ui/page-breadcrumb';
+import { AstrologyLoader } from '@/components/astrocurve/ui/theatrical-loader';
 import {
   generateKlineData,
   MOCK_TRANSIT_DETAILS,
@@ -30,6 +30,7 @@ import {
   buildNatalChartPayload,
   enrichBirthDataWithTimezone,
 } from '@/lib/astrokline/birth-timezone';
+import { PLAN_ENTITLEMENTS } from '@/lib/astrokline/plan-entitlements';
 import { apiToProfile } from '@/lib/astrokline/profile-transform';
 import { trackEvent } from '@/lib/astrokline/track-event';
 import {
@@ -60,7 +61,7 @@ import {
   AccordionTrigger,
 } from '@/shared/components/ui/accordion';
 import { cn } from '@/shared/lib/utils';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 // ─── Floating Mini Nav ───
 function FloatingNav() {
@@ -621,7 +622,7 @@ export function KlineClient({
                 {
                   question: 'Does this actually predict my future?',
                   answer:
-                    "AstroKline doesn't predict events; it predicts the weather. If we tell you it's going to rain, meaning a high-pressure transit, you can still choose to go outside, but you'll bring an umbrella. By mapping your planetary transits into a Life Curve, we show you exactly when your environment will be supportive, high momentum, and when it will be resistant.",
+                    "AstroCurve doesn't predict events; it predicts the weather. If we tell you it's going to rain, meaning a high-pressure transit, you can still choose to go outside, but you'll bring an umbrella. By mapping your planetary transits into a Life Curve, we show you exactly when your environment will be supportive, high momentum, and when it will be resistant.",
                 },
                 {
                   question: 'Why do you need my exact birth time and place?',
@@ -692,10 +693,9 @@ export function KlineClient({
               <div className="bg-primary/10 border-primary/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center border">
                 <Sparkles className="text-primary h-5 w-5" />
               </div>
-              <Heading level={3} className="text-2xl font-bold">Unlock Your Full Blueprint</Heading>
+              <Heading level={3} className="text-2xl font-bold">Unlock AI Reading, Saved Reports, and Pro Tools</Heading>
               <p className="text-muted-foreground mt-2 text-sm">
-                Choose a plan to unlock your complete 10-year Life Curve and
-                deep analysis.
+                Free already includes your full 100-year Life Curve. Upgrade for AI reading, Ask Your Chart, saved reports, PDF export, and Pro-only timing tools.
               </p>
             </div>
             <div className="space-y-4">
@@ -703,13 +703,13 @@ export function KlineClient({
                 {
                   name: 'Lite',
                   price: '$39.9',
-                  desc: 'AI Reading + 30-Day Calendar + Energy Curve + Compatibility Check',
+                  desc: PLAN_ENTITLEMENTS.LITE.upgradeCardDescription,
                   id: 'standard',
                 },
                 {
                   name: 'Pro',
                   price: '$79.9',
-                  desc: 'All Lite features + Ask Your Chart AI Chat + Time Travel + Deep Analysis',
+                  desc: PLAN_ENTITLEMENTS.PRO.upgradeCardDescription,
                   id: 'premium',
                   featured: true,
                 },

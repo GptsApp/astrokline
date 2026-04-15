@@ -5,17 +5,17 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { ArrowUp, BarChart3, Brain, Layers, Star, Target, TrendingDown, TrendingUp, Sparkles } from 'lucide-react';
 
-import { AiReadingPanels } from '@/components/astrokline/kline/ai-reading-panels';
-import { ChartHero } from '@/components/astrokline/kline/chart-hero';
-import { DestinySummaryCard } from '@/components/astrokline/kline/destiny-summary-card';
-import { InteractiveChart } from '@/components/astrokline/kline/interactive-chart';
-import { LifeStageScores } from '@/components/astrokline/kline/life-stage-scores';
-import { PremiumDownloadButton } from '@/components/astrokline/kline/premium-download-button';
-import { ReportSection } from '@/components/astrokline/kline/report-section';
-import { TrustEvidenceBar } from '@/components/astrokline/kline/trust-evidence-bar';
+import { AiReadingPanels } from '@/components/astrocurve/kline/ai-reading-panels';
+import { ChartHero } from '@/components/astrocurve/kline/chart-hero';
+import { DestinySummaryCard } from '@/components/astrocurve/kline/destiny-summary-card';
+import { InteractiveChart } from '@/components/astrocurve/kline/interactive-chart';
+import { LifeStageScores } from '@/components/astrocurve/kline/life-stage-scores';
+import { PremiumDownloadButton } from '@/components/astrocurve/kline/premium-download-button';
+import { ReportSection } from '@/components/astrocurve/kline/report-section';
+import { TrustEvidenceBar } from '@/components/astrocurve/kline/trust-evidence-bar';
 import { cn } from '@/shared/lib/utils';
-import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrokline/mock-astrology-data';
-import { Heading } from "@/components/astrokline/ui/heading";
+import type { DestinyScorePoint, TransitEvent, UserProfile } from '@/lib/astrocurve/mock-astrology-data';
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 // Helper functions
 function getScoreBand(score: number, t: any) {

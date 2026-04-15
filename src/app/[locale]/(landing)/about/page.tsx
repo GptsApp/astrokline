@@ -1,59 +1,45 @@
-import Link from 'next/link';
 import { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 
 import { envConfigs } from '@/config';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Link } from '@/core/i18n/navigation';
+import { defaultLocale } from '@/config/locale';
+import { getMetadata } from '@/shared/lib/seo';
+import { Heading } from "@/components/astrocurve/ui/heading";
 
-const aboutUrl = `${envConfigs.app_url}/about`;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-export const metadata: Metadata = {
-  title: 'About AstroKline | AI Astrology, Birth Chart Timing, and Life Curve Forecasts',
-  description:
-    'Learn how AstroKline turns birth chart data, Swiss Ephemeris calculations, and AI interpretation into a practical astrology timing map for career, money, and relationships.',
-  keywords: [
-    'about astrokline',
-    'ai astrology',
-    'birth chart reading',
-    'natal chart analysis',
-    'astrology timing',
-    'astrology life curve',
-    'destiny chart',
-    'swiss ephemeris astrology',
-  ],
-  alternates: {
-    canonical: aboutUrl,
-  },
-  openGraph: {
-    title: 'About AstroKline',
+  const generatePageMetadata = getMetadata({
+    title: 'About AstroCurve | AI Astrology Timing Platform',
     description:
-      'AstroKline combines Swiss Ephemeris precision, astrology timing logic, and AI interpretation to turn birth charts into a practical Life Curve forecast.',
-    url: aboutUrl,
-    type: 'article',
-  },
-};
+      'Learn how AstroCurve combines Swiss Ephemeris precision, astrology timing logic, and AI guidance to turn birth-chart data into a practical life-curve forecast.',
+    keywords: [
+      'about astrocurve',
+      'ai astrology',
+      'birth chart reading',
+      'natal chart analysis',
+      'astrology timing',
+      'astrology life curve',
+      'destiny chart',
+      'swiss ephemeris astrology',
+    ].join(', '),
+    canonicalUrl: '/about',
+  });
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'AboutPage',
-  name: 'About AstroKline',
-  url: aboutUrl,
-  description:
-    'About AstroKline, an AI astrology platform that converts birth chart timing into a readable Life Curve forecast.',
-  mainEntity: {
-    '@type': 'Organization',
-    name: 'AstroKline',
-    url: envConfigs.app_url,
-    sameAs: [envConfigs.app_url],
-    description:
-      'AstroKline is an astrology software product focused on birth chart timing, long-cycle analysis, and AI-powered interpretation.',
-  },
-};
+  return generatePageMetadata({ params: Promise.resolve({ locale }) });
+}
 
 const principles = [
   {
     title: 'Astronomy Before Interpretation',
     description:
-      'We start with exact birth-chart calculation, not generic sign-based copy. AstroKline uses Swiss Ephemeris data so the underlying planetary positions are precise before any interpretation begins.',
+      'We start with exact birth-chart calculation, not generic sign-based copy. AstroCurve uses Swiss Ephemeris data so the underlying planetary positions are precise before any interpretation begins.',
   },
   {
     title: 'Timing Beats Vague Inspiration',
@@ -72,7 +58,33 @@ const principles = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const localePrefix = locale === defaultLocale ? '' : `/${locale}`;
+  const aboutUrl = `${envConfigs.app_url}${localePrefix}/about`;
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'About AstroCurve',
+    url: aboutUrl,
+    description:
+      'About AstroCurve, an AI astrology platform that converts birth chart timing into a readable Life Curve forecast.',
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'AstroCurve',
+      url: envConfigs.app_url,
+      sameAs: [envConfigs.app_url],
+      description:
+        'AstroCurve is an astrology software product focused on birth chart timing, long-cycle analysis, and AI-powered interpretation.',
+    },
+  };
+
   return (
     <main className="bg-background text-foreground min-h-screen">
       <script
@@ -87,13 +99,13 @@ export default function AboutPage() {
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
           <p className="text-primary/70 mb-4 font-mono text-xs tracking-[0.3em] uppercase">
-            About AstroKline
+            About AstroCurve
           </p>
           <Heading level={1} className="mx-auto max-w-3xl text-4xl leading-tight font-bold tracking-tight md:text-6xl">
             A Practical Astrology Product Built Around Timing, Not Fluff
           </Heading>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
-            AstroKline was created for people who want more than a generic
+            AstroCurve was created for people who want more than a generic
             horoscope. We built a system that turns birth chart data into a
             readable timing map, so users can understand momentum, friction,
             and turning points across life, work, money, and relationships.
@@ -104,7 +116,7 @@ export default function AboutPage() {
       <section className="border-b border-white/5 py-16">
         <article className="mx-auto max-w-4xl px-6">
           <div className="prose prose-invert prose-headings:text-white prose-p:text-white/70 prose-li:text-white/70 max-w-none">
-            <Heading level={2}>Why AstroKline Exists</Heading>
+            <Heading level={2}>Why AstroCurve Exists</Heading>
             <p>
               The internet is full of astrology content, but most of it is not
               useful when a person is trying to make a real decision. A generic
@@ -114,7 +126,7 @@ export default function AboutPage() {
               becomes more likely.
             </p>
             <p>
-              AstroKline was built to answer those questions. We wanted an
+              AstroCurve was built to answer those questions. We wanted an
               astrology tool that respects the complexity of a natal chart while
               still giving users an interface they can understand in seconds.
               That is why the product centers on the Life Curve, a long-range visual
@@ -122,9 +134,9 @@ export default function AboutPage() {
               clear directional curve.
             </p>
 
-            <Heading level={2}>What AstroKline Actually Does</Heading>
+            <Heading level={2}>What AstroCurve Actually Does</Heading>
             <p>
-              AstroKline combines three layers of work. The first layer is
+              AstroCurve combines three layers of work. The first layer is
               astronomical calculation. The second layer is timing logic based on
               long-cycle astrology and planetary interaction. The third layer is
               AI interpretation that turns raw chart output into readable
@@ -135,14 +147,14 @@ export default function AboutPage() {
               than a static birth chart. They can see a forward-looking
               structure: stronger windows, weaker windows, major reversals, and
               periods that deserve patience instead of force. That is why users
-              come to AstroKline for far more than entertainment. They use it
+              come to AstroCurve for far more than entertainment. They use it
               for career planning, relationship timing, self-reflection, and
               timing calibration.
             </p>
 
             <Heading level={2}>Why We Use Swiss Ephemeris</Heading>
             <p>
-              Accuracy starts with the underlying chart. AstroKline relies on
+              Accuracy starts with the underlying chart. AstroCurve relies on
               Swiss Ephemeris because it is one of the most trusted astronomical
               engines available for astrology software. When a platform claims
               to deliver a personalized birth chart reading, that claim is weak
@@ -157,7 +169,7 @@ export default function AboutPage() {
 
             <Heading level={2}>What Makes the Life Curve Different</Heading>
             <p>
-              The Life Curve is the core idea behind AstroKline. Traditional chart
+              The Life Curve is the core idea behind AstroCurve. Traditional chart
               reports often overwhelm users with symbols, houses, aspects, and
               dense text. We wanted a format that preserved depth while making
               patterns visible. The Life Curve solves that by translating timing
@@ -168,14 +180,14 @@ export default function AboutPage() {
               merge them, the user sees a visual summary first. That summary can
               then be explored in detail through the full chart and AI reading.
               People search for terms like birth chart timeline, astrology
-              timing chart, and AI natal chart reading. AstroKline is designed
+              timing chart, and AI natal chart reading. AstroCurve is designed
               to satisfy that intent directly.
             </p>
 
             <Heading level={2}>Our Editorial Standard for AI Astrology</Heading>
             <p>
               AI can make astrology more readable, but it also creates a risk of
-              generic output. AstroKline is not built to produce vague feel-good
+              generic output. AstroCurve is not built to produce vague feel-good
               text. The interpretation layer is meant to stay anchored to chart
               structure, timing logic, and user context.
             </p>
@@ -187,9 +199,9 @@ export default function AboutPage() {
               goal is not to inflate certainty. It is to improve usefulness.
             </p>
 
-            <Heading level={2}>Who AstroKline Is For</Heading>
+            <Heading level={2}>Who AstroCurve Is For</Heading>
             <p>
-              AstroKline is for users who want a practical astrology workflow.
+              AstroCurve is for users who want a practical astrology workflow.
               Some are astrology beginners who need a clearer starting point.
               Others already know natal chart basics and want a better way to
               understand timing. Many are professionals, founders, creatives, or
@@ -224,7 +236,7 @@ export default function AboutPage() {
 
             <Heading level={2}>Where To Start</Heading>
             <p>
-              If you want to understand AstroKline in practice, the fastest path
+              If you want to understand AstroCurve in practice, the fastest path
               is to view a sample{' '}
               <Link href="/kline" className="text-primary no-underline">
                 Life Curve reading
@@ -236,7 +248,7 @@ export default function AboutPage() {
               . That gives a clearer picture than any slogan can.
             </p>
             <p>
-              AstroKline exists to make astrology timing usable. That is the
+              AstroCurve exists to make astrology timing usable. That is the
               product standard we work against, and it is the reason this
               company, this page, and this software exist.
             </p>
@@ -271,7 +283,7 @@ export default function AboutPage() {
             Read Your Timing With More Structure
           </Heading>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/65">
-            Start with the Life Curve if you want to see how AstroKline turns birth
+            Start with the Life Curve if you want to see how AstroCurve turns birth
             chart data into something practical and readable.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">

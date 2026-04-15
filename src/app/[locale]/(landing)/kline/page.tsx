@@ -6,11 +6,11 @@ import { getUserInfo } from '@/shared/models/user';
 import { KlineClient } from './page-client';
 
 export const generateMetadata = getMetadata({
-  title: '2026 Astrology Predictions and Your Personal Life Curve',
+  title: 'Life Curve Astrology Timing for 2026 and Beyond | AstroCurve',
   description:
-    'Generate your personalized astrology predictions for 2026. AstroKline maps your planetary transits, Dashas, and Sade Sati into an interactive Life Curve and timing map.',
+    'Explore your Life Curve for 2026 and beyond. AstroCurve maps your birth chart and transits into timing, compatibility, and major turning points.',
   keywords:
-    'astrology predictions for 2026, astrology transit calculator, financial astrology, vedic astrology predictions, predictive astrology, transit chart',
+    'life curve, astrology timing, birth chart timing, astrology transits, compatibility timing, turning points, transit chart, 2026 astrology',
   canonicalUrl: '/kline',
 });
 

@@ -2,19 +2,17 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { SharedKlineResult } from '@/components/astrokline/kline/shared-kline-result';
-import { PremiumDownloadButton } from '@/components/astrokline/kline/premium-download-button';
-import { QuotaLimitModal } from '@/components/astrokline/kline/quota-limit-modal';
-import { ReferralCard } from '@/components/astrokline/kline/referral-card';
-import { ReportFooter } from '@/components/astrokline/kline/report-footer';
+import { SharedKlineResult } from '@/components/astrocurve/kline/shared-kline-result';
+import { QuotaLimitModal } from '@/components/astrocurve/kline/quota-limit-modal';
+import { ReportFooter } from '@/components/astrocurve/kline/report-footer';
 import {
   clearSavedKlineResult,
   getSavedBirthData,
   getSavedKlineResult,
   useBirthInfoModal,
   type BirthData,
-} from '@/components/astrokline/ui/birth-info-context';
-import { AstrologyLoader } from '@/components/astrokline/ui/theatrical-loader';
+} from '@/components/astrocurve/ui/birth-info-context';
+import { AstrologyLoader } from '@/components/astrocurve/ui/theatrical-loader';
 import {
   type DestinyScorePoint,
   type TransitEvent,
@@ -36,9 +34,10 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
-import { useCheckout } from '@/components/astrokline/checkout/checkout-context';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { useCheckout } from '@/components/astrocurve/checkout/checkout-context';
+import { Heading } from "@/components/astrocurve/ui/heading";
 import { shouldSaveChartAsSelf } from '@/shared/lib/kline-ownership';
+import { completeOnboardingStep } from '@/components/astrocurve/dashboard/onboarding-guide';
 
 interface KlineItem {
   id: string;
@@ -56,7 +55,6 @@ interface KlineItem {
 // ──────────────────────────────────────
 export function DashboardKlineClient({ userTier }: { userTier: string }) {
   const isPremium = userTier === 'PREMIUM';
-  const canExport = isPremium || userTier === 'STANDARD';
   const chartTier = isPremium
     ? 'PRO'
     : userTier === 'STANDARD'
@@ -73,7 +71,6 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
 
   // Detail view state
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
   const [klineData, setKlineData] = useState<DestinyScorePoint[]>([]);
   const [transitDetails, setTransitDetails] = useState<Record<number, TransitEvent[]>>({});
   const [radarData, setRadarData] = useState<any[] | null>(null);
@@ -161,7 +158,6 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
       setRadarData(kline.klineResult.radarData ?? null);
       setNext30Days(kline.klineResult.next30Days ?? null);
       setAiInsight(kline.klineResult.aiInsight ?? null);
-      setSelectedYear(undefined);
     }
   };
 
@@ -274,19 +270,43 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
           });
           
           if (saveRes.ok) {
+             completeOnboardingStep('create_chart');
              const saveJson = await saveRes.json();
              const persistedKlineResult = saveJson.data?.klineResult ?? cachedResult;
-             await fetchKlines();
              if (saveJson.data?.id) {
-                // Instantly select the new chart
-                setActiveKlineId(saveJson.data.id);
-               applyKlineData({
-                id: saveJson.data.id,
-                isSelf: saveJson.data.isSelf,
-                label: saveJson.data.label,
-                klineResult: persistedKlineResult,
-               } as any);
+               const nextKline: KlineItem = {
+                 id: saveJson.data.id,
+                 isSelf: saveJson.data.isSelf,
+                 label: saveJson.data.label,
+                 birthDate: saveJson.data.birthDate,
+                 birthTime: saveJson.data.birthTime ?? null,
+                 birthPlace: saveJson.data.birthPlace,
+                 klineResult: persistedKlineResult,
+                 createdAt: saveJson.data.createdAt ?? new Date().toISOString(),
+               };
+
+               setKlines((prev) => {
+                 const withoutCurrent = prev.filter((item) => item.id !== nextKline.id);
+
+                 if (nextKline.isSelf) {
+                   return [
+                     nextKline,
+                     ...withoutCurrent.map((item) =>
+                       item.isSelf ? { ...item, isSelf: false } : item
+                     ),
+                   ];
+                 }
+
+                 const selfCharts = withoutCurrent.filter((item) => item.isSelf);
+                 const otherCharts = withoutCurrent.filter((item) => !item.isSelf);
+                 return [...selfCharts, nextKline, ...otherCharts];
+               });
+
+               setActiveKlineId(nextKline.id);
+               applyKlineData(nextKline);
              }
+
+             void fetchKlines();
           }
         }
       } catch (err) {
@@ -340,6 +360,13 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
      );
   }
 
+  const activeKline = klines.find((kline) => kline.id === activeKlineId)
+    || klines.find((kline) => kline.isSelf)
+    || klines[0];
+  const activeShareStatus = activeKline ? shareStatus[activeKline.id] || 'idle' : 'idle';
+  const activeSunSign = activeKline?.klineResult?.profile?.sun?.sign || '—';
+  const activeMoonSign = activeKline?.klineResult?.profile?.moon?.sign || '—';
+
   // ── UNIFIED TAB VIEW ──
   return (
     <div className="space-y-6 pb-24">
@@ -350,112 +377,135 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
         </div>
       )}
 
-      {/* ── TOP HORIZONTAL TAB BAR ── */}
-      <div className="flex w-full items-end gap-2 overflow-x-auto border-b border-white/10 pb-0 pt-4 scrollbar-hide">
-        {klines.map((kline) => {
-          const isActive = activeKlineId === kline.id;
-          const sunSign = kline.klineResult?.profile?.sun?.sign || '—';
-          const moonSign = kline.klineResult?.profile?.moon?.sign || '—';
-          const currentShareStatus = shareStatus[kline.id] || 'idle';
-          
-          return (
-            <button
-              key={kline.id}
-              onClick={() => handleViewKline(kline)}
-              className={cn(
-                "group relative flex shrink-0 items-center justify-between gap-3 overflow-hidden border transition-all text-left",
-                isActive 
-                  ? "bg-[#15131A] border-white/10 shadow-[inset_0_2px_15px_rgba(212,175,55,0.08)] border-b-transparent z-10 px-5 pt-4 pb-3"
-                  : "bg-white/[0.02] border-white/5 hover:bg-white/[0.06] text-white/50 border-b-transparent px-5 pt-3 pb-2 -mb-[1px] opacity-70 hover:opacity-100"
-              )}
-            >
-              <div className="flex items-center gap-3">
-                {/* Tab Icon */}
-                <div className={cn("flex h-8 w-8 items-center justify-center shrink-0 border", isActive ? 'border-[#D4AF37]/30 bg-[#D4AF37]/10' : 'border-white/10 bg-white/5')}>
-                  {kline.isSelf ? (
-                     <Star className={cn("h-4 w-4", isActive ? "text-[#D4AF37]" : "text-white/40")} />
+      <div className="mx-auto w-full max-w-5xl px-4 pt-4 md:px-6">
+        <div className="border border-white/[0.08] bg-[#0F0E13]/88 p-4 md:p-5">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-[#D4AF37]/20 bg-[#D4AF37]/8">
+                  {activeKline?.isSelf ? (
+                    <Star className="h-5 w-5 text-[#D4AF37]" />
                   ) : (
-                     <User className={cn("h-4 w-4", isActive ? "text-[#D4AF37]" : "text-white/40")} />
+                    <User className="h-5 w-5 text-white/55" />
                   )}
                 </div>
-                
-                <div className="flex flex-col items-start whitespace-nowrap">
-                  <div className="flex items-center gap-2 max-w-[120px] md:max-w-none">
-                     <span className={cn("font-serif font-bold transition-all truncate", isActive ? "text-lg text-white" : "text-sm text-white/70 group-hover:text-white/90")}>
-                       {kline.label || 'Unnamed'}
-                     </span>
-                     {kline.isSelf && <span className={cn("text-[9px] font-mono tracking-widest uppercase", isActive ? "text-[#D4AF37]" : "text-white/30")}>(My Chart)</span>}
+
+                <div className="min-w-0">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#D4AF37]/65">My Charts</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="font-serif text-2xl text-white/92">
+                      {activeKline?.label || 'Unnamed'}
+                    </span>
+                    {activeKline?.isSelf ? (
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#D4AF37]">My Chart</span>
+                    ) : null}
                   </div>
-                  
-                  {/* Expandable Details when active */}
-                  {isActive && (
-                     <motion.div 
-                       initial={{ height: 0, opacity: 0 }}
-                       animate={{ height: "auto", opacity: 1 }}
-                       transition={{ duration: 0.3, ease: 'easeOut' }}
-                       className="mt-1 flex items-center gap-1.5 font-mono text-[10px] text-white/50"
-                     >
-                       <span>{sunSign} ☉ · {moonSign} ☽</span>
-                       <span className="w-1 h-1 rounded-full bg-white/20" />
-                       <span>{kline.birthDate}</span>
-                     </motion.div>
-                  )}
+                  <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10px] text-white/45">
+                    <span>{activeSunSign} ☉</span>
+                    <span>{activeMoonSign} ☽</span>
+                    <span>{activeKline?.birthDate}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Action Buttons purely visible when active AND hovered */}
-              {isActive && (
-                <div className="ml-4 flex shrink-0 items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                   <span 
-                      className={cn("p-1.5 transition-colors cursor-pointer rounded-full", currentShareStatus === 'copied' ? 'text-green-400 bg-green-400/10' : 'hover:text-[#D4AF37] hover:bg-white/5')} 
-                      onClick={(e) => handleShare(e, kline.id)}
-                      title="Share Profile"
-                   >
-                     <Share2 className="h-3.5 w-3.5"/>
-                   </span>
-                   {!kline.isSelf && (
-                     <span 
-                       className="p-1.5 hover:text-red-400 hover:bg-white/5 transition-colors cursor-pointer rounded-full" 
-                       onClick={(e) => { e.stopPropagation(); handleDeleteKline(kline.id); }}
-                       title="Delete Profile"
-                     >
-                       <Trash2 className="h-3.5 w-3.5"/>
-                     </span>
-                   )}
+              {activeKline ? (
+                <div className="flex items-center gap-2 self-start">
+                  <button
+                    type="button"
+                    className={cn(
+                      'flex h-9 w-9 items-center justify-center border border-white/10 bg-white/[0.03] transition-colors',
+                      activeShareStatus === 'copied'
+                        ? 'text-green-400'
+                        : 'text-white/50 hover:border-[#D4AF37]/30 hover:text-[#D4AF37]'
+                    )}
+                    onClick={(event) => handleShare(event, activeKline.id)}
+                    title="Share Profile"
+                    aria-label="Share Profile"
+                  >
+                    <Share2 className="h-4 w-4" />
+                  </button>
+                  {!activeKline.isSelf ? (
+                    <button
+                      type="button"
+                      className="flex h-9 w-9 items-center justify-center border border-white/10 bg-white/[0.03] text-white/45 transition-colors hover:border-red-400/30 hover:text-red-400"
+                      onClick={() => handleDeleteKline(activeKline.id)}
+                      title="Delete Profile"
+                      aria-label="Delete Profile"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  ) : null}
                 </div>
-              )}
-            </button>
-          )
-        })}
-        
-        {/* New Query Button as Tab */}
-        <button
-          onClick={handleNewQuery}
-          aria-label="Create a new chart"
-          title="Create a new chart"
-          className="group flex h-[42px] shrink-0 items-center gap-2 px-4 transition-all hover:bg-white/5 -mb-[1px]"
-        >
-          <Plus className="h-4 w-4 text-white/40 group-hover:text-[#D4AF37] transition-colors" />
-        </button>
-      </div>
+              ) : null}
+            </div>
 
-      {/* ── TOOLBAR ── */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-4">
-         <div /> {/* spacing */}
-        {profile ? (
-          <PremiumDownloadButton
-            profile={profile}
-            klineData={klineData}
-            transitDetails={transitDetails}
-            insightData={aiInsight}
-            tier={chartTier}
-            onUpgradeClick={() => openCheckout('lite')}
-          />
-        ) : (
-          <button onClick={() => openCheckout('lite')} className="text-[#D4AF37] hover:bg-[#D4AF37]/10 flex items-center gap-2 border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all">
-            Upgrade to Export PDF
-          </button>
-        )}
+            <div className="border-t border-white/[0.06] pt-4">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/32">Saved Chart Menu</p>
+              <div className="mt-3 flex flex-wrap gap-3">
+                {klines.map((kline) => {
+                  const isActive = activeKlineId === kline.id;
+
+                  return (
+                    <button
+                      key={kline.id}
+                      type="button"
+                      onClick={() => handleViewKline(kline)}
+                      className={cn(
+                        'group flex min-w-[150px] items-center gap-3 border px-3 py-3 text-left transition-all',
+                        isActive
+                          ? 'border-[#D4AF37]/30 bg-[#D4AF37]/10 text-white shadow-[inset_0_1px_0_rgba(212,175,55,0.16)]'
+                          : 'border-white/[0.06] bg-white/[0.02] text-white/58 hover:border-white/[0.12] hover:bg-white/[0.05] hover:text-white/85'
+                      )}
+                    >
+                      <div className={cn(
+                        'flex h-9 w-9 shrink-0 items-center justify-center border transition-colors',
+                        isActive ? 'border-[#D4AF37]/30 bg-[#D4AF37]/10' : 'border-white/10 bg-white/[0.03]'
+                      )}>
+                        {kline.isSelf ? (
+                          <Star className={cn('h-4 w-4', isActive ? 'text-[#D4AF37]' : 'text-white/40 group-hover:text-white/70')} />
+                        ) : (
+                          <User className={cn('h-4 w-4', isActive ? 'text-[#D4AF37]' : 'text-white/40 group-hover:text-white/70')} />
+                        )}
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className={cn(
+                            'truncate font-serif transition-colors',
+                            isActive ? 'text-base text-white' : 'text-sm text-white/72 group-hover:text-white/90'
+                          )}>
+                            {kline.label || 'Unnamed'}
+                          </span>
+                          {kline.isSelf ? (
+                            <span className={cn('font-mono text-[9px] uppercase tracking-[0.18em]', isActive ? 'text-[#D4AF37]' : 'text-white/28')}>
+                              My Chart
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+
+                <button
+                  type="button"
+                  onClick={handleNewQuery}
+                  aria-label="Create a new chart"
+                  title="Create a new chart"
+                  className="group flex min-w-[150px] items-center gap-3 border border-dashed border-white/[0.12] bg-white/[0.02] px-3 py-3 text-left text-white/50 transition-all hover:border-[#D4AF37]/28 hover:bg-white/[0.04] hover:text-[#D4AF37]"
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-white/10 bg-white/[0.03] group-hover:border-[#D4AF37]/30 group-hover:bg-[#D4AF37]/10">
+                    <Plus className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="font-serif text-sm">Create New Chart</span>
+                    <p className="mt-1 font-mono text-[10px] text-white/35 group-hover:text-[#D4AF37]/70">Add another profile</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ── CHART RENDER ── */}
@@ -473,7 +523,7 @@ export function DashboardKlineClient({ userTier }: { userTier: string }) {
               transitDetails={transitDetails}
               tier={chartTier}
               onActionGate={() => openCheckout('lite')}
-              hideFloatingNav={true}
+              hideFloatingNav
               radarData={radarData}
               next30Days={next30Days}
               klineId={activeKlineId || undefined}

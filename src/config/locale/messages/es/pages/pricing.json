@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "title": "Precios de AstroKline",
-    "description": "Elige el plan que se adapte a la profundidad y volumen que necesitas."
+    "title": "Precios de AstroCurve",
+    "description": "Compara los planes de AstroCurve y elige la profundidad que necesitas para desbloquear lecturas AI, timing anual, compatibilidad y herramientas avanzadas."
   },
   "page": {
-    "title": "Precios de AstroKline",
+    "title": "Precios de AstroCurve",
     "sections": {
       "pricing": {
         "id": "pricing",
@@ -25,14 +25,14 @@
         "items": [
           {
             "title": "Gratis",
-            "description": "Mira tu Curva de Vida de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
+            "description": "Obtén tu primera carta gratis: mira tu curva de 100 años, guarda tu ID Cósmica y previsualiza lo que viene.",
             "features_title": "Incluye",
             "features": [
               "Curva de Vida completa de 100 años",
-              "Puntuación de destino y dirección de tendencia",
+              "Puntuación de destino y panorama anual por año",
               "Tarjeta de ID Cósmica — perfil compartible",
               "1 generación de carta de por vida",
-              "Detalles anuales borrosos — mejora para ver"
+              "Herramienta básica de compatibilidad + vista previa de energía de 3 meses"
             ],
             "interval": "month",
             "amount": 0,
@@ -50,16 +50,15 @@
           },
           {
             "title": "Lite",
-            "description": "Desbloquea lectura AI completa, calendario de acción de 30 días, curva de energía anual y verificación de compatibilidad.",
+            "description": "Desbloquea la capa práctica: 7 módulos de lectura AI, tu calendario de 30 días, energía anual completa y reportes guardados.",
             "features_title": "Todo en Gratis, más",
             "features": [
-              "Lectura AI de Carrera, Riqueza, Amor y Salud",
-              "Calendario de Acción de 30 Días (Hacer/Evitar)",
-              "Pronóstico de Curva de Energía de 12 Meses",
-              "Verificación de Compatibilidad (sinastría)",
+              "Lectura AI de 7 secciones para carrera, dinero, amor, salud, timing, matrimonio y resumen",
+              "Calendario de Acción de 30 Días + pronóstico completo de energía de 12 meses",
+              "\"Pregunta a tu Carta\" — 3 preguntas AI por mes",
+              "Detalles completos de tránsitos año por año",
               "5 generaciones de carta por mes",
-              "Guardar y descargar reportes",
-              "Panel personal + historial"
+              "Guardar cartas, historial del panel y exportación PDF"
             ],
             "interval": "month",
             "amount": 3990,
@@ -77,16 +76,16 @@
           },
           {
             "title": "Pro",
-            "description": "Tu dossier de inteligencia estratégica completo. Pregunta a tu Carta, explora Viaje en el Tiempo, y obtén análisis profundo de tránsitos.",
+            "description": "Desbloquea el dossier completo: todos los módulos AI avanzados, chat ilimitado con tu carta, herramientas Pro de timing y exportaciones completas.",
             "label": "Mejor para Grandes Decisiones",
             "features_title": "Todo en Lite, más",
             "features": [
-              "\"Pregunta a tu Carta\" — chat AI con tu carta natal",
-              "Viaje en el Tiempo — explora cualquier año pasado o futuro",
-              "Análisis profundo de Fortalezas y Puntos Ciegos",
-              "Detalles exactos de tránsito planetario y consejos",
+              "Dossier AI de 17 secciones con karma, familia, hijos, espiritualidad, liderazgo y zonas de cautela",
+              "\"Pregunta a tu Carta\" — conversaciones AI ilimitadas",
               "Generaciones de carta ilimitadas",
-              "Exportar Libro de Vida PDF HD (50+ páginas)",
+              "Mejores Horas, Viaje en el Tiempo, Radar de Vida, Lectura del Destino y Próximos 30 Días",
+              "Modo Jaimini + inteligencia avanzada de tránsitos",
+              "Exportación HD del Life Book en PDF (50+ páginas)",
               "Acceso prioritario a cada nuevo lanzamiento"
             ],
             "interval": "month",
@@ -105,14 +104,14 @@
           },
           {
             "title": "Gratis",
-            "description": "Mira tu Curva de Vida de 100 años, genera tu Tarjeta de ID Cósmica y descubre lo que viene — gratis para siempre.",
+            "description": "Obtén tu primera carta gratis: mira tu curva de 100 años, guarda tu ID Cósmica y previsualiza lo que viene.",
             "features_title": "Incluye",
             "features": [
               "Curva de Vida completa de 100 años",
-              "Puntuación de destino y dirección de tendencia",
+              "Puntuación de destino y panorama anual por año",
               "Tarjeta de ID Cósmica — perfil compartible",
               "1 generación de carta de por vida",
-              "Detalles anuales borrosos — mejora para ver"
+              "Herramienta básica de compatibilidad + vista previa de energía de 3 meses"
             ],
             "interval": "year",
             "amount": 0,
@@ -130,16 +129,15 @@
           },
           {
             "title": "Lite",
-            "description": "Desbloquea lectura AI completa, calendario de acción de 30 días, curva de energía anual y verificación de compatibilidad.",
+            "description": "Desbloquea la capa práctica: 7 módulos de lectura AI, tu calendario de 30 días, energía anual completa y reportes guardados.",
             "features_title": "Todo en Gratis, más",
             "features": [
-              "Lectura AI de Carrera, Riqueza, Amor y Salud",
-              "Calendario de Acción de 30 Días (Hacer/Evitar)",
-              "Pronóstico de Curva de Energía de 12 Meses",
-              "Verificación de Compatibilidad (sinastría)",
+              "Lectura AI de 7 secciones para carrera, dinero, amor, salud, timing, matrimonio y resumen",
+              "Calendario de Acción de 30 Días + pronóstico completo de energía de 12 meses",
+              "\"Pregunta a tu Carta\" — 3 preguntas AI por mes",
+              "Detalles completos de tránsitos año por año",
               "5 generaciones de carta por mes",
-              "Guardar y descargar reportes",
-              "Panel personal + historial"
+              "Guardar cartas, historial del panel y exportación PDF"
             ],
             "interval": "year",
             "amount": 23880,
@@ -158,16 +156,16 @@
           },
           {
             "title": "Pro",
-            "description": "Tu dossier de inteligencia estratégica completo. Pregunta a tu Carta, explora Viaje en el Tiempo, y obtén análisis profundo de tránsitos.",
+            "description": "Desbloquea el dossier completo: todos los módulos AI avanzados, chat ilimitado con tu carta, herramientas Pro de timing y exportaciones completas.",
             "label": "Mejor para Grandes Decisiones",
             "features_title": "Todo en Lite, más",
             "features": [
-              "\"Pregunta a tu Carta\" — chat AI con tu carta natal",
-              "Viaje en el Tiempo — explora cualquier año pasado o futuro",
-              "Análisis profundo de Fortalezas y Puntos Ciegos",
-              "Detalles exactos de tránsito planetario y consejos",
+              "Dossier AI de 17 secciones con karma, familia, hijos, espiritualidad, liderazgo y zonas de cautela",
+              "\"Pregunta a tu Carta\" — conversaciones AI ilimitadas",
               "Generaciones de carta ilimitadas",
-              "Exportar Libro de Vida PDF HD (50+ páginas)",
+              "Mejores Horas, Viaje en el Tiempo, Radar de Vida, Lectura del Destino y Próximos 30 Días",
+              "Modo Jaimini + inteligencia avanzada de tránsitos",
+              "Exportación HD del Life Book en PDF (50+ páginas)",
               "Acceso prioritario a cada nuevo lanzamiento"
             ],
             "interval": "year",

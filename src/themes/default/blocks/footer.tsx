@@ -105,6 +105,8 @@ export function Footer({ footer }: { footer: FooterType }) {
                 ))}
             </div>
           ) : null}
+
+
         </div>
       </div>
     </footer>

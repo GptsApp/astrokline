@@ -87,6 +87,10 @@ const nextConfig = {
     },
   },
   webpack: (config, { isServer }) => {
+    if (process.env.NEXT_DISABLE_WEBPACK_FS_CACHE === 'true') {
+      config.cache = false;
+    }
+
     // Prevent Node.js built-ins from breaking client build
     if (!isServer) {
       config.resolve.fallback = {

@@ -3,7 +3,7 @@ import { getKlineByShareToken } from '@/shared/models/kline';
 import { Link } from '@/core/i18n/navigation';
 
 import { SharedKlineClient } from './page-client';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 type PageProps = { params: Promise<{ token: string; locale: string }> };
 

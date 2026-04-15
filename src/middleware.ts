@@ -3,11 +3,33 @@ import { getSessionCookie } from 'better-auth/cookies';
 import createIntlMiddleware from 'next-intl/middleware';
 
 import { routing } from '@/core/i18n/config';
+import {
+  getCanonicalHostRedirectTarget,
+  getPreferredRequestHostname,
+} from '@/shared/lib/canonical-host';
 
 const intlMiddleware = createIntlMiddleware(routing);
 
+function getRequestHostname(request: NextRequest) {
+  return getPreferredRequestHostname({
+    urlHostname: request.nextUrl.hostname,
+    hostHeader: request.headers.get('host'),
+    forwardedHost: request.headers.get('x-forwarded-host'),
+  });
+}
+
 export async function middleware(request: NextRequest) {
+  const hostname = getRequestHostname(request);
   const { pathname } = request.nextUrl;
+  const canonicalHostname = getCanonicalHostRedirectTarget(hostname);
+
+  // Permanently consolidate apex and legacy domains onto the canonical host.
+  if (canonicalHostname) {
+    const redirectUrl = new URL(request.url);
+    redirectUrl.protocol = 'https:';
+    redirectUrl.hostname = canonicalHostname;
+    return NextResponse.redirect(redirectUrl, 301);
+  }
 
   // Handle internationalization first
   const intlResponse = intlMiddleware(request);

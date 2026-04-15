@@ -18,7 +18,7 @@ export async function GET() {
 
     const code = await getOrCreateReferralCode(user.id);
     const stats = await getReferralStats(user.id);
-    const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://astrokline.com'}/kline?ref=${code}`;
+    const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.astrocurve.net'}/?ref=${code}`;
 
     return NextResponse.json({
       success: true,

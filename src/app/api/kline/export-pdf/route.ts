@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Use CF Browser Rendering REST API via the binding's fetch
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://astrokline.com';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.astrocurve.net';
     const printUrl = `${baseUrl}/en/kline/print/${klineId}`;
 
     // Forward auth cookies
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     return new Response(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="astrokline-report-${klineId.slice(0, 8)}.pdf"`,
+        'Content-Disposition': `attachment; filename="astrocurve-report-${klineId.slice(0, 8)}.pdf"`,
         'Cache-Control': 'private, no-cache',
       },
     });

@@ -1,41 +1,42 @@
-import { Star } from 'lucide-react';
-import Image from 'next/image';
-import dynamic from 'next/dynamic';
+'use client';
 
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
-import { InlineBirthForm } from '@/components/astrokline/ui/inline-birth-form';
-import { Heading } from '@/components/astrokline/ui/heading';
+import { Heading } from '@/components/astrocurve/ui/heading';
+import { ZodiacIcon } from '@/components/icons';
+import { HeroKline } from '@/components/astrocurve/kline/hero-kline';
+import { useBirthInfoModal } from '@/components/astrocurve/ui/birth-info-context';
 
-const SyncActiveTicker = dynamic(
-  () => import('./astro-hero-client').then(m => ({ default: m.SyncActiveTicker })),
-  { loading: () => <div className="h-8" /> }
-);
-const LiveActionTicker = dynamic(
-  () => import('./astro-hero-client').then(m => ({ default: m.LiveActionTicker })),
-  { loading: () => <div className="h-10" /> }
-);
-const OnlineCount = dynamic(
-  () => import('./astro-hero-client').then(m => ({ default: m.OnlineCount })),
-  { loading: () => <span className="text-sm font-bold font-mono tracking-wide">1,204</span> }
-);
-
-// Server-side pure CSS animation wrappers (no JS hydration needed)
-function FadeInText({ children, className }: { children: React.ReactNode; className?: string }) {
+function SyncActiveTicker() {
   return (
-    <p className={cn("animate-in fade-in duration-1000 fill-mode-both", className)} style={{ animationDelay: '300ms' }}>
-      {children}
-    </p>
-  );
-}
-function FadeInStats({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={cn("animate-in fade-in slide-in-from-bottom-4 duration-1000 fill-mode-both", className)} style={{ animationDelay: '400ms' }}>
-      {children}
+    <div
+      className="flex items-center gap-6 text-xs uppercase tracking-[0.25em] text-muted-foreground font-mono animate-in fade-in slide-in-from-left-4 duration-700 [animation-delay:200ms] [animation-fill-mode:both]"
+    >
+      <div className="flex items-center gap-2 px-3 py-1 border border-primary/20 bg-primary/5">
+        <span className="h-1.5 w-1.5 bg-[#4ade80] opacity-80 shadow-[0_0_8px_#4ade80]" />
+        <span className="text-primary font-bold text-xs">LIVE</span>
+      </div>
+      <span className="text-foreground/20">/</span>
+      <div className="relative h-6 overflow-hidden flex-1 min-w-[200px]">
+        <span className="absolute inset-0 flex items-center text-foreground/80 text-xs whitespace-nowrap">
+          Based on NASA Planetary Data
+        </span>
+      </div>
     </div>
   );
 }
 
+
+
+
+// Server-side pure CSS animation wrappers (no JS hydration needed)
+function FadeInText({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <p className={cn("animate-in fade-in duration-1000 fill-mode-both [animation-delay:300ms]", className)}>
+      {children}
+    </p>
+  );
+}
 export function AstroHero({
   section,
   className,
@@ -43,107 +44,131 @@ export function AstroHero({
   section: Section;
   className?: string;
 }) {
+  const { open: openBirthModal } = useBirthInfoModal();
+
   return (
     <section
       id={section.id || 'hero'}
       className={cn(
-        'relative overflow-hidden bg-background pt-24 pb-20 lg:pt-32 lg:pb-28',
+        'relative overflow-hidden bg-background pt-24 pb-12 lg:pt-32 lg:pb-16',
         section.className,
         className
       )}
     >
       {/* Impeccable: Sharp, purposeful textures. No generic glowing orbs. */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-screen"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
-          backgroundSize: '48px 48px',
-        }}
+        className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-screen bg-[radial-gradient(circle_at_1px_1px,currentColor_1px,transparent_0)] bg-[length:48px_48px]"
       />
       <div className="absolute top-0 right-0 h-full w-[1px] bg-foreground/10" />
       <div className="absolute bottom-12 left-0 right-0 h-[1px] bg-foreground/10" />
 
+      {/* Floating zodiac glyphs — subtle background decoration */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {([
+          { sign: 'aries' as const, x: '8%', y: '15%', size: 32 as const, opacity: 0.12 },
+          { sign: 'leo' as const, x: '85%', y: '20%', size: 32 as const, opacity: 0.10 },
+          { sign: 'scorpio' as const, x: '75%', y: '70%', size: 24 as const, opacity: 0.08 },
+          { sign: 'pisces' as const, x: '12%', y: '75%', size: 24 as const, opacity: 0.10 },
+          { sign: 'capricorn' as const, x: '50%', y: '10%', size: 24 as const, opacity: 0.07 },
+        ]).map(({ sign, x, y, size, opacity }) => (
+          <div
+            key={sign}
+            className="absolute"
+            style={{ left: x, top: y, opacity }}
+          >
+            <ZodiacIcon sign={sign} size={size} color="#D4AF37" />
+          </div>
+        ))}
+      </div>
+
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16 lg:gap-12 xl:gap-24 relative">
+        <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-12 lg:gap-10 xl:gap-16 relative">
           
-          {/* Left Column: Asymmetric, heavy typography & Data Readouts */}
-          <div className="flex-1 w-full lg:w-[45%] max-w-2xl space-y-10 lg:pr-8 xl:pr-12 pt-4 xl:pt-8 flex flex-col justify-center">
+          {/* Left Column: Heavy typography + CTA */}
+          <div className="flex-1 w-full lg:w-[45%] max-w-xl space-y-5 md:space-y-6 lg:pr-6 xl:pr-10 pt-4 xl:pt-8 flex flex-col justify-center">
             
-            {/* Live indicator & ticker - Tactical Radar Style */}
+            {/* Live indicator */}
             <SyncActiveTicker />
 
-            {/* Native Heading - Prevents hydration disappearing bugs & inherits Impeccable base typography */}
-            <Heading level={1} className="text-5xl md:text-7xl lg:text-[80px] xl:text-[90px] flex flex-col mb-4 tracking-tighter leading-[1]">
+            {/* PAS: Pain eyebrow — name the problem before the solution */}
+            <p className="animate-in fade-in duration-700 fill-mode-both [animation-delay:150ms] text-sm text-muted-foreground/60 font-mono tracking-wide">
+              Blindly timing life&apos;s biggest decisions?
+            </p>
+
+            <Heading level={1} className="text-5xl md:text-7xl lg:text-[80px] xl:text-[90px] flex flex-col mb-4 tracking-tighter leading-[1] -mt-2">
               <span className="block opacity-95">
-                Your Stars Have
+                {new Date().getFullYear()}–{new Date().getFullYear() + 3},
               </span>
               <span className="block italic mt-0 md:mt-1 pt-1 text-primary font-light">
-                a Message for You.
+                Mapped.
               </span>
             </Heading>
 
             <FadeInText className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light border-l-2 border-primary pl-6 max-w-lg">
-              We read the exact position of every planet at the moment you were born — and reveal a clear timeline of your best years, love windows, and turning points.
+              Saturn returns, Jupiter expansions — happening whether you see them or not. Map yours before the next window closes.
             </FadeInText>
 
-            {/* Authority Proof / Data Readout Panel */}
-            <FadeInStats className="flex flex-wrap border-y border-white/10 py-6 mt-12 items-center justify-between gap-6">
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Powered by</span>
-                <span className="text-sm font-bold text-foreground font-mono tracking-wide">NASA Data</span>
+            {/* CTA Button */}
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both [animation-delay:400ms]">
+              <button
+                type="button"
+                onClick={() => openBirthModal()}
+                className="inline-flex items-center justify-center gap-2 h-14 rounded-full bg-primary text-primary-foreground font-bold uppercase tracking-widest text-sm px-10 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_25px_rgba(212,175,55,0.25)] hover:shadow-[0_0_50px_rgba(212,175,55,0.4)]"
+              >
+                See My {new Date().getFullYear()}–{new Date().getFullYear() + 3} →
+              </button>
+              <p className="text-xs text-muted-foreground/50 font-mono tracking-wide mt-3">
+                Free · 10 seconds · No account needed · <span className="text-primary/70">Early access</span>
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-white/10" />
+
+            {/* Value stack + social proof */}
+            <div className="animate-in fade-in duration-700 fill-mode-both [animation-delay:500ms] flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5 text-xs text-muted-foreground/70 font-mono">
+                <span className="inline-flex items-center gap-1.5"><span className="text-primary">✓</span> 3-year planetary timeline</span>
+                <span className="inline-flex items-center gap-1.5"><span className="text-primary">✓</span> Career &amp; relationship windows</span>
+                <span className="inline-flex items-center gap-1.5"><span className="text-primary">✓</span> Your personal Saturn return date</span>
               </div>
-              <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Precision</span>
-                <span className="text-sm font-bold text-primary flex items-center gap-1.5 font-mono tracking-wide">
-                  <Star className="h-3.5 w-3.5 fill-primary" /> Swiss Ephemeris
-                </span>
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  {(['bg-violet-500','bg-sky-500','bg-emerald-500','bg-amber-500','bg-rose-500']).map((bg, i) => (
+                    <div key={i} className={`h-7 w-7 rounded-full ${bg} border-2 border-background flex items-center justify-center text-xs font-bold text-white`}>
+                      {['E','J','S','M','A'][i]}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground/70 font-mono">
+                  <span className="font-bold text-foreground/80">5,380+</span> charts generated
+                </p>
               </div>
-              <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Readings Created</span>
-                <span className="text-sm font-bold text-foreground font-mono tracking-wide">14,200+</span>
-              </div>
-              <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-widest">Exploring Now</span>
-                <OnlineCount />
-              </div>
-            </FadeInStats>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-white/10" />
+
+            {/* Testimonial */}
+            <div className="animate-in fade-in duration-1000 fill-mode-both [animation-delay:600ms]">
+              <p className="text-sm text-foreground/80 italic leading-relaxed">&ldquo;It flagged a career window in Q1 2024. I got promoted that March — the timing was unreal.&rdquo;</p>
+              <p className="text-xs text-muted-foreground/50 font-mono uppercase tracking-widest mt-1.5">— Emma K., Leo · London</p>
+            </div>
 
           </div>
 
 
-          {/* Right Column: Lead Gen Form embedded directly! */}
-          <div className="w-full lg:w-[55%] xl:w-[540px] relative z-20 shrink-0 pt-4 lg:pt-8 xl:pr-12">
-             <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full" />
-             {/* Server-rendered form shell for instant LCP paint */}
-             <div className="relative w-full group">
-               <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-primary/50 z-30" />
-               <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-primary/50 z-30" />
-               <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-primary/50 z-30" />
-               <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-primary/50 z-30" />
-               <div className="w-full border border-white/10 bg-[#050505]/90 shadow-2xl relative overflow-hidden">
-                 <div className="h-1 w-full bg-gradient-to-r from-primary/20 via-primary to-primary/20 relative z-10" />
-                 <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-                   <span className="h-1.5 w-1.5 bg-red-500 rounded-full shadow-[0_0_5px_#ef4444]" />
-                   <span className="text-[8px] font-mono text-muted-foreground/50 tracking-widest uppercase">SECURE</span>
-                 </div>
-                 <div className="p-8 relative z-10">
-                   <div className="mb-6 flex flex-col justify-start">
-                      <Heading level={2} variant="card" className="pr-24">Reveal Your Timeline ✨</Heading>
-                   </div>
-                   <InlineBirthForm />
-                 </div>
-               </div>
-             </div>
+          {/* Right Column: K-Line Chart */}
+          <div className="w-full lg:w-[55%] relative z-20 shrink-0">
+            <div className="relative w-full">
+              <HeroKline />
+            </div>
           </div>
           
         </div>
+
       </div>
 
-      <LiveActionTicker />
     </section>
   );
 }

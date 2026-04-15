@@ -19,15 +19,24 @@ const md = new MarkdownIt({
 md.renderer.rules.heading_open = function (tokens, idx) {
   const token = tokens[idx];
   const level = token.markup.length;
+  const normalizedLevel = level === 1 ? 2 : level;
   const nextToken = tokens[idx + 1];
 
   if (nextToken && nextToken.type === 'inline') {
     const headingText = nextToken.content;
     const id = generateHeadingId(headingText);
-    return `<h${level} id="${id}">`;
+    return `<h${normalizedLevel} id="${id}">`;
   }
 
-  return `<h${level}>`;
+  return `<h${normalizedLevel}>`;
+};
+
+md.renderer.rules.heading_close = function (tokens, idx) {
+  const token = tokens[idx];
+  const level = token.markup.length;
+  const normalizedLevel = level === 1 ? 2 : level;
+
+  return `</h${normalizedLevel}>`;
 };
 
 // Custom renderer for links with nofollow

@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { UserProfile } from '@/lib/astrokline/mock-astrology-data';
-import { trackEvent } from '@/lib/astrokline/track-event';
+import { UserProfile } from '@/lib/astrocurve/mock-astrology-data';
+import { trackEvent } from '@/lib/astrocurve/track-event';
 import { Download, Share2, Sparkles } from 'lucide-react';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 export function ReportFooter({ profile, tier = 'FREE', onUpgradeClick }: { profile: UserProfile; tier?: string; onUpgradeClick?: () => void }) {
   const [showSharePrompt, setShowSharePrompt] = useState(false);

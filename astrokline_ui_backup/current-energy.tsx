@@ -1,9 +1,9 @@
 'use client';
 
-import type { CurrentEnergyData } from '@/lib/astrokline/personalized-report';
+import type { CurrentEnergyData } from '@/lib/astrocurve/personalized-report';
 import { motion } from 'framer-motion';
 import { AlertCircle, Calendar, Sparkles, Target } from 'lucide-react';
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 function buildFallbackCurrentEnergy(): CurrentEnergyData {
   const currentYear = new Date().getFullYear();

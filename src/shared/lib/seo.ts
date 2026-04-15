@@ -3,6 +3,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { envConfigs } from '@/config';
 import { defaultLocale, locales } from '@/config/locale';
 
+const MAX_META_TITLE_LENGTH = 60;
+const MAX_META_DESCRIPTION_LENGTH = 155;
+
 // get metadata for page component
 export function getMetadata(
   options: {
@@ -54,7 +57,7 @@ export function getMetadata(
 
     let finalTitle =
       passedMetadata.title || translatedMetadata.title || defaultMetadata.title;
-    const finalDescription =
+    let finalDescription =
       passedMetadata.description ||
       translatedMetadata.description ||
       defaultMetadata.description;
@@ -68,12 +71,18 @@ export function getMetadata(
     // app name
     let appName = options.appName;
     if (!appName) {
-      appName = envConfigs.app_name || 'AstroKline';
+      appName = envConfigs.app_name || 'AstroCurve';
     }
 
     if (finalTitle && finalTitle.length < 25 && !finalTitle.includes(appName)) {
       finalTitle = `${finalTitle} | ${appName}`;
     }
+
+    finalTitle = clampMetaText(finalTitle, MAX_META_TITLE_LENGTH);
+    finalDescription = clampMetaText(
+      finalDescription,
+      MAX_META_DESCRIPTION_LENGTH
+    );
 
     return {
       title: finalTitle,
@@ -121,6 +130,29 @@ export function getMetadata(
       },
     };
   };
+}
+
+function clampMetaText(text: string, maxLength: number) {
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  const ellipsis = '...';
+
+  if (!normalized || normalized.length <= maxLength) {
+    return normalized;
+  }
+
+  const targetLength = Math.max(maxLength - ellipsis.length, 0);
+
+  if (targetLength === 0) {
+    return ellipsis.slice(0, maxLength);
+  }
+
+  const truncated = normalized.slice(0, targetLength + 1);
+  const boundary = truncated.lastIndexOf(' ');
+  const cutIndex =
+    boundary > Math.floor(targetLength * 0.6) ? boundary : targetLength;
+  const safeText = truncated.slice(0, cutIndex).replace(/[\s,;:!?-]+$/g, '');
+
+  return `${safeText || normalized.slice(0, targetLength)}${ellipsis}`;
 }
 
 const defaultMetadataKey = 'common.metadata';

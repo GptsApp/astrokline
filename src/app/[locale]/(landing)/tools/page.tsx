@@ -1,10 +1,10 @@
-import { ContentHubShell } from '@/components/astrokline/content/content-hub-shell';
+import { ContentHubShell } from '@/components/astrocurve/content/content-hub-shell';
 import { getMetadata } from '@/shared/lib/seo';
 
 export const generateMetadata = getMetadata({
   title: 'Astrology Tools Hub for Timing, Energy, and Compatibility',
   description:
-    'Use AstroKline tools to generate your Life Curve, check monthly energy, compare compatibility, and move into dashboard tools when you want ongoing use.',
+    'Use AstroCurve tools to generate your Life Curve, check monthly energy, compare compatibility, and move into dashboard tools when you want ongoing use.',
   keywords:
     'astrology tools, timing map, life curve, compatibility tool, energy forecast, birth chart tools',
   canonicalUrl: '/tools',
@@ -66,7 +66,7 @@ export default function ToolsHubPage() {
     <ContentHubShell
       eyebrow="Tools Hub"
       title="One Public Tool Layer, One Dashboard Layer, One Clear Upgrade Path"
-      description="AstroKline should feel like a single product with increasing depth, not a pile of separate utilities. This hub makes the public-to-dashboard gradient explicit."
+      description="AstroCurve should feel like a single product with increasing depth, not a pile of separate utilities. This hub makes the public-to-dashboard gradient explicit."
       primaryCta={{ href: '/kline', label: 'Start With My Life Curve' }}
       secondaryCta={{ href: '/pricing', label: 'Compare Plans' }}
       stats={[

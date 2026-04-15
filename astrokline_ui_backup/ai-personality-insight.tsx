@@ -1,9 +1,9 @@
 'use client';
 
-import { Heading } from "@/components/astrokline/ui/heading";
+import { Heading } from "@/components/astrocurve/ui/heading";
 
 import { useState } from 'react';
-import type { UserProfile } from '@/lib/astrokline/mock-astrology-data';
+import type { UserProfile } from '@/lib/astrocurve/mock-astrology-data';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Activity,

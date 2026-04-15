@@ -3,13 +3,11 @@ import '@/config/style/global.css';
 import { ReactNode } from 'react';
 import {
   JetBrains_Mono,
-  Cormorant_Garamond,
+  Playfair_Display,
   Jost,
 } from 'next/font/google';
 import { getLocale, setRequestLocale } from 'next-intl/server';
 
-import { envConfigs } from '@/config';
-import { locales } from '@/config/locale';
 import { UtmCapture } from '@/shared/blocks/common/utm-capture';
 import { getAllConfigs } from '@/shared/models/config';
 import { getAdsService } from '@/shared/services/ads';
@@ -24,7 +22,7 @@ const jost = Jost({
   preload: true,
 });
 
-const cormorantGaramond = Cormorant_Garamond({
+const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
   weight: ['400', '600', '700'],
   style: ['normal', 'italic'],
@@ -140,9 +138,6 @@ export default async function RootLayout({
   const isProduction = process.env.NODE_ENV === 'production';
   const isDebug = process.env.NEXT_PUBLIC_DEBUG === 'true';
 
-  // app url
-  const appUrl = envConfigs.app_url || '';
-
   let integrationAssets = emptyIntegrationAssets;
 
   if (isProduction || isDebug) {
@@ -152,30 +147,11 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`dark ${jost.variable} ${cormorantGaramond.variable} ${jetbrainsMono.variable}`}
+      className={`dark ${jost.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
       style={{ colorScheme: 'dark' }}
     >
       <head>
-        <link rel="icon" href={envConfigs.app_favicon} />
-        <link rel="apple-touch-icon" href={envConfigs.app_favicon} />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Generate your free birth chart with the most accurate Vedic astrology calculator. Stop struggling with how to read astrology charts — our life curve makes your timing and compatibility instantly clear." />
-
-        {/* inject locales */}
-        {locales ? (
-          <>
-            {locales.map((loc) => (
-              <link
-                key={loc}
-                rel="alternate"
-                hrefLang={loc}
-                href={`${appUrl}${loc === 'en' ? '' : `/${loc}`}`}
-              />
-            ))}
-          </>
-        ) : null}
-
         {/* inject ads meta tags */}
         {integrationAssets.adsMetaTags}
         {/* inject ads head scripts */}

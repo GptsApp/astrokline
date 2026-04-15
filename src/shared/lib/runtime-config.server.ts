@@ -1,5 +1,9 @@
 import 'server-only';
 
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+import { parse as parseDotenv } from 'dotenv';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 import { envConfigs } from '@/config';
@@ -10,6 +14,28 @@ type CloudflareBindings = Record<string, unknown> & {
   DB?: unknown;
   GEMINI_API_KEY?: string;
 };
+
+let localDevVarsCache: Record<string, string> | null | undefined;
+
+function getLocalDevVars(): Record<string, string> | null {
+  if (localDevVarsCache !== undefined) {
+    return localDevVarsCache;
+  }
+
+  const devVarsPath = join(process.cwd(), '.dev.vars');
+  if (!existsSync(devVarsPath)) {
+    localDevVarsCache = null;
+    return localDevVarsCache;
+  }
+
+  try {
+    localDevVarsCache = parseDotenv(readFileSync(devVarsPath, 'utf8'));
+  } catch {
+    localDevVarsCache = null;
+  }
+
+  return localDevVarsCache;
+}
 
 function getCloudflareBindings(): CloudflareBindings | null {
   if (!isCloudflareWorker) {
@@ -32,6 +58,11 @@ export function getRuntimeConfigValue(name: string): string {
 
   if (typeof processValue === 'string' && processValue.length > 0) {
     return processValue;
+  }
+
+  const localDevValue = getLocalDevVars()?.[upperKey] ?? getLocalDevVars()?.[name];
+  if (typeof localDevValue === 'string' && localDevValue.length > 0) {
+    return localDevValue;
   }
 
   const cloudflareBindings = getCloudflareBindings();
